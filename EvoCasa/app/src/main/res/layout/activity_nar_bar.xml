@@ -60,8 +60,7 @@
                 android:background="@drawable/bg_rounded_button"
                 android:padding="6dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_chat"
-                android:contentDescription="Chat" />
+                android:src="@drawable/ic_chat" />
 
             <ImageView
                 android:id="@+id/imgCart"
