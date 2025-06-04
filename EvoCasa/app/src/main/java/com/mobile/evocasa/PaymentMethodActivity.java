@@ -1,6 +1,7 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +10,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class PaymentMethodActivity extends AppCompatActivity {
-
+    TextView txtTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +21,11 @@ public class PaymentMethodActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        addViews();
+    }
+
+    private void addViews() {
+        txtTitle=findViewById(R.id.txtTitle);
+        txtTitle.setText("Payment Method");
     }
 }

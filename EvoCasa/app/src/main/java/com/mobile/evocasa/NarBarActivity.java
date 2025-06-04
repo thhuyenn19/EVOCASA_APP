@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +31,10 @@ public class NarBarActivity extends AppCompatActivity {
     ImageView imgMic;
     ImageView imgCamera;
     EditText edtSearch;
+    LinearLayout tabHome;
+    LinearLayout tabShop;
+    LinearLayout tabNotification;
+    LinearLayout tabProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,7 @@ public class NarBarActivity extends AppCompatActivity {
         });
         addViews();
         addEvents();
+        highlightTab(tabHome, txtHome, imgHome);
     }
     private void addEvents() {
         imgChat.setOnClickListener(new View.OnClickListener() {
@@ -57,51 +63,32 @@ public class NarBarActivity extends AppCompatActivity {
                 openCartActivity();
             }
         });
-        imgHome.setOnClickListener(new View.OnClickListener() {
+        tabHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                highlightTab(tabHome, txtHome, imgHome);
                 openHomeActivity();
             }
         });
-        txtHome.setOnClickListener(new View.OnClickListener() {
+
+        tabShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openHomeActivity();
-            }
-        });
-        imgShop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                highlightTab(tabShop, txtShop, imgShop);
                 openShopActivity();
             }
         });
-        txtShop.setOnClickListener(new View.OnClickListener() {
+        tabNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openShopActivity();
-            }
-        });
-        imgNotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                highlightTab(tabNotification, txtNotification, imgNotification);
                 openNotificationActivity();
             }
         });
-        txtNotification.setOnClickListener(new View.OnClickListener() {
+        tabProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNotificationActivity();
-            }
-        });
-        imgProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openProfileActivity();
-            }
-        });
-        txtProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                highlightTab(tabProfile, txtProfile, imgProfile);
                 openProfileActivity();
             }
         });
@@ -147,6 +134,10 @@ public class NarBarActivity extends AppCompatActivity {
         imgMic = findViewById(R.id.imgMic);
         imgCamera = findViewById(R.id.imgCamera);
         imgSearch = findViewById(R.id.imgSearch);
+        tabHome = findViewById(R.id.tabHome);
+        tabShop = findViewById(R.id.tabShop);
+        tabNotification = findViewById(R.id.tabNotification);
+        tabProfile = findViewById(R.id.tabProfile);
 
         // Load custom font từ assets
 
@@ -160,5 +151,33 @@ public class NarBarActivity extends AppCompatActivity {
         txtNotification.setTypeface(fontRegular);
         txtProfile.setTypeface(fontRegular);
         edtSearch.setTypeface(fontRegular);
+    }
+    // Khai báo biến để lưu tab đang chọn
+    private LinearLayout currentTab = null;
+
+    // Hàm này đổi màu cho tab được chọn
+    private void highlightTab(LinearLayout tab, TextView txt, ImageView img) {
+        // Nếu có tab cũ đang chọn thì trả về màu cũ
+        if (currentTab != null && currentTab != tab) {
+            if (currentTab == tabHome) {
+                txtHome.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+                imgHome.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+            } else if (currentTab == tabShop) {
+                txtShop.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+                imgShop.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+            } else if (currentTab == tabNotification) {
+                txtNotification.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+                imgNotification.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+            } else if (currentTab == tabProfile) {
+                txtProfile.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+                imgProfile.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+            }
+        }
+        // Đổi màu cho tab được chọn
+        txt.setTextColor(getResources().getColor(R.color.color_tab_active));
+        img.setColorFilter(getResources().getColor(R.color.color_tab_active));
+
+        // Lưu tab đang chọn
+        currentTab = tab;
     }
 }

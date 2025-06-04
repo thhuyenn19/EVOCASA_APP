@@ -3,6 +3,9 @@
     <string name="title_hint_Search">Search</string>
     <string name="title_evocasa">EvoCasa</string>
     <string name="title_home">Home</string>
+    <string name="title_shop">Shop</string>
+    <string name="title_notification">Notification</string>
+    <string name="title_profile">Profile</string>
     <string name="title_payment_method">Payment Method</string>
     <string name="title_card">Credit/Debit Card</string>
     <string name="title_momo">MOMO</string>

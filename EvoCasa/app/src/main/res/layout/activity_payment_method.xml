@@ -9,58 +9,8 @@
     tools:context=".PaymentMethodActivity"
     android:background="@color/color_bg">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp">
-
-        <!-- Nút Back -->
-        <LinearLayout
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/imgPaymentMethodBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_rounded_button"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_back" />
-        </LinearLayout>
-
-        <!-- Khoảng cách đẩy tiêu đề ra giữa -->
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1" />
-
-        <TextView
-            android:id="@+id/txtPaymentMethod"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title_payment_method"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
-            android:textStyle="bold"/>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="1"
-            android:visibility="invisible" />
-
-        <!-- Để giữ cân bằng hai bên, thêm view 40dp ẩn bên phải -->
-        <View
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:visibility="invisible"/>
-    </LinearLayout>
+    <!-- Top bar -->
+    <include layout="@layout/topbar_back_title"/>
 
     <!-- Phương thức thanh toán: 4 button -->
     <LinearLayout
