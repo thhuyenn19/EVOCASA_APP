@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,8 @@ public class BottomNavFragment extends Fragment {
     private LinearLayout tabHome, tabShop, tabNotification, tabProfile;
     private TextView txtHome, txtShop, txtNotification, txtProfile;
     private ImageView imgHome, imgShop, imgNotification, imgProfile;
+
+    private Typeface fontSelected, fontRegular;
 
     @Nullable
     @Override
@@ -38,6 +41,10 @@ public class BottomNavFragment extends Fragment {
         imgShop = view.findViewById(R.id.imgShop);
         imgNotification = view.findViewById(R.id.imgNotification);
         imgProfile = view.findViewById(R.id.imgProfile);
+
+        // Dùng requireContext() để lấy assets
+        fontSelected = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-SemiBold.otf");
+        fontRegular = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Regular.otf");
 
         tabHome.setOnClickListener(v -> selectTab(0));
         tabShop.setOnClickListener(v -> selectTab(1));
@@ -61,33 +68,44 @@ public class BottomNavFragment extends Fragment {
     }
 
     private void highlightTab(int pos) {
-        // Reset tất cả về màu mặc định
+        // Reset tất cả về màu và font mặc định
         txtHome.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+        txtHome.setTypeface(fontRegular);
         imgHome.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+
         txtShop.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+        txtShop.setTypeface(fontRegular);
         imgShop.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+
         txtNotification.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+        txtNotification.setTypeface(fontRegular);
         imgNotification.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
+
         txtProfile.setTextColor(getResources().getColor(R.color.color_5E4C3E));
+        txtProfile.setTypeface(fontRegular);
         imgProfile.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
 
-        // Tab được chọn dùng màu nổi bật
+        // Tab được chọn: màu nổi bật + font bold
         int activeColor = getResources().getColor(R.color.color_tab_active);
         switch (pos) {
             case 0:
                 txtHome.setTextColor(activeColor);
+                txtHome.setTypeface(fontSelected);
                 imgHome.setColorFilter(activeColor);
                 break;
             case 1:
                 txtShop.setTextColor(activeColor);
+                txtShop.setTypeface(fontSelected);
                 imgShop.setColorFilter(activeColor);
                 break;
             case 2:
                 txtNotification.setTextColor(activeColor);
+                txtNotification.setTypeface(fontSelected);
                 imgNotification.setColorFilter(activeColor);
                 break;
             case 3:
                 txtProfile.setTextColor(activeColor);
+                txtProfile.setTypeface(fontSelected);
                 imgProfile.setColorFilter(activeColor);
                 break;
         }
