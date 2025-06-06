@@ -1,5 +1,6 @@
 package com.mobile.evocasa.auth;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.mobile.evocasa.R;
 
@@ -17,33 +20,18 @@ import com.mobile.evocasa.R;
  */
 public class SignInFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView txtSignIn, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtView;
+    private Button btnContinueEmailPhoneSignIn, btnContinueFacebook, btnContinueGoogle, btnSignUp;
 
     public SignInFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignInFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SignInFragment newInstance(String param1, String param2) {
         SignInFragment fragment = new SignInFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("param1", param1);
+        args.putString("param2", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +40,7 @@ public class SignInFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // Retrieve parameters if necessary
         }
     }
 
@@ -61,6 +48,39 @@ public class SignInFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
+        // Lấy tham chiếu đến các TextView và Button
+        txtSignIn = rootView.findViewById(R.id.txtSignIn);
+        txtDescription = rootView.findViewById(R.id.txtDescription);
+        txtOrWith = rootView.findViewById(R.id.txtOrWith);
+        txtDontHave = rootView.findViewById(R.id.txtDontHave);
+        txtTerm = rootView.findViewById(R.id.txtTerm);
+        txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
+        txtView = rootView.findViewById(R.id.txtView);
+
+        btnContinueEmailPhoneSignIn = rootView.findViewById(R.id.btnContinueEmailPhoneSignIn);
+        btnContinueFacebook = rootView.findViewById(R.id.btnContinueFacebook);
+        btnContinueGoogle = rootView.findViewById(R.id.btnContinueGoogle);
+        btnSignUp = rootView.findViewById(R.id.btnSignUp);
+
+        // Tạo Typeface từ font trong assets
+        Typeface customFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/my_custom_font.ttf");
+
+        // Áp dụng font cho các TextView và Button
+        txtSignIn.setTypeface(customFont);
+        txtDescription.setTypeface(customFont);
+        txtOrWith.setTypeface(customFont);
+        txtDontHave.setTypeface(customFont);
+        txtTerm.setTypeface(customFont);
+        txtPrivacy.setTypeface(customFont);
+        txtView.setTypeface(customFont);
+
+        btnContinueEmailPhoneSignIn.setTypeface(customFont);
+        btnContinueFacebook.setTypeface(customFont);
+        btnContinueGoogle.setTypeface(customFont);
+        btnSignUp.setTypeface(customFont);
+
+        return rootView;
     }
 }

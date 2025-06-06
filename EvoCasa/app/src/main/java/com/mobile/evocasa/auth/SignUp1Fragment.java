@@ -66,12 +66,10 @@ public class SignUp1Fragment extends Fragment {
         AppCompatButton btnFacebook = view.findViewById(R.id.btnContinueFacebook);
         AppCompatButton btnGoogle = view.findViewById(R.id.btnContinueGoogle);
 
-//        // Set typefaces
-//        if (tvHeader != null) tvHeader.setTypeface(bold);
-//        if (tvDesc != null) tvDesc.setTypeface(regular);
-//        if (btnEmail != null) btnEmail.setTypeface(bold);
-//        if (btnFacebook != null) btnFacebook.setTypeface(bold);
-//        if (btnGoogle != null) btnGoogle.setTypeface(bold);
+        // Set typefaces
+        if (btnEmail != null) btnEmail.setTypeface(bold);
+        if (btnFacebook != null) btnFacebook.setTypeface(bold);
+        if (btnGoogle != null) btnGoogle.setTypeface(bold);
 
         return view;
     }
