@@ -1,117 +1,99 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="match_parent"
+    android:background="@color/color_button_nabar"
     android:orientation="horizontal"
-    android:background="@drawable/bg_rounded_button"
     android:gravity="center">
 
-    <!-- Tab Home -->
     <LinearLayout
         android:id="@+id/tabHome"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true">
-
         <ImageView
             android:id="@+id/imgHome"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_home"
-            android:contentDescription="@string/title_home" />
-
+            android:src="@drawable/ic_home"/>
         <TextView
             android:id="@+id/txtHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_home"
+            android:text="Home"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
 
-    <!-- Tab Shop -->
     <LinearLayout
         android:id="@+id/tabShop"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true">
-
         <ImageView
             android:id="@+id/imgShop"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_shop"
-            android:contentDescription="@string/title_shop" />
-
+            android:src="@drawable/ic_shop"/>
         <TextView
             android:id="@+id/txtShop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_shop"
+            android:text="Shop"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
 
-    <!-- Tab Notification -->
     <LinearLayout
         android:id="@+id/tabNotification"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true">
-
         <ImageView
             android:id="@+id/imgNotification"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_notification"
-            android:contentDescription="@string/title_notification" />
-
+            android:src="@drawable/ic_notification"/>
         <TextView
             android:id="@+id/txtNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_notification"
+            android:text="Notification"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
 
-    <!-- Tab Profile -->
     <LinearLayout
         android:id="@+id/tabProfile"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
         android:layout_weight="1"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true">
-
         <ImageView
             android:id="@+id/imgProfile"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_profile"
-            android:contentDescription="@string/title_profile" />
-
+            android:src="@drawable/ic_profile"/>
         <TextView
             android:id="@+id/txtProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_profile"
+            android:text="Profile"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp" />
+            android:textSize="12sp"/>
     </LinearLayout>
-
 </LinearLayout>
