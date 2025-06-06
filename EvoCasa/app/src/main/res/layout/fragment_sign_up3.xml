@@ -39,10 +39,10 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginTop="-40dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="Verify your email"
+        android:text="@string/title_verify_email"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="24sp"
@@ -91,7 +91,7 @@
         android:layout_marginBottom="32dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="We just sent 5-digit code to your email,\nenter it bellow:"
+        android:text="@string/title_code_signup"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="16sp"
@@ -102,10 +102,11 @@
         android:id="@+id/txtCodeLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="10dp"
         android:text="Code"
         android:textColor="#5E4C3E"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <!-- Code Input Fields -->
     <LinearLayout

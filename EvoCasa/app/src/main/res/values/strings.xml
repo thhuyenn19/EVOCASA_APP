@@ -30,4 +30,6 @@
     <string name="title_term">Term</string>
     <string name="title_and">and</string>
     <string name="title_privacy">Privacy Policy</string>
+    <string name="title_verify_email">Verify your email</string>
+    <string name="title_code_signup">We just sent 5-digit code to your email, enter it bellow:</string>
 </resources>
