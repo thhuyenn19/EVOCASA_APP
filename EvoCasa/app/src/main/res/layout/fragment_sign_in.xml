@@ -4,4 +4,255 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".auth.SignInFragment"/>
+    android:background="#FFFCF3"
+    android:padding="24dp"
+    tools:context=".auth.SignInFragment">
+
+    <!-- Header với back button và help button -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_arrow_back" />
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_help" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="-30dp"
+        android:src="@mipmap/ic_logo" />
+
+    <TextView
+        android:id="@+id/txtSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/tilte_welcome_signin"
+        android:textAlignment="center"
+        android:textColor="#5E4C3E"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <!-- Mô tả -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="@string/title_sign_in_text"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <!-- Button Continue with Email/Phone -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnContinueEmailPhoneSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_pressed_effect"
+        android:elevation="2dp"
+        android:text="@string/title_sign_up"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Divider với text "or with" ngắn hơn -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="60dp"
+        android:paddingEnd="60dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1.5sp"
+            android:layout_weight="1"
+            android:background="#5E4C3E" />
+
+        <TextView
+            android:id="@+id/txtOrWith"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/title_or_with"
+            android:textColor="#5E4C3E"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1.5sp"
+            android:layout_weight="1"
+            android:background="#5E4C3E" />
+
+    </LinearLayout>
+
+    <!-- Button Continue with Google -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnContinueFacebook"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/button_pressed_effect1"
+        android:drawableStart="@drawable/ic_facebook"
+        android:drawablePadding="6dp"
+        android:elevation="1dp"
+        android:gravity="start|center_vertical"
+        android:paddingStart="90dp"
+        android:text="@string/title_continue_fb"
+        android:textAllCaps="false"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnContinueGoogle"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_pressed_effect1"
+        android:drawableStart="@drawable/ic_google"
+        android:drawablePadding="6dp"
+        android:elevation="1dp"
+        android:gravity="start|center_vertical"
+        android:paddingStart="100dp"
+        android:text="@string/title_continue_gg"
+        android:textAllCaps="false"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp" />
+
+
+    <!-- Sign in link -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtAlready"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_dont"
+            android:textColor="#5E4C3E"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/btnSignIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2sp"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/title_signup"
+            android:textColor="#5E4C3E"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Spacer để đẩy terms xuống dưới -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Terms and Privacy Policy -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_by_using"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:id="@+id/txtTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="0dp"
+            android:text="@string/title_term"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:text="@string/title_and"
+            android:textColor="#5E4C3E"
+
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/title_privacy"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."
+            android:textColor="#999999"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

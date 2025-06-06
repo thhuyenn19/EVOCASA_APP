@@ -18,9 +18,7 @@
     <string name="title_create_new">Create new account</string>
     <string name="title_create_free">Create your free account today – the easiest way to start transforming your home!</string>
     <string name="title_sign_up">Continue with Email/Phone</string>
-    <string name="title_con_facebook">Continue with Facebook</string>
     <string name="title_or_with">or with</string>
-    <string name="title_con_gg">Continue with Google</string>
     <string name="title_already_account">Already have an account?</string>
     <string name="title_signin">Sign in</string>
     <string name="title_add_email_phone">Add your email/phone</string>
@@ -44,4 +42,13 @@
     <string name="title_check3">a special character</string>
     <string name="title_check4">an uppercase letter</string>
     <string name="title_create_pw">Create your password</string>
+    <string name="title_success">Your account \nwas successfully created!</string>
+    <string name="title_success_text">Only one click to explore inspiring home ideas!</string>
+    <string name="title_sign_in">SIGN IN</string>
+    <string name="title_continue_fb">Continue with Facebook</string>
+    <string name="title_continue_gg">Continue with Google</string>
+    <string name="title_dont">Don\'t have an account?</string>
+    <string name="title_signup">Sign up</string>
+    <string name="tilte_welcome_signin">Sign In</string>
+    <string name="title_sign_in_text">Hi! Welcome back, you’ve been missed</string>
 </resources>
