@@ -23,4 +23,11 @@
     <string name="title_con_gg">Continue with Google</string>
     <string name="title_already_account">Already have an account?</string>
     <string name="title_signin">Sign in</string>
+    <string name="title_add_email_phone">Add your email/phone</string>
+    <string name="title_sign_up_email_phone">Email/Phone</string>
+    <string name="title_continue">CONTINUE</string>
+    <string name="title_by_using">By using EvoCasa, you agree to the</string>
+    <string name="title_term">Term</string>
+    <string name="title_and">and</string>
+    <string name="title_privacy">Privacy Policy</string>
 </resources>

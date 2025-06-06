@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFCF3"
     android:padding="24dp"
-    tools:context=".auth.SignUp2Fragment">
+    tools:context=".auth.SignUp3Fragment">
 
     <!-- Header với back button và help button -->
     <RelativeLayout
@@ -39,10 +39,10 @@
         android:id="@+id/txtTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-40dp"
         android:layout_marginBottom="16dp"
+        android:layout_marginTop="-40dp"
         android:gravity="center"
-        android:text="@string/title_add_email_phone"
+        android:text="Verify your email"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="24sp"
@@ -72,7 +72,7 @@
             android:layout_width="28dp"
             android:layout_height="6dp"
             android:layout_marginEnd="5dp"
-            android:background="@drawable/step_inactive" />
+            android:background="@drawable/step_active" />
 
         <!-- Step 3 - Inactive -->
         <View
@@ -83,39 +83,141 @@
 
     </LinearLayout>
 
-    <!-- Email/Phone Label -->
+    <!-- Description -->
     <TextView
-        android:id="@+id/txtEmailPhoneLabel"
+        android:id="@+id/txtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/title_sign_up_email_phone"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp" />
-
-    <!-- Email/Phone Input -->
-    <EditText
-        android:id="@+id/edtEmailPhone"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
         android:layout_marginBottom="32dp"
-        android:background="@drawable/edittext_background"
-        android:hint=""
-        android:inputType="textEmailAddress"
-        android:padding="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="4dp"
+        android:text="We just sent 5-digit code to your email,\nenter it bellow:"
+        android:textAlignment="center"
         android:textColor="#5E4C3E"
-        android:textColorHint="#999999"
+        android:textSize="16sp"
+        android:textStyle="italic" />
+
+    <!-- Code Label -->
+    <TextView
+        android:id="@+id/txtCodeLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Code"
+        android:textColor="#5E4C3E"
         android:textSize="16sp" />
 
-    <!-- Continue Button -->
+    <!-- Code Input Fields -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edtCode1"
+            android:layout_width="66dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtCode2"
+            android:layout_width="66dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtCode3"
+            android:layout_width="66dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtCode4"
+            android:layout_width="66dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtCode5"
+            android:layout_width="66dp"
+            android:layout_height="48dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Resend Code -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-15dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Didn't receive the code? "
+            android:textColor="#5E4C3E"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/btnSendAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="Send again"
+            android:textColor="#5E4C3E"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- Verify Email Button -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnContinue"
+        android:id="@+id/btnVerifyEmail"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_pressed_effect"
         android:elevation="2dp"
-        android:text="@string/title_continue"
+        android:text="VERIFY EMAIL"
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
@@ -139,7 +241,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@string/title_by_using"
+            android:text="By using EvoCasa, you agree to the"
             android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
@@ -157,7 +259,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/title_term"
+            android:text="Terms"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -165,7 +267,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_and"
+            android:text=" and "
             android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
@@ -174,7 +276,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:text="@string/title_privacy"
+            android:text="Privacy Policy"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />

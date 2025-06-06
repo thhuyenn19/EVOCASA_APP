@@ -1,12 +1,16 @@
 package com.mobile.evocasa.auth;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
-
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import androidx.appcompat.widget.AppCompatButton;
 
 import com.mobile.evocasa.R;
 
@@ -16,6 +20,12 @@ import com.mobile.evocasa.R;
  * create an instance of this fragment.
  */
 public class SignUp2Fragment extends Fragment {
+
+    // UI Components
+    private ImageView btnBack, btnHelp;
+    private TextView txtTitle, txtEmailPhoneLabel, txtTerms, txtPrivacyPolicy;
+    private EditText edtEmailPhone;
+    private AppCompatButton btnContinue;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +71,128 @@ public class SignUp2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up2, container, false);
+        View view = inflater.inflate(R.layout.fragment_sign_up2, container, false);
+
+        // Initialize UI components
+        initViews(view);
+
+        // Set custom fonts
+        setCustomFonts();
+
+        // Set click listeners
+        setClickListeners();
+
+        return view;
+    }
+
+    private void initViews(View view) {
+        btnBack = view.findViewById(R.id.btnBack);
+        btnHelp = view.findViewById(R.id.btnHelp);
+        txtTitle = view.findViewById(R.id.txtTitle);
+        txtEmailPhoneLabel = view.findViewById(R.id.txtEmailPhoneLabel);
+        edtEmailPhone = view.findViewById(R.id.edtEmailPhone);
+        btnContinue = view.findViewById(R.id.btnContinue);
+        txtTerms = view.findViewById(R.id.txtTerms);
+        txtPrivacyPolicy = view.findViewById(R.id.txtPrivacyPolicy);
+    }
+
+    private void setCustomFonts() {
+        try {
+            // Load custom font from assets folder
+            // Thay đổi tên font theo font bạn có trong assets/fonts/
+            Typeface customFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
+            Typeface customFontBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
+
+            if (customFont != null && customFontBold != null) {
+                txtTitle.setTypeface(customFontBold);
+                txtEmailPhoneLabel.setTypeface(customFont);
+                edtEmailPhone.setTypeface(customFont);
+                btnContinue.setTypeface(customFontBold);
+                txtTerms.setTypeface(customFontBold);
+                txtPrivacyPolicy.setTypeface(customFontBold);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Fallback to default fonts if custom fonts are not available
+            setDefaultFonts();
+        }
+    }
+
+    private void setDefaultFonts() {
+        // Fallback fonts
+        txtTitle.setTypeface(null, Typeface.BOLD);
+        txtEmailPhoneLabel.setTypeface(null, Typeface.NORMAL);
+        edtEmailPhone.setTypeface(null, Typeface.NORMAL);
+        btnContinue.setTypeface(null, Typeface.BOLD);
+        txtTerms.setTypeface(null, Typeface.BOLD);
+        txtPrivacyPolicy.setTypeface(null, Typeface.BOLD);
+    }
+
+    private void setClickListeners() {
+        // Back button click
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        // Help button click
+        btnHelp.setOnClickListener(v -> {
+            // TODO: Implement help functionality
+            // showHelpDialog() or navigate to help screen
+        });
+
+        // Continue button click
+        btnContinue.setOnClickListener(v -> {
+            String emailPhone = edtEmailPhone.getText().toString().trim();
+            if (validateInput(emailPhone)) {
+                // TODO: Proceed to next step
+                proceedToNextStep(emailPhone);
+            }
+        });
+
+        // Terms click
+        txtTerms.setOnClickListener(v -> {
+            // TODO: Open Terms page
+            openTerms();
+        });
+
+        // Privacy Policy click
+        txtPrivacyPolicy.setOnClickListener(v -> {
+            // TODO: Open Privacy Policy page
+            openPrivacyPolicy();
+        });
+    }
+
+    private boolean validateInput(String input) {
+        if (input.isEmpty()) {
+            edtEmailPhone.setError("Please enter email or phone number");
+            edtEmailPhone.requestFocus();
+            return false;
+        }
+
+        // Basic validation - you can enhance this
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches() &&
+                !android.util.Patterns.PHONE.matcher(input).matches()) {
+            edtEmailPhone.setError("Please enter a valid email or phone number");
+            edtEmailPhone.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private void proceedToNextStep(String emailPhone) {
+        // TODO: Implement navigation to next fragment or API call
+        // Example: Navigate to SignUp3Fragment or verify email/phone
+    }
+
+    private void openTerms() {
+        // TODO: Implement terms page navigation
+    }
+
+    private void openPrivacyPolicy() {
+        // TODO: Implement privacy policy page navigation
     }
 }

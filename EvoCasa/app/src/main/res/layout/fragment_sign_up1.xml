@@ -198,7 +198,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="By using EvoCasa, you agree to the"
+            android:text="@string/title_by_using"
             android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
@@ -220,7 +220,7 @@
             android:layout_marginEnd="0dp"
             android:background="?android:attr/selectableItemBackground"
             android:padding="0dp"
-            android:text="Terms"
+            android:text="@string/title_term"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -230,7 +230,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
-            android:text=" and "
+            android:text="@string/title_and"
             android:textColor="#5E4C3E"
 
             android:textSize="12sp" />
@@ -241,7 +241,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="0dp"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Privacy Policy"
+            android:text="@string/title_privacy"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />
