@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <!-- Màu đen, alpha = 30% → #4D (hex) tương đương ~77 (decimal) -->
+    <solid android:color="#4D000000"/>
+</shape>

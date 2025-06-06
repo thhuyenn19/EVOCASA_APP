@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:background="@color/color_bg"
+    android:gravity="center_vertical"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
+
+    <!-- Nút back -->
+
+    <!-- Spacer để căn giữa title -->
+    <View
+        android:layout_width="46dp"
+        android:layout_height="40dp"
+        android:visibility="invisible"/>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <!-- Tiêu đề tùy chỉnh/ tự setText -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/title_profile"
+        android:textColor="@color/color_5E4C3E"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <!-- Spacer phải -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1" />
+
+    <!-- Chat -->
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_rounded_button"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageButton
+            android:id="@+id/imgChat"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_rounded_button"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_setting" />
+    </LinearLayout>
+
+    <!-- Cart -->
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_rounded_button"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/imgCart"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_rounded_button"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_cart" />
+    </LinearLayout>
+</LinearLayout>
