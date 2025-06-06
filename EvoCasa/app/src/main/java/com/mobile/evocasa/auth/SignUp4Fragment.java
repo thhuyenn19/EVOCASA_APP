@@ -1,66 +1,275 @@
 package com.mobile.evocasa.auth;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 
 import com.mobile.evocasa.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUp4Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUp4Fragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private EditText edtPassword, edtConfirmPassword;
+    private ImageView btnBack, btnHelp, btnTogglePassword, btnToggleConfirmPassword;
+    private ProgressBar progressBar;
+    private View checkLength, checkNumber, checkSpecialChar, checkUpperCase;
+    private AppCompatButton btnCreateAccount;
+    private TextView txtTitle, txtTerms, txtPrivacyPolicy;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private boolean hasLength = false;
+    private boolean hasNumber = false;
+    private boolean hasSpecialChar = false;
+    private boolean hasUpperCase = false;
+    private boolean passwordsMatch = false;
 
-    public SignUp4Fragment() {
-        // Required empty public constructor
-    }
+    private boolean isPasswordVisible = false;
+    private boolean isConfirmPasswordVisible = false;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp4Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SignUp4Fragment newInstance(String param1, String param2) {
-        SignUp4Fragment fragment = new SignUp4Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    private Typeface fontRegular, fontBold;
+
+    public SignUp4Fragment() {}
+
+    public static SignUp4Fragment newInstance() {
+        return new SignUp4Fragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        loadCustomFonts();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_sign_up4, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initViews(view);
+        setupFonts();
+        setupListeners();
+        updateCreateAccountButton();
+    }
+
+    private void loadCustomFonts() {
+        try {
+            fontRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
+            fontBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf.ttf");
+        } catch (Exception e) {
+            fontRegular = Typeface.DEFAULT;
+            fontBold = Typeface.DEFAULT_BOLD;
+        }
+    }
+
+    private void initViews(View view) {
+        edtPassword = view.findViewById(R.id.edtPassword);
+        edtConfirmPassword = view.findViewById(R.id.edtConfirmPassword);
+        btnBack = view.findViewById(R.id.btnBack);
+        btnHelp = view.findViewById(R.id.btnHelp);
+        btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
+        btnToggleConfirmPassword = view.findViewById(R.id.btnToggleConfirmPassword);
+        btnCreateAccount = view.findViewById(R.id.btnCreateAccount);
+        progressBar = view.findViewById(R.id.progressBar);
+        checkLength = view.findViewById(R.id.checkLength);
+        checkNumber = view.findViewById(R.id.checkNumber);
+        checkSpecialChar = view.findViewById(R.id.checkSpecialChar);
+        checkUpperCase = view.findViewById(R.id.checkUpperCase);
+        txtTitle = view.findViewById(R.id.txtTitle);
+        txtTerms = view.findViewById(R.id.txtTerms);
+        txtPrivacyPolicy = view.findViewById(R.id.txtPrivacyPolicy);
+    }
+
+    private void setupFonts() {
+        if (fontRegular != null && fontBold != null) {
+            txtTitle.setTypeface(fontBold);
+            edtPassword.setTypeface(fontRegular);
+            edtConfirmPassword.setTypeface(fontRegular);
+            btnCreateAccount.setTypeface(fontBold);
+            txtTerms.setTypeface(fontBold);
+            txtPrivacyPolicy.setTypeface(fontBold);
+        }
+    }
+
+    private void setupListeners() {
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        btnHelp.setOnClickListener(v ->
+                Toast.makeText(getContext(), "Help clicked", Toast.LENGTH_SHORT).show()
+        );
+
+        btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility());
+        btnToggleConfirmPassword.setOnClickListener(v -> toggleConfirmPasswordVisibility());
+
+        edtPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                validatePassword(s.toString());
+                checkPasswordsMatch();
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+
+        edtConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkPasswordsMatch();
+            }
+            @Override public void afterTextChanged(Editable s) {}
+        });
+
+        btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
+
+        txtTerms.setOnClickListener(v ->
+                Toast.makeText(getContext(), "Terms clicked", Toast.LENGTH_SHORT).show()
+        );
+
+        txtPrivacyPolicy.setOnClickListener(v ->
+                Toast.makeText(getContext(), "Privacy Policy clicked", Toast.LENGTH_SHORT).show()
+        );
+    }
+
+    private void togglePasswordVisibility() {
+        if (isPasswordVisible) {
+            edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            btnTogglePassword.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            btnTogglePassword.setImageResource(R.drawable.ic_eye_on);
+        }
+        isPasswordVisible = !isPasswordVisible;
+        edtPassword.setSelection(edtPassword.getText().length());
+    }
+
+    private void toggleConfirmPasswordVisibility() {
+        if (isConfirmPasswordVisible) {
+            edtConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_off);
+        } else {
+            edtConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_on);
+        }
+        isConfirmPasswordVisible = !isConfirmPasswordVisible;
+        edtConfirmPassword.setSelection(edtConfirmPassword.getText().length());
+    }
+
+    private void validatePassword(String password) {
+        hasLength = password.length() >= 8;
+        updateCheckIndicator(checkLength, hasLength);
+
+        hasNumber = password.matches(".*\\d.*");
+        updateCheckIndicator(checkNumber, hasNumber);
+
+        hasSpecialChar = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
+        updateCheckIndicator(checkSpecialChar, hasSpecialChar);
+
+        hasUpperCase = password.matches(".*[A-Z].*");
+        updateCheckIndicator(checkUpperCase, hasUpperCase);
+
+        updateProgressBar();
+        updateCreateAccountButton();
+    }
+
+    private void updateCheckIndicator(View indicator, boolean isValid) {
+        indicator.setSelected(isValid); // Use selector states
+    }
+
+    private void updateProgressBar() {
+        int progress = 0;
+        if (hasLength) progress++;
+        if (hasNumber) progress++;
+        if (hasSpecialChar) progress++;
+        if (hasUpperCase) progress++;
+
+        progressBar.setProgress(progress);
+    }
+
+    private void checkPasswordsMatch() {
+        String password = edtPassword.getText().toString();
+        String confirmPassword = edtConfirmPassword.getText().toString();
+        passwordsMatch = !password.isEmpty() && password.equals(confirmPassword);
+        updateCreateAccountButton();
+    }
+
+    private void updateCreateAccountButton() {
+        boolean allValid = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
+        btnCreateAccount.setEnabled(allValid);
+
+        if (allValid) {
+            btnCreateAccount.setAlpha(1.0f);
+            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.green, null));
+        } else {
+            btnCreateAccount.setAlpha(0.5f);
+            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.gray_light, null));
+        }
+    }
+
+    private void handleCreateAccount() {
+        String password = edtPassword.getText().toString();
+        String confirmPassword = edtConfirmPassword.getText().toString();
+
+        if (password.isEmpty()) {
+            Toast.makeText(getContext(), "Please enter a password", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!(hasLength && hasNumber && hasSpecialChar && hasUpperCase)) {
+            Toast.makeText(getContext(), "Password does not meet all requirements", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        createAccount(password);
+    }
+
+    private void createAccount(String password) {
+        Toast.makeText(getContext(), "Account created successfully!", Toast.LENGTH_LONG).show();
+        // TODO: Navigate or perform actual API call
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        edtPassword = null;
+        edtConfirmPassword = null;
+        btnBack = null;
+        btnHelp = null;
+        btnTogglePassword = null;
+        btnToggleConfirmPassword = null;
+        progressBar = null;
+        checkLength = null;
+        checkNumber = null;
+        checkSpecialChar = null;
+        checkUpperCase = null;
+        btnCreateAccount = null;
+        txtTitle = null;
+        txtTerms = null;
+        txtPrivacyPolicy = null;
     }
 }

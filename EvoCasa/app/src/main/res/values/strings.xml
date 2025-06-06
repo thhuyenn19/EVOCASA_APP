@@ -36,4 +36,12 @@
     <string name="title_didnt">Didn\'t receive the code?</string>
     <string name="title_send_again">Send again</string>
     <string name="title_verify">VERIFY EMAIL</string>
+    <string name="title_create_account">CREATE ACCOUNT</string>
+    <string name="title_type_pw">Type password again</string>
+    <string name="title_password">Password</string>
+    <string name="title_check1">8 characters minimum</string>
+    <string name="title_check2">a number</string>
+    <string name="title_check3">a special character</string>
+    <string name="title_check4">an uppercase letter</string>
+    <string name="title_create_pw">Create your password</string>
 </resources>

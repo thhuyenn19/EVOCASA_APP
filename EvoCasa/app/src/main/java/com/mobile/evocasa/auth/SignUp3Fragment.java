@@ -108,10 +108,10 @@ public class SignUp3Fragment extends Fragment {
             if (getContext() != null) {
                 // Load different font weights
                 // Thay đổi tên file font theo font thực tế trong assets/fonts/
-                regularFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_regular.ttf");
-                boldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_bold.ttf");
-                lightFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_light.ttf");
-                mediumFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/roboto_medium.ttf");
+                regularFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
+                boldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Bold.otf");
+                lightFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Light.otf");
+                mediumFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Medium.otf");
 
                 Log.d(TAG, "Custom fonts loaded successfully");
             }

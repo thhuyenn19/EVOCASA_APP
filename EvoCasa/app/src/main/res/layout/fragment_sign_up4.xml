@@ -1,14 +1,369 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFCF3"
+    android:padding="24dp"
     tools:context=".auth.SignUp4Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Header với back button và help button -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_arrow_back" />
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_help" />
+
+    </RelativeLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/title_create_pw"
+        android:textColor="#5E4C3E"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <!-- Step Indicator -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal">
+
+        <!-- Step 1 - Active -->
+        <View
+            android:id="@+id/step1"
+            android:layout_width="28dp"
+            android:layout_height="6dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/step_active"
+            android:backgroundTint="#5E4C3E" />
+
+        <!-- Step 2 - Inactive -->
+        <View
+            android:id="@+id/step2"
+            android:layout_width="28dp"
+            android:layout_height="6dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/step_active" />
+
+        <!-- Step 3 - Inactive -->
+        <View
+            android:id="@+id/step3"
+            android:layout_width="28dp"
+            android:layout_height="6dp"
+            android:background="@drawable/step_active" />
+
+    </LinearLayout>
+
+    <!-- Password Label -->
+    <TextView
+        android:id="@+id/txtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_password"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp"
+        android:textStyle="normal|bold" />
+
+    <!-- Password Input with Eye Icon -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/edittext_background"
+            android:hint=""
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="50dp"
+            android:paddingBottom="16dp"
+            android:textColor="#5E4C3E"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/btnTogglePassword"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_eye_on"/>
+    </RelativeLayout>
+
+    <!-- Password Strength Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_marginBottom="16dp"
+        android:max="4"
+        android:progress="0"
+        android:progressBackgroundTint="#E0D5C7"
+        android:progressTint="#8B7355" />
+
+    <!-- Password criteria with radio buttons -->
+    <LinearLayout
+        android:id="@+id/passwordCriteriaLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp">
+
+        <!-- 8 characters minimum -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <View
+                android:id="@+id/checkLength"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/radio_selector"
+                android:backgroundTint="#E0D5C7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_check1"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- a number -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:text="@string/title_check2">
+
+            <View
+                android:id="@+id/checkNumber"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/radio_selector"
+                android:backgroundTint="#E0D5C7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="a number"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- a special character -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <View
+                android:id="@+id/checkSpecialChar"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/radio_selector"
+                android:backgroundTint="#E0D5C7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_check3"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- an uppercase letter -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <View
+                android:id="@+id/checkUpperCase"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="12dp"
+                android:background="@drawable/radio_selector"
+                android:backgroundTint="#E0D5C7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_check4"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Confirm Password Label -->
+    <TextView
+        android:id="@+id/txtTypePassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_type_pw"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp"
+        android:textStyle="normal|bold" />
+
+    <!-- Confirm Password Input with Eye Icon -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp">
+
+        <EditText
+            android:id="@+id/edtConfirmPassword"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/edittext_background"
+            android:hint=""
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="50dp"
+            android:paddingBottom="16dp"
+            android:textColor="#5E4C3E"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/btnToggleConfirmPassword"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_eye_on"/>
+    </RelativeLayout>
+
+    <!-- Create Account Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_pressed_effect"
+        android:elevation="2dp"
+        android:text="@string/title_create_account"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Spacer để đẩy terms xuống dưới -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Terms and Privacy Policy -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_by_using"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTerms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/title_term"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_and"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtPrivacyPolicy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/title_privacy"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."
+            android:textColor="#5E4C3E"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
