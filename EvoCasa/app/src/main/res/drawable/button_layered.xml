@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/button_green_rounded" />
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="#B0B0B0" />
+            <corners android:radius="12dp" />
+            <android:alpha android:alpha="0.3" />
+        </shape>
+    </item>
+</layer-list>

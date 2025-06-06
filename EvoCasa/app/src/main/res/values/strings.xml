@@ -15,4 +15,12 @@
     <string name="title_saving">Saving:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_create_new">Create new account</string>
+    <string name="title_create_free">Create your free account today – the easiest way to start transforming your home!</string>
+    <string name="title_sign_up">Continue with Email/Phone</string>
+    <string name="title_con_facebook">Continue with Facebook</string>
+    <string name="title_or_with">or with</string>
+    <string name="title_con_gg">Continue with Google</string>
+    <string name="title_already_account">Already have an account?</string>
+    <string name="title_signin">Sign in</string>
 </resources>
