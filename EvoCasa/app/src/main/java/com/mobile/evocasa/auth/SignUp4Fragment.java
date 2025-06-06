@@ -30,7 +30,7 @@ public class SignUp4Fragment extends Fragment {
     private ProgressBar progressBar;
     private View checkLength, checkNumber, checkSpecialChar, checkUpperCase;
     private AppCompatButton btnCreateAccount;
-    private TextView txtTitle, txtTerms, txtPrivacyPolicy;
+    private TextView txtTitle, txtTerm, txtPrivacy;
 
     private boolean hasLength = false;
     private boolean hasNumber = false;
@@ -94,8 +94,8 @@ public class SignUp4Fragment extends Fragment {
         checkSpecialChar = view.findViewById(R.id.checkSpecialChar);
         checkUpperCase = view.findViewById(R.id.checkUpperCase);
         txtTitle = view.findViewById(R.id.txtTitle);
-        txtTerms = view.findViewById(R.id.txtTerms);
-        txtPrivacyPolicy = view.findViewById(R.id.txtPrivacyPolicy);
+        txtTerm = view.findViewById(R.id.txtTerm);
+        txtPrivacy = view.findViewById(R.id.txtPrivacy);
     }
 
     private void setupFonts() {
@@ -104,8 +104,8 @@ public class SignUp4Fragment extends Fragment {
             edtPassword.setTypeface(fontRegular);
             edtConfirmPassword.setTypeface(fontRegular);
             btnCreateAccount.setTypeface(fontBold);
-            txtTerms.setTypeface(fontBold);
-            txtPrivacyPolicy.setTypeface(fontBold);
+            txtTerm.setTypeface(fontBold);
+            txtPrivacy.setTypeface(fontBold);
         }
     }
 
@@ -142,11 +142,11 @@ public class SignUp4Fragment extends Fragment {
 
         btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
 
-        txtTerms.setOnClickListener(v ->
+        txtTerm.setOnClickListener(v ->
                 Toast.makeText(getContext(), "Terms clicked", Toast.LENGTH_SHORT).show()
         );
 
-        txtPrivacyPolicy.setOnClickListener(v ->
+        txtPrivacy.setOnClickListener(v ->
                 Toast.makeText(getContext(), "Privacy Policy clicked", Toast.LENGTH_SHORT).show()
         );
     }
@@ -269,7 +269,7 @@ public class SignUp4Fragment extends Fragment {
         checkUpperCase = null;
         btnCreateAccount = null;
         txtTitle = null;
-        txtTerms = null;
-        txtPrivacyPolicy = null;
+        txtTerm = null;
+        txtPrivacy = null;
     }
 }

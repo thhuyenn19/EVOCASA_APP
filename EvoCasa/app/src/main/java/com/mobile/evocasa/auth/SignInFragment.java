@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,6 @@ import android.widget.TextView;
 
 import com.mobile.evocasa.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignInFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignInFragment extends Fragment {
 
     private TextView txtSignIn, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtView;
@@ -50,7 +46,7 @@ public class SignInFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_in, container, false);
 
-        // Lấy tham chiếu đến các TextView và Button
+        // Get references to the views
         txtSignIn = rootView.findViewById(R.id.txtSignIn);
         txtDescription = rootView.findViewById(R.id.txtDescription);
         txtOrWith = rootView.findViewById(R.id.txtOrWith);
@@ -64,22 +60,43 @@ public class SignInFragment extends Fragment {
         btnContinueGoogle = rootView.findViewById(R.id.btnContinueGoogle);
         btnSignUp = rootView.findViewById(R.id.btnSignUp);
 
-        // Tạo Typeface từ font trong assets
-        Typeface customFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/my_custom_font.ttf");
+        // Create Typeface from font in assets
+        Typeface interMedium = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Medium.otf");
+        Typeface interBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf");
+        Typeface interSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-SemiBold.otf");
+        Typeface interBlack = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Black.otf");
 
-        // Áp dụng font cho các TextView và Button
-        txtSignIn.setTypeface(customFont);
-        txtDescription.setTypeface(customFont);
-        txtOrWith.setTypeface(customFont);
-        txtDontHave.setTypeface(customFont);
-        txtTerm.setTypeface(customFont);
-        txtPrivacy.setTypeface(customFont);
-        txtView.setTypeface(customFont);
+        // Apply the custom font to the views
+        txtSignIn.setTypeface(interBold); // Inter-Bold
+        txtDescription.setTypeface(interMedium); // Inter-Medium
+        txtOrWith.setTypeface(interSemiBold); // Inter-Medium
+        txtDontHave.setTypeface(interMedium); // Inter-Medium
+        txtTerm.setTypeface(interSemiBold); // Inter-SemiBold
+        txtPrivacy.setTypeface(interSemiBold); // Inter-SemiBold
+        txtView.setTypeface(interMedium); // Inter-Medium
 
-        btnContinueEmailPhoneSignIn.setTypeface(customFont);
-        btnContinueFacebook.setTypeface(customFont);
-        btnContinueGoogle.setTypeface(customFont);
-        btnSignUp.setTypeface(customFont);
+        btnContinueEmailPhoneSignIn.setTypeface(interMedium); // Inter-Medium
+        btnContinueFacebook.setTypeface(interMedium); // Inter-Medium
+        btnContinueGoogle.setTypeface(interMedium); // Inter-Medium
+        btnSignUp.setTypeface(interBlack); // Inter-Black
+
+        // Set onClickListener for btnContinueEmailPhoneSignIn to navigate to SignIn1Fragment
+        btnContinueEmailPhoneSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create the new fragment instance
+                SignIn1Fragment signIn1Fragment = new SignIn1Fragment();
+
+                // Begin the fragment transaction
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                // Replace the current fragment with SignIn1Fragment
+                transaction.replace(R.id.fragment_container, signIn1Fragment);
+                // Optionally, add the transaction to the back stack
+                transaction.addToBackStack(null);
+                // Commit the transaction to perform the fragment transaction
+                transaction.commit();
+            }
+        });
 
         return rootView;
     }

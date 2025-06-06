@@ -1,14 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFCF3"
+    android:padding="24dp"
     tools:context=".auth.SignIn1Fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/icon_arrow_back" />
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_help" />
+
+    </RelativeLayout>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-40dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/tilte_welcome_signin"
+        android:textAlignment="center"
+        android:textColor="#5E4C3E"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Email/Phone Label -->
+    <TextView
+        android:id="@+id/txtEmailPhoneLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_sign_up_email_phone"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp"
+        android:textStyle="normal|bold"/>
+
+    <!-- Email/Phone Input -->
+    <EditText
+        android:id="@+id/edtEmailPhone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/edittext_background"
+        android:hint=""
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:textColor="#5E4C3E"
+        android:textColorHint="#999999"
+        android:textSize="16sp" />
+
+    <!-- Password Label -->
+    <TextView
+        android:id="@+id/txtPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/title_password"
+        android:textColor="#5E4C3E"
+        android:textSize="16sp"
+        android:textStyle="normal|bold" />
+
+    <!-- Password Input with Eye Icon -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/edittext_background"
+            android:hint=""
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="50dp"
+            android:paddingBottom="16dp"
+            android:textColor="#5E4C3E"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/btnTogglePassword"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_eye_on"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/txtForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/title_forgot_password"
+        android:textColor="#5E4C3E"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
+
+
+    <!-- Continue Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnContinue"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/button_pressed_effect"
+        android:elevation="2dp"
+        android:text="@string/title_continue"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- Spacer để đẩy terms xuống dưới -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Terms and Privacy Policy -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_by_using"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:id="@+id/txtTerm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="0dp"
+            android:text="@string/title_term"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:text="@string/title_and"
+            android:textColor="#5E4C3E"
+
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/txtPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:text="@string/title_privacy"
+            android:textColor="#5E4C3E"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="."
+            android:textColor="#999999"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

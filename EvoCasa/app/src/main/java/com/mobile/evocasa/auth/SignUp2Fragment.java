@@ -23,7 +23,7 @@ public class SignUp2Fragment extends Fragment {
 
     // UI Components
     private ImageView btnBack, btnHelp;
-    private TextView txtTitle, txtEmailPhoneLabel, txtTerms, txtPrivacyPolicy;
+    private TextView txtTitle, txtEmailPhoneLabel, txtTerm, txtPrivacy;
     private EditText edtEmailPhone;
     private AppCompatButton btnContinue;
 
@@ -92,8 +92,8 @@ public class SignUp2Fragment extends Fragment {
         txtEmailPhoneLabel = view.findViewById(R.id.txtEmailPhoneLabel);
         edtEmailPhone = view.findViewById(R.id.edtEmailPhone);
         btnContinue = view.findViewById(R.id.btnContinue);
-        txtTerms = view.findViewById(R.id.txtTerms);
-        txtPrivacyPolicy = view.findViewById(R.id.txtPrivacyPolicy);
+        txtTerm = view.findViewById(R.id.txtTerm);
+        txtPrivacy = view.findViewById(R.id.txtPrivacy);
     }
 
     private void setCustomFonts() {
@@ -108,8 +108,8 @@ public class SignUp2Fragment extends Fragment {
                 txtEmailPhoneLabel.setTypeface(customFont);
                 edtEmailPhone.setTypeface(customFont);
                 btnContinue.setTypeface(customFontBold);
-                txtTerms.setTypeface(customFontBold);
-                txtPrivacyPolicy.setTypeface(customFontBold);
+                txtTerm.setTypeface(customFontBold);
+                txtPrivacy.setTypeface(customFontBold);
             }
 
         } catch (Exception e) {
@@ -125,8 +125,8 @@ public class SignUp2Fragment extends Fragment {
         txtEmailPhoneLabel.setTypeface(null, Typeface.NORMAL);
         edtEmailPhone.setTypeface(null, Typeface.NORMAL);
         btnContinue.setTypeface(null, Typeface.BOLD);
-        txtTerms.setTypeface(null, Typeface.BOLD);
-        txtPrivacyPolicy.setTypeface(null, Typeface.BOLD);
+        txtTerm.setTypeface(null, Typeface.BOLD);
+        txtPrivacy.setTypeface(null, Typeface.BOLD);
     }
 
     private void setClickListeners() {
@@ -153,13 +153,13 @@ public class SignUp2Fragment extends Fragment {
         });
 
         // Terms click
-        txtTerms.setOnClickListener(v -> {
+        txtTerm.setOnClickListener(v -> {
             // TODO: Open Terms page
             openTerms();
         });
 
         // Privacy Policy click
-        txtPrivacyPolicy.setOnClickListener(v -> {
+        txtPrivacy.setOnClickListener(v -> {
             // TODO: Open Privacy Policy page
             openPrivacyPolicy();
         });

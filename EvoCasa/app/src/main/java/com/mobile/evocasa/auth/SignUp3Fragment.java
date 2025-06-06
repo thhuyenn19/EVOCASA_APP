@@ -28,7 +28,7 @@ public class SignUp3Fragment extends Fragment {
 
     // UI Components
     private ImageView btnBack, btnHelp;
-    private TextView txtTitle, txtDescription, txtCodeLabel, btnSendAgain, txtTerms, txtPrivacyPolicy;
+    private TextView txtTitle, txtDescription, txtCodeLabel, btnSendAgain, txtTerm, txtPrivacy;
     private EditText edtCode1, edtCode2, edtCode3, edtCode4, edtCode5;
     private AppCompatButton btnVerifyEmail;
     private EditText[] codeInputs;
@@ -142,8 +142,8 @@ public class SignUp3Fragment extends Fragment {
         edtCode5 = view.findViewById(R.id.edtCode5);
         btnSendAgain = view.findViewById(R.id.btnSendAgain);
         btnVerifyEmail = view.findViewById(R.id.btnVerifyEmail);
-        txtTerms = view.findViewById(R.id.txtTerms);
-        txtPrivacyPolicy = view.findViewById(R.id.txtPrivacyPolicy);
+        txtTerm = view.findViewById(R.id.txtTerm);
+        txtPrivacy = view.findViewById(R.id.txtPrivacy);
 
         // Array of code inputs for easier management
         codeInputs = new EditText[]{edtCode1, edtCode2, edtCode3, edtCode4, edtCode5};
@@ -174,12 +174,12 @@ public class SignUp3Fragment extends Fragment {
             }
 
             // Áp dụng font cho Terms và Privacy Policy
-            if (txtTerms != null && regularFont != null) {
-                txtTerms.setTypeface(regularFont);
+            if (txtTerm != null && regularFont != null) {
+                txtTerm.setTypeface(regularFont);
             }
 
-            if (txtPrivacyPolicy != null && regularFont != null) {
-                txtPrivacyPolicy.setTypeface(regularFont);
+            if (txtPrivacy != null && regularFont != null) {
+                txtPrivacy.setTypeface(regularFont);
             }
 
             // Áp dụng font cho code inputs
@@ -208,8 +208,8 @@ public class SignUp3Fragment extends Fragment {
         if (txtCodeLabel != null) txtCodeLabel.setTypeface(null, Typeface.NORMAL);
         if (btnVerifyEmail != null) btnVerifyEmail.setTypeface(null, Typeface.BOLD);
         if (btnSendAgain != null) btnSendAgain.setTypeface(null, Typeface.BOLD);
-        if (txtTerms != null) txtTerms.setTypeface(null, Typeface.NORMAL);
-        if (txtPrivacyPolicy != null) txtPrivacyPolicy.setTypeface(null, Typeface.NORMAL);
+        if (txtTerm != null) txtTerm.setTypeface(null, Typeface.NORMAL);
+        if (txtPrivacy != null) txtPrivacy.setTypeface(null, Typeface.NORMAL);
 
         if (codeInputs != null) {
             for (EditText input : codeInputs) {
@@ -256,15 +256,15 @@ public class SignUp3Fragment extends Fragment {
         }
 
         // Terms click
-        if (txtTerms != null) {
-            txtTerms.setOnClickListener(v -> {
+        if (txtTerm != null) {
+            txtTerm.setOnClickListener(v -> {
                 openTerms();
             });
         }
 
         // Privacy Policy click
-        if (txtPrivacyPolicy != null) {
-            txtPrivacyPolicy.setOnClickListener(v -> {
+        if (txtPrivacy!= null) {
+            txtPrivacy.setOnClickListener(v -> {
                 openPrivacyPolicy();
             });
         }

@@ -4,28 +4,22 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 
 import com.mobile.evocasa.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUp1Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUp1Fragment extends Fragment {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
+    private TextView txtCreate, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy;
+    private AppCompatButton btnContinueEmailPhone, btnContinueFacebook, btnContinueGoogle, btnSignIn;
 
     public SignUp1Fragment() {
         // Required empty public constructor
@@ -34,8 +28,8 @@ public class SignUp1Fragment extends Fragment {
     public static SignUp1Fragment newInstance(String param1, String param2) {
         SignUp1Fragment fragment = new SignUp1Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("param1", param1);
+        args.putString("param2", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,32 +38,64 @@ public class SignUp1Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // Retrieve parameters if necessary
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up1, container, false);
 
-        // Load custom font from assets/fonts
-        Typeface regular = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Regular.otf");
+        // Load custom fonts from assets/fonts
         Typeface bold = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Bold.otf");
+        Typeface medium = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Medium.otf");
+        Typeface semiBold = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-SemiBold.otf");
+        Typeface black = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Black.otf");
+        Typeface italic = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Italic.otf");
 
-//        // Assign the custom fonts to TextViews and Buttons
-//        TextView tvHeader = view.findViewById(R.id.tvHeader);
-//        TextView tvDesc = view.findViewById(R.id.tvDesc);
+        // Get references to the views
+        txtCreate = view.findViewById(R.id.txtCreate);
+        txtDescription = view.findViewById(R.id.txtDescription);
+        txtOrWith = view.findViewById(R.id.txtOrWith);
+        txtDontHave = view.findViewById(R.id.txtDontHave);
+        txtTerm = view.findViewById(R.id.txtTerm);
+        txtPrivacy = view.findViewById(R.id.txtPrivacy);
 
-        AppCompatButton btnEmail = view.findViewById(R.id.btnContinueEmailPhone);
-        AppCompatButton btnFacebook = view.findViewById(R.id.btnContinueFacebook);
-        AppCompatButton btnGoogle = view.findViewById(R.id.btnContinueGoogle);
+        btnContinueEmailPhone = view.findViewById(R.id.btnContinueEmailPhone);
+        btnContinueFacebook = view.findViewById(R.id.btnContinueFacebook);
+        btnContinueGoogle = view.findViewById(R.id.btnContinueGoogle);
+        btnSignIn = view.findViewById(R.id.btnSignIn);
 
-        // Set typefaces
-        if (btnEmail != null) btnEmail.setTypeface(bold);
-        if (btnFacebook != null) btnFacebook.setTypeface(bold);
-        if (btnGoogle != null) btnGoogle.setTypeface(bold);
+        // Set typefaces for TextViews and Buttons
+        txtCreate.setTypeface(bold); // Title - Bold
+        txtDescription.setTypeface(medium); // Description - Medium Italic
+        txtDescription.setTypeface(italic); // Applying italic style
+        txtOrWith.setTypeface(semiBold); // "Or With" - SemiBold
+        txtDontHave.setTypeface(semiBold); // "Already have an account?" - SemiBold
+        txtTerm.setTypeface(semiBold); // Terms - SemiBold
+        txtPrivacy.setTypeface(semiBold); // Privacy - SemiBold
+
+        btnContinueEmailPhone.setTypeface(medium); // Continue with Email/Phone - Medium
+        btnContinueFacebook.setTypeface(medium); // Continue with Facebook - Medium
+        btnContinueGoogle.setTypeface(medium); // Continue with Google - Medium
+        btnSignIn.setTypeface(black); // SignUp button - Black
+
+        // Set onClickListener for btnContinueEmailPhone to navigate to SignUp2Fragment
+        btnContinueEmailPhone.setOnClickListener(v -> {
+            // Create the new fragment instance
+            SignUp2Fragment signUp2Fragment = new SignUp2Fragment();
+
+            // Begin the fragment transaction
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            // Replace the current fragment with SignUp2Fragment
+            transaction.replace(R.id.fragment_container, signUp2Fragment);
+            // Optionally, add the transaction to the back stack
+            transaction.addToBackStack(null);
+            // Commit the transaction to perform the fragment transaction
+            transaction.commit();
+        });
 
         return view;
     }
