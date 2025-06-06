@@ -32,4 +32,8 @@
     <string name="title_privacy">Privacy Policy</string>
     <string name="title_verify_email">Verify your email</string>
     <string name="title_code_signup">We just sent 5-digit code to your email, enter it bellow:</string>
+    <string name="title_code">Code</string>
+    <string name="title_didnt">Didn\'t receive the code?</string>
+    <string name="title_send_again">Send again</string>
+    <string name="title_verify">VERIFY EMAIL</string>
 </resources>

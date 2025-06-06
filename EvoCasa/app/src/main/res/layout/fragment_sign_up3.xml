@@ -103,7 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="Code"
+        android:text="@string/title_code"
         android:textColor="#5E4C3E"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -194,7 +194,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Didn't receive the code? "
+            android:text="@string/title_didnt"
             android:textColor="#5E4C3E"
             android:textSize="14sp" />
 
@@ -202,8 +202,9 @@
             android:id="@+id/btnSendAgain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Send again"
+            android:text="@string/title_send_again"
             android:textColor="#5E4C3E"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -218,7 +219,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_pressed_effect"
         android:elevation="2dp"
-        android:text="VERIFY EMAIL"
+        android:text="@string/title_verify"
         android:textAllCaps="true"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
@@ -242,7 +243,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="By using EvoCasa, you agree to the"
+            android:text="@string/title_by_using"
             android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
@@ -260,7 +261,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Terms"
+            android:text="@string/title_term"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -268,7 +269,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" and "
+            android:text="@string/title_and"
             android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
@@ -277,7 +278,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
-            android:text="Privacy Policy"
+            android:text="@string/title_privacy"
             android:textColor="#5E4C3E"
             android:textSize="12sp"
             android:textStyle="bold" />
