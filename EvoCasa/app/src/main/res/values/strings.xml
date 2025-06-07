@@ -13,7 +13,6 @@
     <string name="title_cod">COD</string>
     <string name="title_total">Total:</string>
     <string name="title_saving">Saving:</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_create_new">Create new account</string>
     <string name="title_create_free">Create your free account today – the easiest way to start transforming your home!</string>
@@ -67,4 +66,10 @@
     <string name="title_create_account_onboarding5">Create an account</string>
     <string name="title_loginin">Log in</string>
     <string name="title_dot">.</string>
+    <string name="title_con_facebook">Continue with Facebook</string>
+    <string name="title_con_gg">Continue with Google</string>
+    <string name="title_reset_password">Reset password</string>
+    <string name="title_reset_pw">RESET PASSWORD</string>
+    <string name="title_reset_success">Your password\nreset successfully!</string>
+    <string name="title_success_text_reset">Your new password is now active. Let\'s continue!</string>
 </resources>
