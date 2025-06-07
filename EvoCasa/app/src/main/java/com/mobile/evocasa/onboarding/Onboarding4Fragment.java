@@ -20,8 +20,7 @@ import com.mobile.evocasa.R;
  */
 public class Onboarding4Fragment extends Fragment {
 
-    private Button btn_lets_start;
-    private View mView;
+    private Button btnLetsStart;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -66,21 +65,20 @@ public class Onboarding4Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        //Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_onboarding4, container, false);
+        View view = inflater.inflate(R.layout.fragment_onboarding4, container, false);
 
-        mView = inflater.inflate(R.layout.fragment_onboarding4, container, false);
+        btnLetsStart = view.findViewById(R.id.btn_lets_start);
 
-        btn_lets_start = mView.findViewById(R.id.btn_lets_start);
-        btn_lets_start.setOnClickListener(new View.OnClickListener() {
+        btnLetsStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), Onboarding5Activity.class);
-                getActivity().startActivity(intent);
+                startActivity(intent);
             }
         });
 
-        return mView;
+        return view;
     }
 }
