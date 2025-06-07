@@ -13,16 +13,6 @@
         android:theme="@style/Theme.EvoCasa"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
-        <!-- Các activity khác -->
-        <activity
             android:name=".PaymentMethodActivity"
             android:exported="false" />
         <activity
@@ -32,8 +22,17 @@
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".NarBarActivity"
+            android:name=".MainActivity"
             android:exported="true" />
+        <activity
+            android:name=".NarBarActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
