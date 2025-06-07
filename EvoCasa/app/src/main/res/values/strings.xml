@@ -87,5 +87,6 @@
     <string name="title_wishlist_low_stock">Low Stock</string>
     <string name="title_wishlist_out_of_stock">Out of Stock</string>
     <string name="title_wishlist_sort">Sort by</string>
+    <string name="title_wishlist_recommend">You might like</string>
 
 </resources>
