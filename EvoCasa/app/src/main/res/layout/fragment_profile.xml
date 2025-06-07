@@ -81,16 +81,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp"
+                android:paddingHorizontal="5dp"
                 android:paddingTop="8dp"
-                android:paddingBottom="16dp">
+                android:paddingBottom="8dp">
 
                 <!-- Category -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginHorizontal="16dp">
+                    android:layout_marginHorizontal="16dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/txtCategory"
@@ -105,9 +105,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal"
+                        android:layout_gravity="center_vertical"
                         android:gravity="center"
-                        android:layout_gravity="center_vertical">
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -129,71 +129,69 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
-                    android:layout_marginTop="12dp">
+                    android:orientation="horizontal">
 
                     <!-- Each item -->
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="48dp"
-                            android:layout_height="48dp">
+                            android:layout_width="55dp"
+                            android:layout_height="55dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_pending"
-                            android:contentDescription="Pending" />
+                                android:contentDescription="Pending"
+                                android:src="@drawable/ic_pending" />
 
                             <!-- Badge -->
                             <TextView
                                 android:id="@+id/badge_pending"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
                                 android:layout_gravity="top|end"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="10sp"
-                                android:translationX="4dp"
-                                android:translationY="-4dp" />
+                                android:textSize="12sp" />
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="Pending"
-                            android:textSize="12sp"
                             android:textColor="@color/color_5E4C3E"
-                            android:layout_marginTop="4dp"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="48dp"
-                            android:layout_height="48dp">
+                            android:layout_width="55dp"
+                            android:layout_height="55dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_pick_up"
-                                android:contentDescription="Pick up" />
+                                android:contentDescription="Pick up"
+                                android:src="@drawable/ic_pick_up" />
                             <!-- Badge -->
                             <TextView
-                                android:id="@+id/badge_pending"
+                                android:id="@+id/badge_pick_up"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="top|end"
@@ -201,104 +199,399 @@
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="10sp"
-                                android:translationX="4dp"
-                                android:translationY="-4dp" />
+                                android:textSize="12sp"/>
 
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="Pick up"
-                            android:textSize="12sp"
                             android:textColor="@color/color_5E4C3E"
-                            android:layout_marginTop="4dp"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="48dp"
-                            android:layout_height="48dp">
+                            android:layout_width="55dp"
+                            android:layout_height="55dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_in_transit"
-                                android:contentDescription="In Transit" />
+                                android:contentDescription="In Transit"
+                                android:src="@drawable/ic_in_transit" />
 
                             <TextView
                                 android:id="@+id/badge_transit"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="top|end"
-                                android:translationX="4dp"
-                                android:translationY="-4dp"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="2"
-                                android:textSize="10sp"
-                                android:textColor="@color/color_5E4C3E"/>
+                                android:textColor="@color/color_5E4C3E"
+                                android:textSize="12sp" />
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="In Transit"
-                            android:textSize="12sp"
                             android:textColor="@color/color_5E4C3E"
-                            android:layout_marginTop="4dp"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:gravity="center_horizontal">
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="48dp"
-                            android:layout_height="48dp">
+                            android:layout_width="55dp"
+                            android:layout_height="55dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:src="@drawable/ic_review"
-                                android:contentDescription="Review" />
+                                android:contentDescription="Review"
+                                android:src="@drawable/ic_review" />
 
                             <TextView
                                 android:id="@+id/badge_review"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_gravity="top|end"
-                                android:translationX="4dp"
-                                android:translationY="-4dp"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="0"
-                                android:textSize="10sp"
-                                android:textColor="@color/color_5E4C3E"/>
+                                android:textColor="@color/color_5E4C3E"
+                                android:textSize="12sp" />
                         </FrameLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
                             android:text="Review"
-                            android:textSize="12sp"
                             android:textColor="@color/color_5E4C3E"
-                            android:layout_marginTop="4dp"/>
+                            android:textSize="16sp" />
                     </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>
+            <!-- Gạch ngang phân cách -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@android:color/darker_gray" />
+            <!-- ==== Features section ==== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="20dp">
 
+                <!-- Title + View More -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="My Features"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="8dp"
+                            android:gravity="center_vertical"
+                            android:text="View More"
+                            android:textColor="#B34F0B"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Grid of features -->
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:rowCount="2"
+                    android:layout_marginTop="12dp"
+                    android:alignmentMode="alignMargins"
+                    android:rowOrderPreserved="false"
+                    android:columnOrderPreserved="false"
+                    android:useDefaultMargins="true">
+
+                    <!-- Feature Item -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:background="@drawable/bg_feature_border"
+                        android:padding="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_wishlist" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Wishlist"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow" />
+                    </LinearLayout>
+                    <!-- Vouchers -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:background="@drawable/bg_feature_border"
+                        android:padding="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_voucher" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Vouchers"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow" />
+                    </LinearLayout>
+
+                    <!-- Coin -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:background="@drawable/bg_feature_border"
+                        android:padding="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_coin" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Coin"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow" />
+                    </LinearLayout>
+
+                    <!-- Flash Sale -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:layout_rowWeight="1"
+                        android:background="@drawable/bg_feature_border"
+                        android:padding="12dp"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_flash_sale" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp"
+                            android:text="Flash Sale"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow" />
+                    </LinearLayout>
+
+
+
+
+                </GridLayout>
+            </LinearLayout>
+            <!-- Gạch ngang phân cách -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="16dp"
+                android:background="@android:color/darker_gray" />
+            <!-- Support Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Support"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <!-- Support Item -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_help_center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Help Center"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_chat_with" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Chat with EvoCasa"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_blog" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="EvoCasa Blog"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <!-- Log out -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="12dp"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_log_out" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:text="Log Out"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewSuggestedProducts"
                 android:layout_width="match_parent"
