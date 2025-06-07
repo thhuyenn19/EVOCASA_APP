@@ -52,4 +52,6 @@
     <string name="tilte_welcome_signin">Sign In</string>
     <string name="title_sign_in_text">Hi! Welcome back, you’ve been missed</string>
     <string name="title_forgot_password">Forgot Password?</string>
+    <string name="title_product_name">Product Name</string>
+
 </resources>

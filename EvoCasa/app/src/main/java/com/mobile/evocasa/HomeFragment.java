@@ -74,6 +74,9 @@ public class HomeFragment extends Fragment {
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
         categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
+        categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
+        categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
+        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
 
         // 4. Gán adapter
         adapter = new CategoryAdapter(categoryList);
