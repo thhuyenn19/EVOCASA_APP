@@ -44,11 +44,11 @@
     <string name="title_create_pw">Create your password</string>
     <string name="title_success">Your account \nwas successfully created!</string>
     <string name="title_success_text">Only one click to explore inspiring home ideas!</string>
+    <string name="title_success_text_reset">Your new password is now active. Let\'s continue!</string>
     <string name="title_sign_in">SIGN IN</string>
-<<<<<<< Updated upstream
     <string name="title_continue_fb">Continue with Facebook</string>
     <string name="title_continue_gg">Continue with Google</string>
-    <string name="title_dont">Don\'t have an account?</string>
+    <string name="title_dont">Don’t have an account?</string>
     <string name="title_signup">Sign up</string>
     <string name="tilte_welcome_signin">Sign In</string>
     <string name="title_sign_in_text">Hi! Welcome back, you’ve been missed</string>
@@ -67,10 +67,10 @@
     <string name="title_onboarding5_description">Where every piece tells a story — of comfort, heritage, and time.</string>
     <string name="title_create_account_onboarding5">Create an account</string>
     <string name="title_loginin">Log in</string>
-=======
+    <string name="title_con_facebook">Continue with Facebook</string>
+    <string name="title_con_gg">Continue with Google</string>
+    <string name="title_dot">.</string>
     <string name="title_reset_password">Reset password</string>
     <string name="title_reset_pw">RESET PASSWORD</string>
     <string name="title_reset_success">Your password\nreset successfully!</string>
-    <string name="title_success_text_reset">Your new password is now active. Let\'s continue!</string>
->>>>>>> Stashed changes
 </resources>
