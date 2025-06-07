@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,59 +14,35 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import android.util.Log;
+import androidx.fragment.app.FragmentTransaction;  // Thêm import này để sử dụng FragmentTransaction
 
 import com.mobile.evocasa.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUp3Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SignUp3Fragment extends Fragment {
 
     private static final String TAG = "SignUp3Fragment";
 
     // UI Components
     private ImageView btnBack, btnHelp;
-    private TextView txtTitle, txtDescription, txtCodeLabel, btnSendAgain, txtTerm, txtPrivacy;
+    private TextView txtTitle, txtDescription, txtCodeLabel, btnSendAgain, txtTerm, txtPrivacy, txtDidReceive, txtBy;
     private EditText edtCode1, edtCode2, edtCode3, edtCode4, edtCode5;
     private AppCompatButton btnVerifyEmail;
     private EditText[] codeInputs;
 
-    // Font variables
     private Typeface regularFont;
     private Typeface boldFont;
-    private Typeface lightFont;
     private Typeface mediumFont;
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Typeface semiBoldFont;
 
     public SignUp3Fragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SignUp3Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static SignUp3Fragment newInstance(String param1, String param2) {
         SignUp3Fragment fragment = new SignUp3Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString("param1", param1);
+        args.putString("param2", param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -73,12 +50,6 @@ public class SignUp3Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        // Load fonts early in lifecycle
         loadCustomFonts();
     }
 
@@ -88,16 +59,9 @@ public class SignUp3Fragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_sign_up3, container, false);
 
-        // Initialize UI components
         initViews(view);
-
-        // Set custom fonts
         setCustomFonts();
-
-        // Set click listeners
         setClickListeners();
-
-        // Setup code input functionality
         setupCodeInputs();
 
         return view;
@@ -106,18 +70,12 @@ public class SignUp3Fragment extends Fragment {
     private void loadCustomFonts() {
         try {
             if (getContext() != null) {
-                // Load different font weights
-                // Thay đổi tên file font theo font thực tế trong assets/fonts/
                 regularFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
                 boldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Bold.otf");
-                lightFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Light.otf");
                 mediumFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Medium.otf");
-
-                Log.d(TAG, "Custom fonts loaded successfully");
+                semiBoldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-SemiBold.otf");
             }
         } catch (Exception e) {
-            Log.e(TAG, "Error loading custom fonts: " + e.getMessage(), e);
-            // Use default fonts as fallback
             setDefaultTypefaceFallback();
         }
     }
@@ -125,8 +83,8 @@ public class SignUp3Fragment extends Fragment {
     private void setDefaultTypefaceFallback() {
         regularFont = Typeface.DEFAULT;
         boldFont = Typeface.DEFAULT_BOLD;
-        lightFont = Typeface.DEFAULT;
-        mediumFont = Typeface.DEFAULT_BOLD;
+        mediumFont = Typeface.DEFAULT;
+        semiBoldFont = Typeface.DEFAULT_BOLD;
     }
 
     private void initViews(View view) {
@@ -144,138 +102,52 @@ public class SignUp3Fragment extends Fragment {
         btnVerifyEmail = view.findViewById(R.id.btnVerifyEmail);
         txtTerm = view.findViewById(R.id.txtTerm);
         txtPrivacy = view.findViewById(R.id.txtPrivacy);
+        txtDidReceive = view.findViewById(R.id.txtDidReceive);
+        txtBy = view.findViewById(R.id.txtBy);
 
-        // Array of code inputs for easier management
         codeInputs = new EditText[]{edtCode1, edtCode2, edtCode3, edtCode4, edtCode5};
     }
 
     private void setCustomFonts() {
-        try {
-            // Áp dụng font cho các TextView
-            if (txtTitle != null && boldFont != null) {
-                txtTitle.setTypeface(boldFont);
-            }
+        txtTitle.setTypeface(boldFont);
+        txtDescription.setTypeface(mediumFont);
+        txtCodeLabel.setTypeface(mediumFont);
+        btnSendAgain.setTypeface(semiBoldFont);
+        txtTerm.setTypeface(semiBoldFont);
+        txtPrivacy.setTypeface(semiBoldFont);
+        txtDidReceive.setTypeface(regularFont);
+        txtBy.setTypeface(regularFont);
+        btnVerifyEmail.setTypeface(semiBoldFont);
 
-            if (txtDescription != null && regularFont != null) {
-                txtDescription.setTypeface(regularFont);
-            }
-
-            if (txtCodeLabel != null && mediumFont != null) {
-                txtCodeLabel.setTypeface(mediumFont);
-            }
-
-            // Áp dụng font cho buttons
-            if (btnVerifyEmail != null && boldFont != null) {
-                btnVerifyEmail.setTypeface(boldFont);
-            }
-
-            if (btnSendAgain != null && mediumFont != null) {
-                btnSendAgain.setTypeface(mediumFont);
-            }
-
-            // Áp dụng font cho Terms và Privacy Policy
-            if (txtTerm != null && regularFont != null) {
-                txtTerm.setTypeface(regularFont);
-            }
-
-            if (txtPrivacy != null && regularFont != null) {
-                txtPrivacy.setTypeface(regularFont);
-            }
-
-            // Áp dụng font cho code inputs
-            if (codeInputs != null && boldFont != null) {
-                for (EditText input : codeInputs) {
-                    if (input != null) {
-                        input.setTypeface(boldFont);
-                    }
-                }
-            }
-
-            Log.d(TAG, "Custom fonts applied successfully");
-
-        } catch (Exception e) {
-            Log.e(TAG, "Error applying custom fonts: " + e.getMessage(), e);
-            setDefaultFonts();
-        }
-    }
-
-    private void setDefaultFonts() {
-        Log.w(TAG, "Using default fonts as fallback");
-
-        // Fallback fonts
-        if (txtTitle != null) txtTitle.setTypeface(null, Typeface.BOLD);
-        if (txtDescription != null) txtDescription.setTypeface(null, Typeface.NORMAL);
-        if (txtCodeLabel != null) txtCodeLabel.setTypeface(null, Typeface.NORMAL);
-        if (btnVerifyEmail != null) btnVerifyEmail.setTypeface(null, Typeface.BOLD);
-        if (btnSendAgain != null) btnSendAgain.setTypeface(null, Typeface.BOLD);
-        if (txtTerm != null) txtTerm.setTypeface(null, Typeface.NORMAL);
-        if (txtPrivacy != null) txtPrivacy.setTypeface(null, Typeface.NORMAL);
-
-        if (codeInputs != null) {
-            for (EditText input : codeInputs) {
-                if (input != null) {
-                    input.setTypeface(null, Typeface.BOLD);
-                }
-            }
+        for (EditText input : codeInputs) {
+            input.setTypeface(boldFont);
         }
     }
 
     private void setClickListeners() {
-        // Back button click
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                if (getActivity() != null) {
-                    getActivity().onBackPressed();
-                }
-            });
-        }
+        btnBack.setOnClickListener(v -> getActivity().onBackPressed());
 
-        // Help button click
-        if (btnHelp != null) {
-            btnHelp.setOnClickListener(v -> {
-                // TODO: Implement help functionality
-                openHelp();
-            });
-        }
+        btnHelp.setOnClickListener(v -> openHelp());
 
-        // Send again button click
-        if (btnSendAgain != null) {
-            btnSendAgain.setOnClickListener(v -> {
-                resendVerificationCode();
-            });
-        }
+        btnSendAgain.setOnClickListener(v -> resendVerificationCode());
 
-        // Verify Email button click
-        if (btnVerifyEmail != null) {
-            btnVerifyEmail.setOnClickListener(v -> {
-                String code = getEnteredCode();
-                if (validateCode(code)) {
-                    verifyCode(code);
-                }
-            });
-        }
+        btnVerifyEmail.setOnClickListener(v -> {
+            String code = getEnteredCode();
+            if (validateCode(code)) {
+                verifyCode(code);
+                // After verification, navigate to SignUp4Fragment
+                navigateToSignUp4Fragment();
+            }
+        });
 
-        // Terms click
-        if (txtTerm != null) {
-            txtTerm.setOnClickListener(v -> {
-                openTerms();
-            });
-        }
+        txtTerm.setOnClickListener(v -> openTerms());
 
-        // Privacy Policy click
-        if (txtPrivacy!= null) {
-            txtPrivacy.setOnClickListener(v -> {
-                openPrivacyPolicy();
-            });
-        }
+        txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
     }
 
     private void setupCodeInputs() {
-        if (codeInputs == null) return;
-
         for (int i = 0; i < codeInputs.length; i++) {
             final int index = i;
-
             if (codeInputs[i] != null) {
                 codeInputs[i].addTextChangedListener(new TextWatcher() {
                     @Override
@@ -284,13 +156,10 @@ public class SignUp3Fragment extends Fragment {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         if (s.length() == 1 && index < codeInputs.length - 1) {
-                            // Move to next input
                             if (codeInputs[index + 1] != null) {
                                 codeInputs[index + 1].requestFocus();
                             }
                         }
-
-                        // Auto verify when all 5 digits are entered
                         if (index == codeInputs.length - 1 && s.length() == 1) {
                             String code = getEnteredCode();
                             if (code.length() == 5) {
@@ -304,11 +173,9 @@ public class SignUp3Fragment extends Fragment {
                     public void afterTextChanged(Editable s) {}
                 });
 
-                // Handle backspace
                 codeInputs[i].setOnKeyListener((v, keyCode, event) -> {
                     if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
                         if (codeInputs[index].getText().toString().isEmpty() && index > 0) {
-                            // Move to previous input
                             if (codeInputs[index - 1] != null) {
                                 codeInputs[index - 1].requestFocus();
                                 codeInputs[index - 1].getText().clear();
@@ -323,11 +190,9 @@ public class SignUp3Fragment extends Fragment {
 
     private String getEnteredCode() {
         StringBuilder code = new StringBuilder();
-        if (codeInputs != null) {
-            for (EditText input : codeInputs) {
-                if (input != null) {
-                    code.append(input.getText().toString());
-                }
+        for (EditText input : codeInputs) {
+            if (input != null) {
+                code.append(input.getText().toString());
             }
         }
         return code.toString();
@@ -335,23 +200,18 @@ public class SignUp3Fragment extends Fragment {
 
     private boolean validateCode(String code) {
         if (code.length() != 5) {
-            showError("Vui lòng nhập đầy đủ 5 chữ số");
+            showError("Please enter a valid 5-digit code");
             return false;
         }
-
         if (!code.matches("\\d{5}")) {
-            showError("Mã xác thực chỉ được chứa số");
+            showError("Code must be numeric");
             return false;
         }
-
         return true;
     }
 
     private void showError(String message) {
-        // TODO: Show error message (Toast, Snackbar, or custom dialog)
         Log.w(TAG, "Validation error: " + message);
-
-        // Focus on first empty field
         if (codeInputs != null) {
             for (EditText input : codeInputs) {
                 if (input != null && input.getText().toString().isEmpty()) {
@@ -364,46 +224,47 @@ public class SignUp3Fragment extends Fragment {
 
     private void resendVerificationCode() {
         Log.d(TAG, "Resending verification code");
-
-        // TODO: Implement resend code functionality
-        // Clear all inputs
-        if (codeInputs != null) {
-            for (EditText input : codeInputs) {
-                if (input != null) {
-                    input.getText().clear();
-                }
+        for (EditText input : codeInputs) {
+            if (input != null) {
+                input.getText().clear();
             }
-            if (edtCode1 != null) {
-                edtCode1.requestFocus();
-            }
+        }
+        if (edtCode1 != null) {
+            edtCode1.requestFocus();
         }
     }
 
     private void verifyCode(String code) {
         Log.d(TAG, "Verifying code: " + code);
-        // TODO: Implement code verification
-        // Navigate to next screen or complete registration
+        // Implement the logic to verify the code here
+    }
+
+    private void navigateToSignUp4Fragment() {
+        // Create new instance of SignUp4Fragment
+        SignUp4Fragment signUp4Fragment = new SignUp4Fragment();
+
+        // Begin Fragment transaction
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, signUp4Fragment); // Make sure you have the correct container ID
+        transaction.addToBackStack(null); // Optionally add to back stack
+        transaction.commit();
     }
 
     private void openHelp() {
-        // TODO: Implement help functionality
         Log.d(TAG, "Opening help");
     }
 
     private void openTerms() {
-        // TODO: Implement terms page navigation
         Log.d(TAG, "Opening terms");
     }
 
     private void openPrivacyPolicy() {
-        // TODO: Implement privacy policy page navigation
         Log.d(TAG, "Opening privacy policy");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Clean up references
         codeInputs = null;
     }
 }
