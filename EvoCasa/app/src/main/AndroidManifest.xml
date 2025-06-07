@@ -25,7 +25,7 @@
             android:name=".MainActivity"
             android:exported="true" />
         <activity
-            android:name=".NarBarActivity"
+            android:name=".onboarding.Onboarding1Activity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

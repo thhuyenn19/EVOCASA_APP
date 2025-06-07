@@ -1,6 +1,7 @@
 package com.mobile.evocasa.onboarding;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ public class Onboarding1Activity extends AppCompatActivity {
 
     private TextView tvSkip;
     private ViewPager viewPager;
-    private CircleIndicator circleIndicator;
+    private CircleIndicator indicator;
 
     private ViewPagerAdapter viewPagerAdapter;
 
@@ -31,18 +32,18 @@ public class Onboarding1Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_onboarding1);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+//            return insets;
+//        });
 
         initUI();
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPagerAdapter);
 
-        circleIndicator.setViewPager(viewPager);
+        indicator.setViewPager(viewPager);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -51,6 +52,16 @@ public class Onboarding1Activity extends AppCompatActivity {
     private void initUI() {
         tvSkip = findViewById(R.id.tvSkip);
         viewPager = findViewById(R.id.view_pager);
-        circleIndicator = findViewById(R.id.indicator);
+        indicator = findViewById(R.id.indicator);
+
+        tvSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewPager.getCurrentItem() <2 ){
+                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+                }
+
+            }
+        });
     }
 }
