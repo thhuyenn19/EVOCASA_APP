@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,7 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         holder.imgProduct.setImageResource(product.getImageResId());
         holder.txtName.setText(product.getName());
         holder.txtOldPrice.setText(product.getOldPrice());
+        holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
         holder.txtNewPrice.setText(product.getNewPrice());
         holder.txtDiscount.setText(product.getDiscount());
         holder.txtRating.setText(String.valueOf(product.getRating()));
@@ -46,7 +48,7 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
     }
 
     public static class FlashSaleViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduct;
+        ShapeableImageView imgProduct;
         TextView txtName, txtOldPrice, txtNewPrice, txtDiscount, txtRating;
 
         public FlashSaleViewHolder(@NonNull View itemView) {

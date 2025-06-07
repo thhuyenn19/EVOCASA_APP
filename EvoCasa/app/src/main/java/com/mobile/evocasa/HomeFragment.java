@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
+import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.models.Category;
 import com.mobile.models.FlashSaleProduct;
+import com.mobile.models.HotProducts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +65,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        /*Category*/
         // 1. Gán layout cho view
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -82,7 +85,7 @@ public class HomeFragment extends Fragment {
         // 4. Gán adapter
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
-
+        /*FlashSale*/
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
 
         // Set GridLayoutManager để có 2 cột (2 item mỗi hàng)
@@ -96,12 +99,27 @@ public class HomeFragment extends Fragment {
         flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
         flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
         flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        // Bạn có thể thêm nhiều sản phẩm khác ở đây...
 
         // Gán adapter
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
+        /* Hot Products */
+        RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
+
+        // Set GridLayoutManager để hiển thị 2 cột (2 item mỗi hàng)
+        recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        // Tạo danh sách Hot Products
+        List<HotProducts> hotProductList = new ArrayList<>();
+        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+
+        // Gán adapter cho RecyclerView
+        HotProductsAdapter hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        recyclerViewHotProducts.setAdapter(hotProductsAdapter);
         return view;
     }
 }

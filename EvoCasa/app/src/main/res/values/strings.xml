@@ -55,4 +55,7 @@
     <string name="title_success">Your account \nwas successfully created!</string>
     <string name="title_success_text">Only one click to explore inspiring home ideas!</string>
     <string name="title_sign_in">SIGN IN</string>
+    <string name="title_category">Category</string>
+    <string name="title_flashsale">Flash Sale</string>
+    <string name="title_hot_products">Hot Products</string>
 </resources>

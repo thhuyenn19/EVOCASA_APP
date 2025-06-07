@@ -73,13 +73,14 @@
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
-                    android:text="Category"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/color_5E4C3E"
+                    android:id="@+id/txtCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:text="@string/title_category"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -119,18 +120,18 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="0dp"
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
-                    android:id="@+id/tvFlashSale"
+                    android:id="@+id/txtFlashSale"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Flash Sale"
+                    android:layout_weight="1"
+                    android:text="@string/title_flashsale"
                     android:textColor="#5E4C3E"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1" />
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="20dp"
@@ -185,6 +186,57 @@
             <!-- Flash Sale RecyclerView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewFlashSale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+            <!-- Flash Sale Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="0dp"
+                android:layout_marginHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/txtHotProducts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_hot_products"
+                    android:textColor="#5E4C3E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical">
+                    <TextView
+                        android:text="See all"
+                        android:textSize="14sp"
+                        android:textColor="@color/color_5E4C3E"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_marginRight="8dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Flash Sale RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewHotProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

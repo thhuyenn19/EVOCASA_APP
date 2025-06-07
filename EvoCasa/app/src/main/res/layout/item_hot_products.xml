@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_furniture_tevechairs"
+                android:src="@mipmap/ic_lighting_brasslamp"
                 android:clipToOutline="true"
                 app:cornerRadius="8dp" />
 
@@ -42,10 +42,10 @@
 
         <!-- Product Name -->
         <TextView
-            android:id="@+id/tvProductName"
+            android:id="@+id/txtProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Teve Chairs"
+            android:text="MCM Brass Lamp"
             android:textColor="@color/color_5E4C3E"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -53,7 +53,7 @@
 
         <!-- Old Price -->
         <TextView
-            android:id="@+id/tvOldPrice"
+            android:id="@+id/txtOldPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="$109"
@@ -71,20 +71,20 @@
 
             <!-- Sale Price -->
             <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/txtPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$69"
+                android:text="$85"
                 android:textColor="#E24747"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <!-- Discount Tag -->
             <TextView
-                android:id="@+id/tvDiscount"
+                android:id="@+id/txtDiscount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-37%"
+                android:text="-22%"
                 android:textStyle="bold"
                 android:textColor="#FF6600"
                 android:layout_marginStart="12dp"
@@ -110,10 +110,10 @@
                     android:src="@drawable/ic_star_yellow" />
 
                 <TextView
-                    android:id="@+id/tvRating"
+                    android:id="@+id/txtRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.8"
+                    android:text="5.0"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="14sp"
                     android:layout_marginStart="4dp" />
