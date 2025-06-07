@@ -1,0 +1,5 @@
+<!-- res/drawable/bg_badge_count.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
+    <size android:width="18dp" android:height="18dp"/>
+    <solid android:color="@color/color_F2EAD3"/>
+</shape>

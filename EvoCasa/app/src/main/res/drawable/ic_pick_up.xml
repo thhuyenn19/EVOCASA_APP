@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="47dp"
+    android:height="48dp"
+    android:viewportWidth="47"
+    android:viewportHeight="48">
+
+    <!-- dấu “check” ở góc trên bên phải -->
+    <path
+        android:pathData="M31.6176,31.6933 L35.4642,35.5399 L43.1574,27.8467"
+        android:fillColor="#00000000"
+        android:strokeColor="#5E4C3E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- thân ngôi nhà -->
+    <path
+        android:pathData="
+            M41.2341,20.1534
+            V16.3068
+            C41.2334,15.6323 41.0553,14.9697 40.7178,14.3857
+            C40.3802,13.8017 39.895,13.3168 39.3108,12.9795
+            L25.8476,5.28622
+            C25.2628,4.94861 24.5995,4.77087 23.9243,4.77087
+            C23.249,4.77087 22.5857,4.94861 22.001,5.28622
+            L8.53776,12.9795
+            C7.95357,13.3168 7.46835,13.8017 7.13078,14.3857
+            C6.7932,14.9697 6.61513,15.6323 6.61444,16.3068
+            V31.6933
+            C6.61513,32.3679 6.7932,33.0304 7.13078,33.6144
+            C7.46835,34.1984 7.95357,34.6834 8.53776,35.0207
+            L22.001,42.7139
+            C22.5857,43.0515 23.249,43.2293 23.9243,43.2293
+            C24.5995,43.2293 25.2628,43.0515 25.8476,42.7139
+            L29.6942,40.5214
+            M15.2694,9.13285 L32.5792,19.0379"
+        android:fillColor="#00000000"
+        android:strokeColor="#5E4C3E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+    <!-- các đường nối từ đỉnh xuống -->
+    <path
+        android:pathData="
+            M7.17218,14.3835 L23.9243,24.0001
+            M23.9243,24.0001 L40.6763,14.3835
+            M23.9243,24.0001 V43.2333"
+        android:fillColor="#00000000"
+        android:strokeColor="#5E4C3E"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"/>
+
+</vector>
