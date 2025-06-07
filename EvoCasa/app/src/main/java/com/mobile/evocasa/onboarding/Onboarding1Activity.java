@@ -16,6 +16,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.mobile.adapters.ViewPagerAdapter;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -62,5 +63,10 @@ public class Onboarding1Activity extends AppCompatActivity {
                 }
             }
         });
+
+        FontUtils.initFonts(this);
+
+        FontUtils.setRegularFont(this, tvSkip);
+
     }
 }

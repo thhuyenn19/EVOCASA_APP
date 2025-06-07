@@ -11,6 +11,7 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import android.media.MediaPlayer;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.io.File;
 
@@ -87,6 +89,19 @@ public class Onboarding2Fragment extends Fragment {
                 mp.setLooping(true);
             }
         });
+
+        TextView txtViewExplore = view.findViewById(R.id.txtViewExplore);
+        FontUtils.setZregularFont(requireContext(), txtViewExplore);
+
+        TextView txtViewTheSoulOf = view.findViewById(R.id.txtViewTheSoulOf);
+        FontUtils.setZregularFont(requireContext(), txtViewTheSoulOf);
+
+        TextView txtViewEvoCasa = view.findViewById(R.id.txtViewEvoCasa);
+        FontUtils.setZblackFont(requireContext(), txtViewEvoCasa);
+
+        TextView txtView3 = view.findViewById(R.id.txtView3);
+        FontUtils.setItalicFont(requireContext(), txtView3);
+
 
         return view;
     }
