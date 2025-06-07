@@ -89,8 +89,57 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <!-- TODO: Add your list or content below -->
-        <!-- Ví dụ: RecyclerView, GridLayout,... -->
+        <!-- Filter -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical"
+            android:background="@color/color_bg"
+            android:baselineAligned="false"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tvSortBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_wishlist_sort"
+                android:textColor="#5E4C3E"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.01" />
+
+            <ImageView
+                android:id="@+id/ivArrowDown"
+                android:layout_width="15dp"
+                android:layout_height="20dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_arrow_down"/>
+
+            <!-- Spacer -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.99" />
+
+            <ImageView
+                android:id="@+id/ivFilter"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_filter"/>
+        </LinearLayout>
+
+        <!-- List product -->
+        <include layout="@layout/wishlist_list_product"/>
+
 
     </LinearLayout>
 </ScrollView>
