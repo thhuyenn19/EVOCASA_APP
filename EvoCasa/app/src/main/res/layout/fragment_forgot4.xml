@@ -6,22 +6,13 @@
     android:orientation="vertical"
     android:background="#FFFCF3"
     android:padding="24dp"
-    tools:context=".auth.SignUp1Fragment">
+    tools:context=".auth.Forgot4Fragment">
 
     <!-- Header với back button và help button -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp">
-
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/icon_arrow_back" />
 
         <ImageView
             android:id="@+id/btnHelp"
@@ -37,17 +28,18 @@
     <ImageView
         android:id="@+id/imgLogo"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="90dp"
         android:layout_marginTop="-30dp"
         android:src="@mipmap/ic_logo" />
 
     <TextView
-        android:id="@+id/txtCreate"
+        android:id="@+id/txtSucess"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/title_create_new"
+        android:text="@string/title_reset_success"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="28sp"
@@ -58,126 +50,35 @@
         android:id="@+id/txtDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="40dp"
         android:gravity="center"
         android:lineSpacingExtra="4dp"
-        android:text="@string/title_create_free"
+        android:text="@string/title_success_text_reset"
         android:textColor="#5E4C3E"
         android:textSize="16sp"
         android:textStyle="italic" />
 
     <!-- Button Continue with Email/Phone -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnContinueEmailPhone"
+        android:id="@+id/btnSignIn"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_pressed_effect"
         android:elevation="2dp"
-        android:text="@string/title_sign_up"
+        android:text="@string/title_sign_in"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold" />
 
     <!-- Divider với text "or with" ngắn hơn -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="60dp"
-        android:paddingEnd="60dp">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1.5sp"
-            android:layout_weight="1"
-            android:background="#5E4C3E" />
-
-        <TextView
-            android:id="@+id/txtOrWith"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/title_or_with"
-            android:textColor="#5E4C3E"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1.5sp"
-            android:layout_weight="1"
-            android:background="#5E4C3E" />
-
-    </LinearLayout>
 
     <!-- Button Continue with Google -->
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnContinueFacebook"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/button_pressed_effect1"
-        android:drawableStart="@drawable/ic_facebook"
-        android:drawablePadding="6dp"
-        android:elevation="1dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="65dp"
-        android:text="@string/title_continue_fb"
-        android:textAllCaps="false"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnContinueGoogle"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginBottom="32dp"
-        android:background="@drawable/button_pressed_effect1"
-        android:drawableStart="@drawable/ic_google"
-        android:drawablePadding="6dp"
-        android:elevation="1dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="80dp"
-        android:text="@string/title_continue_gg"
-        android:textAllCaps="false"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp" />
 
 
     <!-- Sign in link -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/txtDontHave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_already_account"
-            android:textColor="#5E4C3E"
-            android:textSize="16sp" />
-
-        <Button
-            android:id="@+id/btnSignIn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="-20sp"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/title_signin"
-            android:textColor="#5E4C3E"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
 
     <!-- Spacer để đẩy terms xuống dưới -->
     <View
@@ -255,6 +156,5 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-
 
 </LinearLayout>

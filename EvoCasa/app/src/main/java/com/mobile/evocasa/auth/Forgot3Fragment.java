@@ -25,14 +25,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mobile.evocasa.R;
 
-public class SignUp4Fragment extends Fragment {
+public class Forgot3Fragment extends Fragment {
 
     private EditText edtPassword, edtConfirmPassword;
     private ImageView btnBack, btnHelp, btnTogglePassword, btnToggleConfirmPassword;
     private ProgressBar progressBar;
     private LinearLayout passwordCriteriaLayout;
     private View checkLength, checkNumber, checkSpecialChar, checkUpperCase;
-    private AppCompatButton btnCreateAccount;
+    private AppCompatButton btnResetPassword;
     private TextView txtTitle, txtTerm, txtPrivacy, txtBy, txtPassword, txtTypePassword;
 
     private boolean hasLength = false;
@@ -46,10 +46,10 @@ public class SignUp4Fragment extends Fragment {
 
     private Typeface fontRegular, fontBold, fontMedium, fontSemiBold;
 
-    public SignUp4Fragment() {}
+    public Forgot3Fragment() {}
 
-    public static SignUp4Fragment newInstance() {
-        return new SignUp4Fragment();
+    public static Forgot3Fragment newInstance() {
+        return new Forgot3Fragment();
     }
 
     @Override
@@ -61,7 +61,7 @@ public class SignUp4Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_sign_up4, container, false);
+        return inflater.inflate(R.layout.fragment_forgot3, container, false);
     }
 
     @Override
@@ -70,7 +70,7 @@ public class SignUp4Fragment extends Fragment {
         initViews(view);
         setupFonts();
         setupListeners();
-        updateCreateAccountButton();
+        updateResetPasswordButton();
     }
 
     private void loadCustomFonts() {
@@ -94,7 +94,7 @@ public class SignUp4Fragment extends Fragment {
         btnHelp = view.findViewById(R.id.btnHelp);
         btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
         btnToggleConfirmPassword = view.findViewById(R.id.btnToggleConfirmPassword);
-        btnCreateAccount = view.findViewById(R.id.btnResetPassword);
+        btnResetPassword = view.findViewById(R.id.btnResetPassword);
         progressBar = view.findViewById(R.id.progressBar);
         passwordCriteriaLayout = view.findViewById(R.id.passwordCriteriaLayout);
         checkLength = view.findViewById(R.id.checkLength);
@@ -114,7 +114,7 @@ public class SignUp4Fragment extends Fragment {
             txtTitle.setTypeface(fontBold);
             edtPassword.setTypeface(fontRegular);
             edtConfirmPassword.setTypeface(fontRegular);
-            btnCreateAccount.setTypeface(fontSemiBold);
+            btnResetPassword.setTypeface(fontSemiBold);
             txtTerm.setTypeface(fontSemiBold);
             txtPrivacy.setTypeface(fontSemiBold);
             txtBy.setTypeface(fontRegular);
@@ -135,6 +135,19 @@ public class SignUp4Fragment extends Fragment {
         btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility());
         btnToggleConfirmPassword.setOnClickListener(v -> toggleConfirmPasswordVisibility());
 
+        // Add OnFocusChangeListener to show/hide password criteria
+        edtPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                // Show progress bar and password criteria when focused
+                progressBar.setVisibility(View.VISIBLE);
+                passwordCriteriaLayout.setVisibility(View.VISIBLE);
+            } else {
+                // Hide progress bar and password criteria when focus is lost
+                progressBar.setVisibility(View.GONE);
+                passwordCriteriaLayout.setVisibility(View.GONE);
+            }
+        });
+
         edtPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -152,20 +165,7 @@ public class SignUp4Fragment extends Fragment {
             @Override public void afterTextChanged(Editable s) {}
         });
 
-        // Add OnFocusChangeListener to show/hide password criteria
-        edtPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                // Show progress bar and password criteria when focused
-                progressBar.setVisibility(View.VISIBLE);
-                passwordCriteriaLayout.setVisibility(View.VISIBLE);
-            } else {
-                // Hide progress bar and password criteria when focus is lost
-                progressBar.setVisibility(View.GONE);
-                passwordCriteriaLayout.setVisibility(View.GONE);
-            }
-        });
-
-        btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
+        btnResetPassword.setOnClickListener(v -> handleResetPassword());
 
         txtTerm.setOnClickListener(v -> openTerms());
         txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
@@ -209,7 +209,7 @@ public class SignUp4Fragment extends Fragment {
         updateCheckIndicator(checkUpperCase, hasUpperCase);
 
         updateProgressBar();
-        updateCreateAccountButton();
+        updateResetPasswordButton();
     }
 
     private void updateCheckIndicator(View indicator, boolean isValid) {
@@ -230,23 +230,23 @@ public class SignUp4Fragment extends Fragment {
         String password = edtPassword.getText().toString();
         String confirmPassword = edtConfirmPassword.getText().toString();
         passwordsMatch = !password.isEmpty() && password.equals(confirmPassword);
-        updateCreateAccountButton();
+        updateResetPasswordButton();
     }
 
-    private void updateCreateAccountButton() {
+    private void updateResetPasswordButton() {
         boolean allValid = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
-        btnCreateAccount.setEnabled(allValid);
+        btnResetPassword.setEnabled(allValid);
 
         if (allValid) {
-            btnCreateAccount.setAlpha(1.0f);
-            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.green, null));
+            btnResetPassword.setAlpha(1.0f);
+            btnResetPassword.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.green, null));
         } else {
-            btnCreateAccount.setAlpha(0.5f);
-            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.gray_light, null));
+            btnResetPassword.setAlpha(0.5f);
+            btnResetPassword.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.gray_light, null));
         }
     }
 
-    private void handleCreateAccount() {
+    private void handleResetPassword() {
         String password = edtPassword.getText().toString();
         String confirmPassword = edtConfirmPassword.getText().toString();
 
@@ -265,17 +265,16 @@ public class SignUp4Fragment extends Fragment {
             return;
         }
 
-        // Navigate to SignUp5Fragment
-        navigateToSignUp5Fragment();
+//        navigateToSignUp5Fragment();
     }
 
-    private void navigateToSignUp5Fragment() {
-        // Navigate to the next fragment (SignUp5Fragment)
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, new SignUp5Fragment());
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
+//    private void navigateToSignUp5Fragment() {
+//        // Navigate to the next fragment (Forgot5Fragment)
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_container, new Forgot5Fragment());
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//    }
 
     private void openTerms() {
         // TODO: Implement opening the Terms and Conditions page
@@ -302,7 +301,7 @@ public class SignUp4Fragment extends Fragment {
         checkNumber = null;
         checkSpecialChar = null;
         checkUpperCase = null;
-        btnCreateAccount = null;
+        btnResetPassword = null;
         txtTitle = null;
         txtTerm = null;
         txtPrivacy = null;

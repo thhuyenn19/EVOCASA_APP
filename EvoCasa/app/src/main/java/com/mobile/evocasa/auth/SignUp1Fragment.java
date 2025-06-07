@@ -98,6 +98,21 @@ public class SignUp1Fragment extends Fragment {
             // Commit the transaction to perform the fragment transaction
             transaction.commit();
         });
+        btnSignIn.setOnClickListener(v -> {
+            // Tạo một instance của SignInFragment
+            SignInFragment signInFragment = new SignInFragment();
+
+            // Bắt đầu một giao dịch Fragment
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            // Thay thế fragment hiện tại bằng SignInFragment
+            transaction.replace(R.id.fragment_container, signInFragment);
+            // Thêm giao dịch vào back stack (nếu muốn quay lại trước đó)
+            transaction.addToBackStack(null);
+            // Cam kết giao dịch fragment
+            transaction.commit();
+        });
+
+
 
         return view;
     }

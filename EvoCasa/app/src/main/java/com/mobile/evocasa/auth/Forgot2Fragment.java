@@ -14,13 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;  // Thêm import này để sử dụng FragmentTransaction
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mobile.evocasa.R;
 
-public class SignUp3Fragment extends Fragment {
+public class Forgot2Fragment extends Fragment {
 
-    private static final String TAG = "SignUp3Fragment";
+    private static final String TAG = "Forgot2Fragment";
 
     // UI Components
     private ImageView btnBack, btnHelp;
@@ -35,12 +35,12 @@ public class SignUp3Fragment extends Fragment {
     private Typeface mediumitalicFont;
     private Typeface semiBoldFont;
 
-    public SignUp3Fragment() {
+    public Forgot2Fragment() {
         // Required empty public constructor
     }
 
-    public static SignUp3Fragment newInstance(String param1, String param2) {
-        SignUp3Fragment fragment = new SignUp3Fragment();
+    public static Forgot2Fragment newInstance(String param1, String param2) {
+        Forgot2Fragment fragment = new Forgot2Fragment();
         Bundle args = new Bundle();
         args.putString("param1", param1);
         args.putString("param2", param2);
@@ -58,7 +58,7 @@ public class SignUp3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_sign_up3, container, false);
+        View view = inflater.inflate(R.layout.fragment_forgot2, container, false);
 
         initViews(view);
         setCustomFonts();
@@ -74,8 +74,8 @@ public class SignUp3Fragment extends Fragment {
                 regularFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
                 boldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Bold.otf");
                 mediumFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Medium.otf");
-                semiBoldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-SemiBold.otf");
                 mediumitalicFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-MediumItalic.otf");
+                semiBoldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-SemiBold.otf");
             }
         } catch (Exception e) {
             setDefaultTypefaceFallback();
@@ -137,8 +137,8 @@ public class SignUp3Fragment extends Fragment {
             String code = getEnteredCode();
             if (validateCode(code)) {
                 verifyCode(code);
-                // After verification, navigate to SignUp4Fragment
-                navigateToSignUp4Fragment();
+                // After verification, navigate to Forgot3Fragment
+                navigateToForgot3Fragment();
             }
         });
 
@@ -241,13 +241,13 @@ public class SignUp3Fragment extends Fragment {
         // Implement the logic to verify the code here
     }
 
-    private void navigateToSignUp4Fragment() {
-        // Create new instance of SignUp4Fragment
-        SignUp4Fragment signUp4Fragment = new SignUp4Fragment();
+    private void navigateToForgot3Fragment() {
+        // Create new instance of Forgot3Fragment
+        Forgot3Fragment forgot3Fragment = new Forgot3Fragment();
 
         // Begin Fragment transaction
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, signUp4Fragment); // Make sure you have the correct container ID
+        transaction.replace(R.id.fragment_container, forgot3Fragment); // Make sure you have the correct container ID
         transaction.addToBackStack(null); // Optionally add to back stack
         transaction.commit();
     }
