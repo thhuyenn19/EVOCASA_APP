@@ -41,7 +41,7 @@
         android:layout_marginTop="-40dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/tilte_welcome_signin"
+        android:text="@string/title_welcome_signin"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="24sp"
