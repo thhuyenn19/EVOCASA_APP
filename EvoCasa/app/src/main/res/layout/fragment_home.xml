@@ -94,7 +94,7 @@
                         android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
                         android:text="@string/title_see_all"
-                        android:textColor="@color/color_5E4C3E"
+                        android:textColor="#B34F0B"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -224,7 +224,7 @@
                         android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
                         android:text="@string/title_see_all"
-                        android:textColor="@color/color_5E4C3E"
+                        android:textColor="#B34F0B"
                         android:textSize="14sp" />
 
                     <ImageView
@@ -248,8 +248,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="6dp">
+                android:layout_marginHorizontal="16dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgBanner2"
@@ -275,12 +274,12 @@
                         android:textStyle="bold" />
                 </LinearLayout>
             </FrameLayout>
-            <!-- Category -->
+            <!-- Collection -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginHorizontal="16dp">
+                android:layout_margin="16dp">
 
                 <TextView
                     android:id="@+id/txtCollection"
@@ -305,7 +304,7 @@
                         android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
                         android:text="@string/title_see_all"
-                        android:textColor="@color/color_5E4C3E"
+                        android:textColor="#B34F0B"
                         android:textSize="14sp" />
 
                     <ImageView
