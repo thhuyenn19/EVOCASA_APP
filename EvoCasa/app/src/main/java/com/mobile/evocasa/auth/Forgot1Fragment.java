@@ -22,7 +22,7 @@ import com.mobile.evocasa.R;
  */
 public class Forgot1Fragment extends Fragment {
 
-    private TextView txtTitle, txtEmailPhoneLabel;
+    private TextView txtTitle, txtEmailPhoneLabel, txtTerm, txtPrivacy, txtBy;
     private EditText edtEmailPhone;
     private Button btnContinue;
 
@@ -58,6 +58,9 @@ public class Forgot1Fragment extends Fragment {
         txtEmailPhoneLabel = rootView.findViewById(R.id.txtEmailPhoneLabel);
         edtEmailPhone = rootView.findViewById(R.id.edtEmailPhone);
         btnContinue = rootView.findViewById(R.id.btnContinue);
+        txtTerm = rootView.findViewById(R.id.txtTerm);
+        txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
+        txtBy = rootView.findViewById(R.id.txtBy);
 
         // Create Typeface from font in assets
         Typeface regularFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
@@ -70,6 +73,9 @@ public class Forgot1Fragment extends Fragment {
         txtEmailPhoneLabel.setTypeface(mediumFont); // Email/Phone Label - Medium
         edtEmailPhone.setTypeface(regularFont); // Email/Phone Input - Regular
         btnContinue.setTypeface(semiBoldFont); // Continue Button - SemiBold
+        txtBy.setTypeface(regularFont);
+        txtTerm.setTypeface(semiBoldFont);
+        txtPrivacy.setTypeface(semiBoldFont);
 
         // Set click listener for the Continue button
         btnContinue.setOnClickListener(new View.OnClickListener() {
