@@ -52,4 +52,18 @@
     <string name="tilte_welcome_signin">Sign In</string>
     <string name="title_sign_in_text">Hi! Welcome back, you’ve been missed</string>
     <string name="title_forgot_password">Forgot Password?</string>
+    <string name="title_onboarding1_skip">Skip</string>
+    <string name="title_onboarding2_line_1">Explore</string>
+    <string name="title_onboarding2_line_2">the soul of</string>
+    <string name="title_onboarding2_line_3">EvoCasa</string>
+    <string name="title_onboarding2_description">Welcome to Evocasa — where every corner invites warmth, every texture recalls a memory, and every object is chosen with heart. Discover a curated world of vintage living, where beauty comes with a story, and your home becomes a place that truly feels like yours.</string>
+    <string name="title_onboarding3_line_1">Every Piece Tells A Story</string>
+    <string name="title_onboarding3_description">At Evocasa, every item holds a past — a worn corner, a faded tone, a handmade detail. These quiet imperfections carry charm, history, and warmth. Let your space speak with meaning, not just style.</string>
+    <string name="title_onboarding4_line_1">Curate Your Space With Ease</string>
+    <string name="title_onboarding4_description">Browse collections, save your favorites, and bring vintage beauty home – all in a few taps</string>
+    <string name="title_let_start">Lets start</string>
+    <string name="title_onboarding5_line_1">Welcome to EvoCasa</string>
+    <string name="title_onboarding5_description">Where every piece tells a story — of comfort, heritage, and time.</string>
+    <string name="title_create_account_onboarding5">Create an account</string>
+    <string name="title_loginin">Log in</string>
 </resources>
