@@ -81,5 +81,10 @@
     <string name="title_sabi_collection">Sabi Collection</string>
     <string name="title_closing_in">Closing in</string>
     <string name="title_orders">Orders</string>
+    <string name="title_wishlist_title">Your Favorite</string>
+    <string name="title_wishlist_all_products">All products</string>
+    <string name="title_wishlist_on_sale">On Sale</string>
+    <string name="title_wishlist_low_stock">Low Stock</string>
+    <string name="title_wishlist_out_of_stock">Out of Stock</string>
 
 </resources>
