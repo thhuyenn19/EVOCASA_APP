@@ -100,6 +100,23 @@ public class SignInFragment extends Fragment {
                 transaction.commit();
             }
         });
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Tạo một instance của SignUp1Fragment
+                SignUp1Fragment signUp1Fragment = new SignUp1Fragment();
+
+                // Bắt đầu một giao dịch Fragment
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                // Thay thế fragment hiện tại bằng SignUp1Fragment
+                transaction.replace(R.id.fragment_container, signUp1Fragment);
+                // Thêm giao dịch vào back stack (nếu muốn quay lại trước đó)
+                transaction.addToBackStack(null);
+                // Cam kết giao dịch fragment
+                transaction.commit();
+            }
+        });
+
 
         return rootView;
     }

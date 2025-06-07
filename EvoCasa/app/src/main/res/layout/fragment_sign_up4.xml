@@ -103,7 +103,7 @@
         <EditText
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="55dp"
             android:background="@drawable/edittext_background"
             android:hint=""
             android:inputType="textPassword"
@@ -134,8 +134,8 @@
         android:layout_marginBottom="16dp"
         android:max="4"
         android:progress="0"
-        android:progressBackgroundTint="#E0D5C7"
-        android:progressTint="#8B7355" />
+        android:visibility="gone"
+        android:progressDrawable="@drawable/progress_bar_background" />
 
     <!-- Password criteria with radio buttons -->
     <LinearLayout
@@ -143,7 +143,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="24dp"
+        android:visibility="gone">
 
         <!-- 8 characters minimum -->
         <LinearLayout
@@ -159,9 +160,10 @@
                 android:layout_height="16dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/radio_selector"
-                android:backgroundTint="#E0D5C7" />
+                android:backgroundTint="#5E4C3E" />
 
             <TextView
+                android:id="@+id/txtCheck1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check1"
@@ -184,12 +186,13 @@
                 android:layout_height="16dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/radio_selector"
-                android:backgroundTint="#E0D5C7" />
+                android:backgroundTint="#5E4C3E" />
 
             <TextView
+                android:id="@+id/txtCheck2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="a number"
+                android:text="@string/title_check2"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -208,9 +211,10 @@
                 android:layout_height="16dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/radio_selector"
-                android:backgroundTint="#E0D5C7" />
+                android:backgroundTint="#5E4C3E" />
 
             <TextView
+                android:id="@+id/txtCheck3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check3"
@@ -232,9 +236,10 @@
                 android:layout_height="16dp"
                 android:layout_marginEnd="12dp"
                 android:background="@drawable/radio_selector"
-                android:backgroundTint="#E0D5C7" />
+                android:backgroundTint="#5E4C3E" />
 
             <TextView
+                android:id="@+id/txtCheck4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check4"
@@ -263,7 +268,7 @@
         <EditText
             android:id="@+id/edtConfirmPassword"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="55dp"
             android:background="@drawable/edittext_background"
             android:hint=""
             android:inputType="textPassword"
@@ -287,7 +292,7 @@
 
     <!-- Create Account Button -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnCreateAccount"
+        android:id="@+id/btnResetPassword"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="-15dp"
@@ -316,6 +321,7 @@
         android:layout_marginTop="0dp">
 
         <TextView
+            android:id="@+id/txtBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -369,8 +375,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="."
-            android:textColor="#999999"
+            android:text="@string/title_dot"
+            android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
     </LinearLayout>

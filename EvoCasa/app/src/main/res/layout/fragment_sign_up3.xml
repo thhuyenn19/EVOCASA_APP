@@ -118,7 +118,7 @@
 
         <EditText
             android:id="@+id/edtCode1"
-            android:layout_width="66dp"
+            android:layout_width="59dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
@@ -131,7 +131,7 @@
 
         <EditText
             android:id="@+id/edtCode2"
-            android:layout_width="66dp"
+            android:layout_width="59dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
@@ -144,7 +144,7 @@
 
         <EditText
             android:id="@+id/edtCode3"
-            android:layout_width="66dp"
+            android:layout_width="59dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
@@ -157,7 +157,7 @@
 
         <EditText
             android:id="@+id/edtCode4"
-            android:layout_width="66dp"
+            android:layout_width="59dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
@@ -170,7 +170,7 @@
 
         <EditText
             android:id="@+id/edtCode5"
-            android:layout_width="66dp"
+            android:layout_width="59dp"
             android:layout_height="48dp"
             android:background="@drawable/code_input_background"
             android:gravity="center"
@@ -244,6 +244,7 @@
         android:layout_marginTop="0dp">
 
         <TextView
+            android:id="@+id/txtBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

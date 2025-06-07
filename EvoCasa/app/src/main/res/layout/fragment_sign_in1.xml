@@ -62,7 +62,7 @@
     <EditText
         android:id="@+id/edtEmailPhone"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/edittext_background"
         android:hint=""
@@ -92,7 +92,7 @@
         <EditText
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:background="@drawable/edittext_background"
             android:hint=""
             android:inputType="textPassword"
@@ -115,13 +115,16 @@
     </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/txtForgotPassword"
+    <Button
+        android:id="@+id/btnForgotPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:padding="0sp"
         android:text="@string/title_forgot_password"
         android:textColor="#5E4C3E"
         android:textSize="14sp"

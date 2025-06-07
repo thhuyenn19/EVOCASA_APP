@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.mobile.evocasa.R;
 
@@ -28,9 +30,10 @@ public class SignUp4Fragment extends Fragment {
     private EditText edtPassword, edtConfirmPassword;
     private ImageView btnBack, btnHelp, btnTogglePassword, btnToggleConfirmPassword;
     private ProgressBar progressBar;
+    private LinearLayout passwordCriteriaLayout;
     private View checkLength, checkNumber, checkSpecialChar, checkUpperCase;
     private AppCompatButton btnCreateAccount;
-    private TextView txtTitle, txtTerm, txtPrivacy;
+    private TextView txtTitle, txtTerm, txtPrivacy, txtBy, txtPassword, txtTypePassword;
 
     private boolean hasLength = false;
     private boolean hasNumber = false;
@@ -41,7 +44,7 @@ public class SignUp4Fragment extends Fragment {
     private boolean isPasswordVisible = false;
     private boolean isConfirmPasswordVisible = false;
 
-    private Typeface fontRegular, fontBold;
+    private Typeface fontRegular, fontBold, fontMedium, fontSemiBold;
 
     public SignUp4Fragment() {}
 
@@ -73,10 +76,14 @@ public class SignUp4Fragment extends Fragment {
     private void loadCustomFonts() {
         try {
             fontRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
-            fontBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf.ttf");
+            fontBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf");
+            fontMedium = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Medium.otf");
+            fontSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-SemiBold.otf");
         } catch (Exception e) {
             fontRegular = Typeface.DEFAULT;
             fontBold = Typeface.DEFAULT_BOLD;
+            fontMedium = Typeface.DEFAULT;
+            fontSemiBold = Typeface.DEFAULT_BOLD;
         }
     }
 
@@ -87,8 +94,9 @@ public class SignUp4Fragment extends Fragment {
         btnHelp = view.findViewById(R.id.btnHelp);
         btnTogglePassword = view.findViewById(R.id.btnTogglePassword);
         btnToggleConfirmPassword = view.findViewById(R.id.btnToggleConfirmPassword);
-        btnCreateAccount = view.findViewById(R.id.btnCreateAccount);
+        btnCreateAccount = view.findViewById(R.id.btnResetPassword);
         progressBar = view.findViewById(R.id.progressBar);
+        passwordCriteriaLayout = view.findViewById(R.id.passwordCriteriaLayout);
         checkLength = view.findViewById(R.id.checkLength);
         checkNumber = view.findViewById(R.id.checkNumber);
         checkSpecialChar = view.findViewById(R.id.checkSpecialChar);
@@ -96,16 +104,22 @@ public class SignUp4Fragment extends Fragment {
         txtTitle = view.findViewById(R.id.txtTitle);
         txtTerm = view.findViewById(R.id.txtTerm);
         txtPrivacy = view.findViewById(R.id.txtPrivacy);
+        txtBy = view.findViewById(R.id.txtBy);
+        txtPassword = view.findViewById(R.id.txtPassword);
+        txtTypePassword = view.findViewById(R.id.txtTypePassword);
     }
 
     private void setupFonts() {
-        if (fontRegular != null && fontBold != null) {
+        if (fontRegular != null && fontBold != null && fontMedium != null && fontSemiBold != null) {
             txtTitle.setTypeface(fontBold);
             edtPassword.setTypeface(fontRegular);
             edtConfirmPassword.setTypeface(fontRegular);
-            btnCreateAccount.setTypeface(fontBold);
-            txtTerm.setTypeface(fontBold);
-            txtPrivacy.setTypeface(fontBold);
+            btnCreateAccount.setTypeface(fontSemiBold);
+            txtTerm.setTypeface(fontSemiBold);
+            txtPrivacy.setTypeface(fontSemiBold);
+            txtBy.setTypeface(fontRegular);
+            txtPassword.setTypeface(fontMedium);
+            txtTypePassword.setTypeface(fontMedium);
         }
     }
 
@@ -116,9 +130,7 @@ public class SignUp4Fragment extends Fragment {
             }
         });
 
-        btnHelp.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Help clicked", Toast.LENGTH_SHORT).show()
-        );
+        btnHelp.setOnClickListener(v -> Toast.makeText(getContext(), "Help clicked", Toast.LENGTH_SHORT).show());
 
         btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility());
         btnToggleConfirmPassword.setOnClickListener(v -> toggleConfirmPasswordVisibility());
@@ -140,15 +152,23 @@ public class SignUp4Fragment extends Fragment {
             @Override public void afterTextChanged(Editable s) {}
         });
 
+        // Add OnFocusChangeListener to show/hide password criteria
+        edtPassword.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                // Show progress bar and password criteria when focused
+                progressBar.setVisibility(View.VISIBLE);
+                passwordCriteriaLayout.setVisibility(View.VISIBLE);
+            } else {
+                // Hide progress bar and password criteria when focus is lost
+                progressBar.setVisibility(View.GONE);
+                passwordCriteriaLayout.setVisibility(View.GONE);
+            }
+        });
+
         btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
 
-        txtTerm.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Terms clicked", Toast.LENGTH_SHORT).show()
-        );
-
-        txtPrivacy.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Privacy Policy clicked", Toast.LENGTH_SHORT).show()
-        );
+        txtTerm.setOnClickListener(v -> openTerms());
+        txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
     }
 
     private void togglePasswordVisibility() {
@@ -193,7 +213,7 @@ public class SignUp4Fragment extends Fragment {
     }
 
     private void updateCheckIndicator(View indicator, boolean isValid) {
-        indicator.setSelected(isValid); // Use selector states
+        indicator.setSelected(isValid);
     }
 
     private void updateProgressBar() {
@@ -245,12 +265,26 @@ public class SignUp4Fragment extends Fragment {
             return;
         }
 
-        createAccount(password);
+        // Navigate to SignUp5Fragment
+        navigateToSignUp5Fragment();
     }
 
-    private void createAccount(String password) {
-        Toast.makeText(getContext(), "Account created successfully!", Toast.LENGTH_LONG).show();
-        // TODO: Navigate or perform actual API call
+    private void navigateToSignUp5Fragment() {
+        // Navigate to the next fragment (SignUp5Fragment)
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new SignUp5Fragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void openTerms() {
+        // TODO: Implement opening the Terms and Conditions page
+        Toast.makeText(getContext(), "Opening Terms", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openPrivacyPolicy() {
+        // TODO: Implement opening the Privacy Policy page
+        Toast.makeText(getContext(), "Opening Privacy Policy", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -263,6 +297,7 @@ public class SignUp4Fragment extends Fragment {
         btnTogglePassword = null;
         btnToggleConfirmPassword = null;
         progressBar = null;
+        passwordCriteriaLayout = null;
         checkLength = null;
         checkNumber = null;
         checkSpecialChar = null;
@@ -271,5 +306,8 @@ public class SignUp4Fragment extends Fragment {
         txtTitle = null;
         txtTerm = null;
         txtPrivacy = null;
+        txtBy = null;
+        txtPassword = null;
+        txtTypePassword = null;
     }
 }
