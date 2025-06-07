@@ -1,6 +1,5 @@
 package com.mobile.evocasa.auth;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 public class SignInFragment extends Fragment {
 
@@ -61,27 +61,20 @@ public class SignInFragment extends Fragment {
         btnContinueGoogle = rootView.findViewById(R.id.btnContinueGoogle);
         btnSignUp = rootView.findViewById(R.id.btnSignUp);
 
-        // Create Typeface from font in assets
-        Typeface interMedium = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Medium.otf");
-        Typeface interBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf");
-        Typeface interSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-SemiBold.otf");
-        Typeface interBlack = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Black.otf");
-        Typeface interRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
+        // Apply fonts using FontUtils
+        txtSignIn.setTypeface(FontUtils.getBold(getContext()));
+        txtDescription.setTypeface(FontUtils.getMediumitalic(getContext()));
+        txtOrWith.setTypeface(FontUtils.getSemiBold(getContext()));
+        txtDontHave.setTypeface(FontUtils.getMedium(getContext()));
+        txtTerm.setTypeface(FontUtils.getSemiBold(getContext()));
+        txtPrivacy.setTypeface(FontUtils.getSemiBold(getContext()));
+        txtView.setTypeface(FontUtils.getMedium(getContext()));
+        txtBy.setTypeface(FontUtils.getRegular(getContext()));
 
-        // Apply the custom font to the views
-        txtSignIn.setTypeface(interBold); // Inter-Bold
-        txtDescription.setTypeface(interMedium); // Inter-Medium
-        txtOrWith.setTypeface(interSemiBold); // Inter-Medium
-        txtDontHave.setTypeface(interMedium); // Inter-Medium
-        txtTerm.setTypeface(interSemiBold); // Inter-SemiBold
-        txtPrivacy.setTypeface(interSemiBold); // Inter-SemiBold
-        txtView.setTypeface(interMedium); // Inter-Medium
-        txtBy.setTypeface(interRegular);
-
-        btnContinueEmailPhoneSignIn.setTypeface(interMedium); // Inter-Medium
-        btnContinueFacebook.setTypeface(interMedium); // Inter-Medium
-        btnContinueGoogle.setTypeface(interMedium); // Inter-Medium
-        btnSignUp.setTypeface(interBlack); // Inter-Black
+        btnContinueEmailPhoneSignIn.setTypeface(FontUtils.getMedium(getContext()));
+        btnContinueFacebook.setTypeface(FontUtils.getMedium(getContext()));
+        btnContinueGoogle.setTypeface(FontUtils.getMedium(getContext()));
+        btnSignUp.setTypeface(FontUtils.getBlack(getContext()));
 
         // Set onClickListener for btnContinueEmailPhoneSignIn to navigate to SignIn1Fragment
         btnContinueEmailPhoneSignIn.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +93,7 @@ public class SignInFragment extends Fragment {
                 transaction.commit();
             }
         });
+
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +110,6 @@ public class SignInFragment extends Fragment {
                 transaction.commit();
             }
         });
-
 
         return rootView;
     }
