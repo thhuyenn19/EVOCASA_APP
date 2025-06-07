@@ -47,7 +47,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -154,7 +154,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -265,7 +265,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -372,7 +372,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -483,7 +483,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -590,7 +590,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -702,7 +702,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
@@ -809,7 +809,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="12dp"
-                            android:src="@drawable/ic_favourite" />
+                            android:src="@drawable/ic_wishlist_heart" />
                     </RelativeLayout>
 
                     <TextView
