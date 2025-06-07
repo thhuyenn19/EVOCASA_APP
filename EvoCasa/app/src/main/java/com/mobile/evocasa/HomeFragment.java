@@ -7,11 +7,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryAdapter;
+import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.models.Category;
+import com.mobile.models.FlashSaleProduct;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +22,7 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<Object> categoryList;
-    //    private RecyclerView recyclerView;
     private CategoryAdapter adapter;
-    //    private List<Category> categoryList;
     private View view;
     //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
 //    private void addViews() {
@@ -74,10 +75,32 @@ public class HomeFragment extends Fragment {
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
         categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
+        categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
+        categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
+        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
 
         // 4. Gán adapter
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
+
+        RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
+
+        // Set GridLayoutManager để có 2 cột (2 item mỗi hàng)
+        recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        // Tạo danh sách sản phẩm
+        List<FlashSaleProduct> flashSaleList = new ArrayList<>();
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        // Bạn có thể thêm nhiều sản phẩm khác ở đây...
+
+        // Gán adapter
+        FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
+        recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
         return view;
     }

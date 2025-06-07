@@ -16,7 +16,7 @@ import com.mobile.evocasa.R;
 
 public class SignInFragment extends Fragment {
 
-    private TextView txtSignIn, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtView;
+    private TextView txtSignIn, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtView, txtBy;
     private Button btnContinueEmailPhoneSignIn, btnContinueFacebook, btnContinueGoogle, btnSignUp;
 
     public SignInFragment() {
@@ -54,6 +54,7 @@ public class SignInFragment extends Fragment {
         txtTerm = rootView.findViewById(R.id.txtTerm);
         txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
         txtView = rootView.findViewById(R.id.txtView);
+        txtBy = rootView.findViewById(R.id.txtBy);
 
         btnContinueEmailPhoneSignIn = rootView.findViewById(R.id.btnContinueEmailPhoneSignIn);
         btnContinueFacebook = rootView.findViewById(R.id.btnContinueFacebook);
@@ -65,6 +66,7 @@ public class SignInFragment extends Fragment {
         Typeface interBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf");
         Typeface interSemiBold = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-SemiBold.otf");
         Typeface interBlack = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Black.otf");
+        Typeface interRegular = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
 
         // Apply the custom font to the views
         txtSignIn.setTypeface(interBold); // Inter-Bold
@@ -74,6 +76,7 @@ public class SignInFragment extends Fragment {
         txtTerm.setTypeface(interSemiBold); // Inter-SemiBold
         txtPrivacy.setTypeface(interSemiBold); // Inter-SemiBold
         txtView.setTypeface(interMedium); // Inter-Medium
+        txtBy.setTypeface(interRegular);
 
         btnContinueEmailPhoneSignIn.setTypeface(interMedium); // Inter-Medium
         btnContinueFacebook.setTypeface(interMedium); // Inter-Medium

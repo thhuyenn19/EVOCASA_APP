@@ -162,6 +162,7 @@
                 android:backgroundTint="#E0D5C7" />
 
             <TextView
+                android:id="@+id/txtCheck1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check1"
@@ -187,9 +188,10 @@
                 android:backgroundTint="#E0D5C7" />
 
             <TextView
+                android:id="@+id/txtCheck2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="a number"
+                android:text="@string/title_check2"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -211,6 +213,7 @@
                 android:backgroundTint="#E0D5C7" />
 
             <TextView
+                android:id="@+id/txtCheck3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check3"
@@ -235,6 +238,7 @@
                 android:backgroundTint="#E0D5C7" />
 
             <TextView
+                android:id="@+id/txtCheck4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_check4"
@@ -316,6 +320,7 @@
         android:layout_marginTop="0dp">
 
         <TextView
+            android:id="@+id/txtBy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -369,8 +374,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="."
-            android:textColor="#999999"
+            android:text="@string/title_dot"
+            android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
     </LinearLayout>

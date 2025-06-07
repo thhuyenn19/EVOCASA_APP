@@ -18,7 +18,7 @@ import com.mobile.evocasa.R;
 
 public class SignUp1Fragment extends Fragment {
 
-    private TextView txtCreate, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy;
+    private TextView txtCreate, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtBy;
     private AppCompatButton btnContinueEmailPhone, btnContinueFacebook, btnContinueGoogle, btnSignIn;
 
     public SignUp1Fragment() {
@@ -54,6 +54,7 @@ public class SignUp1Fragment extends Fragment {
         Typeface semiBold = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-SemiBold.otf");
         Typeface black = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Black.otf");
         Typeface italic = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Italic.otf");
+        Typeface regular = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Regular.otf");
 
         // Get references to the views
         txtCreate = view.findViewById(R.id.txtCreate);
@@ -62,6 +63,7 @@ public class SignUp1Fragment extends Fragment {
         txtDontHave = view.findViewById(R.id.txtDontHave);
         txtTerm = view.findViewById(R.id.txtTerm);
         txtPrivacy = view.findViewById(R.id.txtPrivacy);
+        txtBy = view.findViewById(R.id.txtBy);
 
         btnContinueEmailPhone = view.findViewById(R.id.btnContinueEmailPhone);
         btnContinueFacebook = view.findViewById(R.id.btnContinueFacebook);
@@ -76,7 +78,7 @@ public class SignUp1Fragment extends Fragment {
         txtDontHave.setTypeface(semiBold); // "Already have an account?" - SemiBold
         txtTerm.setTypeface(semiBold); // Terms - SemiBold
         txtPrivacy.setTypeface(semiBold); // Privacy - SemiBold
-
+        txtBy.setTypeface(regular);
         btnContinueEmailPhone.setTypeface(medium); // Continue with Email/Phone - Medium
         btnContinueFacebook.setTypeface(medium); // Continue with Facebook - Medium
         btnContinueGoogle.setTypeface(medium); // Continue with Google - Medium
