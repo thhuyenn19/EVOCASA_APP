@@ -30,7 +30,7 @@
                 android:layout_marginBottom="6dp">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imgBanner1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
@@ -64,7 +64,6 @@
                         android:layout_marginTop="4dp" />
                 </LinearLayout>
             </FrameLayout>
-
             <!-- Category -->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,13 +89,13 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
-                        android:text="See all"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_5E4C3E"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
-                        android:layout_marginRight="8dp" />
+                        android:text="@string/title_see_all"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -207,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/title_hot_products"
+                    android:text="@string/tilte_hot_products"
                     android:textColor="#5E4C3E"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -218,14 +217,15 @@
                     android:orientation="horizontal"
                     android:gravity="center"
                     android:layout_gravity="center_vertical">
+
                     <TextView
-                        android:text="See all"
-                        android:textSize="14sp"
-                        android:textColor="@color/color_5E4C3E"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
                         android:gravity="center_vertical"
-                        android:layout_marginRight="8dp" />
+                        android:text="@string/title_see_all"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -244,6 +244,90 @@
                 android:paddingBottom="8dp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
+            <!-- Banner 2-->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="6dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgBanner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_banner2"
+                    app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/textOverlay1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_timeless_quality_design"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+            <!-- Category -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="16dp">
+
+                <TextView
+                    android:id="@+id/txtCollection"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_collection"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="8dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/title_see_all"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right" />
+                </LinearLayout>
+            </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewCollections"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:overScrollMode="never"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:clipToPadding="false"/>
+
         </LinearLayout>
+
+
+
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

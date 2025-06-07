@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_marginEnd="12dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imgCollection"
+        android:layout_width="160dp"
+        android:layout_height="220dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_sabi_collection"
+        app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
+
+    <TextView
+        android:id="@+id/txtCollectionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="-40dp"
+        android:background="@android:color/transparent"
+        android:text="@string/title_sabi_collection"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+</LinearLayout>

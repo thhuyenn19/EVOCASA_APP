@@ -55,4 +55,11 @@
     <string name="title_success">Your account \nwas successfully created!</string>
     <string name="title_success_text">Only one click to explore inspiring home ideas!</string>
     <string name="title_sign_in">SIGN IN</string>
+    <string name="title_category">Category</string>
+    <string name="title_flashsale">Flash Sale</string>
+    <string name="tilte_hot_products">Hot Products</string>
+    <string name="title_timeless_quality_design">Timeless Quality Design</string>
+    <string name="title_see_all">See All</string>
+    <string name="title_collection">Collection</string>
+    <string name="title_sabi_collection">Sabi Collection</string>
 </resources>

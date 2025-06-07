@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryAdapter;
+import com.mobile.adapters.CollectionAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.models.Category;
+import com.mobile.models.Collection;
 import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
 
@@ -93,12 +95,12 @@ public class HomeFragment extends Fragment {
 
         // Tạo danh sách sản phẩm
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.drawable.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
 
         // Gán adapter
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
@@ -120,6 +122,23 @@ public class HomeFragment extends Fragment {
         // Gán adapter cho RecyclerView
         HotProductsAdapter hotProductsAdapter = new HotProductsAdapter(hotProductList);
         recyclerViewHotProducts.setAdapter(hotProductsAdapter);
+
+        /*Collection*/
+        RecyclerView recyclerViewCollections = view.findViewById(R.id.recyclerViewCollections);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewCollections.setLayoutManager(layoutManager);
+
+        List<Collection> collectionList = new ArrayList<>();
+        collectionList.add(new Collection(R.mipmap.ic_sabi_collection, "Sabi Collection"));
+        collectionList.add(new Collection(R.mipmap.ic_the_disc_collection, "The Disc Collection"));
+        collectionList.add(new Collection(R.mipmap.ic_the_pavillon_collection, "The Pavillon Collection"));
+        collectionList.add(new Collection(R.mipmap.ic_the_bromley_collection, "The Bromley Collection"));
+        // Thêm nhiều hơn nếu cần
+
+        CollectionAdapter adapter = new CollectionAdapter(collectionList);
+        recyclerViewCollections.setAdapter(adapter);
+
         return view;
+
     }
 }
