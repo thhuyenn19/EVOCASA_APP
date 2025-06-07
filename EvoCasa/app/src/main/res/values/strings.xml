@@ -75,5 +75,12 @@
     <string name="title_category">Category</string>
     <string name="title_flashsale">Flash Sale</string>
     <string name="title_hot_products">Hot Products</string>
+<<<<<<< Updated upstream
     <string name="title_see_all">See All</string>
+=======
+    <string name="title_timeless_quality_design">Timeless Quality Design</string>
+    <string name="title_see_all">See All</string>
+    <string name="title_collection">Collection</string>
+    <string name="title_sabi_collection">Sabi Collection</string>
+>>>>>>> Stashed changes
 </resources>
