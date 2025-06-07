@@ -60,7 +60,6 @@ public class Onboarding1Activity extends AppCompatActivity {
                 if (viewPager.getCurrentItem() <2 ){
                     viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
                 }
-
             }
         });
     }
