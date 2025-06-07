@@ -44,4 +44,5 @@
     <string name="title_check3">a special character</string>
     <string name="title_check4">an uppercase letter</string>
     <string name="title_create_pw">Create your password</string>
+    <string name="title_dot">.</string>
 </resources>
