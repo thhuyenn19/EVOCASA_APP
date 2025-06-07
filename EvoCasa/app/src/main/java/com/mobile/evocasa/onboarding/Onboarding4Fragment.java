@@ -9,9 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,6 +80,15 @@ public class Onboarding4Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        TextView txtViewOnboarding4 = view.findViewById(R.id.txtViewOnboarding4);
+        FontUtils.setZblackFont(requireContext(), txtViewOnboarding4);
+
+        TextView txtView3 = view.findViewById(R.id.txtView3);
+        FontUtils.setItalicFont(requireContext(), txtView3);
+
+        Button btn_lets_start = view.findViewById(R.id.btn_lets_start);
+        FontUtils.setBoldFont(requireContext(), btn_lets_start);
 
         return view;
     }

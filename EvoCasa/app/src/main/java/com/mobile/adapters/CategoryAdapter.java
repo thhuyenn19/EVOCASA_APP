@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.Category;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -35,6 +36,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category item = categoryList.get(position);
         holder.txtCategoryName.setText(item.getName());
         holder.imgCategory.setImageResource(item.getImageResId());
+
+        // ✅ Áp dụng font Zbold cho tên danh mục
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtCategoryName);
     }
 
     @Override

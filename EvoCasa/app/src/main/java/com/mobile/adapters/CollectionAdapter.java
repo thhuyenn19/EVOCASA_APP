@@ -4,13 +4,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.google.android.material.imageview.ShapeableImageView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.Collection;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -34,6 +35,9 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Co
         Collection collection = collectionList.get(position);
         holder.imgCollection.setImageResource(collection.getImageResId());
         holder.txtName.setText(collection.getName());
+
+        // ✅ Áp dụng font Zbold cho tên bộ sưu tập
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtName);
     }
 
     @Override

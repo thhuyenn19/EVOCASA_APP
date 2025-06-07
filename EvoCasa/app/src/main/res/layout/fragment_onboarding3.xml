@@ -10,13 +10,12 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="match_parent"
-        android:layout_height="284dp" />
+        android:layout_height="274dp" />
 
     <TextView
         android:id="@+id/txtViewOnboarding3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/zen_old_mincho_black"
+        android:layout_height="48dp"
         android:paddingStart="20dp"
         android:text="@string/title_onboarding3_line_1"
         android:textColor="#FFFFFF"
@@ -26,7 +25,6 @@
         android:id="@+id/txtView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/inter"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
         android:text="@string/title_onboarding3_description"

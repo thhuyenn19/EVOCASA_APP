@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.mobile.utils.FontUtils;
 
 import com.mobile.adapters.CategoryAdapter;
 import com.mobile.adapters.CollectionAdapter;
@@ -71,6 +73,9 @@ public class HomeFragment extends Fragment {
         // 1. Gán layout cho view
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Áp dụng font cho các TextView
+        applyCustomFonts();
+
         // 2. Gán RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewCategories);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -87,13 +92,11 @@ public class HomeFragment extends Fragment {
         // 4. Gán adapter
         adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
+
         /*FlashSale*/
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
-
-        // Set GridLayoutManager để có 2 cột (2 item mỗi hàng)
         recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // Tạo danh sách sản phẩm
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
         flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
@@ -133,12 +136,69 @@ public class HomeFragment extends Fragment {
         collectionList.add(new Collection(R.mipmap.ic_the_disc_collection, "The Disc Collection"));
         collectionList.add(new Collection(R.mipmap.ic_the_pavillon_collection, "The Pavillon Collection"));
         collectionList.add(new Collection(R.mipmap.ic_the_bromley_collection, "The Bromley Collection"));
-        // Thêm nhiều hơn nếu cần
 
-        CollectionAdapter adapter = new CollectionAdapter(collectionList);
-        recyclerViewCollections.setAdapter(adapter);
+        CollectionAdapter collectionAdapter = new CollectionAdapter(collectionList);
+        recyclerViewCollections.setAdapter(collectionAdapter);
 
         return view;
+    }
 
+    private void applyCustomFonts() {
+        // Áp dụng font Zregular cho tên sản phẩm
+        TextView txtProductName = view.findViewById(R.id.txtProductName);
+        if (txtProductName != null) {
+            FontUtils.setZregularFont(getContext(), txtProductName);
+        }
+
+        TextView tvProductName = view.findViewById(R.id.tvProductName);
+        if (tvProductName != null) {
+            FontUtils.setZregularFont(getContext(), tvProductName);
+        }
+
+        // Áp dụng font Regular cho "See All"
+        TextView txtSeeAll = view.findViewById(R.id.txtSeeAll);
+        if (txtSeeAll != null) {
+            FontUtils.setRegularFont(getContext(), txtSeeAll);
+        }
+        // Áp dụng font Regular cho "See All"
+        TextView txtSeeAllCollection = view.findViewById(R.id.txtSeeAllCollection);
+        if (txtSeeAllCollection != null) {
+            FontUtils.setRegularFont(getContext(), txtSeeAllCollection);
+        }
+
+        TextView txtSeeAllHotProducts = view.findViewById(R.id.txtSeeAllHotProducts);
+        if (txtSeeAllHotProducts != null) {
+            FontUtils.setRegularFont(getContext(), txtSeeAllHotProducts);
+        }
+
+
+        // Áp dụng font Zbold cho tên collection
+        TextView txtCollectionName = view.findViewById(R.id.txtCollectionName);
+        if (txtCollectionName != null) {
+            FontUtils.setZboldFont(getContext(), txtCollectionName);
+        }
+
+        // Áp dụng font Zbold cho tất cả TextView còn lại
+        applyZboldFontToAllTextViews(view);
+    }
+
+    private void applyZboldFontToAllTextViews(View view) {
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                applyZboldFontToAllTextViews(viewGroup.getChildAt(i));
+            }
+        } else if (view instanceof TextView) {
+            TextView textView = (TextView) view;
+            // Bỏ qua các TextView đã được set font riêng
+            if (textView.getId() != R.id.txtProductName && 
+                textView.getId() != R.id.tvProductName && 
+                textView.getId() != R.id.txtSeeAll && 
+                textView.getId() != R.id.txtSeeAllHotProducts &&
+                textView.getId() != R.id.txtSeeAllCollection &&
+                textView.getId() != R.id.txtCollectionName ) {
+                FontUtils.setZboldFont(getContext(), textView);
+            }
+        }
     }
 }

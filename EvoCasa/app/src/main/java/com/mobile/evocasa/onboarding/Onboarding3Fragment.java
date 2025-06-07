@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +63,14 @@ public class Onboarding3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_onboarding3, container, false);
+        View view = inflater.inflate(R.layout.fragment_onboarding3, container, false);
+
+        TextView txtViewOnboarding3 = view.findViewById(R.id.txtViewOnboarding3);
+        FontUtils.setZblackFont(requireContext(), txtViewOnboarding3);
+
+        TextView txtView3 = view.findViewById(R.id.txtView3);
+        FontUtils.setRegularFont(requireContext(), txtView3);
+
+        return view;
     }
 }

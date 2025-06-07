@@ -301,6 +301,7 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/txtSeeAllCollection"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="8dp"

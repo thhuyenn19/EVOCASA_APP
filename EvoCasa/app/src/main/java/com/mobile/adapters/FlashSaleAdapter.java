@@ -1,17 +1,18 @@
 package com.mobile.adapters;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-import com.google.android.material.imageview.ShapeableImageView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.FlashSaleProduct;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -33,13 +34,17 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
     @Override
     public void onBindViewHolder(@NonNull FlashSaleViewHolder holder, int position) {
         FlashSaleProduct product = flashSaleList.get(position);
+
+        holder.tvProductName.setText(product.getName());
+        holder.tvOldPrice.setText(product.getOldPrice());
+        holder.tvOldPrice.setPaintFlags(holder.tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        holder.tvNewPrice.setText(product.getNewPrice());
+        holder.tvDiscount.setText(product.getDiscount());
+        holder.tvRating.setText(String.valueOf(product.getRating()));
         holder.imgProduct.setImageResource(product.getImageResId());
-        holder.txtName.setText(product.getName());
-        holder.txtOldPrice.setText(product.getOldPrice());
-        holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txtNewPrice.setText(product.getNewPrice());
-        holder.txtDiscount.setText(product.getDiscount());
-        holder.txtRating.setText(String.valueOf(product.getRating()));
+
+        // ✅ Áp dụng font Zbold cho tên sản phẩm
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvProductName);
     }
 
     @Override
@@ -49,16 +54,16 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
 
     public static class FlashSaleViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView imgProduct;
-        TextView txtName, txtOldPrice, txtNewPrice, txtDiscount, txtRating;
+        TextView tvProductName, tvOldPrice, tvNewPrice, tvDiscount, tvRating;
 
         public FlashSaleViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            txtName = itemView.findViewById(R.id.tvProductName);
-            txtOldPrice = itemView.findViewById(R.id.tvOldPrice);
-            txtNewPrice = itemView.findViewById(R.id.tvPrice);
-            txtDiscount = itemView.findViewById(R.id.tvDiscount);
-            txtRating = itemView.findViewById(R.id.tvRating);
+            tvProductName = itemView.findViewById(R.id.tvProductName);
+            tvOldPrice = itemView.findViewById(R.id.tvOldPrice);
+            tvNewPrice = itemView.findViewById(R.id.tvPrice);
+            tvDiscount = itemView.findViewById(R.id.tvDiscount);
+            tvRating = itemView.findViewById(R.id.tvRating);
         }
     }
 }
