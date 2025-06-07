@@ -16,7 +16,7 @@ import com.mobile.evocasa.R;
 
 public class SignIn1Fragment extends Fragment {
 
-    private TextView txtTitle, txtEmailPhoneLabel, txtPassword, txtTerm, txtPrivacy, txtForgotPassword;
+    private TextView txtTitle, txtEmailPhoneLabel, txtPassword, txtTerm, txtPrivacy, txtForgotPassword, txtBy;
     private EditText edtEmailPhone, edtPassword;
     private Button btnContinue;
 
@@ -54,6 +54,7 @@ public class SignIn1Fragment extends Fragment {
         txtTerm = rootView.findViewById(R.id.txtTerm);
         txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
         txtForgotPassword = rootView.findViewById(R.id.txtForgotPassword);
+        txtBy = rootView.findViewById(R.id.txtBy);
 
         edtEmailPhone = rootView.findViewById(R.id.edtEmailPhone);
         edtPassword = rootView.findViewById(R.id.edtPassword);
@@ -73,7 +74,7 @@ public class SignIn1Fragment extends Fragment {
         txtTerm.setTypeface(semiBoldFont); // Terms - Medium
         txtPrivacy.setTypeface(semiBoldFont); // Privacy Policy - Medium
         txtForgotPassword.setTypeface(semiBoldFont); // Forgot Password - SemiBold
-
+        txtBy.setTypeface(regularFont);
         edtEmailPhone.setTypeface(regularFont); // Email/Phone Input - Medium
         edtPassword.setTypeface(regularFont); // Password Input - Medium
 
