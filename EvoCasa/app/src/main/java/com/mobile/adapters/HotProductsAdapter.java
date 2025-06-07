@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.HotProducts;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -38,12 +40,13 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         holder.imgProduct.setImageResource(product.getImageResId());
         holder.txtProductName.setText(product.getName());
         holder.txtOldPrice.setText(product.getOldPrice());
-        holder.txtOldPrice.setPaintFlags(
-                holder.txtOldPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
-        );
+        holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.txtPrice.setText(product.getNewPrice());
         holder.txtDiscount.setText(product.getDiscount());
         holder.txtRating.setText(String.valueOf(product.getRating()));
+
+        // ✅ Áp dụng font Zbold cho tên sản phẩm
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
     }
 
     @Override
