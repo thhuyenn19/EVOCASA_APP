@@ -89,6 +89,7 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/txtSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="8dp"
@@ -138,7 +139,7 @@
                     android:src="@drawable/ic_flash" />
 
                 <TextView
-                    android:id="@+id/tvClosingIn"
+                    android:id="@+id/txtClosingIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Closing in:"
@@ -219,6 +220,7 @@
                     android:layout_gravity="center_vertical">
 
                     <TextView
+                        android:id="@+id/txtSeeAllHotProducts"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginRight="8dp"
