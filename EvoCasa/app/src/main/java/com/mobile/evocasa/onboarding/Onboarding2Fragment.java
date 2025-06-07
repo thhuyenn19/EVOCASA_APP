@@ -93,11 +93,14 @@ public class Onboarding2Fragment extends Fragment {
             public void onPrepared(MediaPlayer mediaPlayer) {
                 mMediaPlayer = mediaPlayer;
                 mMediaPlayer.setLooping(true);
+                mMediaPlayer.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
+
                 if (mCurrentVideoPosition != 0) {
                     mMediaPlayer.seekTo(mCurrentVideoPosition);
                 }
                 videoBackground.start();
             }
+
         });
 
         return view;

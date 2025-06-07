@@ -1,6 +1,7 @@
 package com.mobile.evocasa.onboarding;
 
 import android.os.Bundle;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -42,6 +43,9 @@ public class Onboarding1Activity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
         circleIndicator.setViewPager(viewPager);
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
     }
 
     private void initUI() {
