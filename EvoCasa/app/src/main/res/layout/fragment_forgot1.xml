@@ -6,8 +6,9 @@
     android:orientation="vertical"
     android:background="#FFFCF3"
     android:padding="24dp"
-    tools:context=".auth.SignIn1Fragment">
+    tools:context=".auth.Forgot1Fragment">
 
+    <!-- Header với back button và help button -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,11 +42,12 @@
         android:layout_marginTop="-40dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/tilte_welcome_signin"
+        android:text="@string/title_reset_password"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="24sp"
         android:textStyle="bold" />
+
 
     <!-- Email/Phone Label -->
     <TextView
@@ -55,14 +57,13 @@
         android:layout_marginBottom="8dp"
         android:text="@string/title_sign_up_email_phone"
         android:textColor="#5E4C3E"
-        android:textSize="16sp"
-        android:textStyle="normal|bold"/>
+        android:textSize="16sp" />
 
     <!-- Email/Phone Input -->
     <EditText
         android:id="@+id/edtEmailPhone"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/edittext_background"
         android:hint=""
@@ -71,66 +72,6 @@
         android:textColor="#5E4C3E"
         android:textColorHint="#999999"
         android:textSize="16sp" />
-
-    <!-- Password Label -->
-    <TextView
-        android:id="@+id/txtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="@string/title_password"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp"
-        android:textStyle="normal|bold" />
-
-    <!-- Password Input with Eye Icon -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
-
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:background="@drawable/edittext_background"
-            android:hint=""
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="50dp"
-            android:paddingBottom="16dp"
-            android:textColor="#5E4C3E"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/btnTogglePassword"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_eye_on"/>
-    </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/btnForgotPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="-15dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="5dp"
-        android:background="@android:color/transparent"
-        android:padding="0sp"
-        android:text="@string/title_forgot_password"
-        android:textColor="#5E4C3E"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-
 
     <!-- Continue Button -->
     <androidx.appcompat.widget.AppCompatButton
@@ -172,8 +113,6 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-
-    <!-- Terms and Privacy Policy -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -224,6 +163,5 @@
             android:textSize="12sp" />
 
     </LinearLayout>
-
 
 </LinearLayout>

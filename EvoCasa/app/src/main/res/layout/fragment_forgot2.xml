@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFCF3"
     android:padding="24dp"
-    tools:context=".auth.SignUp3Fragment">
+    tools:context=".auth.Forgot2Fragment">
 
     <!-- Header với back button và help button -->
     <RelativeLayout
@@ -42,7 +42,7 @@
         android:layout_marginTop="-40dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/title_verify_email"
+        android:text="@string/title_reset_password"
         android:textAlignment="center"
         android:textColor="#5E4C3E"
         android:textSize="24sp"
@@ -298,8 +298,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="."
-            android:textColor="#999999"
+            android:text="@string/title_dot"
+            android:textColor="#5E4C3E"
             android:textSize="12sp" />
 
     </LinearLayout>

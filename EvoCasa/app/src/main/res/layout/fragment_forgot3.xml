@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#FFFCF3"
     android:padding="24dp"
-    tools:context=".auth.SignUp4Fragment">
+    tools:context=".auth.Forgot3Fragment">
 
     <!-- Header với back button và help button -->
     <RelativeLayout
@@ -43,7 +43,7 @@
         android:layout_marginTop="-40dp"
         android:layout_marginBottom="16dp"
         android:gravity="center"
-        android:text="@string/title_create_pw"
+        android:text="@string/title_reset_password"
         android:textColor="#5E4C3E"
         android:textSize="28sp"
         android:textStyle="bold" />
@@ -299,7 +299,7 @@
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_pressed_effect"
         android:elevation="2dp"
-        android:text="@string/title_create_account"
+        android:text="@string/title_reset_pw"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold" />
