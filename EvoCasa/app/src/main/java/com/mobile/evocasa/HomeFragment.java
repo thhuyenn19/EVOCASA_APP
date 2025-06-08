@@ -171,7 +171,7 @@ public class HomeFragment extends Fragment {
             imgCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Mở CartActivity thay vì CartFragment
+                    // Mở CartActivity
                     Intent intent = new Intent(requireContext(), CartActivity.class);
                     startActivity(intent);
                 }
