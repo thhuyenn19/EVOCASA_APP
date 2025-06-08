@@ -171,7 +171,6 @@ public class HomeFragment extends Fragment {
             FontUtils.setRegularFont(getContext(), txtSeeAllHotProducts);
         }
 
-
         // Áp dụng font Zbold cho tên collection
         TextView txtCollectionName = view.findViewById(R.id.txtCollectionName);
         if (txtCollectionName != null) {
