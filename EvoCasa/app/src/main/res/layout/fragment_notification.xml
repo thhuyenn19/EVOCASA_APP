@@ -1,11 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical" android:gravity="center">
-    <TextView
-        android:text="Notification"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#5E4C3E"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg">
+
+    <!-- Topbar Notification -->
+    <include
+        android:id="@+id/topbar_notification"
+        layout="@layout/topbar_notification" />
+
+    <!-- TODAY + Mark all as read -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <TextView
+            android:id="@+id/txtNotificationDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TODAY"
+            android:textColor="#CC000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/inter" />
+
+        <TextView
+            android:id="@+id/txtMarkAllRead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mark all as read"
+            android:textColor="#704F38"
+            android:textSize="14sp"
+            android:fontFamily="@font/zen_old_mincho" />
+    </LinearLayout>
+
+    <!-- RecyclerView hiển thị danh sách notification -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewNotification"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never" />
 </LinearLayout>
