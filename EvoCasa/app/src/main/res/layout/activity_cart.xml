@@ -1,61 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/color_bg"
     tools:context=".CartActivity">
 
-
+    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:orientation="horizontal"
         android:background="@color/color_bg"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:paddingStart="15dp"
         android:paddingEnd="15dp">
 
-        <!-- Nút back -->
+        <!-- btnCartBack -->
         <LinearLayout
             android:id="@+id/btnCartBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:gravity="center"
             android:background="@drawable/bg_rounded_button"
-            android:orientation="vertical"
             android:clickable="true"
-
-            android:focusable="true">
-
+            android:focusable="true"
+            android:gravity="center">
             <ImageView
                 android:id="@+id/imgCartBack"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_rounded_button"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_back" />
         </LinearLayout>
 
-        <!-- Spacer để căn giữa title -->
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="0.4" />
 
-        <!-- Tiêu đề tùy chỉnh -->
         <TextView
             android:id="@+id/txtTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="@string/title_cart_product_title"
             android:textColor="@color/color_5E4C3E"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <!-- Spacer phải -->
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
@@ -65,23 +58,163 @@
             android:id="@+id/btnCartEdit"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:gravity="center"
             android:background="@drawable/bg_rounded_button"
-            android:orientation="vertical"
             android:clickable="true"
-
-            android:focusable="true">
-
+            android:focusable="true"
+            android:gravity="center">
             <ImageView
                 android:id="@+id/imgCartEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_rounded_button"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_edit_wishlist" />
         </LinearLayout>
-
     </LinearLayout>
 
+    <!-- Checkbox All Products -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="2dp"
+        android:paddingEnd="15dp">
 
-</FrameLayout>
+        <CheckBox
+            android:id="@+id/checkboxSelect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/color_5E4C3E" />
+
+        <TextView
+            android:id="@+id/txtAllProducts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/title_all_products_cart"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- RecyclerView scrollable part -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCartProduct"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:nestedScrollingEnabled="true" />
+
+    <!-- Footer -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/color_80F2EAD3"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+        <!-- Sub total -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_sub_total"
+                android:textSize="15sp"
+                android:textColor="@color/color_5E4C3E" />
+
+            <TextView
+                android:id="@+id/txtSubtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_sub_total_amount"
+                android:textSize="15sp"
+                android:textColor="@color/color_5E4C3E" />
+        </LinearLayout>
+
+        <!-- Voucher -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/voucher_box_bg"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_voucher_cart" />
+
+            <TextView
+                android:id="@+id/txtUseVoucher"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="@string/title_use_voucher"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="15sp"/>
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right_cart" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_line_total_cart" />
+
+        <!-- Total -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_total_cart"
+                android:textSize="16sp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_total_cart_amount"
+                android:textSize="16sp"
+                android:textColor="@color/color_FF6600"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Checkout button -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCheckOut"
+            android:layout_width="179dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_pressed_effect"
+            android:elevation="2dp"
+            android:text="@string/title_check_out"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -94,4 +94,13 @@
     <string name="title_cart_empty_title">Your cart is empty!</string>
     <string name="title_cart_empty_description">Click on the button to go find the products you like.</string>
     <string name="title_back_shop">BACK TO SHOP</string>
+    <string name="title_cart_product">Travertine Table Lamp</string>
+    <string name="title_cart_quantity">1</string>
+    <string name="title_all_products_cart">All products</string>
+    <string name="title_sub_total">Sub total</string>
+    <string name="title_sub_total_amount">$3,500</string>
+    <string name="title_use_voucher"><u>Use voucher code</u></string>
+    <string name="title_total_cart">Total</string>
+    <string name="title_total_cart_amount">$3,500</string>
+    <string name="title_check_out">CHECK OUT</string>
 </resources>
