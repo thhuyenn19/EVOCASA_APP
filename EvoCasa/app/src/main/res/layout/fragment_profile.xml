@@ -372,6 +372,7 @@
                             android:src="@drawable/ic_wishlist" />
 
                         <TextView
+                            android:id="@+id/txtWishlist"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

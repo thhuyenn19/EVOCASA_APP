@@ -23,6 +23,7 @@ import com.mobile.models.WishlistRcm;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -30,6 +31,10 @@ public class WishlistFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private View view;
+
+    private TextView btnAll, btnSale, btnLowStock, btnOutOfStock;
+    private List<TextView> allTabs;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,33 +44,33 @@ public class WishlistFragment extends Fragment {
 
         //List product
 
-        RecyclerView recyclerViewWishlistProduct = view.findViewById(R.id.recyclerViewWishlistProduct);
-        recyclerViewWishlistProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-        List<WishlistProduct> wishlistProductList = new ArrayList<>();
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-
-        WishlistProductAdapter wishlistProductAdapter = new WishlistProductAdapter(wishlistProductList);
-        recyclerViewWishlistProduct.setAdapter(wishlistProductAdapter);
-
-
-        //Recommend//
-        RecyclerView recyclerViewWishlistRcm = view.findViewById(R.id.recyclerViewWishlistRcm);
-
-        recyclerViewWishlistRcm.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-
-        List<WishlistRcm> wishlistRcmList = new ArrayList<>();
-        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-
-        WishlistRcmAdapter wishlistRcmAdapter = new WishlistRcmAdapter(wishlistRcmList);
-        recyclerViewWishlistRcm.setAdapter(wishlistRcmAdapter);
+//        RecyclerView recyclerViewWishlistProduct = view.findViewById(R.id.recyclerViewWishlistProduct);
+//        recyclerViewWishlistProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//
+//        List<WishlistProduct> wishlistProductList = new ArrayList<>();
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//
+//        WishlistProductAdapter wishlistProductAdapter = new WishlistProductAdapter(wishlistProductList);
+//        recyclerViewWishlistProduct.setAdapter(wishlistProductAdapter);
+//
+//
+//        //Recommend//
+//        RecyclerView recyclerViewWishlistRcm = view.findViewById(R.id.recyclerViewWishlistRcm);
+//
+//        recyclerViewWishlistRcm.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//
+//
+//        List<WishlistRcm> wishlistRcmList = new ArrayList<>();
+//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//
+//        WishlistRcmAdapter wishlistRcmAdapter = new WishlistRcmAdapter(wishlistRcmList);
+//        recyclerViewWishlistRcm.setAdapter(wishlistRcmAdapter);
 
 
         //set font//
@@ -90,6 +95,29 @@ public class WishlistFragment extends Fragment {
         TextView btnOutOfStock = view.findViewById(R.id.btnOutOfStock);
         FontUtils.setMediumFont(requireContext(), btnOutOfStock);
 
+        // Danh sách tất cả tab
+        allTabs = Arrays.asList(btnAll, btnSale, btnLowStock, btnOutOfStock);
+
+        // Chọn mặc định tab All
+        setActiveTab(btnAll);
+
+        // Gán sự kiện cho các tab
+        for (TextView tab : allTabs) {
+            tab.setOnClickListener(v -> {
+                setActiveTab(tab);
+                // TODO: xử lý lọc sản phẩm tương ứng tại đây nếu cần
+            });
+        }
         return view;
+    }
+
+    private void setActiveTab(TextView selectedTab) {
+        for (TextView tab : allTabs) {
+            if (tab == selectedTab) {
+                tab.setBackgroundResource(R.drawable.filter_button_selector_choose);
+            } else {
+                tab.setBackgroundResource(R.drawable.filter_button_selector);
+            }
+        }
     }
 }

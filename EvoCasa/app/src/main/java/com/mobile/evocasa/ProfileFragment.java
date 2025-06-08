@@ -49,6 +49,17 @@ public class ProfileFragment extends Fragment {
                 .addToBackStack(null)
                 .commit();
         });
+
+            // Sự kiện mở WishlistFragment khi bấm vào txtWishlist
+        View txtWishlist = view.findViewById(R.id.txtWishlist);
+            txtWishlist.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new WishlistFragment())
+                .addToBackStack(null)
+                .commit();
+
+        });
     return view;
     }
 }
