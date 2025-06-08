@@ -7,8 +7,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.evocasa.BlogDetailFragment;
 import com.mobile.evocasa.R;
 import com.mobile.models.Blog;
 
@@ -36,6 +39,14 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
         holder.imgBlog.setImageResource(blog.getImageResId());
         holder.txtTitle.setText(blog.getTitle());
         holder.txtDate.setText(blog.getDate());
+        holder.itemView.setOnClickListener(v -> {
+            FragmentTransaction transaction = ((FragmentActivity) v.getContext())
+                    .getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new BlogDetailFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
     }
 
     @Override
@@ -55,4 +66,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
             txtDate = itemView.findViewById(R.id.txt_date);
         }
     }
+
+
 }

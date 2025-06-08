@@ -13,6 +13,7 @@
         android:padding="16dp">
         <!-- Tiêu đề -->
         <include layout="@layout/topbar_blog" />
+
         <!-- Tabs Recent | Recommended | Popular -->
         <LinearLayout
             android:id="@+id/tab_menu"
