@@ -252,7 +252,7 @@
 
         <!-- Wishlist product RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewWishlistProduct"
+            android:id="@+id/recyclerViewFavouriteProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -317,10 +317,9 @@
 
         <!-- Recommend RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewWishlistRcm"
+            android:id="@+id/recyclerViewSuggestedProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
             android:clipToPadding="false"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"

@@ -3,6 +3,7 @@ package com.mobile.evocasa;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -11,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.adapters.SuggestedProductAdapter;
+import com.mobile.models.SuggestedProducts;
 import com.mobile.utils.FontUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -36,39 +40,22 @@ public class WishlistFragment extends Fragment {
 
 
 
-//        /* Wishlist Products */
-//        RecyclerView recyclerViewWishlistProduct = view.findViewById(R.id.recyclerViewSuggestedProducts);
-//
-//        recyclerViewWishlistProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//
-//        List<WishlistProduct> wishlistProductList = new ArrayList<>();
-//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistProductList.add(new WishlistProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//
-//        // Gán adapter cho RecyclerView
-//        WishlistProductAdapter wishlistProductAdapter = new WishlistProductAdapter(wishlistProductList);
-//        recyclerViewWishlistProduct.setAdapter(wishlistProductAdapter);
-//
-//
-//
-//        /* Wishlist Recommend Products */
-//        RecyclerView recyclerViewWishlistRcm = view.findViewById(R.id.recyclerViewSuggestedProducts);
-//
-//        recyclerViewWishlistRcm.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//
-//        List<WishlistRcm> wishlistRcmList = new ArrayList<>();
-//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishlistRcmList.add(new WishlistRcm(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//
-//        // Gán adapter cho RecyclerView
-//        WishlistRcmAdapter wishlistRcmAdapter = new WishlistRcmAdapter(wishlistRcmList);
-//        recyclerViewWishlistRcm.setAdapter(wishlistRcmAdapter);
+
+        /* Suggest */
+        RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
+
+        recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
 
+        List<SuggestedProducts> suggestedProductsList = new ArrayList<>();
+        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+
+        // Gán adapter cho RecyclerView
+        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(suggestedProductsList);
+        recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
 
 
 
