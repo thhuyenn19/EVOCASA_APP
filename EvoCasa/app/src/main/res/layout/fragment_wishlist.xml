@@ -54,8 +54,7 @@
                 android:gravity="center"
                 android:text="@string/title_wishlist_title"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textSize="20sp" />
 
             <!-- Spacer phải -->
             <View
@@ -115,6 +114,8 @@
         <!-- Filter Option -->
         <LinearLayout
             android:layout_width="match_parent"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:layout_height="match_parent">
 
             <!-- Filter - Horizontal Scrollable -->
@@ -127,8 +128,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="15dp"
-                    android:paddingEnd="15dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp">
 

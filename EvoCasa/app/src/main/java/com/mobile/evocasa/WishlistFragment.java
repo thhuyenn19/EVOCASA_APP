@@ -70,7 +70,25 @@ public class WishlistFragment extends Fragment {
 
         //set font//
         TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
-        FontUtils.setZregularFont(requireContext(), txtViewRcm);
+        FontUtils.setZboldFont(requireContext(), txtViewRcm);
+
+        TextView txtTitle = view.findViewById(R.id.txtTitle);
+        FontUtils.setZboldFont(requireContext(), txtTitle);
+
+        TextView tvSortBy = view.findViewById(R.id.tvSortBy);
+        FontUtils.setMediumFont(requireContext(), tvSortBy);
+
+        TextView btnAll = view.findViewById(R.id.btnAll);
+        FontUtils.setMediumFont(requireContext(), btnAll);
+
+        TextView btnSale = view.findViewById(R.id.btnSale);
+        FontUtils.setMediumFont(requireContext(), btnSale);
+
+        TextView btnLowStock = view.findViewById(R.id.btnLowStock);
+        FontUtils.setMediumFont(requireContext(), btnLowStock);
+
+        TextView btnOutOfStock = view.findViewById(R.id.btnOutOfStock);
+        FontUtils.setMediumFont(requireContext(), btnOutOfStock);
 
         return view;
     }
