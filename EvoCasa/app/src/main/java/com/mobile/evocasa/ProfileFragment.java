@@ -50,9 +50,9 @@ public class ProfileFragment extends Fragment {
                 .commit();
         });
 
-            // Sự kiện mở WishlistFragment khi bấm vào txtWishlist
+        //Mở WishlistFragment khi bấm vào txtWishlist
         View txtWishlist = view.findViewById(R.id.txtWishlist);
-            txtWishlist.setOnClickListener(v -> {
+        txtWishlist.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new WishlistFragment())
