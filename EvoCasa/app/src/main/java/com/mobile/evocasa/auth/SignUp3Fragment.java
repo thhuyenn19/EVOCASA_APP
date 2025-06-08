@@ -93,7 +93,7 @@ public class SignUp3Fragment extends Fragment {
         btnBack = view.findViewById(R.id.btnBack);
         btnHelp = view.findViewById(R.id.btnHelp);
         txtTitle = view.findViewById(R.id.txtTitle);
-        txtDescription = view.findViewById(R.id.txtDescription);
+        txtDescription = view.findViewById(R.id.txtCategoryShop);
         txtCodeLabel = view.findViewById(R.id.txtCodeLabel);
         edtCode1 = view.findViewById(R.id.edtCode1);
         edtCode2 = view.findViewById(R.id.edtCode2);

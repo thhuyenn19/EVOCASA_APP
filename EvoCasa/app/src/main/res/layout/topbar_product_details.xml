@@ -45,8 +45,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:fontFamily="serif"
+        android:fontFamily="@font/zen_old_mincho"
         android:gravity="center"
+        android:text="@string/title_EVOCASA"
         android:textColor="@color/color_5E4C3E"
         android:textSize="20sp"
         android:textStyle="bold" />
