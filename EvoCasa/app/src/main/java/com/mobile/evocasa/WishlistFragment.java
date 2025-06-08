@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
@@ -19,6 +20,7 @@ import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.SuggestedProducts;
 import com.mobile.models.WishlistProduct;
 import com.mobile.models.WishlistRcm;
+import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +66,11 @@ public class WishlistFragment extends Fragment {
 
         WishlistRcmAdapter wishlistRcmAdapter = new WishlistRcmAdapter(wishlistRcmList);
         recyclerViewWishlistRcm.setAdapter(wishlistRcmAdapter);
+
+
+        //set font//
+        TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
+        FontUtils.setZregularFont(requireContext(), txtViewRcm);
 
         return view;
     }
