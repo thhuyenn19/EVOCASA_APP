@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -146,25 +147,36 @@ public class HomeFragment extends Fragment {
 
 
 
-        // Bắt sự kiện click giỏ hàng (imgCart)
+//        // Bắt sự kiện click giỏ hàng (imgCart) => Mở Empty Cart
+//        ImageView imgCart = view.findViewById(R.id.imgCart);
+//        if (imgCart != null) {
+//            imgCart.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    // Mở CartFragment
+//                    Fragment cartFragment = new CartEmptyFragment();
+//                    requireActivity().getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.fragment_container, cartFragment) // ID container trong NavBarActivity
+//                            .addToBackStack(null) // để quay lại được
+//                            .commit();
+//                }
+//            });
+//        }
+
+
+        // Bắt sự kiện click giỏ hàng (imgCart) => Mở Cart Product
         ImageView imgCart = view.findViewById(R.id.imgCart);
         if (imgCart != null) {
             imgCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // Mở CartFragment
-                    Fragment cartFragment = new CartEmptyFragment();
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, cartFragment) // ID container trong NavBarActivity
-                            .addToBackStack(null) // để quay lại được
-                            .commit();
+                    // Mở CartActivity thay vì CartFragment
+                    Intent intent = new Intent(requireContext(), CartActivity.class);
+                    startActivity(intent);
                 }
             });
         }
-
-
-
 
         return view;
     }
