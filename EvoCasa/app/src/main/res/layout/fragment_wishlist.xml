@@ -1,0 +1,96 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".WishlistFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Thanh trên -->
+        <include layout="@layout/topbar_wishlist_title"/>
+
+        <!-- Filter Option -->
+        <include layout="@layout/wishlist_filter_option"/>
+
+        <!-- Sort by -->
+        <include layout="@layout/wishlist_sort_by"/>
+
+        <!-- Wishlist product RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewWishlistProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
+
+        <!-- Recommend -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="16dp">
+
+            <!-- Line bên trái -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1.5"
+                android:layout_gravity="center_vertical"
+                android:background="@color/color_5E4C3E" />
+
+            <!-- Khoảng cách nhỏ giữa line và chữ -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.5" />
+
+            <!-- Text tiêu đề -->
+            <TextView
+                android:id="@+id/txtViewRcm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_wishlist_recommend"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="24sp"/>
+
+            <!-- Khoảng cách nhỏ giữa chữ và line -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.5" />
+
+            <!-- Line bên phải -->
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1.5"
+                android:layout_gravity="center_vertical"
+                android:background="@color/color_5E4C3E" />
+        </LinearLayout>
+
+        <!-- Recommend RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewWishlistRcm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:clipToPadding="false"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
+
+    </LinearLayout>
+
+</ScrollView>
