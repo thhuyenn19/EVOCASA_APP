@@ -51,7 +51,7 @@ public class SignUp5Fragment extends Fragment {
         // Lấy tham chiếu đến các TextView và Button
         btnSignIn = rootView.findViewById(R.id.btnSignIn);
         txtSuccess = rootView.findViewById(R.id.txtSucess);
-        txtDescription = rootView.findViewById(R.id.txtDescription);
+        txtDescription = rootView.findViewById(R.id.txtCategoryShop);
 
         // Tạo Typeface từ font trong assets
         Typeface customFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");

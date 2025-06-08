@@ -20,7 +20,7 @@
 
         <!-- Only Title overlayed on image -->
         <TextView
-            android:id="@+id/txtDescription"
+            android:id="@+id/txtCategoryShop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -35,7 +35,7 @@
 
     <!-- Description outside of hero image -->
     <TextView
-        android:id="@+id/descriptionText"
+        android:id="@+id/txtDescriptionShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Celebrating patina, heritage, and the comfort of the past."
@@ -60,7 +60,7 @@
         android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/descriptionText"
+        android:layout_below="@id/txtDescriptionShop"
         android:background="#FFFCF3"
         android:paddingHorizontal="20dp"
         android:paddingTop="10dp"
