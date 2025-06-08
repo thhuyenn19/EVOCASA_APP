@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    tools:context=".CartEmptyFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- topbar -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp">
+
+            <!-- Nút back -->
+            <LinearLayout
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgCartBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+            </LinearLayout>
+
+            <!-- Spacer để căn giữa title -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <!-- Tiêu đề tùy chỉnh -->
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="@string/title_cart_product_title"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <!-- Spacer phải -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="115dp" />
+
+
+
+        <!-- ẢNH  -->
+        <ImageView
+            android:id="@+id/imgCartEmpty"
+            android:layout_width="264dp"
+            android:layout_height="260dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:src="@mipmap/ic_cart_empty" />
+
+        <TextView
+            android:id="@+id/txtCartEmptyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="@string/title_cart_empty_title"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtCartDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_cart_empty_description"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="14sp"/>
+
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="37dp" />
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBackShop"
+            android:layout_width="179dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_pressed_effect"
+            android:elevation="2dp"
+            android:text="@string/title_back_shop"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

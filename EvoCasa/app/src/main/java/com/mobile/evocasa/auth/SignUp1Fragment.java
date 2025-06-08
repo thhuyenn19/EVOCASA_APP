@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
@@ -58,7 +57,7 @@ public class SignUp1Fragment extends Fragment {
 
         // Get references to the views
         txtCreate = view.findViewById(R.id.txtCreate);
-        txtDescription = view.findViewById(R.id.txtDescription);
+        txtDescription = view.findViewById(R.id.txtCategoryShop);
         txtOrWith = view.findViewById(R.id.txtOrWith);
         txtDontHave = view.findViewById(R.id.txtDontHave);
         txtTerm = view.findViewById(R.id.txtTerm);
