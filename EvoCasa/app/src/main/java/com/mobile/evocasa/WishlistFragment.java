@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.adapters.FlashSaleAdapter;
@@ -34,6 +35,8 @@ public class WishlistFragment extends Fragment {
 
     private TextView btnAll, btnSale, btnLowStock, btnOutOfStock;
     private List<TextView> allTabs;
+
+    private ImageView imgWishlistBack;
 
 
     @Override
@@ -95,6 +98,8 @@ public class WishlistFragment extends Fragment {
         TextView btnOutOfStock = view.findViewById(R.id.btnOutOfStock);
         FontUtils.setMediumFont(requireContext(), btnOutOfStock);
 
+
+        //Chọn các option lọc
         // Danh sách tất cả tab
         allTabs = Arrays.asList(btnAll, btnSale, btnLowStock, btnOutOfStock);
 
@@ -108,6 +113,18 @@ public class WishlistFragment extends Fragment {
                 // TODO: xử lý lọc sản phẩm tương ứng tại đây nếu cần
             });
         }
+
+        // Gán sự kiện quay lại ProfileFragment
+        imgWishlistBack = view.findViewById(R.id.imgWishlistBack);
+        imgWishlistBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         return view;
     }
 
