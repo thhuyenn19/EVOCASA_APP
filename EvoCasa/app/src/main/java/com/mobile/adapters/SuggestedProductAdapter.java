@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mobile.evocasa.R;
 import com.mobile.models.SuggestedProducts;
+import com.mobile.utils.FontUtils;
+
 import java.util.List;
 
 public class SuggestedProductAdapter extends RecyclerView.Adapter<SuggestedProductAdapter.SuggestedProductViewHolder>{
@@ -42,6 +44,9 @@ public class SuggestedProductAdapter extends RecyclerView.Adapter<SuggestedProdu
         holder.txtPrice.setText(product.getNewPrice());
         holder.txtDiscount.setText(product.getDiscount());
         holder.txtRating.setText(String.valueOf(product.getRating()));
+
+        // ✅ Áp dụng font Zbold cho tên sản phẩm
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
     }
 
     @Override

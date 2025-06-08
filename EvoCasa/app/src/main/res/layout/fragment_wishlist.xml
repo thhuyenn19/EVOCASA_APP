@@ -249,16 +249,14 @@
         </LinearLayout>
 
 
-
         <!-- Wishlist product RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewFavouriteProduct"
+            android:id="@+id/recyclerViewWishProduct"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="4dp"
             android:clipToPadding="false"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:paddingBottom="8dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
 
@@ -321,8 +319,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
 

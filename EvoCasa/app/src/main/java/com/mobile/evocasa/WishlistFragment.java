@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.adapters.CategoryAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
+import com.mobile.adapters.WishProductAdapter;
 import com.mobile.models.SuggestedProducts;
+import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
@@ -31,12 +34,32 @@ public class WishlistFragment extends Fragment {
 
     private ImageView imgWishlistBack;
 
+    private WishProductAdapter adapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_wishlist, container, false);
+
+
+        /* Favourite */
+        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+        recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        List<WishProduct> wishProductList = new ArrayList<>();
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+
+    // Gán adapter
+        WishProductAdapter wishProductAdapter = new WishProductAdapter(wishProductList);
+        recyclerViewWishProduct.setAdapter(wishProductAdapter);
+
 
 
 
