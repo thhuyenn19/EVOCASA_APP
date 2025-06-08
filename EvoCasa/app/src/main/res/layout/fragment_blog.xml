@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_blog"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/white">
-
+    android:background="@color/color_bg">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
-
         <!-- Tiêu đề -->
-        <TextView
-            android:layout_width="376dp"
-            android:layout_height="wrap_content"
-            android:paddingBottom="12dp"
-            android:text="Blog"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
+        <include layout="@layout/topbar_blog" />
         <!-- Tabs Recent | Recommended | Popular -->
         <LinearLayout
             android:id="@+id/tab_menu"
@@ -38,6 +28,7 @@
                 style="@style/TabStyle"
                 android:text="Recent"
                 android:background="@drawable/tab_bg_selector"
+                android:textColor="#5E4C3E"
                 android:clickable="true"
                 android:focusable="true" />
 
@@ -45,6 +36,7 @@
                 android:id="@+id/tab_recommended"
                 style="@style/TabStyle"
                 android:text="Recommended"
+                android:textColor="#5E4C3E"
                 android:background="@drawable/tab_bg_selector"
                 android:clickable="true"
                 android:focusable="true" />
@@ -53,6 +45,7 @@
                 android:id="@+id/tab_popular"
                 style="@style/TabStyle"
                 android:text="Popular"
+                android:textColor="#5E4C3E"
                 android:background="@drawable/tab_bg_selector"
                 android:clickable="true"
                 android:focusable="true" />
@@ -81,41 +74,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Minimalist Style In Interior Design"
-                android:textSize="22sp"
+                android:fontFamily="@font/zen_old_mincho_black"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:paddingTop="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
-                android:textColor="#5E4C3E" />
+                android:textColor="#3F2305" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:paddingBottom="8dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
                 android:weightSum="1">
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/img_avatar"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:src="@mipmap/sample_avt"
                     android:scaleType="centerCrop"
-                    android:background="@drawable/bg_badge_count"
-                    android:clipToOutline="true"
-                    android:outlineProvider="background" />
+                    app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
 
                 <TextView
                     android:id="@+id/txt_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="John Anthony"
+                    android:fontFamily="@font/zen_old_mincho"
                     android:paddingStart="8dp"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textColor="#5E4C3E"/>
 
                 <LinearLayout
@@ -137,24 +129,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="2 hours ago"
-                        android:textColor="#5E4C3E"
-                        android:textSize="14sp" />
+                        android:textColor="#505050"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
 
         <!-- More Blogs -->
         <TextView
             android:id="@+id/txtMoreBlogs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="8dp"
             android:text="More Blogs"
+            android:layout_marginBottom="12dp"
+            android:fontFamily="@font/zen_old_mincho_black"
+            android:textColor="#5E4C3E"
             android:textAlignment="center"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
+            android:textSize="18sp"/>
+        <!-- RecyclerView More Blogs -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_blog"
             android:layout_width="match_parent"
@@ -162,4 +154,4 @@
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never"/>
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

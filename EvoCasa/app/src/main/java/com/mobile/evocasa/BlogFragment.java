@@ -34,14 +34,14 @@ public class BlogFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         blogList = new ArrayList<>();
-        blogList.add(new Blog("5 Interior Design Trends Of 2024 | Sofa Trend", "16/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Minimalist Living Room Ideas", "14/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
-        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_featuredblog));
+        blogList.add(new Blog("5 Interior Design Trends Of 2024 | Sofa Trend", "16/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Minimalist Living Room Ideas", "14/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors To Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Top Colors to Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
 
         blogAdapter = new BlogAdapter(blogList);
         recyclerView.setAdapter(blogAdapter);
@@ -63,6 +63,15 @@ public class BlogFragment extends Fragment {
                 // TODO: Thay đổi dữ liệu blog theo tab nếu cần
             });
         }
+
+        // Xử lý nút back
+        View btnBack = view.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new ProfileFragment())
+                .commit();
+        });
 
         return view;
     }
