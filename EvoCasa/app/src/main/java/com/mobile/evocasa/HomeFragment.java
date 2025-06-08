@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,9 @@ public class HomeFragment extends Fragment {
     private ArrayList<Object> categoryList;
     private CategoryAdapter adapter;
     private View view;
+
+    private ImageView imgCart;
+
     //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
 //    private void addViews() {
 //        txtEvocasa = findViewById(R.id.txtEvocasa);
@@ -139,6 +143,28 @@ public class HomeFragment extends Fragment {
 
         CollectionAdapter collectionAdapter = new CollectionAdapter(collectionList);
         recyclerViewCollections.setAdapter(collectionAdapter);
+
+
+
+        // Bắt sự kiện click giỏ hàng (imgCart)
+        ImageView imgCart = view.findViewById(R.id.imgCart);
+        if (imgCart != null) {
+            imgCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Mở CartFragment
+                    Fragment cartFragment = new CartEmptyFragment();
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, cartFragment) // ID container trong NavBarActivity
+                            .addToBackStack(null) // để quay lại được
+                            .commit();
+                }
+            });
+        }
+
+
+
 
         return view;
     }

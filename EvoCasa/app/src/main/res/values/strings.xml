@@ -90,5 +90,8 @@
     <string name="title_wishlist_recommend">You might like</string>
     <string name="title_blog">Blog</string>
     <string name="title_notifications">Notifications</string>
-
+    <string name="title_cart_product_title">Your Cart</string>
+    <string name="title_cart_empty_title">Your cart is empty!</string>
+    <string name="title_cart_empty_description">Click on the button to go find the products you like.</string>
+    <string name="title_back_shop">BACK TO SHOP</string>
 </resources>
