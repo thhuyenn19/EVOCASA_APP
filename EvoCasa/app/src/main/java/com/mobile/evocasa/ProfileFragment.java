@@ -39,6 +39,16 @@ public class ProfileFragment extends Fragment {
         // Gán adapter cho RecyclerView
        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(suggestedProductsList);
         recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
+
+        // Sự kiện mở BlogFragment khi bấm vào txtEvoCasaBlog
+        View txtEvoCasaBlog = view.findViewById(R.id.txtEvoCasaBlog);
+        txtEvoCasaBlog.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new BlogFragment())
+                .addToBackStack(null)
+                .commit();
+        });
     return view;
     }
 }

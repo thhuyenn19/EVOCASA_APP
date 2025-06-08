@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_blog"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="376dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:text="Blog"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <!-- Tabs Recent | Recommended | Popular -->
+        <LinearLayout
+            android:id="@+id/tab_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp"
+            android:background="#F5F5F5">
+
+            <TextView
+                android:id="@+id/tab_recent"
+                style="@style/TabStyle"
+                android:text="Recent"
+                android:background="@drawable/tab_bg_selector"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/tab_recommended"
+                style="@style/TabStyle"
+                android:text="Recommended"
+                android:background="@drawable/tab_bg_selector"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/tab_popular"
+                style="@style/TabStyle"
+                android:text="Popular"
+                android:background="@drawable/tab_bg_selector"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <!-- Featured blog -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_featured_blog"
+            android:padding="12dp"
+            android:layout_marginBottom="12dp"
+            android:elevation="2dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgFeaturedBlog"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_featuredblog"
+                app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
+
+            <TextView
+                android:id="@+id/txtFeaturedBlogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minimalist Style In Interior Design"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:paddingTop="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:textColor="#5E4C3E" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:weightSum="1">
+
+                <ImageView
+                    android:id="@+id/img_avatar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@mipmap/sample_avt"
+                    android:scaleType="centerCrop"
+                    android:background="@drawable/bg_badge_count"
+                    android:clipToOutline="true"
+                    android:outlineProvider="background" />
+
+                <TextView
+                    android:id="@+id/txt_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="John Anthony"
+                    android:paddingStart="8dp"
+                    android:textSize="14sp"
+                    android:textColor="#5E4C3E"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="end"
+                    android:paddingEnd="10dp">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_clock"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp"/>
+
+                    <TextView
+                        android:id="@+id/txt_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2 hours ago"
+                        android:textColor="#5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <!-- More Blogs -->
+        <TextView
+            android:id="@+id/txtMoreBlogs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="8dp"
+            android:text="More Blogs"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_blog"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"/>
+    </LinearLayout>
+</ScrollView>

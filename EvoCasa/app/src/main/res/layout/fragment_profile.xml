@@ -562,6 +562,7 @@
                         android:src="@drawable/ic_blog" />
 
                     <TextView
+                        android:id="@+id/txtEvoCasaBlog"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
