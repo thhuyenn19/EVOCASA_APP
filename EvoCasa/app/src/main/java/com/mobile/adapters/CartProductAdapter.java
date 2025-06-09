@@ -71,7 +71,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
             productList.get(position).setSelected(isChecked);
         });
-        
+
 
         //set font
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvTitle);
