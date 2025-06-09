@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
+    private TextView txtName;
     private RecyclerView recyclerView;
     private View view;
     @Nullable
@@ -67,9 +68,14 @@ public class ProfileFragment extends Fragment {
     return view;
     }
     private void applyCustomFonts(View view) {
-        TextView txtNotificationDate = view.findViewById(R.id.txtNotificationDate);
-        if (txtNotificationDate != null) {
-            FontUtils.setRegularFont(getContext(), txtNotificationDate);
+        TextView txtName = view.findViewById(R.id.txtName);
+        TextView txtOrders = view.findViewById(R.id.txtOrders);
+
+        if (txtName != null) {
+            FontUtils.setZboldFont(getContext(), txtName);
+        }
+        if (txtOrders != null) {
+            FontUtils.setZblackFont(getContext(), txtOrders);
         }
 
         TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);

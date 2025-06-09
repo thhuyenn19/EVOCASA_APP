@@ -104,4 +104,7 @@
     <string name="title_total_cart_amount">$3,500</string>
     <string name="title_check_out">CHECK OUT</string>
     <string name="title_EVOCASA">EVOCASA</string>
+    <string name="title_profile_feature">My Features</string>
+    <string name="title_profile_support">Support</string>
+    <string name="title_view_more">View more</string>
 </resources>

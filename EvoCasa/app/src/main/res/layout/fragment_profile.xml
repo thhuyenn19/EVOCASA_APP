@@ -93,13 +93,13 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/txtCategory"
+                        android:id="@+id/txtOrders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/title_orders"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="20sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -142,8 +142,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="55dp"
-                            android:layout_height="55dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -154,14 +154,14 @@
                             <!-- Badge -->
                             <TextView
                                 android:id="@+id/badge_pending"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="top|end"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="12sp" />
+                                android:textSize="10sp" />
                         </FrameLayout>
 
                         <TextView
@@ -181,8 +181,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="55dp"
-                            android:layout_height="55dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -192,14 +192,14 @@
                             <!-- Badge -->
                             <TextView
                                 android:id="@+id/badge_pick_up"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="top|end"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="12sp"/>
+                                android:textSize="10sp"/>
 
                         </FrameLayout>
 
@@ -220,8 +220,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="55dp"
-                            android:layout_height="55dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -231,14 +231,14 @@
 
                             <TextView
                                 android:id="@+id/badge_transit"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="top|end"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="12sp" />
+                                android:textSize="10sp" />
                         </FrameLayout>
 
                         <TextView
@@ -258,8 +258,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="55dp"
-                            android:layout_height="55dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -269,14 +269,14 @@
 
                             <TextView
                                 android:id="@+id/badge_review"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:layout_gravity="top|end"
                                 android:background="@drawable/bg_badge_count"
                                 android:gravity="center"
                                 android:text="0"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="12sp" />
+                                android:textSize="10sp" />
                         </FrameLayout>
 
                         <TextView
@@ -316,9 +316,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="My Features"
+                        android:text="@string/title_profile_feature"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -332,7 +332,7 @@
                             android:layout_height="match_parent"
                             android:layout_marginRight="8dp"
                             android:gravity="center_vertical"
-                            android:text="View More"
+                            android:text="@string/title_view_more"
                             android:textColor="#B34F0B"
                             android:textSize="14sp" />
 
@@ -502,7 +502,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Support"
+                    android:text="@string/title_profile_support"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="18sp"
                     android:textStyle="bold" />
