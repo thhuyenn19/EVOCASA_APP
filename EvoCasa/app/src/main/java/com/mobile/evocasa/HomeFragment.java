@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
 
 
 
-//        // Bắt sự kiện click giỏ hàng (imgCart) => Mở Empty Cart
+        // Bắt sự kiện click giỏ hàng (imgCart) => Mở Empty Cart
 //        ImageView imgCart = view.findViewById(R.id.imgCart);
 //        if (imgCart != null) {
 //            imgCart.setOnClickListener(new View.OnClickListener() {
