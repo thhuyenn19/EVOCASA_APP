@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@mipmap/onboarding_bg_3"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".onboarding.Onboarding3Fragment">
 
     <TextView
