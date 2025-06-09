@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.models.SuggestedProducts;
+import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        /* Hot Products */
+        applyCustomFonts(view);
+        /* Suggested Products */
         RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
 
         recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -61,5 +65,16 @@ public class ProfileFragment extends Fragment {
 
         });
     return view;
+    }
+    private void applyCustomFonts(View view) {
+        TextView txtNotificationDate = view.findViewById(R.id.txtNotificationDate);
+        if (txtNotificationDate != null) {
+            FontUtils.setRegularFont(getContext(), txtNotificationDate);
+        }
+
+        TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);
+        if (txtMarkAllRead != null) {
+            FontUtils.setRegularFont(getContext(), txtMarkAllRead);
+        }
     }
 }

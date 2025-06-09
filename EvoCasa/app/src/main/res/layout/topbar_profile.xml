@@ -28,6 +28,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:text="@string/title_profile"
+        android:fontFamily="@font/zen_old_mincho_black"
         android:textColor="@color/color_5E4C3E"
         android:textSize="20sp"
         android:textStyle="bold" />
