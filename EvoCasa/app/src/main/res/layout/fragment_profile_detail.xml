@@ -1,0 +1,82 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg">
+
+    <!-- Top bar (đã include) -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <include layout="@layout/topbar_profile_detail" />
+
+            <!-- đây sẽ là chỗ chúng ta chèn avatar + tên -->
+            <!-- Phần này mình đưa vào một LinearLayout có gravity center để căn giữa -->
+            <LinearLayout
+                android:id="@+id/container_avatar_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:background="@color/color_F2EAD3">
+
+                <!-- Khung chứa avatar (circular) + nút edit nhỏ chồng lên -->
+                <FrameLayout
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="10dp">
+
+                    <!-- ImageView cho avatar (giả sử bạn đã có 1 ảnh tròn hoặc sẽ custom mask) -->
+                    <FrameLayout
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="10dp">
+
+                        <!-- Chỗ này chúng ta sẽ ép ảnh vuông thành tròn -->
+                        <ImageView
+                            android:id="@+id/img_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@mipmap/sample_avt"
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_shape"
+                            android:clipToOutline="true"
+                            android:contentDescription="Avatar" />
+
+                        <!-- Nút edit chồng lên, giữ nguyên nếu bạn muốn -->
+                        <ImageButton
+                            android:id="@+id/btn_edit_avatar"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="bottom|end"
+                            android:layout_margin="4dp"
+                            android:background="@drawable/bg_circle_30black"
+                            android:src="@drawable/ic_edit"
+                            android:contentDescription="Edit Avatar" />
+                    </FrameLayout>
+
+                </FrameLayout>
+
+                <!-- TextView cho tên người dùng -->
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="John Anthony"
+                    android:textSize="18sp"
+                    android:textColor="@color/color_5E4C3E" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

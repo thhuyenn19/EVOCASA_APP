@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobile.adapters.CategoryAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.adapters.WishProductAdapter;
+import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.SuggestedProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;

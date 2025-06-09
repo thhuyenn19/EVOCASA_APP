@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.BlogAdapter;
+import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.Blog;
 
 import java.util.ArrayList;
