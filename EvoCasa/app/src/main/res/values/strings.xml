@@ -115,4 +115,7 @@
     <string name="title_voucher">Voucher</string>
     <string name="title_coin">Coin</string>
     <string name="title_log_out">Log Out</string>
+    <string name="title_evocasa_blog">EvoCasa Blog</string>
+    <string name="title_chat_with_evocasa">Chat with EvoCasa</string>
+    <string name="txt_help_center">Help Center</string>
 </resources>

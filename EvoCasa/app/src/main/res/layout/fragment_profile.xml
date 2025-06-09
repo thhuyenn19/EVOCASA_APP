@@ -533,7 +533,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="Help Center"
+                        android:text="@string/txt_help_center"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -555,7 +555,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="Chat with EvoCasa"
+                        android:text="@string/title_chat_with_evocasa"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -577,7 +577,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="EvoCasa Blog"
+                        android:text="@string/title_evocasa_blog"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="14sp" />
                 </LinearLayout>
