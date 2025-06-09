@@ -3,42 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="181dp"
-    android:layout_margin="8dp"
+    android:layout_height="120dp"
     android:background="@drawable/item_category_placeholder"
-    android:padding="16dp"
-    android:minHeight="181dp">
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/txtCategoryName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="start"
-        android:lineHeight="26dp"
-        android:text="Shop\nAll"
-        android:textAlignment="textStart"
-        android:textColor="#8B4513"
-        android:textSize="22sp"
-        android:textStyle="normal"
-        android:maxLines="2"
-        android:ellipsize="end"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imgCategory"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlCompat" />
-
+    <!-- Background image - sát lề phải hoàn toàn -->
     <ImageView
         android:id="@+id/imgCategory"
-        android:layout_width="111dp"
-        android:layout_height="124dp"
-        android:layout_marginEnd="16dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_marginEnd="-10dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_category_decor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Text đè lên trước, sát lề trái, căn giữa -->
+    <TextView
+        android:id="@+id/txtCategoryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="-15dp"
+        android:elevation="4dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical|start"
+        android:lineHeight="24dp"
+        android:maxLines="2"
+        android:paddingStart="16dp"
+        android:text="Shop\nAll"
+        android:textColor="#8B4513"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imgCategory"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlCompat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

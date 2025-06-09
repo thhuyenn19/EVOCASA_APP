@@ -1,9 +1,12 @@
 package com.mobile.evocasa.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -68,7 +71,26 @@ public class ProfileFragment extends Fragment {
                 .commit();
 
         });
-    return view;
+
+        ImageView imgAvatar = view.findViewById(R.id.img_avatar);
+        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+        imgAvatar.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileDetailFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        btnEditAvatar.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileDetailFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
+        return view;
     }
     private void applyCustomFonts(View view) {
         TextView txtName = view.findViewById(R.id.txtName);
