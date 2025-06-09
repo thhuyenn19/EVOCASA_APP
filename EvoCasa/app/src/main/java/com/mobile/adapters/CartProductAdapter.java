@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvTitle);
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvPrice);
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvQuantity);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.checkboxSelect.setButtonTintList(null);
+        }
+
 
     }
 

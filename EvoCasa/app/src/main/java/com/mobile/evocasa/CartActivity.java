@@ -1,6 +1,7 @@
 package com.mobile.evocasa;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -100,6 +101,12 @@ public class CartActivity extends AppCompatActivity {
             // Thông báo adapter cập nhật UI
             cartProductAdapter.notifyDataSetChanged();
         });
+
+
+        CheckBox checkboxAll = findViewById(R.id.checkboxAllProducts);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            checkboxAll.setButtonTintList(null);
+        }
 
 
     }
