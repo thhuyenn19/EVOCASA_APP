@@ -1,6 +1,8 @@
 package com.mobile.evocasa;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +35,35 @@ public class CartActivity extends AppCompatActivity {
         if (txtTitle != null) {
             FontUtils.setZboldFont(this, txtTitle);
         }
+
+        //Set font cho All products
+        TextView txtAllProducts = findViewById(R.id.txtAllProducts);
+        if (txtTitle != null) {
+            FontUtils.setRegularFont(this, txtAllProducts);
+        }
+
+        //Set font cho footer
+        TextView txtSubtotal = findViewById(R.id.txtSubtotal);
+        if (txtTitle != null) {
+            FontUtils.setRegularFont(this, txtSubtotal);
+        }
+        TextView txtSubtotalAmount = findViewById(R.id.txtSubtotalAmount);
+        if (txtTitle != null) {
+            FontUtils.setRegularFont(this, txtSubtotalAmount);
+        }
+        TextView txtUseVoucher = findViewById(R.id.txtUseVoucher);
+        if (txtTitle != null) {
+            FontUtils.setMediumFont(this, txtUseVoucher);
+        }
+        TextView txtTotalCart = findViewById(R.id.txtTotalCart);
+        if (txtTitle != null) {
+            FontUtils.setBoldFont(this, txtTotalCart);
+        }
+        TextView txtTotalCartAmount = findViewById(R.id.txtTotalCartAmount);
+        if (txtTitle != null) {
+            FontUtils.setBoldFont(this, txtTotalCartAmount);
+        }
+
 
 
     }
