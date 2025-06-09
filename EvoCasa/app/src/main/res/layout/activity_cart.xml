@@ -84,7 +84,10 @@
             android:id="@+id/checkboxSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/color_5E4C3E" />
+            android:button="@drawable/custom_checkbox_cart"
+            android:buttonTint="@null"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
 
         <TextView
             android:id="@+id/txtAllProducts"
