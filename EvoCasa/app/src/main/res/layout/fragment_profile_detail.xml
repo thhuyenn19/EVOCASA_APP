@@ -59,23 +59,113 @@
                             android:layout_gravity="bottom|end"
                             android:layout_margin="4dp"
                             android:background="@drawable/bg_circle_30black"
-                            android:src="@drawable/ic_edit"
+                            android:src="@drawable/ic_edit_camera"
                             android:contentDescription="Edit Avatar" />
                     </FrameLayout>
 
                 </FrameLayout>
 
-                <!-- TextView cho tên người dùng -->
-                <TextView
-                    android:id="@+id/txtName"
+                <LinearLayout
+                    android:id="@+id/name_with_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="John Anthony"
-                    android:textSize="18sp"
-                    android:textColor="@color/color_5E4C3E" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="John Anthony"
+                        android:textSize="18sp"
+                        android:textColor="@color/color_5E4C3E" />
+
+                    <ImageView
+                        android:id="@+id/iconEditName"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="4dp"
+                        android:src="@drawable/ic_edit_pencil"
+                        android:contentDescription="Edit name" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Personal Information Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/txtPersonalInformation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_personal_info"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_marginEnd="4dp"
+                        android:src="@drawable/ic_edit_pencil"
+                        android:contentDescription="Edit icon" />
+
+                    <TextView
+                        android:id="@+id/txtEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_edit"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_profile_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:overScrollMode="never" />
+            <!-- Shipping Header -->
+            <TextView
+                android:id="@+id/txtShippingAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/title_shipping_address"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_shipping_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="300dp"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+
+
+
         </LinearLayout>
+
 
     </ScrollView>
 
