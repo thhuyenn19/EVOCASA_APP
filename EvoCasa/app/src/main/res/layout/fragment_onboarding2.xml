@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".onboarding.Onboarding2Fragment">
 
 
@@ -25,7 +26,7 @@
         <TextView
             android:id="@+id/txtView1"
             android:layout_width="match_parent"
-            android:layout_height="38dp" />
+            android:layout_height="65dp" />
 
         <ImageView
             android:id="@+id/imgLogoOnboarding"
@@ -36,13 +37,13 @@
         <TextView
             android:id="@+id/txtView2"
             android:layout_width="match_parent"
-            android:layout_height="140dp" />
+            android:layout_height="95dp" />
 
         <TextView
             android:id="@+id/txtViewExplore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:paddingStart="16dp"
             android:text="@string/title_onboarding2_line_1"
             android:textAlignment="viewStart"
             android:textColor="#FFFFFF"
@@ -52,7 +53,7 @@
             android:id="@+id/txtViewTheSoulOf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:paddingStart="16dp"
             android:text="@string/title_onboarding2_line_2"
             android:textColor="#FFFFFF"
             android:textSize="36sp" />
@@ -60,8 +61,8 @@
         <TextView
             android:id="@+id/txtViewEvoCasa"
             android:layout_width="match_parent"
-            android:layout_height="82dp"
-            android:paddingStart="20dp"
+            android:layout_height="76dp"
+            android:paddingStart="18dp"
             android:text="@string/title_onboarding2_line_3"
             android:textColor="#FFFFFF"
             android:textSize="48sp" />
@@ -70,7 +71,7 @@
             android:id="@+id/txtView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="20dp"
+            android:paddingStart="14dp"
             android:text="@string/title_onboarding2_description"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
