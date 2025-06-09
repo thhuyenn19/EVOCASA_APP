@@ -81,7 +81,7 @@
         android:paddingEnd="15dp">
 
         <CheckBox
-            android:id="@+id/checkboxSelect"
+            android:id="@+id/checkboxAllProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:button="@drawable/custom_checkbox_cart"
