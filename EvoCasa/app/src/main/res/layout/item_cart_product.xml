@@ -7,8 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@color/color_bg"
     android:padding="8dp"
-    android:paddingEnd="15dp"
-    android:layout_marginStart="-5dp">
+    android:paddingEnd="15dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,17 +16,17 @@
         tools:ignore="MissingConstraints">
 
         <!-- Checkbox -->
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/checkboxSelect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
             android:button="@drawable/custom_checkbox_cart"
-            android:buttonTint="@null"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_gravity="center_vertical" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="3dp"/>
+
 
         <!-- Product Image -->
         <com.google.android.material.imageview.ShapeableImageView
