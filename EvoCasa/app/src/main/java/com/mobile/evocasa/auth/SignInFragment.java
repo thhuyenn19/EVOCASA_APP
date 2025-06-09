@@ -48,7 +48,7 @@ public class SignInFragment extends Fragment {
 
         // Get references to the views
         txtSignIn = rootView.findViewById(R.id.txtSignIn);
-        txtDescription = rootView.findViewById(R.id.txtCategoryShop);
+        txtDescription = rootView.findViewById(R.id.txtDescription);
         txtOrWith = rootView.findViewById(R.id.txtOrWith);
         txtDontHave = rootView.findViewById(R.id.txtDontHave);
         txtTerm = rootView.findViewById(R.id.txtTerm);
