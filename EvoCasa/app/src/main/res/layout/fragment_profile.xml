@@ -386,7 +386,7 @@
                             android:layout_weight="1"
                             android:text="@string/title_wishlist"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -410,13 +410,14 @@
                             android:src="@drawable/ic_voucher" />
 
                         <TextView
+                            android:id="@+id/txtVouchers"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:text="@string/title_voucher"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -441,13 +442,14 @@
                             android:src="@drawable/ic_coin" />
 
                         <TextView
+                            android:id="@+id/txtCoin"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:text="@string/title_coin"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -472,13 +474,14 @@
                             android:src="@drawable/ic_flash_sale" />
 
                         <TextView
+                            android:id="@+id/txtFlashSale"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:text="@string/title_flashsale"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="14sp" />
+                            android:textSize="16sp" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -504,7 +507,7 @@
                 android:orientation="vertical"
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="30dp">
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:id="@+id/txtSupport"
@@ -529,13 +532,13 @@
                         android:src="@drawable/ic_help_center" />
 
                     <TextView
-                        android:id="@+id/txtHelp"
+                        android:id="@+id/txtHelpCenter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
                         android:text="@string/txt_help_center"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -557,7 +560,7 @@
                         android:layout_marginStart="12dp"
                         android:text="@string/title_chat_with_evocasa"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -579,7 +582,7 @@
                         android:layout_marginStart="12dp"
                         android:text="@string/title_evocasa_blog"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
 
                 <!-- Log out -->
@@ -602,9 +605,41 @@
                         android:layout_marginStart="12dp"
                         android:text="@string/title_log_out"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="16dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txtSuggestedForYou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    android:text="@string/title_suggested_for_you"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewSuggestedProducts"
                 android:layout_width="match_parent"

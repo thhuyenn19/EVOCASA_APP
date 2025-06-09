@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment {
         TextView txtOrders = view.findViewById(R.id.txtOrders);
         TextView txtMyFeatures = view.findViewById(R.id.txtMyFeatures);
         TextView txtSupport = view.findViewById(R.id.txtSupport);
+        TextView txtSuggestedForYou = view.findViewById(R.id.txtSuggestedForYou);
 
         if (txtName != null) {
             FontUtils.setZboldFont(getContext(), txtName);
@@ -85,10 +86,33 @@ public class ProfileFragment extends Fragment {
         if (txtSupport != null) {
             FontUtils.setZblackFont(getContext(), txtSupport);
         }
-
-        TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);
-        if (txtMarkAllRead != null) {
-            FontUtils.setRegularFont(getContext(), txtMarkAllRead);
+        if (txtSuggestedForYou != null) {
+            FontUtils.setZregularFont(getContext(), txtSuggestedForYou);
         }
+
+        int[] textViewIds = {
+                R.id.txtSeeAll,
+                R.id.txtViewMore,
+                R.id.txtPending,
+                R.id.txtPickUp,
+                R.id.txtTransit,
+                R.id.txtReview,
+                R.id.txtWishlist,
+                R.id.txtVouchers,
+                R.id.txtCoin,
+                R.id.txtFlashSale,
+                R.id.txtHelpCenter,
+                R.id.txtChat,
+                R.id.txtEvoCasaBlog,
+                R.id.txtLogOut
+        };
+
+        for (int id : textViewIds) {
+            TextView textView = view.findViewById(id);
+            if (textView != null) {
+                FontUtils.setRegularFont(getContext(), textView);
+            }
+        }
+
     }
 }
