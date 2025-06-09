@@ -64,6 +64,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             notifyItemRangeChanged(position, productList.size());
         });
 
+        holder.checkboxSelect.setChecked(productList.get(position).isSelected());
+
+        holder.checkboxSelect.setOnCheckedChangeListener(null); // Xoá listener cũ
+        holder.checkboxSelect.setChecked(productList.get(position).isSelected());
+        holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            productList.get(position).setSelected(isChecked);
+        });
+        
+
         //set font
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvTitle);
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvPrice);

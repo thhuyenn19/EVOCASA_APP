@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -88,6 +89,17 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCartProducts.setAdapter(cartProductAdapter);
 
 
+        CheckBox checkboxAllProducts = findViewById(R.id.checkboxAllProducts);
+
+// Gán listener cho checkbox "All Products"
+        checkboxAllProducts.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Cập nhật trạng thái tất cả sản phẩm
+            for (CartProduct product : cartProductList) {
+                product.setSelected(isChecked);
+            }
+            // Thông báo adapter cập nhật UI
+            cartProductAdapter.notifyDataSetChanged();
+        });
 
 
     }
