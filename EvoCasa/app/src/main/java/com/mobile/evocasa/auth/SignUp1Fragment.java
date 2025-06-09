@@ -57,7 +57,7 @@ public class SignUp1Fragment extends Fragment {
 
         // Get references to the views
         txtCreate = view.findViewById(R.id.txtCreate);
-        txtDescription = view.findViewById(R.id.txtCategoryShop);
+        txtDescription = view.findViewById(R.id.txtDescription);
         txtOrWith = view.findViewById(R.id.txtOrWith);
         txtDontHave = view.findViewById(R.id.txtDontHave);
         txtTerm = view.findViewById(R.id.txtTerm);
