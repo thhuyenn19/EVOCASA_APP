@@ -12,8 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.adapters.CartProductAdapter;
+import com.mobile.models.CartProduct;
 import com.mobile.utils.FontUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -63,6 +70,23 @@ public class CartActivity extends AppCompatActivity {
         if (txtTitle != null) {
             FontUtils.setBoldFont(this, txtTotalCartAmount);
         }
+
+        // Setup RecyclerView cho Cart Products
+        RecyclerView recyclerViewCartProducts = findViewById(R.id.recyclerViewCartProduct);
+        recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
+
+        List<CartProduct> cartProductList = new ArrayList<>();
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+        cartProductList.add(new CartProduct("Travertine Table Lamp", 3500, R.mipmap.ic_cart_product, 1));
+
+
+        CartProductAdapter cartProductAdapter = new CartProductAdapter(cartProductList);
+        recyclerViewCartProducts.setAdapter(cartProductAdapter);
+
 
 
 
