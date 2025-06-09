@@ -110,6 +110,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/txtSeeAll"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginRight="8dp"
@@ -165,10 +166,11 @@
                         </FrameLayout>
 
                         <TextView
+                            android:id="@+id/txtPending"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Pending"
+                            android:text="@string/txt_status_pending"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -204,10 +206,11 @@
                         </FrameLayout>
 
                         <TextView
+                            android:id="@+id/txtPickUp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Pick up"
+                            android:text="@string/title_string_pick_up"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -242,10 +245,11 @@
                         </FrameLayout>
 
                         <TextView
+                            android:id="@+id/txtTransit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="In Transit"
+                            android:text="@string/title_status_in_transit"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -280,10 +284,11 @@
                         </FrameLayout>
 
                         <TextView
+                            android:id="@+id/txtReview"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="Review"
+                            android:text="@string/title_review"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp" />
                     </LinearLayout>
@@ -313,6 +318,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/txtMyFeatures"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -328,6 +334,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/txtViewMore"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginRight="8dp"
@@ -375,9 +382,9 @@
                             android:id="@+id/txtWishlist"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="Wishlist"
+                            android:layout_weight="1"
+                            android:text="@string/title_wishlist"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="14sp" />
 
@@ -405,9 +412,9 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="Vouchers"
+                            android:layout_weight="1"
+                            android:text="@string/title_voucher"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="14sp" />
 
@@ -436,9 +443,9 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="Coin"
+                            android:layout_weight="1"
+                            android:text="@string/title_coin"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="14sp" />
 
@@ -467,9 +474,9 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            android:text="Flash Sale"
+                            android:layout_weight="1"
+                            android:text="@string/title_flashsale"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="14sp" />
 
@@ -500,11 +507,12 @@
                 android:paddingBottom="30dp">
 
                 <TextView
+                    android:id="@+id/txtSupport"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_profile_support"
                     android:textColor="@color/color_5E4C3E"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <!-- Support Item -->
@@ -521,6 +529,7 @@
                         android:src="@drawable/ic_help_center" />
 
                     <TextView
+                        android:id="@+id/txtHelp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -542,6 +551,7 @@
                         android:src="@drawable/ic_chat_with" />
 
                     <TextView
+                        android:id="@+id/txtChat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
@@ -586,10 +596,11 @@
                         android:src="@drawable/ic_log_out" />
 
                     <TextView
+                        android:id="@+id/txtLogOut"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="Log Out"
+                        android:text="@string/title_log_out"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="14sp" />
                 </LinearLayout>

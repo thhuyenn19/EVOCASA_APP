@@ -70,12 +70,20 @@ public class ProfileFragment extends Fragment {
     private void applyCustomFonts(View view) {
         TextView txtName = view.findViewById(R.id.txtName);
         TextView txtOrders = view.findViewById(R.id.txtOrders);
+        TextView txtMyFeatures = view.findViewById(R.id.txtMyFeatures);
+        TextView txtSupport = view.findViewById(R.id.txtSupport);
 
         if (txtName != null) {
             FontUtils.setZboldFont(getContext(), txtName);
         }
         if (txtOrders != null) {
             FontUtils.setZblackFont(getContext(), txtOrders);
+        }
+        if (txtMyFeatures != null) {
+            FontUtils.setZblackFont(getContext(), txtMyFeatures);
+        }
+        if (txtSupport != null) {
+            FontUtils.setZblackFont(getContext(), txtSupport);
         }
 
         TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);

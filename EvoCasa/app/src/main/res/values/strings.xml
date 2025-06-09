@@ -107,4 +107,12 @@
     <string name="title_profile_feature">My Features</string>
     <string name="title_profile_support">Support</string>
     <string name="title_view_more">View more</string>
+    <string name="txt_status_pending">Pending</string>
+    <string name="title_string_pick_up">Pickup</string>
+    <string name="title_status_in_transit">In Transit</string>
+    <string name="title_review">Review</string>
+    <string name="title_wishlist">Wishlist</string>
+    <string name="title_voucher">Voucher</string>
+    <string name="title_coin">Coin</string>
+    <string name="title_log_out">Log Out</string>
 </resources>
