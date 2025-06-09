@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mobile.evocasa.R;
 import com.mobile.models.CartProduct;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -62,6 +63,12 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, productList.size());
         });
+
+        //set font
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvTitle);
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvPrice);
+        FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvQuantity);
+
     }
 
     @Override
