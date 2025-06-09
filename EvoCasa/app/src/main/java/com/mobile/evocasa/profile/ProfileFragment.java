@@ -1,4 +1,4 @@
-package com.mobile.evocasa;
+package com.mobile.evocasa.profile;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.SuggestedProductAdapter;
+import com.mobile.evocasa.BlogFragment;
+import com.mobile.evocasa.R;
+import com.mobile.evocasa.WishlistFragment;
 import com.mobile.models.SuggestedProducts;
 import com.mobile.utils.FontUtils;
 
