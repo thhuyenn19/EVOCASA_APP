@@ -60,7 +60,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh.txtTime.setText(item.getTime());
 
             // Làm mờ nếu đã đọc
-            float alpha = item.isRead() ? 0.5f : 1.0f;
+            float alpha = item.isRead() ? 0.7f : 1.0f;
             vh.itemView.setAlpha(alpha);
         }
     }
