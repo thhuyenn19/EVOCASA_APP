@@ -21,18 +21,15 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
         int position = parent.getChildAdapterPosition(view);
         int totalItemCount = state.getItemCount();
 
-        // Lấy GridLayoutManager để check span size
         GridLayoutManager layoutManager = (GridLayoutManager) parent.getLayoutManager();
         int spanSize = layoutManager.getSpanSizeLookup().getSpanSize(position);
 
         if (spanSize == spanCount) {
-            // Item cuối cùng chiếm full width (2 cột)
-            if (includeEdge) {
-                outRect.left = 0;
-                outRect.right = 0;
-            } else {
-                outRect.left = 0;
-                outRect.right = 0;
+            outRect.left = 0;
+            outRect.right = 0;
+
+            if (position > 0) {
+                outRect.top = spacing;
             }
         } else {
             // Items bình thường (1 cột)
@@ -41,15 +38,21 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
             if (includeEdge) {
                 outRect.left = spacing - column * spacing / spanCount;
                 outRect.right = (column + 1) * spacing / spanCount;
+
+                if (position < spanCount) {
+                    outRect.top = spacing;
+                }
+                if (position < totalItemCount - 1) {
+                    outRect.bottom = spacing;
+                }
             } else {
                 outRect.left = column * spacing / spanCount;
                 outRect.right = spacing - (column + 1) * spacing / spanCount;
-            }
-        }
 
-        // Spacing dưới cho tất cả items trừ hàng cuối
-        if (position < totalItemCount - 1) {
-            outRect.bottom = spacing;
+                if (position >= spanCount) {
+                    outRect.top = spacing;
+                }
+            }
         }
     }
 }

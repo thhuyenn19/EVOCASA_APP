@@ -52,17 +52,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         // Format text để xuống dòng nếu có 2 từ trở lên (trừ item cuối)
         String categoryName = category.getName();
         if (position != categoryList.size() - 1) { // Không phải item cuối
-            String[] words = categoryName.split(" ");
-            if (words.length >= 2) {
-                // Nếu có 2 từ trở lên, xuống dòng sau từ đầu tiên
-                StringBuilder formattedName = new StringBuilder();
-                formattedName.append(words[0]).append("\n");
-                for (int i = 1; i < words.length; i++) {
-                    if (i > 1) formattedName.append(" ");
-                    formattedName.append(words[i]);
-                }
-                categoryName = formattedName.toString();
-            }
+            categoryName = formatCategoryText(categoryName);
         }
 
         holder.txtCategoryName.setText(categoryName);
@@ -89,7 +79,64 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
 
             holder.itemView.setLayoutParams(layoutParams);
         }
+    }
 
+    // Method để format text căn giữa các dòng
+    private String formatCategoryText(String text) {
+        if (text.contains(" ")) {
+            String[] words = text.split(" ");
+            if (words.length == 2) {
+                // Tính toán khoảng trắng cần thiết để căn giữa
+                int diff = Math.abs(words[0].length() - words[1].length());
+                if (words[0].length() > words[1].length()) {
+                    return words[0] + "\n" + createSpaces(diff/2) + words[1];
+                } else {
+                    return createSpaces(diff/2) + words[0] + "\n" + words[1];
+                }
+            } else if (words.length > 2) {
+                // Xử lý trường hợp có nhiều hơn 2 từ như "Dining & Entertaining"
+                StringBuilder firstLine = new StringBuilder();
+                StringBuilder secondLine = new StringBuilder();
+
+                // Chia đôi các từ
+                int mid = words.length / 2;
+                for (int i = 0; i < mid; i++) {
+                    if (i > 0) firstLine.append(" ");
+                    firstLine.append(words[i]);
+                }
+                for (int i = mid; i < words.length; i++) {
+                    if (i > mid) secondLine.append(" ");
+                    secondLine.append(words[i]);
+                }
+
+                // Căn chỉnh
+                int diff = Math.abs(firstLine.length() - secondLine.length());
+                if (firstLine.length() > secondLine.length()) {
+                    return firstLine + "\n" + createSpaces(diff/2) + secondLine;
+                } else {
+                    return createSpaces(diff/2) + firstLine + "\n" + secondLine;
+                }
+            } else {
+                // Fallback: xuống dòng sau từ đầu tiên
+                StringBuilder formattedName = new StringBuilder();
+                formattedName.append(words[0]).append("\n");
+                for (int i = 1; i < words.length; i++) {
+                    if (i > 1) formattedName.append(" ");
+                    formattedName.append(words[i]);
+                }
+                return formattedName.toString();
+            }
+        }
+        return text;
+    }
+
+    // Helper method để tạo khoảng trắng (tương thích API thấp)
+    private String createSpaces(int count) {
+        StringBuilder spaces = new StringBuilder();
+        for (int i = 0; i < count; i++) {
+            spaces.append(" ");
+        }
+        return spaces.toString();
     }
 
     @Override

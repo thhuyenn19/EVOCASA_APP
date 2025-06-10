@@ -18,6 +18,7 @@ public class FontUtils {
     private static Typeface Zmedium;
     private static Typeface Zregular;
     private static Typeface Zsemibold;
+    private static Typeface lightitalic;
 
     private static boolean initialized = false;
 
@@ -30,6 +31,8 @@ public class FontUtils {
             italic = Typeface.createFromAsset(context.getAssets(), "fonts/Inter-Italic.otf");
             regular = Typeface.createFromAsset(context.getAssets(), "fonts/Inter-Regular.otf");
             mediumitalic = Typeface.createFromAsset(context.getAssets(), "fonts/Inter-MediumItalic.otf");
+            lightitalic = Typeface.createFromAsset(context.getAssets(), "fonts/Inter-LightItalic.otf");
+
 
             Zblack = Typeface.createFromAsset(context.getAssets(), "fonts/ZenOldMincho-Black.ttf");
             Zbold = Typeface.createFromAsset(context.getAssets(), "fonts/ZenOldMincho-Bold.ttf");
@@ -75,6 +78,11 @@ public class FontUtils {
         if (!initialized) initFonts(context);
         return mediumitalic;
     }
+    public static Typeface getLightitalic(Context context) {
+        if (!initialized) initFonts(context);
+        return lightitalic;
+    }
+
 
     public static Typeface getZblack(Context context) {
         if (!initialized) initFonts(context);
@@ -148,4 +156,8 @@ public class FontUtils {
     public static void setZsemiboldFont(Context context, TextView textView) {
         textView.setTypeface(getZsemibold(context));
     }
+    public static void setLightitalicFont(Context context, TextView textView) {
+        textView.setTypeface(getLightitalic(context));
+    }
+
 }
