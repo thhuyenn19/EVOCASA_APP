@@ -58,10 +58,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh.txtTitle.setText(item.getTitle());
             vh.txtMessage.setText(item.getMessage());
             vh.txtTime.setText(item.getTime());
-
-            // Làm mờ nếu đã đọc
+             // Làm mờ nếu đã đọc
             float alpha = item.isRead() ? 0.7f : 1.0f;
             vh.itemView.setAlpha(alpha);
+
+            // Thêm background color khi đã đọc
+            if (item.isRead()) {
+                vh.bgNotiMessage.setBackgroundColor(0x26D9CDB6); // Mã màu #D9CDB6
+            } else {
+                vh.bgNotiMessage.setBackgroundColor(0x00000000); // Transparent khi chưa đọc
+            }
         }
     }
 
@@ -88,6 +94,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class NotificationViewHolder extends RecyclerView.ViewHolder {
         ImageView imgIcon;
         TextView txtTitle, txtMessage, txtTime;
+        View bgNotiMessage;
 
         public NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,6 +102,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             txtTitle = itemView.findViewById(R.id.txtNotiTitle);
             txtMessage = itemView.findViewById(R.id.txtNotiMessage);
             txtTime = itemView.findViewById(R.id.txtNotiTime);
+            bgNotiMessage = itemView.findViewById(R.id.bgNotiMessage);
         }
     }
 }

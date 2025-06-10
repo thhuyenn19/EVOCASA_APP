@@ -4,7 +4,8 @@
     android:layout_height="56dp"
     android:orientation="horizontal"
     android:background="@color/color_bg"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:layout_marginHorizontal="16dp">
 
     <!-- Nút back -->
     <LinearLayout
