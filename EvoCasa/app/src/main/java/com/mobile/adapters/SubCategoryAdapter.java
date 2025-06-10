@@ -1,0 +1,79 @@
+package com.mobile.adapters;
+
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.mobile.evocasa.R;
+import com.mobile.models.SubCategory;
+
+import java.util.List;
+
+public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
+
+    public interface OnSubCategoryClickListener {
+        void onSubCategorySelected(String subCategoryName);
+    }
+
+    private final List<SubCategory> list;
+    private final OnSubCategoryClickListener listener;
+
+    public SubCategoryAdapter(List<SubCategory> list, OnSubCategoryClickListener listener) {
+        this.list = list;
+        this.listener = listener;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtSubCategory;
+        LinearLayout container;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            txtSubCategory = itemView.findViewById(R.id.txtSubCategory);
+            container = (LinearLayout) itemView;
+        }
+    }
+
+    @NonNull
+    @Override
+    public SubCategoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_subcategory, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SubCategoryAdapter.ViewHolder holder, int position) {
+        SubCategory subCategory = list.get(position);
+        holder.txtSubCategory.setText(subCategory.getName());
+
+        if (subCategory.isSelected()) {
+            holder.container.setBackgroundResource(R.drawable.bg_orders_status_selected);
+            holder.txtSubCategory.setTextColor(Color.WHITE);
+        } else {
+            holder.container.setBackgroundResource(R.drawable.bg_orders_status_unselected);
+            holder.txtSubCategory.setTextColor(Color.parseColor("#5E4C3E"));
+        }
+
+        holder.container.setOnClickListener(v -> {
+            for (int i = 0; i < list.size(); i++) {
+                list.get(i).setSelected(i == holder.getAdapterPosition());
+            }
+            notifyDataSetChanged();
+
+            if (listener != null) {
+                listener.onSubCategorySelected(subCategory.getName());
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+}

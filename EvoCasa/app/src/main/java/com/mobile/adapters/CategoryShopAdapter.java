@@ -21,10 +21,12 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
 
     private final List<Category> categoryList;
     private final Context context;
+    private OnCategoryClickListener listener;
 
-    public CategoryShopAdapter(Context context, List<Category> categoryList) {
+    public CategoryShopAdapter(Context context, List<Category> categoryList, OnCategoryClickListener listener) {
         this.context = context;
         this.categoryList = categoryList;
+        this.listener = listener;
     }
 
     @NonNull
@@ -101,6 +103,11 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
             textParams.width = (int) (99 * holder.itemView.getResources().getDisplayMetrics().density); // 99dp
             holder.txtCategoryName.setLayoutParams(textParams);
         }
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onCategoryClick(category);
+            }
+        });
     }
 
     // Method để format text xuống dòng (không cần căn giữa bằng space nữa)
@@ -154,5 +161,8 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
             txtCategoryName = itemView.findViewById(R.id.txtCategoryName);
             imgCategory = itemView.findViewById(R.id.imgCategory);
         }
+    }
+    public interface OnCategoryClickListener {
+        void onCategoryClick(Category category);
     }
 }

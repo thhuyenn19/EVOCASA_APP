@@ -1,66 +1,94 @@
-package com.mobile.evocasa.category;
+package com.mobile.evocasa;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.evocasa.R;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CategoryFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.mobile.adapters.SubCategoryAdapter;
+import com.mobile.adapters.SubCategoryProductAdapter;
+import com.mobile.models.SubCategory;
+import com.mobile.models.SuggestedProducts;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class CategoryFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private RecyclerView recyclerViewSubCategory;
+    private RecyclerView recyclerViewProducts;
+    private SubCategoryAdapter subCategoryAdapter;
+    private SubCategoryProductAdapter productAdapter;
+    private List<SubCategory> subCategoryList;
+    private List<SuggestedProducts> allProducts;
 
     public CategoryFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CategoryFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CategoryFragment newInstance(String param1, String param2) {
-        CategoryFragment fragment = new CategoryFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_category, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
+        recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
+
+        setupSubCategories();
+        setupProducts();
+    }
+
+    private void setupSubCategories() {
+        subCategoryList = new ArrayList<>();
+        String[] subCategoryNames = {"All products", "Seating", "Tables", "Casegoods"};
+
+        for (int i = 0; i < subCategoryNames.length; i++) {
+            subCategoryList.add(new SubCategory(subCategoryNames[i], i == 0));
+        }
+
+        subCategoryAdapter = new SubCategoryAdapter(subCategoryList, selected -> filterProductsBySubCategory(selected));
+        recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewSubCategory.setAdapter(subCategoryAdapter);
+    }
+
+    private void setupProducts() {
+        allProducts = new ArrayList<>();
+        // Dummy data
+        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+
+        productAdapter = new SubCategoryProductAdapter(allProducts);
+        recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerViewProducts.setAdapter(productAdapter);
+    }
+
+    private void filterProductsBySubCategory(String selectedCategory) {
+        List<SuggestedProducts> filteredList = new ArrayList<>();
+
+        if (selectedCategory.equals("All products")) {
+            filteredList.addAll(allProducts);
+        } else {
+            for (SuggestedProducts product : allProducts) {
+                if (product.getName().toLowerCase().contains(selectedCategory.toLowerCase())) {
+                    filteredList.add(product);
+                }
+            }
+        }
+
+        productAdapter = new SubCategoryProductAdapter(filteredList);
+        recyclerViewProducts.setAdapter(productAdapter);
     }
 }

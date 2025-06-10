@@ -9,10 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryShopAdapter;
+import com.mobile.evocasa.CategoryFragment;
 import com.mobile.evocasa.R;
 import com.mobile.models.Category;
 import com.mobile.utils.FontUtils;
@@ -54,43 +56,51 @@ public class ShopFragment extends Fragment {
         // GridLayoutManager với 2 cột
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
-        // Item cuối chiếm 2 cột (span toàn bộ width)
+        // Item cuối chiếm 2 cột
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                // Item cuối cùng chiếm 2 cột
                 return (position == categoryList.size() - 1) ? 2 : 1;
             }
         });
         recyclerViewCategories.setLayoutManager(layoutManager);
 
-        // Thêm khoảng cách giữa các item - sử dụng spacing nhỏ hơn
+        // Thêm khoảng cách
         int spacingInPixels = (int) (8 * getResources().getDisplayMetrics().density);
         recyclerViewCategories.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
 
-        // Bỏ padding của RecyclerView vì đã có padding trong XML
         recyclerViewCategories.setClipToPadding(false);
         recyclerViewCategories.setHasFixedSize(true);
 
         // 4. Gán adapter
-        adapter = new CategoryShopAdapter(getContext(), categoryList);
-        recyclerViewCategories.setAdapter(adapter);
+        adapter = new CategoryShopAdapter(getContext(), categoryList, category -> {
+            CategoryFragment categoryFragment = new CategoryFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("selectedCategory", category.getName());
+            categoryFragment.setArguments(bundle);
 
-        return view;
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, categoryFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+        recyclerViewCategories.setAdapter(adapter); // ⚠️ Quan trọng: Gắn adapter vào RecyclerView
+
+        return view; // ⚠️ Phải return view để Fragment hoạt động đúng
     }
 
     private void applyCustomFonts() {
-        // Áp dụng font Zbold cho tiêu đề "All category"
         TextView txtCategoryShop = view.findViewById(R.id.txtCategoryShop);
         if (txtCategoryShop != null) {
             FontUtils.setZboldFont(getContext(), txtCategoryShop);
         }
 
-
         TextView txtDescriptionShop = view.findViewById(R.id.txtDescriptionShop);
         if (txtDescriptionShop != null) {
             FontUtils.setLightitalicFont(getContext(), txtDescriptionShop);
         }
+
         applyZboldFontToAllTextViews(view);
     }
 
@@ -102,8 +112,7 @@ public class ShopFragment extends Fragment {
             }
         } else if (view instanceof TextView) {
             TextView textView = (TextView) view;
-            if (textView.getId() != R.id.txtCategoryShop &&
-                    textView.getId() != R.id.txtDescriptionShop) {
+            if (textView.getId() != R.id.txtCategoryShop && textView.getId() != R.id.txtDescriptionShop) {
                 FontUtils.setZboldFont(getContext(), textView);
             }
         }
