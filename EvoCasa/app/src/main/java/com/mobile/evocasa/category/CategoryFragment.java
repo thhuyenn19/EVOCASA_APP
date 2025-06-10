@@ -1,10 +1,11 @@
-package com.mobile.evocasa;
+package com.mobile.evocasa.category;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.TextView;
+import com.mobile.evocasa.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.mobile.adapters.SubCategoryAdapter;
 import com.mobile.adapters.SubCategoryProductAdapter;
 import com.mobile.models.SubCategory;
@@ -29,6 +31,12 @@ public class CategoryFragment extends Fragment {
     private List<SubCategory> subCategoryList;
     private List<SuggestedProducts> allProducts;
 
+    // Views cho hiệu ứng cuộn
+    private AppBarLayout appBarLayout;
+    private TextView txtCollapsedTitle;
+    private TextView txtSubCategoryShop;
+    private View topBarContainer;
+
     public CategoryFragment() {
         // Required empty public constructor
     }
@@ -42,11 +50,17 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Khởi tạo views
         recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
+        appBarLayout = view.findViewById(R.id.appBarLayout);
+        txtCollapsedTitle = view.findViewById(R.id.txtCollapsedTitle);
+        txtSubCategoryShop = view.findViewById(R.id.txtSubCategoryShop);
+        topBarContainer = view.findViewById(R.id.topBarContainer);
 
         setupSubCategories();
         setupProducts();
+        setupCollapsingEffect();
     }
 
     private void setupSubCategories() {
@@ -74,6 +88,32 @@ public class CategoryFragment extends Fragment {
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerViewProducts.setAdapter(productAdapter);
     }
+
+    private void setupCollapsingEffect() {
+        if (appBarLayout != null && txtCollapsedTitle != null && txtSubCategoryShop != null && topBarContainer != null) {
+            appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+                @Override
+                public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                    int totalScrollRange = appBarLayout.getTotalScrollRange();
+                    float percentage = Math.abs(verticalOffset) / (float) totalScrollRange;
+
+                    if (percentage >= 0.8f) {
+                        // Hiện chữ Furniture
+                        txtCollapsedTitle.setAlpha(1f);
+                        txtCollapsedTitle.setVisibility(View.VISIBLE);
+                    } else {
+                        txtCollapsedTitle.setAlpha(0f);
+                        txtCollapsedTitle.setVisibility(View.INVISIBLE);
+                    }
+
+                    // Mờ dần chữ trên hero image
+                    float heroAlpha = 1.0f - Math.min(1.0f, percentage * 1.5f);
+                    txtSubCategoryShop.setAlpha(heroAlpha);
+                }
+            });
+        }
+    }
+
 
     private void filterProductsBySubCategory(String selectedCategory) {
         List<SuggestedProducts> filteredList = new ArrayList<>();

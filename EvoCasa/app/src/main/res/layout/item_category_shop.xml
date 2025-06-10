@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="@drawable/item_category_placeholder"
-    android:padding="16dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    card_view:cardElevation="4dp"
+    app:strokeColor="@android:color/transparent"
+    android:layout_margin="0dp">
 
-    <!-- Background image - sát lề phải hoàn toàn -->
-    <ImageView
-        android:id="@+id/imgCategory"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:layout_marginEnd="-12dp"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/ic_category_decor"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="2dp"
+        android:background="#80B49E79">
+        <!-- Background image - sát lề phải hoàn toàn -->
+        <ImageView
+            android:id="@+id/imgCategory"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginEnd="-12dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_category_decor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Text đè lên trước, sát lề trái, căn giữa -->
-    <TextView
-        android:id="@+id/txtCategoryName"
-        android:layout_width="97dp"
-        android:layout_height="53dp"
-        android:elevation="4dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical|start"
-        android:lineHeight="24dp"
-        android:maxLines="2"
-        android:paddingStart="-15dp"
-        android:text="Shop\nAll"
-        android:textAlignment="center"
-        android:textColor="#5E4C3E"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.52"
-        tools:ignore="RtlCompat" />
+        <!-- Text đè lên trước, sát lề trái, căn giữa -->
+        <TextView
+            android:id="@+id/txtCategoryName"
+            android:layout_width="97dp"
+            android:layout_height="53dp"
+            android:elevation="4dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:lineHeight="24dp"
+            android:maxLines="2"
+            android:paddingStart="-15dp"
+            android:text="Shop\nAll"
+            android:textAlignment="center"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.52"
+            tools:ignore="RtlCompat" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

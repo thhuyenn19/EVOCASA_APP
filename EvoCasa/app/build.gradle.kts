@@ -42,4 +42,5 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation ("me.relex:circleindicator:2.1.6")
+    implementation ("com.google.android.material:material:1.9.0")
 }
