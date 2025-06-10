@@ -23,7 +23,6 @@ public class OrderStatusAdapter extends RecyclerView.Adapter<OrderStatusAdapter.
 
 
     private final List<OrderStatus> list;
-    private int selectedPosition = 0;
 
     private final OnStatusClickListener listener;
 
@@ -62,7 +61,7 @@ public class OrderStatusAdapter extends RecyclerView.Adapter<OrderStatusAdapter.
             holder.container.setBackgroundResource(R.drawable.bg_orders_status_unselected);
             holder.txtOrderStatus.setTextColor(Color.parseColor("#5E4C3E"));
         }
-
+        FontUtils.setMediumFont(holder.itemView.getContext(), holder.txtOrderStatus);
         holder.container.setOnClickListener(v -> {
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).setSelected(i == position);

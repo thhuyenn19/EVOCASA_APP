@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.adapters.ProfileInfoAdapter;
@@ -66,7 +68,12 @@ public class ProfileDetailFragment extends Fragment {
         ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses);
         rvShipping.setAdapter(shipadapter);
 
-
+        LinearLayout btnBack = view.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack(); // Quay lại fragment trước (ProfileFragment)
+        });
     }
 
     private void applyCustomFonts(View view) {

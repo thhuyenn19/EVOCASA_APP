@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.mobile.adapters.OrderGroupAdapter;
 import com.mobile.adapters.OrderStatusAdapter;
+import com.mobile.models.OrderGroup;
+import com.mobile.models.OrderItem;
 import com.mobile.models.OrderStatus;
 
 import java.util.ArrayList;
@@ -64,8 +68,32 @@ public class OrdersFragment extends Fragment {
         });
         rvStatus.setAdapter(adapter);
 
+        LinearLayout btnBack = view.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack();
+        });
+
         // ✅ Gọi filter cho tab ban đầu
         filterOrdersByStatus(selectedStatus);
+        RecyclerView rvOrders = view.findViewById(R.id.rvOrders);
+        rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        List<OrderGroup> groupList = new ArrayList<>();
+        groupList.add(new OrderGroup("Pending", mockItems()));
+        groupList.add(new OrderGroup("Review", mockItems()));
+        groupList.add(new OrderGroup("Completed", mockItems()));
+
+        OrderGroupAdapter orderadapter = new OrderGroupAdapter(groupList);
+        rvOrders.setAdapter(orderadapter);
+
+    }
+    private List<OrderItem> mockItems() {
+        List<OrderItem> list = new ArrayList<>();
+        list.add(new OrderItem(R.mipmap.ic_cart_product, "Travertine Table Lamp", 3500, 1));
+        list.add(new OrderItem(R.mipmap.ic_cart_product, "Ceramic Mug", 1500, 2));
+        return list;
     }
 
     // Bạn cần định nghĩa hàm này để lọc đơn hàng theo status

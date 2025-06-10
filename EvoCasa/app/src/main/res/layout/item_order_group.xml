@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/orderGroupRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_border_rounded">
+
+    <!-- 1. Wrapper chứa itemContainer & View More, có padding -->
+    <LinearLayout
+        android:id="@+id/contentWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:id="@+id/itemContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- View More Container -->
+        <LinearLayout
+            android:id="@+id/btnViewMoreContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="12dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/btnViewMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View More"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iconArrow"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:layout_marginTop="1dp"
+                android:rotation="90"
+                android:src="@drawable/ic_arrow" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <!-- 2. Divider không nằm trong vùng padding -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#5E4C3E"
+        android:alpha="0.5"/>
+
+    <!-- 3. Footer chứa Total + nút, có padding -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/txtTotal"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Total (3 items): $13,500"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAction"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="16dp"
+            android:text="Track Order"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_green_rounded_order" />
+    </LinearLayout>
+</LinearLayout>
