@@ -13,5 +13,7 @@
     <color name="gray_light">#CCCCCC</color>
     <color name="color_F2EAD3">#F2EAD3</color>
     <color name="color_80F2EAD3">#80F2EAD3</color>
+    <color name="color_bg_btn_addtocart">#C5B6A7</color>
+    <color name="color_bg_btn_buynow">#525B4A</color>
 
 </resources>

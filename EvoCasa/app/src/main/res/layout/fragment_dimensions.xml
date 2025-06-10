@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/txtDimensions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="4dp"
+        android:text="Dimensions:\n\n• Height: 24.5 inches\n• Base Width: 8 inches\n• Cord Length: 60 inches\n• Shade Diameter: 16 inches\n• Weight: 3.2 kg"
+        android:textColor="#5E4C3E"
+        android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/txtDimensions"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Dimensions:\n\n• Height: 24.5 inches\n• Base Width: 8 inches\n• Cord Length: 60 inches\n• Shade Diameter: 16 inches\n• Weight: 3.2 kg"
-            android:textColor="#5E4C3E"
-            android:textSize="14sp"
-            android:lineSpacingExtra="4dp" />
-    </LinearLayout>
-</ScrollView>
+</LinearLayout>

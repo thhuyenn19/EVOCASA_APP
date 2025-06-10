@@ -1,13 +1,9 @@
-package com.mobile.adapters;
+package com.mobile.evocasa.productdetails;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import com.mobile.evocasa.productdetails.DescriptionFragment;
-import com.mobile.evocasa.productdetails.DimensionsFragment;
-import com.mobile.evocasa.productdetails.ReviewsFragment;
 
 public class ProductDetailPagerAdapter extends FragmentStateAdapter {
     public ProductDetailPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
