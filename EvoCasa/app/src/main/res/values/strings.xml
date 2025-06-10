@@ -122,4 +122,6 @@
     <string name="title_personal_info">Personal Information</string>
     <string name="title_shipping_address">Shipping Address</string>
     <string name="title_edit">Edit</string>
+    <string name="title_description_shop">Celebrating patina, heritage, and the comfort of the past.</string>
+    <string name="title_all_categories">All categories</string>
 </resources>
