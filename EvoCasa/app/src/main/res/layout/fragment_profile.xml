@@ -103,6 +103,7 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
+                        android:id="@+id/containerSeeAll"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
@@ -136,6 +137,7 @@
 
                     <!-- Each item -->
                     <LinearLayout
+                        android:id="@+id/containerPending"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -176,6 +178,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/containerPickup"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -201,7 +204,7 @@
                                 android:gravity="center"
                                 android:text="2"
                                 android:textColor="@color/color_5E4C3E"
-                                android:textSize="10sp"/>
+                                android:textSize="10sp" />
 
                         </FrameLayout>
 
@@ -216,6 +219,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/containerInTransit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -255,6 +259,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/containerReview"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

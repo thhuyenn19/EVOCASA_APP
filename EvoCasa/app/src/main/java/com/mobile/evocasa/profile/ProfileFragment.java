@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.BlogFragment;
+import com.mobile.evocasa.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
 import com.mobile.models.SuggestedProducts;
@@ -88,6 +90,45 @@ public class ProfileFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+
+        LinearLayout containerSeeAll = view.findViewById(R.id.containerSeeAll);
+        containerSeeAll.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new OrdersFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        LinearLayout itemPending = view.findViewById(R.id.containerPending);     // chỉnh ID theo bạn
+        LinearLayout itemPickup = view.findViewById(R.id.containerPickup);
+        LinearLayout itemTransit = view.findViewById(R.id.containerInTransit);
+        LinearLayout itemReview = view.findViewById(R.id.containerReview);
+
+        View.OnClickListener goToOrders = v -> {
+            String status = "";
+
+            if (v.getId() == R.id.containerPending) status = "Pending";
+            else if (v.getId() == R.id.containerPickup) status = "Pick Up";
+            else if (v.getId() == R.id.containerInTransit) status = "In Transit";
+            else if (v.getId() == R.id.containerReview) status = "Review";
+
+            OrdersFragment ordersFragment = new OrdersFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("selectedStatus", status);
+            ordersFragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, ordersFragment)
+                    .addToBackStack(null)
+                    .commit();
+        };
+
+        itemPending.setOnClickListener(goToOrders);
+        itemPickup.setOnClickListener(goToOrders);
+        itemTransit.setOnClickListener(goToOrders);
+        itemReview.setOnClickListener(goToOrders);
+
 
 
         return view;
