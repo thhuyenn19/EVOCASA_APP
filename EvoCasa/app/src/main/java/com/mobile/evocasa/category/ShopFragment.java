@@ -1,4 +1,4 @@
-package com.mobile.evocasa;
+package com.mobile.evocasa.category;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryShopAdapter;
+import com.mobile.evocasa.R;
 import com.mobile.models.Category;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.GridSpacingItemDecoration;

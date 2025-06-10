@@ -27,18 +27,10 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         this.categoryList = categoryList;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        // Item cuối cùng dùng layout khác, các item khác dùng layout thường
-        return position == categoryList.size() - 1 ? 1 : 0;
-    }
-
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Layout khác nhau cho item cuối và các item thường
-        int layoutId = viewType == 1 ? R.layout.item_category_shop_last : R.layout.item_category_shop;
-        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_category_shop, parent, false);
 
         // Tính chiều rộng mỗi item theo số cột (2 cột)
         int screenWidth = parent.getResources().getDisplayMetrics().widthPixels;
@@ -74,26 +66,40 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         holder.txtCategoryName.setText(categoryName);
         holder.imgCategory.setImageResource(category.getImageResId());
 
-        // Xử lý item cuối cùng chiếm 2 cột (chỉ cần xử lý size, layout đã khác rồi)
+        // Xử lý item cuối cùng chiếm 2 cột - thay đổi layout của TextView
         if (position == categoryList.size() - 1) {
+            // Thay đổi size của item view để chiếm 2 cột
             int screenWidth = holder.itemView.getResources().getDisplayMetrics().widthPixels;
             int paddingPx = (int) (17 * 2 * holder.itemView.getResources().getDisplayMetrics().density);
             int spacingPx = (int) (8 * holder.itemView.getResources().getDisplayMetrics().density);
 
             int fullWidth = screenWidth - paddingPx - spacingPx;
-
-            // Giảm chiều rộng ví dụ 32dp (theo density)
             int reduceWidthPx = (int) (14.5 * holder.itemView.getResources().getDisplayMetrics().density);
             int newWidth = fullWidth - reduceWidthPx;
-
             int itemHeight = (int) (newWidth * 0.75f / 2);
 
             ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(newWidth, itemHeight);
-            // Đặt margin 2 bên đều, mỗi bên giảm một nửa reduceWidthPx
             int marginSide = reduceWidthPx / 2;
-            layoutParams.setMargins(marginSide, 0, marginSide, 0);
 
+            // Set margin top âm để item cuối sát với item trên
+            int negativeMarginTop = (int) (-8 * holder.itemView.getResources().getDisplayMetrics().density);
+            layoutParams.setMargins(marginSide, negativeMarginTop, marginSide, 0);
             holder.itemView.setLayoutParams(layoutParams);
+
+            // Thay đổi layout của TextView để phù hợp với item rộng hơn
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams textParams =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) holder.txtCategoryName.getLayoutParams();
+            textParams.width = (int) (250 * holder.itemView.getResources().getDisplayMetrics().density); // 250dp
+            holder.txtCategoryName.setLayoutParams(textParams);
+
+            // Căn text về bên trái cho item cuối
+            holder.txtCategoryName.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+        } else {
+            // Reset lại layout cho các item bình thường (case reuse ViewHolder)
+            androidx.constraintlayout.widget.ConstraintLayout.LayoutParams textParams =
+                    (androidx.constraintlayout.widget.ConstraintLayout.LayoutParams) holder.txtCategoryName.getLayoutParams();
+            textParams.width = (int) (99 * holder.itemView.getResources().getDisplayMetrics().density); // 99dp
+            holder.txtCategoryName.setLayoutParams(textParams);
         }
     }
 

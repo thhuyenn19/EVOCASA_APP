@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="120dp"
     android:background="@drawable/item_category_placeholder"
-    android:padding="16dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <!-- Background image - sát lề phải hoàn toàn -->
     <ImageView

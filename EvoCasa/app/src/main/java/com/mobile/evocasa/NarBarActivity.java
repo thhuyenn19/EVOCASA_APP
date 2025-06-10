@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.mobile.evocasa.category.ShopFragment;
 import com.mobile.evocasa.profile.ProfileFragment;
 
 public class NarBarActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavSelectedListener {
