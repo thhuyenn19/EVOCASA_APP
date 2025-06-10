@@ -42,8 +42,8 @@ public class ShopFragment extends Fragment {
 
         // Khởi tạo danh sách categories
         categoryList = new ArrayList<>();
-        categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Shop All"));
-        categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
+        categoryList.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
+        categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
         categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
@@ -85,14 +85,11 @@ public class ShopFragment extends Fragment {
             FontUtils.setZboldFont(getContext(), txtCategoryShop);
         }
 
-        // Áp dụng font Regular (hoặc Regular Italic nếu có) cho phần mô tả
+
         TextView txtDescriptionShop = view.findViewById(R.id.txtDescriptionShop);
         if (txtDescriptionShop != null) {
             FontUtils.setLightitalicFont(getContext(), txtDescriptionShop);
-            // Nếu có italic: FontUtils.setRegularItalicFont(getContext(), txtDescriptionShop);
         }
-
-        // Áp dụng font Zbold cho các TextView còn lại
         applyZboldFontToAllTextViews(view);
     }
 

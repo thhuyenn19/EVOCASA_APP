@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.Category;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -25,10 +27,18 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         this.categoryList = categoryList;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        // Item cuối cùng dùng layout khác, các item khác dùng layout thường
+        return position == categoryList.size() - 1 ? 1 : 0;
+    }
+
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_category_shop, parent, false);
+        // Layout khác nhau cho item cuối và các item thường
+        int layoutId = viewType == 1 ? R.layout.item_category_shop_last : R.layout.item_category_shop;
+        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
 
         // Tính chiều rộng mỗi item theo số cột (2 cột)
         int screenWidth = parent.getResources().getDisplayMetrics().widthPixels;
@@ -49,6 +59,12 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category category = categoryList.get(position);
 
+        // Thiết lập font Zbold cho TextView
+        FontUtils.setZboldFont(context, holder.txtCategoryName);
+
+        // Căn giữa text cho tất cả item
+        holder.txtCategoryName.setGravity(Gravity.CENTER);
+
         // Format text để xuống dòng nếu có 2 từ trở lên (trừ item cuối)
         String categoryName = category.getName();
         if (position != categoryList.size() - 1) { // Không phải item cuối
@@ -58,7 +74,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         holder.txtCategoryName.setText(categoryName);
         holder.imgCategory.setImageResource(category.getImageResId());
 
-        // Xử lý item cuối cùng chiếm 2 cột
+        // Xử lý item cuối cùng chiếm 2 cột (chỉ cần xử lý size, layout đã khác rồi)
         if (position == categoryList.size() - 1) {
             int screenWidth = holder.itemView.getResources().getDisplayMetrics().widthPixels;
             int paddingPx = (int) (17 * 2 * holder.itemView.getResources().getDisplayMetrics().density);
@@ -81,18 +97,12 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         }
     }
 
-    // Method để format text căn giữa các dòng
+    // Method để format text xuống dòng (không cần căn giữa bằng space nữa)
     private String formatCategoryText(String text) {
         if (text.contains(" ")) {
             String[] words = text.split(" ");
             if (words.length == 2) {
-                // Tính toán khoảng trắng cần thiết để căn giữa
-                int diff = Math.abs(words[0].length() - words[1].length());
-                if (words[0].length() > words[1].length()) {
-                    return words[0] + "\n" + createSpaces(diff/2) + words[1];
-                } else {
-                    return createSpaces(diff/2) + words[0] + "\n" + words[1];
-                }
+                return words[0] + "\n" + words[1];
             } else if (words.length > 2) {
                 // Xử lý trường hợp có nhiều hơn 2 từ như "Dining & Entertaining"
                 StringBuilder firstLine = new StringBuilder();
@@ -109,13 +119,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
                     secondLine.append(words[i]);
                 }
 
-                // Căn chỉnh
-                int diff = Math.abs(firstLine.length() - secondLine.length());
-                if (firstLine.length() > secondLine.length()) {
-                    return firstLine + "\n" + createSpaces(diff/2) + secondLine;
-                } else {
-                    return createSpaces(diff/2) + firstLine + "\n" + secondLine;
-                }
+                return firstLine + "\n" + secondLine;
             } else {
                 // Fallback: xuống dòng sau từ đầu tiên
                 StringBuilder formattedName = new StringBuilder();
@@ -128,15 +132,6 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
             }
         }
         return text;
-    }
-
-    // Helper method để tạo khoảng trắng (tương thích API thấp)
-    private String createSpaces(int count) {
-        StringBuilder spaces = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            spaces.append(" ");
-        }
-        return spaces.toString();
     }
 
     @Override
