@@ -70,18 +70,26 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
 
         // Xử lý item cuối cùng chiếm 2 cột
         if (position == categoryList.size() - 1) {
-            // Tính lại width cho item cuối chiếm full width (trừ spacing)
             int screenWidth = holder.itemView.getResources().getDisplayMetrics().widthPixels;
             int paddingPx = (int) (17 * 2 * holder.itemView.getResources().getDisplayMetrics().density);
-            int spacingPx = (int) (8 * holder.itemView.getResources().getDisplayMetrics().density); // spacing giữa 2 cột
+            int spacingPx = (int) (8 * holder.itemView.getResources().getDisplayMetrics().density);
+
             int fullWidth = screenWidth - paddingPx - spacingPx;
 
-            // Giữ nguyên height như các item khác
-            int itemHeight = (int) (fullWidth * 0.75f / 2);
+            // Giảm chiều rộng ví dụ 32dp (theo density)
+            int reduceWidthPx = (int) (14.5 * holder.itemView.getResources().getDisplayMetrics().density);
+            int newWidth = fullWidth - reduceWidthPx;
 
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(fullWidth, itemHeight);
+            int itemHeight = (int) (newWidth * 0.75f / 2);
+
+            ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(newWidth, itemHeight);
+            // Đặt margin 2 bên đều, mỗi bên giảm một nửa reduceWidthPx
+            int marginSide = reduceWidthPx / 2;
+            layoutParams.setMargins(marginSide, 0, marginSide, 0);
+
             holder.itemView.setLayoutParams(layoutParams);
         }
+
     }
 
     @Override

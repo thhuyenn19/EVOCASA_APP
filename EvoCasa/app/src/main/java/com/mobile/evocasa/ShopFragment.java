@@ -42,7 +42,7 @@ public class ShopFragment extends Fragment {
 
         // Khởi tạo danh sách categories
         categoryList = new ArrayList<>();
-        categoryList.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
+        categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Shop All"));
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
