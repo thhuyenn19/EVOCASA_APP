@@ -5,20 +5,11 @@
     android:layout_height="match_parent"
     android:background="#FFFCF3">
 
-    <!-- Top Bar -->
-    <include
-        layout="@layout/topbar_shop_all"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp" />
-
-    <!-- Hero Section -->
+    <!-- Hero Image with Overlay Text -->
     <RelativeLayout
         android:id="@+id/heroSection"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@layout/topbar_shop_all">
+        android:layout_height="200dp">
 
         <ImageView
             android:id="@+id/imgCategory"
@@ -27,42 +18,55 @@
             android:background="@mipmap/ic_category_shop"
             android:scaleType="centerCrop" />
 
+        <!-- Title overlayed on image -->
         <TextView
             android:id="@+id/txtCategoryShop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginBottom="15dp"
             android:text="All category"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp" />
     </RelativeLayout>
 
-    <!-- Description -->
+    <!-- Description outside of hero image -->
     <TextView
         android:id="@+id/txtDescriptionShop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Celebrating patina, heritage, and the comfort of the past."
+        android:textColor="#8B7355"
+        android:textSize="14sp"
         android:layout_below="@id/heroSection"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Celebrating patina, heritage, and the comfort of the past."
-        android:textColor="#8B7355"
-        android:textSize="14sp" />
+        android:layout_marginBottom="10dp" />
 
-    <!-- RecyclerView với padding trái/phải 17dp -->
+    <!-- Top Bar với margin được điều chỉnh -->
+    <include layout="@layout/topbar_shop_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="10dp" />
+
+    <!-- Categories Grid -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCategories"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/txtDescriptionShop"
-        android:paddingStart="17dp"
-        android:paddingEnd="17dp"
+        android:background="#FFFCF3"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:paddingTop="10dp"
         android:paddingBottom="20dp"
         android:clipToPadding="false"
-        android:background="#FFFCF3" />
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2" />
+
 </RelativeLayout>

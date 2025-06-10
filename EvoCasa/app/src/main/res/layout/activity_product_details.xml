@@ -1,167 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg">
 
     <!-- Nội dung cố định trên cùng -->
-    <LinearLayout
-        android:orientation="vertical"
+    <include
+        android:id="@+id/topBar"
+        layout="@layout/topbar_product_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="56dp" />
 
-        <include layout="@layout/topbar_product_details" />
+    <!-- Nội dung cuộn -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        >
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="360dp">
-
-            <!-- Ảnh -->
-            <ImageView
-                android:id="@+id/imgProduct"
-                android:layout_width="match_parent"
-                android:layout_height="290dp"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_lighting_brasslamp" />
-
-            <!-- Nút yêu thích + chia sẻ -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_margin="12dp"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/btnFavorite"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/bg_rounded_button"
-                    android:src="@drawable/ic_favourite" />
-
-                <ImageButton
-                    android:id="@+id/btnShare"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:background="@drawable/bg_rounded_button"
-                    android:src="@drawable/ic_sharing" />
-            </LinearLayout>
-
-            <!-- Chỉ số ảnh -->
-
-            <TextView
-                android:id="@+id/txtImageIndex"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="105dp"
-                android:background="@drawable/bg_image_index"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="2dp"
-                android:text="1/5"
-                android:textColor="#5E4C3E"
-                android:textSize="12sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:background="@drawable/bg_card_top_rounded">
+                android:layout_height="412dp">
 
+                <!-- Ảnh -->
+                <ImageView
+                    android:id="@+id/imgProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="342dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_lighting_brasslamp" />
+
+                <!-- Nút yêu thích + chia sẻ -->
                 <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="12dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_marginEnd="8dp"
+                        android:src="@drawable/ic_favourite" />
+
+                    <ImageButton
+                        android:id="@+id/btnShare"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/ic_sharing" />
+                </LinearLayout>
+
+                <!-- Chỉ số ảnh -->
+                <TextView
+                    android:id="@+id/txtImageIndex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginBottom="105dp"
+                    android:background="@drawable/bg_image_index"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="2dp"
+                    android:text="1/5"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="12sp" />
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_card_top_rounded">
 
-                    <!-- Tiêu đề + Giá -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:orientation="vertical"
+                        android:padding="17dp">
 
-                        <TextView
-                            android:id="@+id/txtProductName"
-                            android:layout_width="0dp"
+                        <!-- Tiêu đề + Giá -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/zen_old_mincho"
-                            android:text="Travertine Table Lamp"
-                            android:textColor="@color/color_5E4C3E"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/txtProductPrice"
+                            <TextView
+                                android:id="@+id/txtProductName"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/zen_old_mincho"
+                                android:text="Travertine Table Lamp"
+                                android:textColor="@color/color_5E4C3E"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtProductPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/zen_old_mincho"
+                                android:text="$3,500"
+                                android:textColor="@color/color_FF6600"
+                                android:textSize="20sp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <!-- Đánh giá sao -->
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/zen_old_mincho"
-                            android:text="$3,500"
-                            android:textColor="@color/color_FF6600"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="8dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:src="@drawable/ic_star_yellow" />
+
+                            <TextView
+                                android:id="@+id/txtRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:fontFamily="@font/zen_old_mincho"
+                                android:text="4.8"
+                                android:textColor="@color/color_5E4C3E"
+                                android:textSize="14sp" />
+                        </LinearLayout>
                     </LinearLayout>
+                </FrameLayout>
 
-                    <!-- Đánh giá sao -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/ic_star_yellow" />
-
-                        <TextView
-                            android:id="@+id/txtRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:fontFamily="@font/zen_old_mincho"
-                            android:text="4.8"
-                            android:textColor="#5E4C3E"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
             </FrameLayout>
-        </FrameLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="70dp"
-            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingTop="0dp"
+                android:paddingLeft="17dp"
+                android:paddingRight="17dp"
+                android:paddingBottom="10dp">
 
                 <!-- Tabs -->
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabIndicatorColor="#5E4C3E"
-                    app:tabTextColor="#C0B098"
-                    app:tabSelectedTextColor="#5E4C3E"
+                    app:tabIndicatorColor="@color/color_5E4C3E"
                     app:tabIndicatorHeight="3dp"
-                    android:layout_marginTop="12dp"/>
+                    app:tabSelectedTextColor="@color/color_5E4C3E"
+                    app:tabTextColor="#C0B098" />
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/viewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:nestedScrollingEnabled="false"/>
+                    android:layout_marginTop="8dp" />
 
                 <!-- Gợi ý sản phẩm -->
                 <TextView
@@ -169,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:text="Recommend Items"
-                    android:textColor="#5E4C3E"
+                    android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -181,40 +186,37 @@
                     android:paddingStart="8dp"
                     android:paddingEnd="8dp" />
             </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
-
-    </LinearLayout>
-
-    <!-- Nội dung cuộn -->
+        </LinearLayout>
+    </ScrollView>
 
     <!-- Nút cố định dưới cùng -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="horizontal"
         android:background="@color/color_bg"
+        android:orientation="horizontal"
         android:padding="1dp">
 
         <Button
             android:id="@+id/btnAddToCart"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="48dp"
-            android:backgroundTint="#C9C2B3"
+            android:layout_weight="1"
+            android:backgroundTint="@color/color_bg_btn_addtocart"
             android:text="ADD TO CART"
-            android:textColor="#5E4C3E"
+            android:textColor="@color/color_5E4C3E"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnBuyNow"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
-            android:backgroundTint="#5E4C3E"
+            android:layout_weight="1"
+            android:backgroundTint= "@color/color_bg_btn_buynow"
             android:text="BUY NOW"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"/>
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </LinearLayout>
 </FrameLayout>

@@ -43,7 +43,7 @@ public class ShopFragment extends Fragment {
         // Khởi tạo danh sách categories
         categoryList = new ArrayList<>();
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
-        categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
+        categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
         categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
@@ -63,15 +63,12 @@ public class ShopFragment extends Fragment {
         });
         recyclerViewCategories.setLayoutManager(layoutManager);
 
-        // Thêm khoảng cách giữa các item - giảm spacing và thêm padding cho RecyclerView
+        // Thêm khoảng cách giữa các item - sử dụng spacing nhỏ hơn
         int spacingInPixels = (int) (8 * getResources().getDisplayMetrics().density);
         recyclerViewCategories.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
 
-        // Thêm padding cho RecyclerView để tránh item dính vào edge
-        int paddingInPixels = (int) (16 * getResources().getDisplayMetrics().density);
-        recyclerViewCategories.setPadding(paddingInPixels, 0, paddingInPixels, 0);
+        // Bỏ padding của RecyclerView vì đã có padding trong XML
         recyclerViewCategories.setClipToPadding(false);
-
         recyclerViewCategories.setHasFixedSize(true);
 
         // 4. Gán adapter
@@ -88,14 +85,11 @@ public class ShopFragment extends Fragment {
             FontUtils.setZboldFont(getContext(), txtCategoryShop);
         }
 
-        // Áp dụng font Regular (hoặc Regular Italic nếu có) cho phần mô tả
+
         TextView txtDescriptionShop = view.findViewById(R.id.txtDescriptionShop);
         if (txtDescriptionShop != null) {
-            FontUtils.setRegularFont(getContext(), txtDescriptionShop);
-            // Nếu có italic: FontUtils.setRegularItalicFont(getContext(), txtDescriptionShop);
+            FontUtils.setLightitalicFont(getContext(), txtDescriptionShop);
         }
-
-        // Áp dụng font Zbold cho các TextView còn lại
         applyZboldFontToAllTextViews(view);
     }
 
@@ -107,7 +101,6 @@ public class ShopFragment extends Fragment {
             }
         } else if (view instanceof TextView) {
             TextView textView = (TextView) view;
-            // Bỏ qua các TextView đã set font riêng
             if (textView.getId() != R.id.txtCategoryShop &&
                     textView.getId() != R.id.txtDescriptionShop) {
                 FontUtils.setZboldFont(getContext(), textView);
