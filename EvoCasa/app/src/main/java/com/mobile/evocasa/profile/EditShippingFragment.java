@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
@@ -22,9 +22,10 @@ import com.mobile.utils.FontUtils;
 public class EditShippingFragment extends Fragment {
 
     private View view;
-    private ImageView imgProfileDetailsBack;
-    private Switch switchDefault;
 
+    private ImageView imgProfileDetailsBack;
+
+    private Button btnProfileDetailsBack;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,11 +73,11 @@ public class EditShippingFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_shipping, container, false);
 
-        view = inflater.inflate(R.layout.fragment_edit_personal, container, false);
+        view = inflater.inflate(R.layout.fragment_edit_shipping, container, false);
 
         //set font
-        TextView txtTitle = view.findViewById(R.id.txtTitle);
-        FontUtils.setZboldFont(requireContext(), txtTitle);
+        TextView txtTitleShip = view.findViewById(R.id.txtTitleShip);
+        FontUtils.setZboldFont(requireContext(), txtTitleShip);
 
         // Gán sự kiện quay lại ProfilDetailsFragment
         imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
@@ -88,18 +89,6 @@ public class EditShippingFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
-//        switchDefault = view.findViewById(R.id.switchDefault);
-//
-//        switchDefault.setOnCheckedChangeListener((buttonView, isChecked) -> {
-//            if (isChecked) {
-//                // Đây là địa chỉ mặc định
-//                // TODO: Lưu trạng thái này nếu cần
-//            } else {
-//                // Không chọn làm mặc định
-//            }
-//        });
-
 
         return view;
 
