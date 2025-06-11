@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +15,6 @@ import com.mobile.evocasa.R;
 public class DimensionsFragment extends Fragment {
 
     public DimensionsFragment() {
-        // Bắt buộc phải có constructor rỗng
     }
 
     @Nullable
@@ -22,7 +22,9 @@ public class DimensionsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // Inflate từ layout fragment_dimensions.xml
-        return inflater.inflate(R.layout.fragment_dimensions, container, false);
+        View view = inflater.inflate(R.layout.fragment_dimensions, container, false);
+        TextView txtDimensions = view.findViewById(R.id.txtDimensions);
+        txtDimensions.setText("• Height: 24.5 inches\n• Base Width: 8 inches\n• Cord Length: 60 inches\n• Shade Diameter: 16 inches\n• Weight: 3.2 kg");
+        return view;
     }
 }

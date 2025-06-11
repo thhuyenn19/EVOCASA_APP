@@ -13,12 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="56dp" />
 
-    <!-- Nội dung cuộn -->
-    <ScrollView
+    <!-- NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        >
+        android:layout_marginBottom="58dp"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -98,7 +99,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:fontFamily="@font/zen_old_mincho"
                                 android:text="Travertine Table Lamp"
                                 android:textColor="@color/color_5E4C3E"
                                 android:textSize="20sp"
@@ -108,7 +108,6 @@
                                 android:id="@+id/txtProductPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/zen_old_mincho"
                                 android:text="$3,500"
                                 android:textColor="@color/color_FF6600"
                                 android:textSize="20sp"
@@ -133,7 +132,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
-                                android:fontFamily="@font/zen_old_mincho"
                                 android:text="4.8"
                                 android:textColor="@color/color_5E4C3E"
                                 android:textSize="14sp" />
@@ -147,76 +145,111 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="0dp"
                 android:paddingLeft="17dp"
+                android:paddingTop="0dp"
                 android:paddingRight="17dp"
-                android:paddingBottom="10dp">
+                android:paddingBottom="0dp">
 
                 <!-- Tabs -->
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabIndicatorColor="@color/color_5E4C3E"
-                    app:tabIndicatorHeight="3dp"
+                    android:background="@drawable/tab_background"
+                    app:tabIndicatorHeight="0dp"
                     app:tabSelectedTextColor="@color/color_5E4C3E"
-                    app:tabTextColor="#C0B098" />
+                    app:tabTextColor="@color/color_5E4C3E"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabMode="fixed"
+                    app:tabGravity="fill"
+                    app:tabRippleColor="@android:color/transparent"
+                    app:tabUnboundedRipple="false"
+                    android:elevation="0dp"
+                    app:tabIndicatorColor="@android:color/transparent" />
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/viewPager"
+                <!-- Changed ViewPager2 height from wrap_content to a more flexible approach -->
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+                    android:layout_marginTop="8dp">
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/viewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+
+                </FrameLayout>
 
                 <!-- Gợi ý sản phẩm -->
                 <TextView
+                    android:id="@+id/txtRecommendItems"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="5dp"
                     android:text="Recommend Items"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewRecommend"
-                    android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginTop="4dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp" />
             </LinearLayout>
+
+            <!-- RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewRecommend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:clipToPadding="false"
+                android:paddingBottom="8dp" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <!-- Nút cố định dưới cùng -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/color_bg"
-        android:orientation="horizontal"
-        android:padding="1dp">
+        android:orientation="vertical"
+        android:background="#FFFCF3"
+        android:elevation="8dp">
 
-        <Button
-            android:id="@+id/btnAddToCart"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/color_bg_btn_addtocart"
-            android:text="ADD TO CART"
-            android:textColor="@color/color_5E4C3E"
-            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_bg_btn_addtocart" />
 
-        <Button
-            android:id="@+id/btnBuyNow"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:backgroundTint= "@color/color_bg_btn_buynow"
-            android:text="BUY NOW"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnAddToCart"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/color_bg_btn_addtocart"
+                android:text="ADD TO CART"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnBuyNow"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/color_bg_btn_buynow"
+                android:text="BUY NOW"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>

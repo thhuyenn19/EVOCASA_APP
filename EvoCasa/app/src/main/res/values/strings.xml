@@ -124,4 +124,20 @@
     <string name="title_edit">Edit</string>
     <string name="title_description_shop">Celebrating patina, heritage, and the comfort of the past.</string>
     <string name="title_all_categories">All categories</string>
+    <string name="title_edit_personal_title">Edit Personal Information</string>
+    <string name="title_edit_name">Name</string>
+    <string name="title_edit_name_box">John Anthony</string>
+    <string name="title_edit_gender">Gender</string>
+    <string name="title_edit_gender_box">Male</string>
+    <string name="title_edit_birthday">Birthday</string>
+    <string name="title_edit_birthday_box">01/02/2003</string>
+    <string name="title_edit_email">Email</string>
+    <string name="title_edit_email_box">john123456@gmail.com</string>
+    <string name="title_edit_phone">Phone</string>
+    <string name="title_edit_phone_box">(+84) 123 456 789</string>
+    <string name="title_edit_location">Location</string>
+    <string name="title_edit_location_box">669 Do Muoi, Linh Xuan, Thu Duc, HCMC, VietNam</string>
+    <string name="title_save_edit_profile">SAVE</string>
+
+
 </resources>

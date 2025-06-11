@@ -3,15 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp">
 
     <TextView
         android:id="@+id/txtDimensions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:lineSpacingExtra="4dp"
-        android:text="Dimensions:\n\n• Height: 24.5 inches\n• Base Width: 8 inches\n• Cord Length: 60 inches\n• Shade Diameter: 16 inches\n• Weight: 3.2 kg"
-        android:textColor="#5E4C3E"
         android:textSize="14sp" />
 
 </LinearLayout>
