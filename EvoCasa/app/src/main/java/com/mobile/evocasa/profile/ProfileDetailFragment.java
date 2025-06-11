@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.mobile.adapters.ProfileInfoAdapter;
 import com.mobile.adapters.ShippingAddressAdapter;
 import com.mobile.evocasa.R;
@@ -121,14 +123,39 @@ public class ProfileDetailFragment extends Fragment {
 
 
         //Edit ẢNH
+//        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+//        btnEditAvatar.setOnClickListener(v -> {
+//            ProfileImageDialogFragment dialog = new ProfileImageDialogFragment();
+//            dialog.show(getChildFragmentManager(), "ProfileImageDialog");
+//        });
+
         ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
-        btnEditAvatar.setOnClickListener(v -> {
-            ProfileImageDialogFragment dialog = new ProfileImageDialogFragment();
-            dialog.show(getChildFragmentManager(), "ProfileImageDialog");
+        btnEditAvatar.setOnClickListener(v -> showBottomSheetDialog());
+
+
+
+
+    }
+
+    private void showBottomSheetDialog() {
+        View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_image_options, null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+        bottomSheetDialog.setContentView(bottomSheetView);
+
+        Button btnViewImage = bottomSheetView.findViewById(R.id.btn_view_image);
+        Button btnUploadImage = bottomSheetView.findViewById(R.id.btn_upload_image);
+
+        btnViewImage.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            // TODO: mở hình đại diện (ví dụ mở dialog hoặc Activity hiển thị ảnh)
         });
 
+        btnUploadImage.setOnClickListener(v -> {
+            bottomSheetDialog.dismiss();
+            // TODO: mở Intent chọn ảnh hoặc sử dụng Image Picker
+        });
 
-
+        bottomSheetDialog.show();
     }
 
     private void applyCustomFonts(View view) {

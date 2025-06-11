@@ -7,19 +7,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_bg"
-    android:fitsSystemWindows="true"
-    tools:context=".profile.ProfileImageDialogFragment">
+    android:fitsSystemWindows="true">
 
     <!-- Footer -->
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="534dp" />
 
     <LinearLayout
         android:id="@+id/bg_total_cart"
         android:layout_width="match_parent"
-        android:layout_height="197dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:background="@color/color_50F2EAD3"
         android:elevation="4dp"
@@ -27,7 +22,7 @@
         android:padding="16dp">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnViewImg"
+            android:id="@+id/btn_view_image"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -42,7 +37,7 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnUpload"
+            android:id="@+id/btn_upload_image"
             android:layout_width="320dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
