@@ -145,6 +145,11 @@
     <string name="title_customize">Customize</string>
     <string name="title_quantity">Quantity</string>
     <string name="title_sort_by">Sort by</string>
+    <string name="title_chat_title">Chat with EvoCasa</string>
+    <string name="Title_track_orders">Track orders</string>
+    <string name="title_cancel_orders">Cancel orders</string>
+    <string name="title_recommend">Recommend</string>
+    <string name="title_shipping_time">Shipping time</string>
 
 
 
