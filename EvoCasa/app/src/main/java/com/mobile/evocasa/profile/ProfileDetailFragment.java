@@ -1,5 +1,6 @@
 package com.mobile.evocasa.profile;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -116,6 +118,16 @@ public class ProfileDetailFragment extends Fragment {
                     .addToBackStack(null) // Cho phép quay lại bằng nút back
                     .commit();
         });
+
+
+        //Edit ẢNH
+        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+        btnEditAvatar.setOnClickListener(v -> {
+            ProfileImageDialogFragment dialog = new ProfileImageDialogFragment();
+            dialog.show(getChildFragmentManager(), "ProfileImageDialog");
+        });
+
+
 
     }
 
