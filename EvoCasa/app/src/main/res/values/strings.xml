@@ -143,6 +143,10 @@
     <string name="title_edit_address">Address</string>
     <string name="title_set_as_default">Set as default</string>
 
+    <string name="title_edit_address_title">Edit Address</string>
+    <string name="title_selected_area">Selected Area</string>
+    <string name="title_ward_commune">Ward/Commune</string>
+
     <string name="title_upload">UPLOAD NEW IMAGE</string>
     <string name="title_view_img">VIEW CURRENT IMAGE</string>
 

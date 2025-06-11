@@ -135,5 +135,17 @@ public class EditPersonalFragment extends Fragment {
             }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
         });
 
+        //Address
+        EditText edtLocation = view.findViewById(R.id.edtLocation);
+        edtLocation.setOnClickListener(v -> {
+            // Chuyển sang EditAddressFragment
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditAddressFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
     }
 }

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -97,6 +98,19 @@ public class EditShippingFragment extends Fragment {
                     .getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new ProfileDetailFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
+        //Address
+        EditText edtAddressShip = view.findViewById(R.id.edtAddressShip);
+        edtAddressShip.setOnClickListener(v -> {
+            // Chuyển sang EditAddressFragment
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditAddressFragment())
                     .addToBackStack(null)
                     .commit();
         });
