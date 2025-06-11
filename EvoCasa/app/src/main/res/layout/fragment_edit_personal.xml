@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_name"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingBottom="5dp"/>
 
@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_edit_gender"
                     android:textColor="@color/color_5E4C3E"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:paddingBottom="5dp" />
 
@@ -150,7 +150,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/title_edit_birthday"
                     android:textColor="@color/color_5E4C3E"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     android:paddingBottom="5dp" />
 
@@ -184,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_email"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingBottom="5dp"/>
 
@@ -213,7 +213,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_phone"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingBottom="5dp"/>
 
@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_location"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingBottom="5dp"/>
 
