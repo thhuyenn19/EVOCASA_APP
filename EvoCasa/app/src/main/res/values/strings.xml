@@ -150,6 +150,9 @@
     <string name="title_upload">UPLOAD NEW IMAGE</string>
     <string name="title_view_img">VIEW CURRENT IMAGE</string>
 
+    <string name="title_exit">EXIT</string>
+    <string name="title_description_popup">Are you sure to exit\nbut not save?</string>
+
 
     <string name="title_rcm_items">Recommend Items</string>
     <string name="title_add_to_cart">ADD TO CART</string>

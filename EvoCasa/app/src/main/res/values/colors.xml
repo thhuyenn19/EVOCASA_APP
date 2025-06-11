@@ -20,6 +20,8 @@
     <color name="color_333333">#333333</color>
     <color name="orange_active">#B3FF6600</color>   <!-- FF6600 với 70% alpha -->
     <color name="gray_inactive">#B3000000</color>  <!-- 000000 với 70% alpha -->
+    <color name="color_E24747">#E24747</color>
+    <color name="color_525B4A">#525B4A</color>
 
 
 </resources>
