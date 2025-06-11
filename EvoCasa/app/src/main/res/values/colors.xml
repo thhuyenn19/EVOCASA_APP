@@ -18,6 +18,7 @@
     <color name="color_cmt_rv">#888888</color>
     <color name="color_switch_track">#5E4C3E</color>
     <color name="color_switch_thumb">#ECEFF1</color>
+    <color name="color_333333">#333333</color>
 
 
 </resources>
