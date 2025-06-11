@@ -40,6 +40,7 @@
         android:layout_below="@id/heroSection"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="17dp"
         android:layout_marginBottom="10dp"
         android:text="@string/title_description_shop"
         android:textColor="#5E4C3E"
@@ -61,12 +62,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/txtDescriptionShop"
         android:background="#FFFCF3"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp"
         android:clipToPadding="false"
+        android:paddingTop="0dp"
+        android:paddingBottom="17dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2" />
+
+
+
 
 </RelativeLayout>
