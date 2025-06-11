@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:background="@color/color_bg"
+    android:gravity="center_vertical"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp">
+
+    <!-- Nút back -->
+    <LinearLayout
+        android:id="@+id/btnCartBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@drawable/bg_rounded_button"
+        android:orientation="vertical"
+        android:clickable="true"
+
+        android:focusable="true">
+
+        <ImageView
+            android:id="@+id/imgCartBack"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_rounded_button"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back" />
+    </LinearLayout>
+
+    <!-- Spacer để căn giữa title -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="0.4" />
+
+    <!-- Tiêu đề tùy chỉnh -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="@string/title_chat_title"
+        android:textColor="@color/color_5E4C3E"
+        android:textSize="20sp"
+        android:fontFamily="@font/zen_old_mincho_black"/>
+
+    <!-- Spacer phải -->
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="0.4" />
+
+    <LinearLayout
+        android:id="@+id/btnCartEdit"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:background="@color/color_bg"
+        android:orientation="vertical">
+    </LinearLayout>
+</LinearLayout>

@@ -139,5 +139,19 @@
     <string name="title_edit_location_box">669 Do Muoi, Linh Xuan, Thu Duc, HCMC, VietNam</string>
     <string name="title_save_edit_profile">SAVE</string>
 
+    <string name="title_rcm_items">Recommend Items</string>
+    <string name="title_add_to_cart">ADD TO CART</string>
+    <string name="title_buy_now">BUY NOW</string>
+    <string name="title_customize">Customize</string>
+    <string name="title_quantity">Quantity</string>
+    <string name="title_sort_by">Sort by</string>
+    <string name="title_chat_title">Chat with EvoCasa</string>
+    <string name="Title_track_orders">Track orders</string>
+    <string name="title_cancel_orders">Cancel orders</string>
+    <string name="title_recommend">Recommend</string>
+    <string name="title_shipping_time">Shipping time</string>
+
+
+
 
 </resources>

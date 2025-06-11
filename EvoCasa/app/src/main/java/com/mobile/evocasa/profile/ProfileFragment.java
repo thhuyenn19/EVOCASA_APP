@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.BlogFragment;
+import com.mobile.evocasa.ChatActivity;
 import com.mobile.evocasa.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
@@ -129,7 +130,21 @@ public class ProfileFragment extends Fragment {
         itemTransit.setOnClickListener(goToOrders);
         itemReview.setOnClickListener(goToOrders);
 
+        // Handle click for txtChat and icChat to open ChatActivity
+        TextView txtChat = view.findViewById(R.id.txtChat);
+        ImageView icChat = view.findViewById(R.id.icChat);
 
+        View.OnClickListener openChatActivity = v -> {
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            startActivity(intent);
+        };
+
+        if (txtChat != null) {
+            txtChat.setOnClickListener(openChatActivity);
+        }
+        if (icChat != null) {
+            icChat.setOnClickListener(openChatActivity);
+        }
 
         return view;
     }

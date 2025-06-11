@@ -121,12 +121,12 @@
     </LinearLayout>
     <!-- Add to Cart Button -->
     <Button
-        android:id="@+id/btnAddToCart"
+        android:id="@+id/btnBuyNow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_add_to_cart"
+        android:text="@string/title_buy_now"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:textColor="@color/color_5E4C3E"
-        android:backgroundTint="@color/color_bg_btn_addtocart" />
+        android:textColor="@color/white"
+        android:backgroundTint="@color/color_bg_btn_buynow" />
 </LinearLayout>

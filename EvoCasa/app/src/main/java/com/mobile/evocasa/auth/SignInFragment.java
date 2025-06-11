@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
@@ -17,7 +18,8 @@ import com.mobile.utils.FontUtils;
 public class SignInFragment extends Fragment {
 
     private TextView txtSignIn, txtDescription, txtOrWith, txtDontHave, txtTerm, txtPrivacy, txtView, txtBy;
-    private Button btnContinueEmailPhoneSignIn, btnContinueFacebook, btnContinueGoogle, btnSignUp;
+    private Button btnContinueEmailPhoneSignIn, btnSignUp;
+    private LinearLayout btnContinueFacebook, btnContinueGoogle; // Đổi thành LinearLayout
 
     public SignInFragment() {
         // Required empty public constructor
@@ -57,8 +59,8 @@ public class SignInFragment extends Fragment {
         txtBy = rootView.findViewById(R.id.txtBy);
 
         btnContinueEmailPhoneSignIn = rootView.findViewById(R.id.btnContinueEmailPhoneSignIn);
-        btnContinueFacebook = rootView.findViewById(R.id.btnContinueFacebook);
-        btnContinueGoogle = rootView.findViewById(R.id.btnContinueGoogle);
+        btnContinueFacebook = rootView.findViewById(R.id.btnContinueFacebook); // Cast thành LinearLayout
+        btnContinueGoogle = rootView.findViewById(R.id.btnContinueGoogle); // Cast thành LinearLayout
         btnSignUp = rootView.findViewById(R.id.btnSignUp);
 
         // Apply fonts using FontUtils
@@ -72,8 +74,9 @@ public class SignInFragment extends Fragment {
         txtBy.setTypeface(FontUtils.getRegular(getContext()));
 
         btnContinueEmailPhoneSignIn.setTypeface(FontUtils.getMedium(getContext()));
-        btnContinueFacebook.setTypeface(FontUtils.getMedium(getContext()));
-        btnContinueGoogle.setTypeface(FontUtils.getMedium(getContext()));
+        // Không thể set typeface cho LinearLayout, cần set cho TextView bên trong
+        // btnContinueFacebook.setTypeface(FontUtils.getMedium(getContext()));
+        // btnContinueGoogle.setTypeface(FontUtils.getMedium(getContext()));
         btnSignUp.setTypeface(FontUtils.getBlack(getContext()));
 
         // Set onClickListener for btnContinueEmailPhoneSignIn to navigate to SignIn1Fragment
@@ -91,6 +94,24 @@ public class SignInFragment extends Fragment {
                 transaction.addToBackStack(null);
                 // Commit the transaction to perform the fragment transaction
                 transaction.commit();
+            }
+        });
+
+        // Set onClickListener for Facebook button (LinearLayout)
+        btnContinueFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý đăng nhập Facebook ở đây
+                // TODO: Implement Facebook login
+            }
+        });
+
+        // Set onClickListener for Google button (LinearLayout)
+        btnContinueGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý đăng nhập Google ở đây
+                // TODO: Implement Google login
             }
         });
 

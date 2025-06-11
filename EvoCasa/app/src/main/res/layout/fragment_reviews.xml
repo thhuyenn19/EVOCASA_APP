@@ -43,15 +43,15 @@
     <!-- Sort dropdown -->
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingBottom="8dp">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by"
+            android:text="@string/title_sort_by"
             android:textColor="@color/color_5E4C3E"
             android:textStyle="bold"
             android:paddingRight="5dp" />
@@ -63,7 +63,7 @@
             android:src="@drawable/ic_sortby" />
 
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
@@ -73,16 +73,19 @@
         android:id="@+id/recyclerViewReviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:nestedScrollingEnabled="false" />
+        android:overScrollMode="never"
+        android:nestedScrollingEnabled="false"
+        android:minHeight="200dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingTop="15dp"
         android:orientation="horizontal">
+
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
@@ -93,7 +96,7 @@
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
             android:text="@string/title_view_more"
-            android:textColor="#B34F0B"
+            android:textColor="@color/color_tab_active"
             android:textSize="14sp" />
 
         <ImageView

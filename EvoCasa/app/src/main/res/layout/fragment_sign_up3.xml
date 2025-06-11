@@ -114,12 +114,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="5">
 
         <EditText
             android:id="@+id/edtCode1"
-            android:layout_width="59dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
             android:gravity="center"
@@ -131,8 +133,9 @@
 
         <EditText
             android:id="@+id/edtCode2"
-            android:layout_width="59dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
             android:gravity="center"
@@ -144,8 +147,9 @@
 
         <EditText
             android:id="@+id/edtCode3"
-            android:layout_width="59dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
             android:gravity="center"
@@ -157,8 +161,9 @@
 
         <EditText
             android:id="@+id/edtCode4"
-            android:layout_width="59dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:layout_marginEnd="8dp"
             android:background="@drawable/code_input_background"
             android:gravity="center"
@@ -170,8 +175,9 @@
 
         <EditText
             android:id="@+id/edtCode5"
-            android:layout_width="59dp"
+            android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_weight="1"
             android:background="@drawable/code_input_background"
             android:gravity="center"
             android:inputType="number"
@@ -179,8 +185,8 @@
             android:textColor="#5E4C3E"
             android:textSize="18sp"
             android:textStyle="bold" />
-
     </LinearLayout>
+
 
     <!-- Resend Code -->
     <LinearLayout

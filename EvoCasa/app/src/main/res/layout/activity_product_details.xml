@@ -187,7 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Recommend Items"
+                    android:text="@string/title_rcm_items"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -212,7 +212,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="vertical"
-        android:background="#FFFCF3"
+        android:background="@color/color_bg"
         android:elevation="8dp">
 
         <View
@@ -235,7 +235,8 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/color_bg_btn_addtocart"
-                android:text="ADD TO CART"
+                android:text="@string/title_add_to_cart"
+                android:textSize="18dp"
                 android:textColor="@color/color_5E4C3E"
                 android:textStyle="bold" />
 
@@ -244,9 +245,10 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_marginStart="4dp"
+                android:textSize="18dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/color_bg_btn_buynow"
-                android:text="BUY NOW"
+                android:text="@string/title_buy_now"
                 android:textColor="@color/white"
                 android:textStyle="bold" />
         </LinearLayout>
