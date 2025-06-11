@@ -1,5 +1,6 @@
 package com.mobile.evocasa.profile;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
@@ -13,9 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.evocasa.HomeFragment;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
 
@@ -30,6 +34,11 @@ import java.util.Locale;
 public class EditPersonalFragment extends Fragment {
 
     private View view;
+
+    private ImageView imgProfileDetailsBack;
+
+    private Button btnProfileDetailsBack;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -71,6 +80,7 @@ public class EditPersonalFragment extends Fragment {
         }
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,6 +91,17 @@ public class EditPersonalFragment extends Fragment {
         //set font
         TextView txtTitle = view.findViewById(R.id.txtTitle);
         FontUtils.setZboldFont(requireContext(), txtTitle);
+
+        // Gán sự kiện quay lại ProfilDetailsFragment
+        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
+        imgProfileDetailsBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileDetailFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

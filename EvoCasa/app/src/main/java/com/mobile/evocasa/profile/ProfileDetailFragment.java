@@ -88,6 +88,17 @@ public class ProfileDetailFragment extends Fragment {
                     .commit();
         });
 
+        ImageView imgEditProfile = view.findViewById(R.id.imgEditProfile);
+        imgEditProfile.setOnClickListener(v -> {
+            // Chuyển sang EditPersonalFragment
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
+                    .addToBackStack(null) // Cho phép quay lại bằng nút back
+                    .commit();
+        });
+
     }
 
     private void applyCustomFonts(View view) {
