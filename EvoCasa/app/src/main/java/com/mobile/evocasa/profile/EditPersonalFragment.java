@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -75,8 +77,12 @@ public class EditPersonalFragment extends Fragment {
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_edit_personal, container, false);
         view = inflater.inflate(R.layout.fragment_edit_personal, container, false);
-        return view;
 
+        //set font
+        TextView txtTitle = view.findViewById(R.id.txtTitle);
+        FontUtils.setZboldFont(requireContext(), txtTitle);
+
+        return view;
     }
 
     //Set up cho Male/Female & Birthday
