@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+<<<<<<< Updated upstream
 import com.mobile.adapters.TimelineAdapter;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
@@ -17,6 +18,9 @@ import com.mobile.models.TimelineItem;
 
 import java.util.ArrayList;
 import java.util.List;
+=======
+import java.util.ArrayList;
+>>>>>>> Stashed changes
 
 public class TrackOrderActivity extends AppCompatActivity {
 
@@ -29,20 +33,30 @@ public class TrackOrderActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+<<<<<<< Updated upstream
 // 1. Chuẩn bị dữ liệu timeline
+=======
+        // 1. Chuẩn bị dữ liệu timeline
+>>>>>>> Stashed changes
         List<TimelineItem> timelineItems = new ArrayList<>();
         timelineItems.add(new HeaderItem("23rd, 2025"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
         timelineItems.add(new EventItem("09:30", "Your order has left the sorting facility", false));
+<<<<<<< Updated upstream
         timelineItems.add(new HeaderItem("23rd, 2025"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
         timelineItems.add(new EventItem("09:30", "Your order has left the sorting facility", false));
+=======
+>>>>>>> Stashed changes
         // ... thêm các header và event khác tương tự
 
         // 2. Khởi tạo RecyclerView và Adapter
         RecyclerView rv = findViewById(R.id.rvTimeline);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(new TimelineAdapter(this, timelineItems));
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
     }
 }
