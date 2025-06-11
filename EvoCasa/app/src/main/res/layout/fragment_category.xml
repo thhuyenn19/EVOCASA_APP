@@ -3,29 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFCF3">
+    android:background="#FFFCF3"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:elevation="0dp"
+        android:stateListAnimator="@null">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="false">
+            app:titleEnabled="false"
+            app:collapsedTitleTextAppearance="@android:color/transparent"
+            app:expandedTitleTextAppearance="@android:color/transparent"
+            app:scrimAnimationDuration="300">
 
-            <!-- Hero Image with Overlay Text - sẽ biến mất khi cuộn -->
+            <!-- Hero Image with Overlay Text -->
             <RelativeLayout
                 android:id="@+id/heroSection"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7">
+                app:layout_collapseParallaxMultiplier="0.5"
+                android:clipChildren="false"
+                android:layerType="hardware">
 
                 <ImageView
                     android:id="@+id/imgSubCategory"
@@ -47,7 +55,7 @@
                     android:layout_marginBottom="20dp" />
             </RelativeLayout>
 
-            <!-- SubCategory horizontal list - sẽ biến mất khi cuộn -->
+            <!-- SubCategory horizontal list -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewSubCategory"
                 android:layout_width="match_parent"
@@ -59,10 +67,11 @@
                 android:paddingBottom="8dp"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
+                android:layerType="hardware"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.3" />
+                app:layout_collapseParallaxMultiplier="0.2" />
 
-            <!-- Sort by and Filter Section - sẽ biến mất khi cuộn -->
+            <!-- Sort by and Filter Section -->
             <LinearLayout
                 android:id="@+id/sortFilterSection"
                 android:layout_width="match_parent"
@@ -75,6 +84,7 @@
                 android:paddingBottom="12dp"
                 android:gravity="center_vertical"
                 android:background="@color/color_bg"
+                android:layerType="hardware"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.1">
 
@@ -115,48 +125,66 @@
                     android:src="@drawable/ic_filter"/>
             </LinearLayout>
 
-            <!-- Top Bar - sẽ được pin và luôn hiển thị -->
-            <RelativeLayout
-                android:id="@+id/topBarContainer"
+            <!-- Top Bar - pinned -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_height="?attr/actionBarSize"
                 android:background="@android:color/transparent"
+                android:elevation="0dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetEnd="0dp"
+                android:contentInsetLeft="0dp"
+                android:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
                 app:layout_collapseMode="pin">
 
-                <include layout="@layout/topbar_shop_details"
+                <!-- Custom topbar content -->
+                <FrameLayout
+                    android:id="@+id/topBarContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginEnd="0dp">
 
-                <!-- Chữ Furniture sẽ hiện khi cuộn lên và đè lên topbar -->
-                <TextView
-                    android:id="@+id/txtCollapsedTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Furniture"
-                    android:textColor="#5E4C3E"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_centerInParent="true"
-                    android:alpha="0"
-                    android:visibility="invisible" />
-            </RelativeLayout>
+                    <include layout="@layout/topbar_shop_details"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
+                    <!-- Collapsed title -->
+                    <TextView
+                        android:id="@+id/txtCollapsedTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Furniture"
+                        android:textColor="#5E4C3E"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:alpha="0"
+                        android:visibility="invisible"
+                        android:elevation="10dp" />
+                </FrameLayout>
+            </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Product Grid - sẽ luôn hiển thị -->
+    <!-- Product Grid -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewProducts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="10dp"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:clipToPadding="false"
-        android:background="#FFFCF3"
+        android:paddingBottom="8dp"
+        android:nestedScrollingEnabled="true"
+        android:scrollbars="none"
+        android:layerType="none"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
