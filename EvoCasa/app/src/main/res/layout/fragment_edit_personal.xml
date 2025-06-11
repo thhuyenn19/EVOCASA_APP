@@ -7,6 +7,7 @@
     android:background="@color/color_bg"
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
+    android:fitsSystemWindows="true"
     tools:context=".profile.EditPersonalFragment">
 
     <!-- Top bar -->
@@ -89,12 +90,12 @@
                 android:id="@+id/edtName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="text"
-                android:text="@string/title_edit_name_box"
+                android:inputType="textCapWords|textPersonName"
+                android:hint="@string/title_edit_name_box"
                 android:textColor="@color/color_5E4C3E"
                 android:background="@drawable/edittext_background"
                 android:padding="12dp" />
+
         </LinearLayout>
 
 
@@ -170,6 +171,113 @@
         </LinearLayout>
 
 
+        <!--Email-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/txtEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_edit_email"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingBottom="5dp"/>
+
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="@string/title_edit_email_box"
+                android:background="@drawable/edittext_background"
+                android:textColor="@color/color_5E4C3E"
+                android:padding="12dp" />
+        </LinearLayout>
+
+
+        <!--Phone-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/txtPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_edit_phone"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingBottom="5dp"/>
+
+            <EditText
+                android:id="@+id/edtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:hint="@string/title_edit_phone_box"
+                android:background="@drawable/edittext_background"
+                android:textColor="@color/color_5E4C3E"
+                android:padding="12dp" />
+        </LinearLayout>
+
+
+        <!--Location-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/txtLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_edit_location"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingBottom="5dp"/>
+
+            <EditText
+                android:id="@+id/edtLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPostalAddress"
+                android:text="@string/title_edit_location_box"
+                android:textColor="@color/color_5E4C3E"
+                android:background="@drawable/edittext_background"
+                android:padding="12dp"
+                android:drawableEnd="@drawable/ic_arrow_right_edit"
+                android:drawablePadding="8dp"
+                android:focusable="false"
+                android:clickable="true"/>
+        </LinearLayout>
+
+
+        <!--BUTTON SAVE-->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSave"
+            android:layout_width="179dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_pressed_effect"
+            android:elevation="2dp"
+            android:text="@string/title_save_edit_profile"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
 
 
     </LinearLayout>
