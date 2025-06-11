@@ -1,91 +1,98 @@
 package com.mobile.evocasa.productdetails;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 public class WrapContentViewPager2Helper {
+    private ViewPager2 viewPager;
+    private FragmentActivity activity;
 
-    private ViewPager2 viewPager2;
-    private ViewPager2.OnPageChangeCallback pageChangeCallback;
-
-    public WrapContentViewPager2Helper(@NonNull ViewPager2 viewPager2) {
-        this.viewPager2 = viewPager2;
-        init();
+    public WrapContentViewPager2Helper(ViewPager2 viewPager) {
+        this.viewPager = viewPager;
+        this.activity = (FragmentActivity) viewPager.getContext();
     }
 
-    private void init() {
-        pageChangeCallback = new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                // Delay to ensure fragment view is ready
-                viewPager2.post(() -> adjustHeight());
-            }
-        };
-        viewPager2.registerOnPageChangeCallback(pageChangeCallback);
+    public void setupInitialHeight() {
+        viewPager.post(() -> updateHeight());
     }
 
-    private void adjustHeight() {
+    public void updateHeight() {
+        if (activity == null || viewPager == null) return;
+
         try {
-            FragmentActivity activity = null;
-            Context context = viewPager2.getContext();
-            if (context instanceof FragmentActivity) {
-                activity = (FragmentActivity) context;
-            }
+            Fragment currentFragment = getCurrentFragment();
+            if (currentFragment != null && currentFragment.getView() != null) {
+                View fragmentView = currentFragment.getView();
 
-            if (activity != null) {
-                Fragment currentFragment = activity.getSupportFragmentManager()
-                        .findFragmentByTag("f" + viewPager2.getCurrentItem());
-
-                if (currentFragment != null && currentFragment.getView() != null) {
-                    View fragmentView = currentFragment.getView();
-
-                    // Measure the fragment view
-                    fragmentView.measure(
-                            View.MeasureSpec.makeMeasureSpec(viewPager2.getWidth(), View.MeasureSpec.EXACTLY),
-                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
-                    );
-
-                    int height = fragmentView.getMeasuredHeight();
-
-                    if (height > 0) {
-                        ViewGroup.LayoutParams params = viewPager2.getLayoutParams();
-                        if (params.height != height) {
-                            params.height = height;
-                            viewPager2.setLayoutParams(params);
-                            viewPager2.requestLayout();
-                        }
+                // Special handling for ReviewsFragment
+                if (currentFragment instanceof ReviewsFragment) {
+                    // Find the RecyclerView in the reviews fragment
+                    RecyclerView recyclerView = fragmentView.findViewById(com.mobile.evocasa.R.id.recyclerViewReviews);
+                    if (recyclerView != null && recyclerView.getAdapter() != null) {
+                        // Force the RecyclerView to measure all its children
+                        recyclerView.measure(
+                                View.MeasureSpec.makeMeasureSpec(viewPager.getWidth(), View.MeasureSpec.EXACTLY),
+                                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                        );
                     }
+                }
+
+                // Force measure the fragment view
+                fragmentView.measure(
+                        View.MeasureSpec.makeMeasureSpec(viewPager.getWidth(), View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                );
+
+                int targetHeight = fragmentView.getMeasuredHeight();
+
+
+                ViewGroup.LayoutParams layoutParams = viewPager.getLayoutParams();
+                if (Math.abs(layoutParams.height - targetHeight) > 10) { // Only update if significant difference
+                    layoutParams.height = targetHeight;
+                    viewPager.setLayoutParams(layoutParams);
+                    viewPager.requestLayout();
                 }
             }
         } catch (Exception e) {
-            // Handle any potential exceptions silently
+            e.printStackTrace();
         }
     }
 
-    // Method to manually trigger height adjustment
-    public void updateHeight() {
-        viewPager2.post(() -> adjustHeight());
+    private Fragment getCurrentFragment() {
+        try {
+            ProductDetailPagerAdapter adapter = (ProductDetailPagerAdapter) viewPager.getAdapter();
+            if (adapter != null) {
+                int currentItem = viewPager.getCurrentItem();
+                String fragmentTag = "f" + currentItem;
+                Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
+
+                // If not found by tag, try the adapter method
+                if (fragment == null) {
+                    fragment = adapter.getCurrentFragment(currentItem);
+                }
+
+                return fragment;
+            }
+        } catch (Exception e) {
+            // Fallback method
+            try {
+                ProductDetailPagerAdapter adapter = (ProductDetailPagerAdapter) viewPager.getAdapter();
+                if (adapter != null) {
+                    return adapter.getCurrentFragment(viewPager.getCurrentItem());
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+        return null;
     }
 
-    // Method to set up initial height after adapter is set
-    public void setupInitialHeight() {
-        viewPager2.post(() -> {
-            // Wait a bit more for fragments to be created
-            viewPager2.postDelayed(() -> adjustHeight(), 100);
-        });
-    }
-
-    // Clean up when no longer needed
     public void destroy() {
-        if (pageChangeCallback != null) {
-            viewPager2.unregisterOnPageChangeCallback(pageChangeCallback);
-        }
+        viewPager = null;
+        activity = null;
     }
 }
