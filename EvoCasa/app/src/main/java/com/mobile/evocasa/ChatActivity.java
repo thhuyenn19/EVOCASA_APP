@@ -1,6 +1,8 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,5 +22,16 @@ public class ChatActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Handle back button click
+        LinearLayout btnCartBack = findViewById(R.id.btnCartBack);
+        if (btnCartBack != null) {
+            btnCartBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish(); // Close the current activity
+                }
+            });
+        }
     }
 }
