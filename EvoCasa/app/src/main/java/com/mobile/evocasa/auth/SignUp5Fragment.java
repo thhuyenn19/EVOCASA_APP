@@ -1,6 +1,5 @@
 package com.mobile.evocasa.auth;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,30 +45,23 @@ public class SignUp5Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_sign_up5, container, false);
 
-        // Lấy tham chiếu đến các TextView và Button
+        // Tham chiếu UI
         btnSignIn = rootView.findViewById(R.id.btnSignIn);
-        txtSuccess = rootView.findViewById(R.id.txtSucess);
+        txtSuccess = rootView.findViewById(R.id.txtSucess); // hoặc R.id.txtTitle nếu bạn nhầm tên
         txtDescription = rootView.findViewById(R.id.txtDescription);
 
-        // Tạo Typeface từ font trong assets
-        Typeface customFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
+        // Áp dụng font
+        FontUtils.setBoldFont(getContext(), txtSuccess);
+        txtDescription.setTypeface(FontUtils.getMediumitalic(getContext()));
+        btnSignIn.setTypeface(FontUtils.getMedium(getContext()));
 
-        // Áp dụng font cho các TextView và Button
-        txtSuccess.setTypeface(customFont);
-        txtDescription.setTypeface(customFont);
-        btnSignIn.setTypeface(customFont);
-
-        // Thiết lập sự kiện click cho nút
+        // Xử lý sự kiện
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Khi bấm vào nút, chuyển sang SignInFragment
                 SignInFragment signInFragment = new SignInFragment();
-
-                // Thực hiện thay đổi fragment
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_container, signInFragment);
                 transaction.addToBackStack(null);

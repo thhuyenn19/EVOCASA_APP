@@ -74,7 +74,7 @@ public class SignUp1Fragment extends Fragment {
         txtDescription.setTypeface(medium); // Description - Medium Italic
         txtDescription.setTypeface(italic); // Applying italic style
         txtOrWith.setTypeface(semiBold); // "Or With" - SemiBold
-        txtDontHave.setTypeface(semiBold); // "Already have an account?" - SemiBold
+        txtDontHave.setTypeface(medium); // "Already have an account?" - SemiBold
         txtTerm.setTypeface(semiBold); // Terms - SemiBold
         txtPrivacy.setTypeface(semiBold); // Privacy - SemiBold
         txtBy.setTypeface(regular);
