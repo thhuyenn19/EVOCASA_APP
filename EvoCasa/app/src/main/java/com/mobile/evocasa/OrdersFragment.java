@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdersFragment extends Fragment {
+    private List<OrderGroup> allOrderGroups;
+    private OrderGroupAdapter orderGroupAdapter;
+
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -59,14 +62,11 @@ public class OrdersFragment extends Fragment {
             statusList.add(new OrderStatus(s, isSelected));
         }
 
-        // ✅ Gắn adapter và xử lý chọn tab
-        OrderStatusAdapter adapter = new OrderStatusAdapter(statusList, new OrderStatusAdapter.OnStatusClickListener() {
-            @Override
-            public void onStatusSelected(String status) {
-                filterOrdersByStatus(status); // gọi filter dữ liệu đơn hàng theo status
-            }
-        });
-        rvStatus.setAdapter(adapter);
+        // Gắn adapter cho tab và xử lý click
+        OrderStatusAdapter statusAdapter = new OrderStatusAdapter(statusList,
+                status -> filterOrdersByStatus(status)
+        );
+        rvStatus.setAdapter(statusAdapter);
 
         LinearLayout btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
@@ -74,31 +74,42 @@ public class OrdersFragment extends Fragment {
                     .getSupportFragmentManager()
                     .popBackStack();
         });
+        // 3) Khởi tạo danh sách đơn hàng
+        allOrderGroups = new ArrayList<>();
+        allOrderGroups.add(new OrderGroup("Pending", mockItems("Pending")));
+        allOrderGroups.add(new OrderGroup("Pick Up", mockItems("Pick Up")));
+        allOrderGroups.add(new OrderGroup("In Transit", mockItems("In Transit")));
+        allOrderGroups.add(new OrderGroup("Review", mockItems("Review")));
+        allOrderGroups.add(new OrderGroup("Completed", mockItems("Completed")));
+        allOrderGroups.add(new OrderGroup("Cancelled", mockItems("Cancelled")));
 
-        // ✅ Gọi filter cho tab ban đầu
-        filterOrdersByStatus(selectedStatus);
+// 4) Thiết lập RecyclerView hiển thị đơn hàng
         RecyclerView rvOrders = view.findViewById(R.id.rvOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
+        orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>());
 
-        List<OrderGroup> groupList = new ArrayList<>();
-        groupList.add(new OrderGroup("Pending", mockItems()));
-        groupList.add(new OrderGroup("Review", mockItems()));
-        groupList.add(new OrderGroup("Completed", mockItems()));
+        rvOrders.setAdapter(orderGroupAdapter);
 
-        OrderGroupAdapter orderadapter = new OrderGroupAdapter(groupList);
-        rvOrders.setAdapter(orderadapter);
+        // 5) Lọc và hiển thị lần đầu
+        filterOrdersByStatus(selectedStatus);
 
     }
-    private List<OrderItem> mockItems() {
-        List<OrderItem> list = new ArrayList<>();
-        list.add(new OrderItem(R.mipmap.ic_cart_product, "Travertine Table Lamp", 3500, 1));
-        list.add(new OrderItem(R.mipmap.ic_cart_product, "Ceramic Mug", 1500, 2));
-        return list;
+    private List<OrderItem> mockItems(String status) {
+        List<OrderItem> items = new ArrayList<>();
+        items.add(new OrderItem(R.mipmap.ic_cart_product,  " Product A", 1000, 1));
+        items.add(new OrderItem(R.mipmap.ic_cart_product, " Product B", 1200, 2));
+        return items;
     }
 
-    // Bạn cần định nghĩa hàm này để lọc đơn hàng theo status
+
     private void filterOrdersByStatus(String status) {
-        // TODO: lọc đơn hàng và cập nhật RecyclerView danh sách đơn
+        List<OrderGroup> filtered = new ArrayList<>();
+        for (OrderGroup group : allOrderGroups) {
+            if (group.getStatus().equals(status)) {
+                group.setExpanded(false);
+                filtered.add(group);
+            }
+        }
+        orderGroupAdapter.updateData(filtered);
     }
-
 }

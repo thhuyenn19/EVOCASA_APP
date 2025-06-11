@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CategoryShopAdapter;
-import com.mobile.evocasa.CategoryFragment;
+import com.mobile.evocasa.category.CategoryFragment;
 import com.mobile.evocasa.R;
 import com.mobile.models.Category;
 import com.mobile.utils.FontUtils;

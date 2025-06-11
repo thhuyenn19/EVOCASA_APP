@@ -21,10 +21,15 @@ import java.util.List;
 
 public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.ViewHolder> {
 
-    private final List<OrderGroup> orderGroups;
+    private List<OrderGroup> orderGroups;
 
     public OrderGroupAdapter(List<OrderGroup> orderGroups) {
         this.orderGroups = orderGroups;
+    }
+    public void updateData(List<OrderGroup> newList) {
+        this.orderGroups.clear();
+        this.orderGroups.addAll(newList);
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,12 +63,16 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.itemContainer.removeAllViews();
 
         List<OrderItem> items = group.getItems();
-        int showCount = group.isExpanded() ? items.size() : Math.min(1, items.size());
+        // 1. Tính tổng full trước (không phụ thuộc expand)
         int totalPrice = 0;
+        for (OrderItem item : items) {
+            totalPrice += item.getPrice() * item.getQuantity();
+        }
 
+// 2. Chỉ hiển thị 1 hoặc toàn bộ sản phẩm
+        int showCount = group.isExpanded() ? items.size() : Math.min(1, items.size());
         for (int i = 0; i < showCount; i++) {
             OrderItem item = items.get(i);
-            totalPrice += item.getPrice();
 
             View productView = LayoutInflater.from(context)
                     .inflate(R.layout.item_order_product, holder.itemContainer, false);
@@ -82,9 +91,12 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
             FontUtils.setZboldFont(context, price);
             FontUtils.setRegularFont(context, qty);
 
-
             holder.itemContainer.addView(productView);
         }
+
+// 3. Gán total dựa trên toàn bộ items
+        holder.txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
+
 
 
         // Show or hide "View More"
@@ -103,8 +115,7 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         }
 
 
-        // Set total price text
-        holder.txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
+
 
         // Set action button based on order status
         String status = group.getStatus();
