@@ -21,4 +21,5 @@
     <color name="orange_active">#B3FF6600</color>   <!-- FF6600 với 70% alpha -->
     <color name="gray_inactive">#B3000000</color>  <!-- 000000 với 70% alpha -->
 
+
 </resources>

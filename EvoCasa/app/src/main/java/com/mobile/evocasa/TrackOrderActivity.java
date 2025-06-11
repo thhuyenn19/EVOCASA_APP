@@ -30,8 +30,7 @@ public class TrackOrderActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-// 1. Chuẩn bị dữ liệu timeline
-        // 1. Chuẩn bị dữ liệu timeline
+    // 1. Chuẩn bị dữ liệu timeline
         List<TimelineItem> timelineItems = new ArrayList<>();
         timelineItems.add(new HeaderItem("23rd, 2025"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
@@ -45,6 +44,5 @@ public class TrackOrderActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.rvTimeline);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(new TimelineAdapter(this, timelineItems));
-
     }
 }
