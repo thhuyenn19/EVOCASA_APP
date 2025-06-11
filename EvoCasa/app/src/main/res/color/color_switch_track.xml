@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Bật -->
+    <item android:color="#5E4C3E" android:state_checked="true" />
+    <!-- Tắt -->
+    <item android:color="#ECEFF1" />
+
+</selector>
