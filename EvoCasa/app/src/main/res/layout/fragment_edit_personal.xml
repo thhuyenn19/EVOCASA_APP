@@ -19,7 +19,7 @@
 
         <!-- Nút back -->
         <LinearLayout
-            android:id="@+id/btnCartBack"
+            android:id="@+id/btnProfileDetailsBack"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
@@ -30,7 +30,7 @@
             android:focusable="true">
 
             <ImageView
-                android:id="@+id/imgCartBack"
+                android:id="@+id/imgProfileDetailsBack"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/bg_rounded_button"
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="@string/title_edit_personal_title"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <!-- Spacer phải -->
@@ -93,7 +93,8 @@
                 android:inputType="textCapWords|textPersonName"
                 android:hint="@string/title_edit_name_box"
                 android:textColor="@color/color_5E4C3E"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edittext_background_infor"
+                android:textSize="15sp"
                 android:padding="8dp" />
 
         </LinearLayout>
@@ -128,13 +129,14 @@
                     android:id="@+id/autoGender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
                     android:inputType="none"
                     android:drawableEnd="@drawable/ic_arrow_down"
                     android:drawablePadding="8dp"
                     android:padding="8dp"
                     android:hint="@string/title_edit_gender_box"
-                    android:textColor="@color/color_5E4C3E" />
+                    android:textColor="@color/color_5E4C3E"
+                    android:background="@drawable/edittext_background_infor"
+                    android:textSize="15sp"/>
             </LinearLayout>
 
             <!-- Birthday Section -->
@@ -158,7 +160,8 @@
                     android:id="@+id/edtBirthday"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/edittext_background_infor"
+                    android:textSize="15sp"
                     android:inputType="none"
                     android:focusable="false"
                     android:clickable="true"
@@ -194,7 +197,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:hint="@string/title_edit_email_box"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edittext_background_infor"
+                android:textSize="15sp"
                 android:textColor="@color/color_5E4C3E"
                 android:padding="8dp"  />
         </LinearLayout>
@@ -223,7 +227,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:hint="@string/title_edit_phone_box"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edittext_background_infor"
+                android:textSize="15sp"
                 android:textColor="@color/color_5E4C3E"
                 android:padding="8dp"  />
         </LinearLayout>
@@ -255,7 +260,8 @@
                 android:inputType="textPostalAddress"
                 android:text="@string/title_edit_location_box"
                 android:textColor="@color/color_5E4C3E"
-                android:background="@drawable/edittext_background"
+                android:background="@drawable/edittext_background_infor"
+                android:textSize="15sp"
                 android:padding="8dp"
                 android:drawableEnd="@drawable/ic_arrow_right_edit"
                 android:drawablePadding="8dp"
@@ -267,8 +273,8 @@
         <!--BUTTON SAVE-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSave"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:background="@drawable/button_pressed_effect"
@@ -278,8 +284,6 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"/>
-
-
     </LinearLayout>
 
 </LinearLayout>
