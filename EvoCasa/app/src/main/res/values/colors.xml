@@ -17,15 +17,9 @@
     <color name="color_bg_btn_buynow">#525B4A</color>
     <color name="color_cmt_rv">#888888</color>
     <color name="color_333333">#333333</color>
-<<<<<<< Updated upstream
-    <color name="orange_active">#B3FF6600</color>   <!-- FF6600 với 70% alpha -->
-    <color name="gray_inactive">#B3000000</color>  <!-- 000000 với 70% alpha -->
-=======
-    <!-- FF6600 @ 70% opacity -->
     <color name="orange_active">#B3FF6600</color>
-    <!-- 000000 @ 70% opacity -->
     <color name="gray_inactive">#B3000000</color>
 
->>>>>>> Stashed changes
+
 
 </resources>
