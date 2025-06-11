@@ -13,9 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.mobile.utils.FontUtils;
 
 import com.mobile.adapters.CategoryAdapter;
+import com.mobile.utils.FontUtils;
+
 import com.mobile.adapters.CollectionAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;

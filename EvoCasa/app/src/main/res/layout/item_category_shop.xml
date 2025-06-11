@@ -13,14 +13,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="2dp"
-        android:background="#80B49E79">
+        android:background="#E6D8C0"
+        android:padding="2dp">
         <!-- Background image - sát lề phải hoàn toàn -->
         <ImageView
             android:id="@+id/imgCategory"
             android:layout_width="90dp"
             android:layout_height="90dp"
-            android:layout_marginEnd="-12dp"
+            android:layout_marginEnd="-8dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_category_decor"
             app:layout_constraintBottom_toBottomOf="parent"

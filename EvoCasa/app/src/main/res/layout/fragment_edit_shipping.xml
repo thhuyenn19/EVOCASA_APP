@@ -8,7 +8,7 @@
     android:paddingStart="15dp"
     android:paddingEnd="15dp"
     android:fitsSystemWindows="true"
-    tools:context=".profile.EditPersonalFragment">
+    tools:context=".profile.EditShippingFragment">
 
     <!-- Top bar -->
     <LinearLayout
@@ -46,14 +46,14 @@
 
         <!-- Tiêu đề tùy chỉnh -->
         <TextView
-            android:id="@+id/txtTitle"
+            android:id="@+id/txtTitleShip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="@string/title_edit_personal_title"
+            android:text="@string/title_edit_shipping_title"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <!-- Spacer phải -->
@@ -61,6 +61,24 @@
             android:layout_width="0dp"
             android:layout_height="1dp"
             android:layout_weight="0.4" />
+
+        <LinearLayout
+            android:id="@+id/btnDeleteEditShip"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_rounded_button"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            tools:ignore="DuplicateIds">
+            <ImageView
+                android:id="@+id/btnDeleteEditShip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_trash" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!--Main-->
@@ -77,7 +95,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtName"
+                android:id="@+id/txtNameShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_name"
@@ -87,7 +105,7 @@
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtName"
+                android:id="@+id/edtNameShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords|textPersonName"
@@ -99,111 +117,6 @@
 
         </LinearLayout>
 
-
-        <!-- Gender & Birthday -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <!-- Gender Section -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginEnd="12dp"> <!-- khoảng cách giữa gender và birthday -->
-
-                <TextView
-                    android:id="@+id/txtGender"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_edit_gender"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="5dp" />
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoGender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:drawableEnd="@drawable/ic_arrow_down"
-                    android:drawablePadding="8dp"
-                    android:padding="8dp"
-                    android:hint="@string/title_edit_gender_box"
-                    android:textColor="@color/color_5E4C3E"
-                    android:background="@drawable/edittext_background_infor"
-                    android:textSize="15sp"/>
-            </LinearLayout>
-
-            <!-- Birthday Section -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtBirthday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_edit_birthday"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:paddingBottom="5dp" />
-
-                <EditText
-                    android:id="@+id/edtBirthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/edittext_background_infor"
-                    android:textSize="15sp"
-                    android:inputType="none"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    android:drawablePadding="8dp"
-                    android:padding="8dp"
-                    android:hint="@string/title_edit_birthday_box"
-                    android:textColor="@color/color_5E4C3E" />
-            </LinearLayout>
-        </LinearLayout>
-
-
-        <!--Email-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="10dp">
-
-            <TextView
-                android:id="@+id/txtEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_edit_email"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:paddingBottom="5dp"/>
-
-            <EditText
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:hint="@string/title_edit_email_box"
-                android:background="@drawable/edittext_background_infor"
-                android:textSize="15sp"
-                android:textColor="@color/color_5E4C3E"
-                android:padding="8dp"  />
-        </LinearLayout>
-
-
         <!--Phone-->
         <LinearLayout
             android:layout_width="match_parent"
@@ -212,7 +125,7 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/txtPhone"
+                android:id="@+id/txtPhoneShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_phone"
@@ -222,7 +135,7 @@
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtPhone"
+                android:id="@+id/edtPhoneShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
@@ -234,7 +147,7 @@
         </LinearLayout>
 
 
-        <!--Location-->
+        <!--Address-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -243,17 +156,17 @@
             android:paddingBottom="30dp">
 
             <TextView
-                android:id="@+id/txtLocation"
+                android:id="@+id/txtAddressShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_edit_location"
+                android:text="@string/title_edit_address"
                 android:textColor="@color/color_5E4C3E"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtLocation"
+                android:id="@+id/edtAddressShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -268,6 +181,35 @@
                 android:focusable="false"
                 android:clickable="true"/>
         </LinearLayout>
+
+        <!-- Switch: Set as Default -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end|center_vertical"
+            android:paddingBottom="30dp">
+
+            <TextView
+                android:id="@+id/txtSetDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_set_as_default"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"
+                android:gravity="end|center_vertical"/>
+
+            <Switch
+                android:id="@+id/switchDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end|center_vertical"
+                android:thumbTint="@color/color_switch_thumb"
+                android:trackTint="@color/color_switch_track" />
+        </LinearLayout>
+
 
 
         <!--BUTTON SAVE-->

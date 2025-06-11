@@ -97,7 +97,7 @@
                 android:layout_height="32dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Decrease"
-                android:src="@drawable/ic_minus" />
+                android:src="@drawable/ic_minus_quantity" />
 
             <TextView
                 android:id="@+id/txtQuantity"
@@ -116,7 +116,7 @@
                 android:layout_height="32dp"
                 android:background="@android:color/transparent"
                 android:contentDescription="Increase"
-                android:src="@drawable/ic_plus" />
+                android:src="@drawable/ic_plus_quantity" />
         </LinearLayout>
     </LinearLayout>
     <!-- Add to Cart Button -->
