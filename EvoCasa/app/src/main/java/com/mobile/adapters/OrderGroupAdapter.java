@@ -22,15 +22,22 @@ import java.util.List;
 public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.ViewHolder> {
 
     private List<OrderGroup> orderGroups;
+    private OnOrderActionClickListener listener;
 
-    public OrderGroupAdapter(List<OrderGroup> orderGroups) {
+    public OrderGroupAdapter(List<OrderGroup> orderGroups, OnOrderActionClickListener listener)
+    {
         this.orderGroups = orderGroups;
+        this.listener = listener;
     }
     public void updateData(List<OrderGroup> newList) {
         this.orderGroups.clear();
         this.orderGroups.addAll(newList);
         notifyDataSetChanged();
     }
+    public interface OnOrderActionClickListener {
+        void onActionClicked(OrderGroup group);
+    }
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout itemContainer, btnViewMoreContainer;
@@ -98,7 +105,6 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
 
 
-
         // Show or hide "View More"
         if (items.size() > showCount) {
             holder.btnViewMoreContainer.setVisibility(View.VISIBLE);
@@ -115,6 +121,11 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         }
 
 
+        holder.btnAction.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onActionClicked(group);
+            }
+        });
 
 
         // Set action button based on order status

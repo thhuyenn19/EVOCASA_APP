@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -86,9 +87,27 @@ public class OrdersFragment extends Fragment {
 // 4) Thiết lập RecyclerView hiển thị đơn hàng
         RecyclerView rvOrders = view.findViewById(R.id.rvOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
-        orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>());
+
+        orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>(),  group -> {
+            String status = group.getStatus();
+            switch (status) {
+                case "Pending":
+                case "Pick Up":
+                case "In Transit":
+                    startActivity(new Intent(getContext(), TrackOrderActivity.class));
+                    break;
+                case "Review":
+                    startActivity(new Intent(getContext(), LeaveReviewActivity.class));
+                    break;
+                case "Completed":
+                    startActivity(new Intent(getContext(), BuyAgainActivity.class));
+                    break;
+            }
+        });
+
 
         rvOrders.setAdapter(orderGroupAdapter);
+
 
         // 5) Lọc và hiển thị lần đầu
         filterOrdersByStatus(selectedStatus);
