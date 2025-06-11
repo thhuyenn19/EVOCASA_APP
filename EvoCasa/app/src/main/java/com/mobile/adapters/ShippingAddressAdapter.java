@@ -17,9 +17,12 @@ import java.util.List;
 public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddressAdapter.ViewHolder> {
 
     private List<ShippingAddress> list;
+    private OnEditClickListener editClickListener;
 
-    public ShippingAddressAdapter(List<ShippingAddress> list) {
+
+    public ShippingAddressAdapter(List<ShippingAddress> list, OnEditClickListener listener) {
         this.list = list;
+        this.editClickListener = listener;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -58,6 +61,14 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
             holder.txtDefaultTag.setVisibility(View.GONE);
         }
 
+
+        holder.txtEditLabel.setOnClickListener(v -> {
+            if (editClickListener != null) {
+                editClickListener.onEditClick(item);
+            }
+        });
+
+
         // Set font:
         FontUtils.setSemiBoldFont(holder.itemView.getContext(), holder.txtName);            // tên = semi-bold
         FontUtils.setRegularFont(holder.itemView.getContext(), holder.txtDefaultTag);       // default tag = regular
@@ -70,4 +81,13 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
     public int getItemCount() {
         return list.size();
     }
+
+
+
+    //Click mở edit shipping
+    public interface OnEditClickListener {
+        void onEditClick(ShippingAddress address);
+    }
+
+
 }

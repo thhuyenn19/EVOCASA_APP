@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
+import com.mobile.models.ShippingAddress;
 import com.mobile.utils.FontUtils;
 
 /**
@@ -64,6 +65,11 @@ public class EditShippingFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        if (getArguments() != null) {
+            ShippingAddress address = (ShippingAddress) getArguments().getSerializable("shippingAddress");
+            // TODO: Hiển thị address lên giao diện để chỉnh sửa
         }
     }
 
