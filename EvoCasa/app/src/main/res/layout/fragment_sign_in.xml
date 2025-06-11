@@ -115,38 +115,65 @@
     </LinearLayout>
 
     <!-- Button Continue with Google -->
-    <androidx.appcompat.widget.AppCompatButton
+    <LinearLayout
         android:id="@+id/btnContinueFacebook"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/button_pressed_effect1"
-        android:drawableStart="@drawable/ic_facebook"
-        android:drawablePadding="6dp"
-        android:elevation="1dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="62dp"
-        android:text="@string/title_continue_fb"
-        android:textAllCaps="false"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_facebook"
+            android:contentDescription="@string/title_continue_fb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/title_continue_fb"
+            android:textSize="16sp"
+            android:textColor="#5E4C3E"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
-    <androidx.appcompat.widget.AppCompatButton
+
+
+    <LinearLayout
         android:id="@+id/btnContinueGoogle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_pressed_effect1"
-        android:drawableStart="@drawable/ic_google"
-        android:drawablePadding="6dp"
-        android:elevation="1dp"
-        android:gravity="start|center_vertical"
-        android:paddingStart="75dp"
-        android:text="@string/title_continue_gg"
-        android:textAllCaps="false"
-        android:textColor="#5E4C3E"
-        android:textSize="16sp" />
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingHorizontal="24dp"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_google"
+            android:contentDescription="@string/title_continue_gg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="@string/title_continue_gg"
+            android:textSize="16sp"
+            android:textColor="#5E4C3E"
+            android:textStyle="bold" />
+    </LinearLayout>
+
 
 
     <!-- Sign in link -->
