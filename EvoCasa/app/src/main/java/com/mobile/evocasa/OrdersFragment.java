@@ -115,8 +115,8 @@ public class OrdersFragment extends Fragment {
     }
     private List<OrderItem> mockItems(String status) {
         List<OrderItem> items = new ArrayList<>();
-        items.add(new OrderItem(R.mipmap.ic_cart_product,  " Product A", 1000, 1));
-        items.add(new OrderItem(R.mipmap.ic_cart_product, " Product B", 1200, 2));
+        items.add(new OrderItem(R.mipmap.ic_cart_product,  "Product A", 1000, 1));
+        items.add(new OrderItem(R.mipmap.ic_cart_product, "Product B", 1200, 2));
         return items;
     }
 
