@@ -74,6 +74,20 @@ public class ProfileDetailFragment extends Fragment {
                     .getSupportFragmentManager()
                     .popBackStack(); // Quay lại fragment trước (ProfileFragment)
         });
+
+
+        //Mở edit infor
+        TextView txtEdit = view.findViewById(R.id.txtEdit);
+        txtEdit.setOnClickListener(v -> {
+            // Chuyển sang EditPersonalFragment
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
+                    .addToBackStack(null) // Cho phép quay lại bằng nút back
+                    .commit();
+        });
+
     }
 
     private void applyCustomFonts(View view) {

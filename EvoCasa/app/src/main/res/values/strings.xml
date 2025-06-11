@@ -124,4 +124,12 @@
     <string name="title_edit">Edit</string>
     <string name="title_description_shop">Celebrating patina, heritage, and the comfort of the past.</string>
     <string name="title_all_categories">All categories</string>
+    <string name="title_edit_personal_title">Edit Personal Information</string>
+    <string name="title_edit_name">Name</string>
+    <string name="title_edit_name_box">John Anthony</string>
+    <string name="title_edit_gender">Gender</string>
+    <string name="title_edit_gender_box">Male</string>
+    <string name="title_edit_birthday">Birthday</string>
+    <string name="title_edit_birthday_box">01/02/2003</string>
+
 </resources>
