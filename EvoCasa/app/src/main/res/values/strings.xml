@@ -138,6 +138,15 @@
     <string name="title_edit_location">Location</string>
     <string name="title_edit_location_box">669 Do Muoi, Linh Xuan, Thu Duc, HCMC, VietNam</string>
     <string name="title_save_edit_profile">SAVE</string>
+    <string name="title_total_payment">Total</string>
+    <string name="title_discount">Discount:</string>
+    <string name="text_edit_underline">Edit</string>
+    <string name="title_message_for_shop">Message for shop</string>
+    <string name="text_voucher">Message for shop</string>
+    <string name="title_shipping_fee">Shipping fee:</string>
+    <string name="title_payment">Payment</string>
+    <string name="title_payment_successful">Payment successful!</string>
+    <string name="title_payment_successful_thanks">Thank you Thao, your order has been placed.</string>
 
     <string name="title_edit_shipping_title">Edit Shipping Information</string>
     <string name="title_edit_address">Address</string>
