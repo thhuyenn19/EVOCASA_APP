@@ -19,6 +19,9 @@
     <color name="color_switch_track">#5E4C3E</color>
     <color name="color_switch_thumb">#ECEFF1</color>
     <color name="color_333333">#333333</color>
-
+    <!-- FF6600 @ 70% opacity -->
+    <color name="orange_active">#B3FF6600</color>
+    <!-- 000000 @ 70% opacity -->
+    <color name="gray_inactive">#B3000000</color>
 
 </resources>

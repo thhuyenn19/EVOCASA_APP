@@ -71,6 +71,196 @@
                 android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
+    <!-- ─── Status Timeline ─────────────────────────── -->
+    <LinearLayout
+        android:id="@+id/llStatusTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Row 1: Labels -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Picked up"
+                android:textSize="14sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="In transit"
+                android:textSize="14sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Out For Delivery"
+                android:textSize="14sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="Delivered"
+                android:textSize="14sp"
+                android:textColor="#3F2305"/>
+        </LinearLayout>
+
+        <!-- Row 2: Icons & Connectors -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="24dp"
+            android:orientation="horizontal"
+            android:weightSum="11"
+            android:gravity="center_vertical">
+
+            <!-- Step 1 -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_check_circle" />
+
+            <!-- Connector 1 -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@color/color_3F2305"/>
+
+            <!-- Step 2 -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_check_circle" />
+
+            <!-- Connector 2 -->
+
+            <!-- Step 3 -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@color/color_3F2305"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_check_circle" />
+
+            <!-- Connector 3 -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@color/color_3F2305"/>
+
+            <!-- Step 4 -->
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_check_circle" />
+        </LinearLayout>
+
+
+        <!-- Row 3: Dates -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="11">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="22nd May"
+                android:textSize="12sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="23rd May"
+                android:textSize="12sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="23rd May"
+                android:textSize="12sp"
+                android:textColor="#3F2305"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="24dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="25th May"
+                android:textSize="12sp"
+                android:textColor="#3F2305"/>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- ──────────────────────────────────────────────── -->
+
 
     <!-- Timeline RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
