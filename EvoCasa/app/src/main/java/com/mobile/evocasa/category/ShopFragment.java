@@ -66,8 +66,9 @@ public class ShopFragment extends Fragment {
         recyclerViewCategories.setLayoutManager(layoutManager);
 
         // Thêm khoảng cách
-        int spacingInPixels = (int) (8 * getResources().getDisplayMetrics().density);
+        int spacingInPixels = (int) (17 * getResources().getDisplayMetrics().density);
         recyclerViewCategories.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
+
 
         recyclerViewCategories.setClipToPadding(false);
         recyclerViewCategories.setHasFixedSize(true);

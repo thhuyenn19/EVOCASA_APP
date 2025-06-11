@@ -53,8 +53,8 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         holder.txtSubCategory.setText(subCategory.getName());
 
         if (subCategory.isSelected()) {
-            holder.container.setBackgroundResource(R.drawable.bg_orders_status_selected);
-            holder.txtSubCategory.setTextColor(Color.WHITE);
+            holder.container.setBackgroundResource(R.drawable.bg_subcategory_selected);
+            holder.txtSubCategory.setTextColor(Color.parseColor("#5E4C3E"));
         } else {
             holder.container.setBackgroundResource(R.drawable.bg_orders_status_unselected);
             holder.txtSubCategory.setTextColor(Color.parseColor("#5E4C3E"));
