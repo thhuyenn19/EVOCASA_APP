@@ -139,6 +139,11 @@
     <string name="title_edit_location_box">669 Do Muoi, Linh Xuan, Thu Duc, HCMC, VietNam</string>
     <string name="title_save_edit_profile">SAVE</string>
 
+    <string name="title_edit_shipping_title">Edit Shipping Information</string>
+    <string name="title_edit_address">Address</string>
+    <string name="title_set_as_default">Set as default</string>
+
+
     <string name="title_rcm_items">Recommend Items</string>
     <string name="title_add_to_cart">ADD TO CART</string>
     <string name="title_buy_now">BUY NOW</string>
@@ -150,8 +155,6 @@
     <string name="title_cancel_orders">Cancel orders</string>
     <string name="title_recommend">Recommend</string>
     <string name="title_shipping_time">Shipping time</string>
-
-
 
 
 </resources>
