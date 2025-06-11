@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="@string/title_edit_personal_title"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <!-- Spacer phải -->
@@ -94,7 +94,7 @@
                 android:hint="@string/title_edit_name_box"
                 android:textColor="@color/color_5E4C3E"
                 android:background="@drawable/edittext_background"
-                android:padding="12dp" />
+                android:padding="8dp" />
 
         </LinearLayout>
 
@@ -132,7 +132,7 @@
                     android:inputType="none"
                     android:drawableEnd="@drawable/ic_arrow_down"
                     android:drawablePadding="8dp"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:hint="@string/title_edit_gender_box"
                     android:textColor="@color/color_5E4C3E" />
             </LinearLayout>
@@ -164,7 +164,7 @@
                     android:clickable="true"
                     android:drawableEnd="@drawable/ic_calendar"
                     android:drawablePadding="8dp"
-                    android:padding="12dp"
+                    android:padding="8dp"
                     android:hint="@string/title_edit_birthday_box"
                     android:textColor="@color/color_5E4C3E" />
             </LinearLayout>
@@ -196,7 +196,7 @@
                 android:hint="@string/title_edit_email_box"
                 android:background="@drawable/edittext_background"
                 android:textColor="@color/color_5E4C3E"
-                android:padding="12dp" />
+                android:padding="8dp"  />
         </LinearLayout>
 
 
@@ -225,7 +225,7 @@
                 android:hint="@string/title_edit_phone_box"
                 android:background="@drawable/edittext_background"
                 android:textColor="@color/color_5E4C3E"
-                android:padding="12dp" />
+                android:padding="8dp"  />
         </LinearLayout>
 
 
@@ -256,7 +256,7 @@
                 android:text="@string/title_edit_location_box"
                 android:textColor="@color/color_5E4C3E"
                 android:background="@drawable/edittext_background"
-                android:padding="12dp"
+                android:padding="8dp"
                 android:drawableEnd="@drawable/ic_arrow_right_edit"
                 android:drawablePadding="8dp"
                 android:focusable="false"
@@ -267,7 +267,7 @@
         <!--BUTTON SAVE-->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSave"
-            android:layout_width="179dp"
+            android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
