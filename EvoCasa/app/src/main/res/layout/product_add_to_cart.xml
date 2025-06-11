@@ -14,7 +14,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Customize"
+        android:text="@string/title_customize"
         android:textColor="@color/color_5E4C3E"
         android:textStyle="bold"
         android:textSize="16sp"
@@ -75,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Quantity"
+            android:text="@string/title_quantity"
             android:textStyle="bold"
             android:textColor="@color/color_5E4C3E"
             android:textSize="16sp" />
@@ -124,8 +124,8 @@
         android:id="@+id/btnAddToCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ADD TO CART"
-        android:textSize="16dp"
+        android:text="@string/title_add_to_cart"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:textColor="@color/color_5E4C3E"
         android:backgroundTint="@color/color_bg_btn_addtocart" />

@@ -51,7 +51,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by"
+            android:text="@string/title_sort_by"
             android:textColor="@color/color_5E4C3E"
             android:textStyle="bold"
             android:paddingRight="5dp" />
@@ -96,7 +96,7 @@
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
             android:text="@string/title_view_more"
-            android:textColor="#B34F0B"
+            android:textColor="@color/color_tab_active"
             android:textSize="14sp" />
 
         <ImageView
