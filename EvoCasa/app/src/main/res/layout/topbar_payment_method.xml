@@ -43,7 +43,7 @@
         android:layout_gravity="center_vertical"
         android:fontFamily="@font/zen_old_mincho"
         android:gravity="center"
-        android:text="Items in Cart"
+        android:text="@string/title_payment_method"
         android:textColor="@color/color_5E4C3E"
         android:textSize="20sp"
         android:textStyle="bold" />

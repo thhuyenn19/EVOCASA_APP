@@ -20,12 +20,25 @@ public class BottomNavFragment extends Fragment {
     private ImageView imgHome, imgShop, imgNotification, imgProfile;
 
     private Typeface fontSelected, fontRegular;
+    private int selectedTab = 0;
+
+    public static BottomNavFragment newInstance(int selectedTab) {
+        BottomNavFragment fragment = new BottomNavFragment();
+        Bundle args = new Bundle();
+        args.putInt("selected_tab", selectedTab);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bottom_nav, container, false);
+
+        if (getArguments() != null) {
+            selectedTab = getArguments().getInt("selected_tab", 0);
+        }
 
         tabHome = view.findViewById(R.id.tabHome);
         tabShop = view.findViewById(R.id.tabShop);
@@ -42,7 +55,6 @@ public class BottomNavFragment extends Fragment {
         imgNotification = view.findViewById(R.id.imgNotification);
         imgProfile = view.findViewById(R.id.imgProfile);
 
-        // Dùng requireContext() để lấy assets
         fontSelected = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-SemiBold.otf");
         fontRegular = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Regular.otf");
 
@@ -51,24 +63,22 @@ public class BottomNavFragment extends Fragment {
         tabNotification.setOnClickListener(v -> selectTab(2));
         tabProfile.setOnClickListener(v -> selectTab(3));
 
-        // Hiện tab Home mặc định
-        selectTab(0);
+        // Chỉ highlight và gọi callback nếu là tab 0–3
+        if (selectedTab < 4) {
+            selectTab(selectedTab);
+        }
 
         return view;
     }
 
-    private void selectTab(int pos) {
-        // Đổi màu tab active
+    public void selectTab(int pos) {
         highlightTab(pos);
-
-        // Gửi event lên Activity
         if (getActivity() instanceof OnBottomNavSelectedListener) {
             ((OnBottomNavSelectedListener) getActivity()).onBottomNavSelected(pos);
         }
     }
 
     private void highlightTab(int pos) {
-        // Reset tất cả về màu và font mặc định
         txtHome.setTextColor(getResources().getColor(R.color.color_5E4C3E));
         txtHome.setTypeface(fontRegular);
         imgHome.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
@@ -85,7 +95,6 @@ public class BottomNavFragment extends Fragment {
         txtProfile.setTypeface(fontRegular);
         imgProfile.setColorFilter(getResources().getColor(R.color.color_5E4C3E));
 
-        // Tab được chọn: màu nổi bật + font bold
         int activeColor = getResources().getColor(R.color.color_tab_active);
         switch (pos) {
             case 0:

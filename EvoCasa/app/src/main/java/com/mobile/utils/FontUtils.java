@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.view.View;
 import android.widget.TextView;
 
 public class FontUtils {
@@ -160,4 +161,7 @@ public class FontUtils {
         textView.setTypeface(getLightitalic(context));
     }
 
+    public static void applyFont(View viewById, Context context, int inter) {
+
+    }
 }

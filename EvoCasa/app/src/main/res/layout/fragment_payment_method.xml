@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg">
+
+    <!-- Top bar -->
+    <include layout="@layout/topbar_payment_method"/>
+
+    <!-- Phương thức thanh toán: 4 button -->
+    <LinearLayout
+        android:id="@+id/layoutMethodButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <LinearLayout
+            android:id="@+id/layoutCredit"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_border_rounded"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp">
+            <TextView
+                android:id="@+id/txtCredit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/title_card"
+                android:textSize="16dp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Nhập chi tiết thẻ, chỉ hiển thị khi chọn Credit/Debit Card -->
+        <include
+            android:id="@+id/layoutCardDetails"
+            layout="@layout/card_details"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutMOMO"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_border_rounded"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp">
+            <TextView
+                android:id="@+id/txtMOMO"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/title_momo"
+                android:textSize="16dp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutInternetBanking"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_border_rounded"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp">
+            <TextView
+                android:id="@+id/txtInternetBanking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/title_banking"
+                android:textSize="16dp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutCOD"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_border_rounded"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="15dp">
+            <TextView
+                android:id="@+id/txtCOD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/title_cod"
+                android:textSize="16dp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <!-- Khoảng trống -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_rounded_button"
+        android:gravity="end|center_vertical"
+        android:orientation="vertical"
+        android:paddingTop="5dp"
+        android:paddingRight="18dp"
+        android:paddingBottom="4dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_total"
+                android:textSize="20dp"
+                android:textColor="@color/color_5E4C3E"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtTotalValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  $3,500"
+                android:textSize="20dp"
+                android:textColor="@color/color_FF6600"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtSaving"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_saving"
+                android:textSize="15dp"
+                android:textColor="@color/color_5E4C3E" />
+
+            <TextView
+                android:id="@+id/txtSavingValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  $50"
+                android:textSize="15dp"
+                android:textColor="@color/color_FF6600" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
