@@ -23,12 +23,15 @@
         android:layout_weight="1"
         android:fillViewport="true">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/chat_content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Bot message 1 -->
+
+        <!-- Bot message 1 -->
             <LinearLayout
                 android:id="@+id/bot_message_1_container"
                 android:layout_width="match_parent"
@@ -176,14 +179,6 @@
             </LinearLayout>
 
             <!-- Product recommendation section -->
-            <LinearLayout
-                android:id="@+id/product_recommendations_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bot_message_3_container"
-                android:layout_marginTop="8dp"
-                android:orientation="vertical">
-
                 <!-- Row 1 of products -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -197,92 +192,134 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-
-                        android:padding="8dp"
                         android:layout_margin="5dp"
                         android:elevation="3dp"
-                        android:layout_marginEnd="8dp">
+                        android:background="#F9F4EB"> <!-- nền kem -->
 
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
-
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <!-- Thân sản phẩm: ảnh + nội dung -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Travertine Table Lamp"
-                            android:textColor="@color/color_333333"
-                            android:textSize="10sp"
-                            android:layout_marginTop="4dp"/>
+                            android:orientation="horizontal"
+                            android:padding="8dp"
+                            android:gravity="center_vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$ 3,500"
-                            android:textColor="@color/color_FF6600"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp"/>
+                            <!-- Ảnh sản phẩm -->
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_launcher_background" />
 
+                            <!-- Nội dung bên phải -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingStart="8dp">
+
+                                <TextView
+                                    android:layout_width="90dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Travertine Table Lamp"
+                                    android:textColor="@color/color_333333"
+                                    android:textSize="10sp"
+                                    android:fontFamily="@font/zen_old_mincho_black"
+                                    android:maxLines="2" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="$ 3,500"
+                                    android:textColor="@color/color_FF6600"
+                                    android:layout_gravity="end"
+                                    android:fontFamily="@font/zen_old_mincho"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="4dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Nút chọn sản phẩm -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_button_border"
+                            android:background="#C5B6A7"
                             android:text="Choose this product"
-                            android:textColor="@color/color_5E4C3E"
+                            android:textColor="@color/color_333333"
                             android:textSize="10sp"
+                            android:fontFamily="@font/inter_semibold"
                             android:paddingVertical="6dp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp"/>
-
+                            android:textAlignment="center"/>
                     </LinearLayout>
+
+                    <!-- Product 2 -->
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-
-                        android:padding="8dp"
                         android:layout_margin="5dp"
                         android:elevation="3dp"
-                        android:layout_marginEnd="8dp">
+                        android:background="#F9F4EB"> <!-- nền kem -->
 
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
-
-                        <TextView
-                            android:layout_width="100dp"
+                        <!-- Thân sản phẩm: ảnh + nội dung -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Grapevine Leaf Lamp"
-                            android:textColor="@color/color_333333"
-                            android:textSize="10sp"
-                            android:layout_marginTop="4dp"/>
+                            android:orientation="horizontal"
+                            android:padding="8dp"
+                            android:gravity="center_vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$ 3,500"
-                            android:textColor="@color/color_FF6600"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp"/>
+                            <!-- Ảnh sản phẩm -->
+                            <ImageView
+                                android:layout_width="50dp"
+                                android:layout_height="60dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_launcher_background" />
 
+                            <!-- Nội dung bên phải -->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:paddingStart="8dp">
+
+                                <TextView
+                                    android:layout_width="90dp"
+                                    android:layout_height="wrap_content"
+                                    android:text="Travertine Table Lamp"
+                                    android:textColor="@color/color_333333"
+                                    android:textSize="10sp"
+                                    android:fontFamily="@font/zen_old_mincho_black"
+                                    android:maxLines="2" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="$ 3,500"
+                                    android:textColor="@color/color_FF6600"
+                                    android:layout_gravity="end"
+                                    android:fontFamily="@font/zen_old_mincho"
+                                    android:textSize="12sp"
+                                    android:textStyle="bold"
+                                    android:layout_marginTop="4dp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Nút chọn sản phẩm -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_button_border"
+                            android:background="#C5B6A7"
                             android:text="Choose this product"
-                            android:textColor="@color/color_5E4C3E"
+                            android:textColor="@color/color_333333"
                             android:textSize="10sp"
+                            android:fontFamily="@font/inter_semibold"
                             android:paddingVertical="6dp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp"/>
-
+                            android:textAlignment="center"/>
                     </LinearLayout>
-
-                    <!-- Product 2 -->
                 </LinearLayout>
 
                 <!-- Row 2 of products (single) -->
@@ -290,51 +327,83 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_horizontal"
+                    android:gravity="right"
                     android:layout_marginBottom="8dp">
 
-                    <!-- Product 3 -->
                     <LinearLayout
+                        android:id="@+id/product_recommendations_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:layout_marginEnd="6dp"
+                        android:layout_below="@+id/bot_message_3_container"
 
-                        android:padding="8dp"
-                        android:elevation="3dp">
-
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
-
-                        <TextView
+                        android:orientation="vertical">
+                    <!-- Product 3 -->
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Travertine Table Lamp"
-                            android:textColor="@color/color_333333"
-                            android:textSize="10sp"
-                            android:layout_marginTop="4dp"/>
+                            android:layout_marginRight="26dp"
+                            android:layout_gravity="right"
+                            android:orientation="vertical"
+                            android:layout_margin="5dp"
+                            android:elevation="3dp"
+                            android:background="#F9F4EB"> <!-- nền kem -->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="$ 1,200"
-                            android:textColor="@color/color_FF6600"
-                            android:textSize="12sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp"/>
+                            <!-- Thân sản phẩm: ảnh + nội dung -->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="8dp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_rounded_button_border"
-                            android:text="Choose this product"
-                            android:textColor="@color/color_5E4C3E"
-                            android:textSize="10sp"
-                            android:paddingVertical="6dp"
-                            android:textAlignment="center"
-                            android:layout_marginTop="8dp"/>
-                    </LinearLayout>
+                                <!-- Ảnh sản phẩm -->
+                                <ImageView
+                                    android:layout_width="50dp"
+                                    android:layout_height="60dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_launcher_background" />
+
+                                <!-- Nội dung bên phải -->
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:paddingStart="8dp">
+
+                                    <TextView
+                                        android:layout_width="90dp"
+                                        android:layout_height="wrap_content"
+                                        android:text="Travertine Table Lamp"
+                                        android:textColor="@color/color_333333"
+                                        android:textSize="10sp"
+                                        android:fontFamily="@font/zen_old_mincho_black"
+                                        android:maxLines="2" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="$ 3,500"
+                                        android:textColor="@color/color_FF6600"
+                                        android:layout_gravity="end"
+                                        android:fontFamily="@font/zen_old_mincho"
+                                        android:textSize="12sp"
+                                        android:textStyle="bold"
+                                        android:layout_marginTop="4dp"/>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <!-- Nút chọn sản phẩm -->
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#C5B6A7"
+                                android:text="Choose this product"
+                                android:textColor="@color/color_333333"
+                                android:textSize="10sp"
+                                android:fontFamily="@font/inter_semibold"
+                                android:paddingVertical="6dp"
+                                android:textAlignment="center"/>
+                        </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -357,8 +426,9 @@
                     android:paddingBottom="10dp"
                     android:text="Can you give me more information about this product ?"
                     android:textColor="@color/color_333333"
+                    android:layout_margin="5dp"
                     android:textSize="12sp"
-                    android:elevation="3dp"/>
+                    android:elevation="4dp"/>
             </LinearLayout>
 
             <!-- Bot message 4 (Product details) -->
@@ -477,8 +547,300 @@
                     android:textSize="12sp"
                     android:elevation="4dp"/>
             </LinearLayout>
+            <!-- Section header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="8dp"
+                android:paddingHorizontal="16dp">
 
-        </RelativeLayout>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:id="@+id/txtSuggestedForYou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    android:text="A support agent has joined the conversation"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/zen_old_mincho" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+            <!-- Bot message: agent self-intro -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_support"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:layout_margin="5dp"
+                    android:padding="12dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="Hi there! I'm John from the EVOCASA team – so nice to chat with you today 😊. How can I assist you with your home decor needs?"
+                        android:textColor="@color/color_333333"
+
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User message: urgent lamp inquiry -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="I need the lamp urgently for an event this weekend. Can you confirm if same-day shipping is available in my area, and what time I should place the order by to receive it today?"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+
+            <!-- Bot message: ask location -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_support"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:layout_margin="5dp"
+                    android:padding="12dp"
+                    android:elevation="3dp">
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="Thanks for reaching out! I'd be happy to help. May I ask where you're located so I can check if same-day delivery is available for your area?"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User reply: HCMC -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="I'm in Ho Chi Minh City"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+
+            <!-- Bot confirms delivery info -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_support"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:layout_margin="5dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="Great! We do offer same-day delivery within Ho Chi Minh City for items that are in stock.\nTo make sure you receive your lamp today, please place your order before 3:00 PM. Orders confirmed after that will be delivered the next working day."
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User thanks -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="Thank you"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:layout_margin="5dp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+            <!-- Bot message: wrap-up 1 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_support"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:layout_margin="5dp"
+                    android:padding="12dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="Thank you so much for reaching out to Evocasa, dear customer! 💕 Aside from the information I’ve just shared, is there anything else I can help you with today?."
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Bot message: wrap-up 2 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_support"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:layout_margin="5dp"
+                    android:elevation="3dp">
+
+                    <TextView
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:text="If you have no further questions, I’ll go ahead and end our chat here. Feel free to reach out anytime if you need more help! 😊🌈"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Section footer: Agent left -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="16dp"
+                android:paddingHorizontal="16dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="12dp"
+                    android:text="A support agent has left the conversation"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/zen_old_mincho" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </ScrollView>
 
     <HorizontalScrollView
