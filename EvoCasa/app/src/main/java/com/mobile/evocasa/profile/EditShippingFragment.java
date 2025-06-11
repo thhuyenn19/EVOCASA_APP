@@ -1,7 +1,9 @@
 package com.mobile.evocasa.profile;
 
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.SwitchCompat;
@@ -91,15 +93,51 @@ public class EditShippingFragment extends Fragment {
         TextView txtTitleShip = view.findViewById(R.id.txtTitleShip);
         FontUtils.setZboldFont(requireContext(), txtTitleShip);
 
-        // Gán sự kiện quay lại ProfilDetailsFragment
+//        // Gán sự kiện quay lại ProfilDetailsFragment
+//        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
+//        imgProfileDetailsBack.setOnClickListener(v -> {
+//            requireActivity()
+//                    .getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.fragment_container, new ProfileDetailFragment())
+//                    .addToBackStack(null)
+//                    .commit();
+//        });
+
+
         imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
         imgProfileDetailsBack.setOnClickListener(v -> {
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new ProfileDetailFragment())
-                    .addToBackStack(null)
-                    .commit();
+            // Tạo và hiển thị custom dialog
+            Dialog dialog = new Dialog(requireContext());
+            dialog.setContentView(R.layout.custom_exit_dialog);
+            dialog.setCancelable(true); // Hoặc false nếu bạn không muốn người dùng bấm ra ngoài để đóng
+
+            // Ánh xạ các nút trong custom_exit_dialog (ví dụ: Confirm và Cancel)
+            Button btnExit = dialog.findViewById(R.id.btn_exit);
+            Button btnSave = dialog.findViewById(R.id.btn_save);
+
+            btnExit.setOnClickListener(confirmView -> {
+                // Xử lý khi người dùng chọn xác nhận (ví dụ: thoát Fragment, hoặc thoát Activity)
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileDetailFragment())
+                        .addToBackStack(null)
+                        .commit();
+
+                dialog.dismiss();
+            });
+
+            btnSave.setOnClickListener(cancelView -> {
+                // Đóng dialog nếu người dùng huỷ
+                dialog.dismiss();
+            });
+
+            dialog.show();
+
+            // Cài đặt lại kích thước và nền trong suốt cho dialog
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         });
 
 

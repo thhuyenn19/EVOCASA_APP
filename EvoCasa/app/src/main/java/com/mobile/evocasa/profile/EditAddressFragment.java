@@ -1,5 +1,8 @@
 package com.mobile.evocasa.profile;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +10,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
@@ -20,6 +25,7 @@ import com.mobile.utils.FontUtils;
 public class EditAddressFragment extends Fragment {
 
     private View view;
+    private ImageView imgProfileDetailsBack;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -80,6 +86,41 @@ public class EditAddressFragment extends Fragment {
 //
 //        TextView txtWard = view.findViewById(R.id.txtWard);
 //        FontUtils.setSemiBoldFont(requireContext(), txtWard);
+
+        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
+        imgProfileDetailsBack.setOnClickListener(v -> {
+            // Tạo và hiển thị custom dialog
+            Dialog dialog = new Dialog(requireContext());
+            dialog.setContentView(R.layout.custom_exit_dialog);
+            dialog.setCancelable(true); // Hoặc false nếu bạn không muốn người dùng bấm ra ngoài để đóng
+
+            // Ánh xạ các nút trong custom_exit_dialog (ví dụ: Confirm và Cancel)
+            Button btnExit = dialog.findViewById(R.id.btn_exit);
+            Button btnSave = dialog.findViewById(R.id.btn_save);
+
+            btnExit.setOnClickListener(confirmView -> {
+                // Xử lý khi người dùng chọn xác nhận (ví dụ: thoát Fragment, hoặc thoát Activity)
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileDetailFragment())
+                        .addToBackStack(null)
+                        .commit();
+
+                dialog.dismiss();
+            });
+
+            btnSave.setOnClickListener(cancelView -> {
+                // Đóng dialog nếu người dùng huỷ
+                dialog.dismiss();
+            });
+
+            dialog.show();
+
+            // Cài đặt lại kích thước và nền trong suốt cho dialog
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        });
 
 
         return view;
