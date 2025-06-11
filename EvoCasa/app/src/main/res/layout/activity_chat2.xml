@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_bg"
+    tools:context=".ChatActivity">
+
+    <include layout="@layout/topbar_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"/>
+
+
+
+    <!-- Placeholder for chat content -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <!-- Bot message 1 -->
+            <LinearLayout
+                android:id="@+id/bot_message_1_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:elevation="3dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hello! I can help you find the perfect piece for your home. What are you looking for?"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User message 1 -->
+            <LinearLayout
+                android:id="@+id/user_message_1_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bot_message_1_container"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="Recommend a product for me"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+
+            <!-- Bot message 2 -->
+            <LinearLayout
+                android:id="@+id/bot_message_2_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_message_1_container"
+
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:elevation="3dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sure! Can you tell me a bit more about what you\'re looking for?"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User message 2 -->
+            <LinearLayout
+                android:id="@+id/user_message_2_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bot_message_2_container"
+
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:elevation="3dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:layout_margin="5dp"
+                    android:text="I\'m looking for some lamps for my living room under $ 4,000."
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <!-- Bot message 3 -->
+            <LinearLayout
+                android:id="@+id/bot_message_3_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_message_2_container"
+
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:elevation="3dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thanks! Here are a few options that fit your budget and add a stylish touch to your space:"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Product recommendation section -->
+            <LinearLayout
+                android:id="@+id/product_recommendations_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bot_message_3_container"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical">
+
+                <!-- Row 1 of products -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Product 1 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        android:padding="8dp"
+                        android:layout_margin="5dp"
+                        android:elevation="3dp"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Travertine Table Lamp"
+                            android:textColor="@color/color_333333"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 3,500"
+                            android:textColor="@color/color_FF6600"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_button_border"
+                            android:text="Choose this product"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="10sp"
+                            android:paddingVertical="6dp"
+                            android:textAlignment="center"
+                            android:layout_marginTop="8dp"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        android:padding="8dp"
+                        android:layout_margin="5dp"
+                        android:elevation="3dp"
+                        android:layout_marginEnd="8dp">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="Grapevine Leaf Lamp"
+                            android:textColor="@color/color_333333"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 3,500"
+                            android:textColor="@color/color_FF6600"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_button_border"
+                            android:text="Choose this product"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="10sp"
+                            android:paddingVertical="6dp"
+                            android:textAlignment="center"
+                            android:layout_marginTop="8dp"/>
+
+                    </LinearLayout>
+
+                    <!-- Product 2 -->
+                </LinearLayout>
+
+                <!-- Row 2 of products (single) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <!-- Product 3 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+
+                        android:padding="8dp"
+                        android:elevation="3dp">
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@mipmap/ic_launcher" /> <!-- Placeholder image -->
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Travertine Table Lamp"
+                            android:textColor="@color/color_333333"
+                            android:textSize="10sp"
+                            android:layout_marginTop="4dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$ 1,200"
+                            android:textColor="@color/color_FF6600"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginTop="2dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_rounded_button_border"
+                            android:text="Choose this product"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="10sp"
+                            android:paddingVertical="6dp"
+                            android:textAlignment="center"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User message 3 -->
+            <LinearLayout
+                android:id="@+id/user_message_3_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/product_recommendations_container"
+                android:layout_marginTop="8dp"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="Can you give me more information about this product ?"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:elevation="3dp"/>
+            </LinearLayout>
+
+            <!-- Bot message 4 (Product details) -->
+            <LinearLayout
+                android:id="@+id/bot_message_4_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_message_3_container"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sure! This is a true vintage Italian table lamp designed in the Hollywood Regency style. It features a charming grapevine motif crafted in tole, giving it a unique and elegant look. The lamp has been rewired to meet U.S. standards using a high-quality double twist cord.\n\nDimensions: Width: 13 inches - Height: 17 inches\nLet me know if you\'d like to see more pictures or check availability!"
+                        android:textColor="@color/color_333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- User message 4 -->
+            <LinearLayout
+                android:id="@+id/user_message_4_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bot_message_4_container"
+                android:layout_marginTop="8dp"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="I need the lamp urgently for an event this weekend. Can you confirm if same-day shipping is available in my area, and what time I should place the order by to receive it today?"
+                    android:textColor="@color/color_333333"
+                    android:layout_margin="5dp"
+                    android:textSize="12sp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+
+            <!-- Bot message 5 (Couldn't understand) -->
+            <LinearLayout
+                android:id="@+id/bot_message_5_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_message_4_container"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:layout_gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@drawable/bg_chat_bubble_bot"
+                    android:padding="12dp"
+                    android:elevation="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sorry, I couldn\'t quite understand your request. Please click the button below so I can connect you with a support agent right away!"
+                        android:textColor="@color/color_333333"
+                        android:layout_margin="5dp"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Support agent button -->
+            <LinearLayout
+                android:id="@+id/support_agent_button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bot_message_5_container"
+                android:layout_marginTop="8dp"
+                android:gravity="end">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_chat_bubble_user_filled"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:layout_margin="5dp"
+                    android:text="Support agent"
+                    android:textColor="@color/color_333333"
+                    android:textSize="12sp"
+                    android:elevation="4dp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_rounded_button_chat"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                android:text="@string/Title_track_orders"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_rounded_button_chat"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                android:text="@string/title_cancel_orders"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtRecommend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_rounded_button_chat"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                android:text="@string/title_recommend"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_rounded_button_chat"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                android:text="@string/title_shipping_time"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+    <!-- Message input and send button -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="#F2EAD3">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_chat_camera"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F2EAD3"
+            android:hint="Type message here..."
+            android:padding="8dp"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_send"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+</LinearLayout> 

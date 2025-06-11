@@ -42,25 +42,25 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="0.25" />
+            android:layout_weight="0.3" />
 
         <!-- Tiêu đề tùy chỉnh -->
         <TextView
-            android:id="@+id/txtTitle"
+            android:id="@+id/txtTitleShip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="@string/title_edit_shipping_title"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <!-- Spacer phải -->
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="0.4" />
+            android:layout_weight="0.3" />
 
         <LinearLayout
             android:id="@+id/btnDeleteEditShip"
@@ -95,7 +95,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtName"
+                android:id="@+id/txtNameShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_name"
@@ -105,7 +105,7 @@
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtName"
+                android:id="@+id/edtNameShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords|textPersonName"
@@ -125,7 +125,7 @@
             android:paddingTop="10dp">
 
             <TextView
-                android:id="@+id/txtPhone"
+                android:id="@+id/txtPhoneShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_phone"
@@ -135,7 +135,7 @@
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtPhone"
+                android:id="@+id/edtPhoneShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
@@ -156,7 +156,7 @@
             android:paddingBottom="30dp">
 
             <TextView
-                android:id="@+id/txtAddress"
+                android:id="@+id/txtAddressShip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_edit_address"
@@ -166,7 +166,7 @@
                 android:paddingBottom="5dp"/>
 
             <EditText
-                android:id="@+id/edtLocation"
+                android:id="@+id/edtAddressShip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"

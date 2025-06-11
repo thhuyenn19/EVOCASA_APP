@@ -65,8 +65,26 @@ public class ProfileDetailFragment extends Fragment {
                 "Jessica Nguyen", "(+84) 456 789 123",
                 "Thuan Giao, Thuan An, Binh Duong, Vietnam", false));
 
-        ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses);
+//        ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses);
+//        rvShipping.setAdapter(shipadapter);
+
+        ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses, address -> {
+            // Mở EditShippingFragment và truyền dữ liệu qua Bundle
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("shippingAddress", address);
+
+            EditShippingFragment fragment = new EditShippingFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
         rvShipping.setAdapter(shipadapter);
+
 
         LinearLayout btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
