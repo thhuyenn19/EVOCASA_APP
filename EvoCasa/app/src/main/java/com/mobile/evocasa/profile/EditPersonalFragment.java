@@ -119,7 +119,13 @@ public class EditPersonalFragment extends Fragment {
 
             btnExit.setOnClickListener(confirmView -> {
                 // Xử lý khi người dùng chọn xác nhận (ví dụ: thoát Fragment, hoặc thoát Activity)
-                requireActivity().finish(); // hoặc popBackStack(), hoặc hành động khác
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileDetailFragment())
+                        .addToBackStack(null)
+                        .commit();
+
                 dialog.dismiss();
             });
 
