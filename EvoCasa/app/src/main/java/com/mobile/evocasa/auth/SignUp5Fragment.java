@@ -49,7 +49,7 @@ public class SignUp5Fragment extends Fragment {
 
         // Tham chiếu UI
         btnSignIn = rootView.findViewById(R.id.btnSignIn);
-        txtSuccess = rootView.findViewById(R.id.txtSucess); // hoặc R.id.txtTitle nếu bạn nhầm tên
+        txtSuccess = rootView.findViewById(R.id.txtSucess);
         txtDescription = rootView.findViewById(R.id.txtDescription);
 
         // Áp dụng font

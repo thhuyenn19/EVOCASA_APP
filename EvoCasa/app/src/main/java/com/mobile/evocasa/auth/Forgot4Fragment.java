@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,13 +54,10 @@ public class Forgot4Fragment extends Fragment {
         txtSuccess = rootView.findViewById(R.id.txtSucess);
         txtDescription = rootView.findViewById(R.id.txtDescription);
 
-        // Tạo Typeface từ font trong assets
-        Typeface customFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
-
-        // Áp dụng font cho các TextView và Button
-        txtSuccess.setTypeface(customFont);
-        txtDescription.setTypeface(customFont);
-        btnSignIn.setTypeface(customFont);
+        // Áp dụng font
+        FontUtils.setBoldFont(getContext(), txtSuccess);
+        txtDescription.setTypeface(FontUtils.getMediumitalic(getContext()));
+        btnSignIn.setTypeface(FontUtils.getMedium(getContext()));
 
         // Thiết lập sự kiện click cho nút
         btnSignIn.setOnClickListener(new View.OnClickListener() {
