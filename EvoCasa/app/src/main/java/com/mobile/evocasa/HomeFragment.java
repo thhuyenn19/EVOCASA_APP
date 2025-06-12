@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -188,6 +189,10 @@ public class HomeFragment extends Fragment {
         if (txtProductName != null) {
             FontUtils.setZregularFont(getContext(), txtProductName);
         }
+        EditText edtSearch = view.findViewById(R.id.edtSearch);
+        if (txtProductName != null) {
+            FontUtils.setRegularFont(getContext(), edtSearch);
+        }
 
         TextView tvProductName = view.findViewById(R.id.tvProductName);
         if (tvProductName != null) {
@@ -226,15 +231,17 @@ public class HomeFragment extends Fragment {
             for (int i = 0; i < viewGroup.getChildCount(); i++) {
                 applyZboldFontToAllTextViews(viewGroup.getChildAt(i));
             }
-        } else if (view instanceof TextView) {
+        } else if (view instanceof TextView && !(view instanceof EditText)) {
             TextView textView = (TextView) view;
+            int id = textView.getId();
             // Bỏ qua các TextView đã được set font riêng
-            if (textView.getId() != R.id.txtProductName && 
-                textView.getId() != R.id.tvProductName && 
-                textView.getId() != R.id.txtSeeAll && 
-                textView.getId() != R.id.txtSeeAllHotProducts &&
-                textView.getId() != R.id.txtSeeAllCollection &&
-                textView.getId() != R.id.txtCollectionName ) {
+            if (id != R.id.txtProductName &&
+                    id != R.id.tvProductName &&
+                    id != R.id.txtSeeAll &&
+                    id != R.id.txtSeeAllHotProducts &&
+                    id != R.id.txtSeeAllCollection &&
+                    id != R.id.txtCollectionName &&
+                    id != R.id.edtSearch) { // Bỏ qua EditText nếu dùng TextView làm base
                 FontUtils.setZboldFont(getContext(), textView);
             }
         }
