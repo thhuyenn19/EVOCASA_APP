@@ -51,7 +51,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         FontUtils.setZboldFont(context, holder.txtCategoryName);
         holder.txtCategoryName.setGravity(Gravity.CENTER);
 
-        // Format xuống dòng cho các item không phải cuối
+
         String categoryName = category.getName();
         if (position != categoryList.size() - 1) {
             categoryName = formatCategoryText(categoryName);
@@ -60,6 +60,12 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         holder.txtCategoryName.setText(categoryName);
         holder.imgCategory.setImageResource(category.getImageResId());
 
+        int paddingLeft = 0;
+        if ("Furniture".equals(category.getName()) || "Lighting".equals(category.getName())) {
+            paddingLeft = (int) (10 * context.getResources().getDisplayMetrics().density);
+        }
+        holder.txtCategoryName.setPadding(paddingLeft, 0, 0, 0);
+
         // Click event
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
@@ -67,6 +73,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
             }
         });
     }
+
 
     private String formatCategoryText(String text) {
         if (text.contains(" ")) {
