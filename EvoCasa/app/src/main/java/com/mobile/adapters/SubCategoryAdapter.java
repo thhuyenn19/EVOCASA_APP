@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.evocasa.R;
 import com.mobile.models.SubCategory;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -50,6 +52,11 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     @Override
     public void onBindViewHolder(@NonNull SubCategoryAdapter.ViewHolder holder, int position) {
         SubCategory subCategory = list.get(position);
+        Context context = holder.itemView.getContext();
+
+        // ✅ Gán font Inter-Medium từ FontUtils
+        FontUtils.setMediumFont(context, holder.txtSubCategory);
+
         holder.txtSubCategory.setText(subCategory.getName());
 
         if (subCategory.isSelected()) {

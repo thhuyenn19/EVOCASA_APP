@@ -106,9 +106,11 @@
 
                     <ImageView
                         android:id="@+id/ivArrowDown"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:src="@drawable/ic_arrow_down"/>
+                        android:layout_width="13dp"
+                        android:layout_height="13dp"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="1dp"
+                        android:src="@drawable/ic_arrow_down" />
 
                 </LinearLayout>
 

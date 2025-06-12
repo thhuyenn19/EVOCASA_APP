@@ -24,6 +24,7 @@ import com.mobile.models.SuggestedProducts;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.mobile.utils.FontUtils;
 
 public class CategoryFragment extends Fragment {
 
@@ -36,7 +37,7 @@ public class CategoryFragment extends Fragment {
 
     // Views cho hiệu ứng cuộn
     private AppBarLayout appBarLayout;
-    private TextView txtCollapsedTitle;
+    private TextView txtCollapsedTitle, tvShortBy;
     private TextView txtSubCategoryShop;
     private FrameLayout topBarContainer;
     private View heroSection;
@@ -81,11 +82,14 @@ public class CategoryFragment extends Fragment {
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
         appBarLayout = view.findViewById(R.id.appBarLayout);
         toolbar = view.findViewById(R.id.toolbar);
+        tvShortBy = view.findViewById(R.id.tvSortBy);
         txtCollapsedTitle = view.findViewById(R.id.txtCollapsedTitle);
         txtSubCategoryShop = view.findViewById(R.id.txtSubCategoryShop);
         topBarContainer = view.findViewById(R.id.topBarContainer);
         heroSection = view.findViewById(R.id.heroSection);
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
+        FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtSubCategoryShop));
+        FontUtils.setMediumFont(requireContext(), view.findViewById(R.id.tvSortBy));
 
         setupSubCategories();
         setupProducts();

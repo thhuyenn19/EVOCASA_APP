@@ -29,6 +29,7 @@ public class ShopFragment extends Fragment {
     private View view;
     private List<Category> categoryList;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
