@@ -13,9 +13,6 @@
         android:theme="@style/Theme.EvoCasa"
         tools:targetApi="31">
         <activity
-            android:name=".profile.ProfileImageActivity"
-            android:exported="false" />
-        <activity
             android:name=".ChatActivity2"
             android:exported="false" />
         <activity
@@ -31,7 +28,7 @@
             android:name=".productdetails.ProductDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".PaymentMethodActivity"
+            android:name=".payment.PaymentActivity"
             android:exported="false" />
         <activity
             android:name=".CartActivity"
