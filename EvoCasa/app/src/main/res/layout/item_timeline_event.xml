@@ -6,7 +6,12 @@
     android:paddingVertical="8dp"
     android:layout_marginStart="16dp"
     android:background="@android:color/transparent">
-
+    <!-- Line vertical bên trái -->
+    <View
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="12dp"
+        android:background="#C0B9AF" /> <!-- hoặc @color/color_line -->
     <!-- Thời gian -->
     <TextView
         android:id="@+id/tvTime"
