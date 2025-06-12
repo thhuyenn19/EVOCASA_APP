@@ -1,6 +1,7 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import com.mobile.adapters.TimelineAdapter;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
 import com.mobile.models.TimelineItem;
+import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,19 +32,54 @@ public class TrackOrderActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        applyCustomFonts();
     // 1. Chuẩn bị dữ liệu timeline
         List<TimelineItem> timelineItems = new ArrayList<>();
-        timelineItems.add(new HeaderItem("23rd, 2025"));
+        timelineItems.add(new HeaderItem("23rd, May"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
         timelineItems.add(new EventItem("09:30", "Your order has left the sorting facility", false));
-        timelineItems.add(new HeaderItem("23rd, 2025"));
-        timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
-        timelineItems.add(new EventItem("09:30", "Your order has left the sorting facility", false));
+        timelineItems.add(new HeaderItem("22nd, May"));
+        timelineItems.add(new EventItem("16:30", "Your order has arrived at shipping center", false));
+        timelineItems.add(new EventItem("09:30", "Your order has been sent to shipping party", false));
+        timelineItems.add(new HeaderItem("21st, May"));
+        timelineItems.add(new EventItem("16:30", "Your order is being prepared", false));
+        timelineItems.add(new EventItem("09:30", "Your order is placed", false));
         // ... thêm các header và event khác tương tự
 
         // 2. Khởi tạo RecyclerView và Adapter
         RecyclerView rv = findViewById(R.id.rvTimeline);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(new TimelineAdapter(this, timelineItems));
+    }
+
+    private void applyCustomFonts() {
+        int[] textViewIds = {
+                R.id.tvOrderId,
+                R.id.tvOrderDate,
+                R.id.tvEstimatedDelivery,
+
+        };
+        int[] textViewTimeIds = {
+                R.id.tvPickedUp,
+                R.id.tvInTransit,
+                R.id.tvDeli,
+                R.id.tvOutDeli
+        };
+
+        for (int id : textViewIds) {
+            TextView textView = findViewById(id);
+            if (textView != null) {
+                FontUtils.setSemiBoldFont(this, textView);
+            }
+        }
+        for (int id : textViewTimeIds) {
+            TextView textView = findViewById(id);
+            if (textView != null) {
+                FontUtils.setMediumFont(this, textView);
+            }
+
+
+        }
+
     }
 }

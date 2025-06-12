@@ -100,7 +100,9 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
 
             holder.itemContainer.addView(productView);
         }
-
+        // ✅ Đảm bảo cập nhật lại layout
+        holder.itemContainer.requestLayout();
+        holder.itemContainer.invalidate();
 // 3. Gán total dựa trên toàn bộ items
         holder.txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
 
@@ -114,7 +116,12 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
 
             holder.btnViewMore.setOnClickListener(v -> {
                 group.setExpanded(true);
-                notifyItemChanged(position);
+                int pos = holder.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION) {
+                    group.setExpanded(true);
+                    notifyItemChanged(pos);
+                }
+
             });
         } else {
             holder.btnViewMoreContainer.setVisibility(View.GONE);
@@ -136,18 +143,23 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
             case "In Transit":
                 holder.btnAction.setText("Track Order");
                 holder.btnAction.setEnabled(true);
+                holder.btnAction.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 break;
             case "Review":
                 holder.btnAction.setText("Rate +200");
                 holder.btnAction.setEnabled(true);
+                holder.btnAction.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_coin_rv, 0);
+                holder.btnAction.setCompoundDrawablePadding(6);
                 break;
             case "Completed":
                 holder.btnAction.setText("Buy Again");
                 holder.btnAction.setEnabled(true);
+                holder.btnAction.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 break;
             case "Cancelled":
                 holder.btnAction.setText("View Order");
                 holder.btnAction.setEnabled(false);
+                holder.btnAction.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                 break;
             default:
                 holder.btnAction.setVisibility(View.GONE);

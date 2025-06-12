@@ -13,6 +13,7 @@ import com.mobile.evocasa.R;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
 import com.mobile.models.TimelineItem;
+import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View v = li.inflate(R.layout.item_timeline_event, parent, false);
             return new EventVH(v);
         }
+
     }
 
     @Override
@@ -72,6 +74,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
         void bind(HeaderItem h) {
             tvDate.setText(h.getDate());
+            FontUtils.setSemiBoldFont(itemView.getContext(), tvDate);
         }
     }
 
@@ -91,6 +94,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ? R.color.orange_active    // bạn define trong colors.xml
                     : R.color.gray_inactive;
             tvDesc.setTextColor(ContextCompat.getColor(itemView.getContext(), colorRes));
+            // ✅ Set font tại đây
+            FontUtils.setRegularFont(itemView.getContext(), tvTime);
+            FontUtils.setSemiBoldFont(itemView.getContext(), tvDesc);
         }
     }
 }

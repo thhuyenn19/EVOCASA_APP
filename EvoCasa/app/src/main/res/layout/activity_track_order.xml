@@ -86,30 +86,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="11">
+            android:weightSum="23">
 
             <TextView
+                android:id="@+id/tvPickedUp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="Picked up"
-                android:textSize="14sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#3F2305"
+                android:textSize="14sp" />
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="2dp"
                 android:layout_height="24dp"
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvInTransit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="In transit"
-                android:textSize="14sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#3F2305"
+                android:textSize="14sp" />
 
             <View
                 android:layout_width="0dp"
@@ -117,13 +119,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvOutDeli"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="Out For Delivery"
-                android:textSize="14sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#3F2305"
+                android:textSize="14sp" />
 
             <View
                 android:layout_width="0dp"
@@ -131,13 +134,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvDeli"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:gravity="center"
                 android:text="Delivered"
-                android:textSize="14sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#3F2305"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <!-- Row 2: Icons & Connectors -->
@@ -205,16 +209,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:weightSum="11">
 
             <TextView
+                android:id="@+id/tvTime1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="22nd May"
-                android:textSize="12sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#000000"
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="0dp"
@@ -222,13 +228,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvTime2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="23rd May"
-                android:textSize="12sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#000000"
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="0dp"
@@ -236,13 +243,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvTime3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="23rd May"
-                android:textSize="12sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#000000"
+                android:textSize="12sp" />
 
             <View
                 android:layout_width="0dp"
@@ -250,13 +258,14 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvTime4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="25th May"
-                android:textSize="12sp"
-                android:textColor="#3F2305"/>
+                android:textColor="#000000"
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
     <!-- ──────────────────────────────────────────────── -->

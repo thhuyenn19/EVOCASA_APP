@@ -23,5 +23,8 @@
     <color name="color_E24747">#E24747</color>
     <color name="color_525B4A">#525B4A</color>
     <color name="color_805E4C3E">#805E4C3E</color>
+    <color name="color_yellow">#FFD64F</color>
+    <color name="gray">#C0C0C0</color>
+
 
 </resources>

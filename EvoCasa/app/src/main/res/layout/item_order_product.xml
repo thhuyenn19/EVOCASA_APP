@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quantity: 1"
-            android:textColor="#5E4E4180"
+            android:textColor="@color/color_5E4C3E"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
