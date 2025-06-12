@@ -1,0 +1,97 @@
+
+<h1> CUSTOMER MANAGEMENT </h1>
+    
+    <div class="summary-container">
+        <div class="summary-card">
+          <h2>Total customers</h2>
+          <div class="value-container">
+            <p class="value">{{ customers.length }}</p>
+            <p class="percentage">+15% <span>This month</span></p>
+          </div>
+        </div>
+        <div class="summary-card">
+          <h2>New customers</h2>
+          <div class="value-container">
+            <p class="value">110</p>
+            <p class="percentage">+10% <span>This month</span></p>
+          </div>
+        </div>
+        <div class="summary-card">
+          <h2>Total orders</h2>
+          <div class="value-container">
+            <p class="value">10,641</p>
+            <p class="percentage">+10% <span>This month</span></p>
+          </div>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="filter-button" >
+          <img src="images/order/Filter.svg" alt="Filter icon" />
+          <span class="filter-text">Filter by</span>
+        </button>
+        <button class="export-button" (click)=exportCustomers()>
+          <img src="images/product/export.svg" alt="Export icon" class="export-icon"/>
+          <span class="export-text">Exports</span>
+          <img src="images/product/arrow.svg" alt="Dropdown arrow" class="dropdown-icon"/>
+        </button>
+    </div>
+
+    <div class="table-container">
+        <table class="customer-table">
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of displayedCustomers">
+              <td>{{ customer._id }}</td>
+              <td>{{ customer.Name }}</td>
+              <td>{{ customer.Gender }}</td>
+              <td>{{ customer.Mail }}</td>
+              <td>{{ customer.Phone }}</td>
+              <td>200</td>
+              <td>
+                <button class="edit-btn">
+                    <img src="images/customer/edit.svg" alt="Edit">
+                </button>
+                <button class="delete-btn">
+                    <img src="images/customer/trash.svg" alt="Delete">
+                </button>
+                <button class="view-btn" (click)="viewCustomerDetails(customer._id)">
+                  <!-- <a routerLink="/customer-detail"> -->
+                  <img src="images/customer/view.svg" alt="View">
+                  <!-- </a> -->
+                </button>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+  
+   <!-- Pagination Controls -->
+<div class="pagination">
+  <button class="prev-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+  <span *ngFor="let page of [].constructor(totalPages); let i = index">
+    <button class="page-number" (click)="changePage(i + 1)" [class.active]="currentPage === (i + 1)">
+      {{ i + 1 }}
+    </button>
+  </span>
+
+  <button class="next-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+</div>
+
+<!-- Showing results -->
+<div class="showing-results">
+  <p>Showing {{ startCustomer }} to {{ endCustomer }} of {{ totalCustomers }} results</p>
+</div>
+  

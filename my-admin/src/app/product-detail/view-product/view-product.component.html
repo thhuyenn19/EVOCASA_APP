@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add product</title>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+</head>
+<body>
+    <!-- ADD PRODUCT -->
+    <div class="container">
+        <!-- ADD PRODUCT Title -->
+        <div class="title">VIEW PRODUCT</div>
+        <!-- Flex container for buttons -->
+        <div class="flex-container">
+            <!-- Third Item: Cancel -->
+            <div class="button cancel" (click)="goBack()">
+                <img src="images/product-detail/cancel.png" alt="Cancel">
+                <span>Cancel</span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="custom-container">
+        <!-- First Box -->
+        <div class="product-info-box">
+            <div class="product-info-content">
+                <div class="product-info-title">Product Information</div>
+                <div class="input-container">
+                    <!-- First Input: Product Name -->
+                    <div class="input-container">
+                        <div class="label">Product Name</div>
+                        <input type="text" class="input-field" placeholder="Enter Product Name" [(ngModel)]="product.Name">
+                    </div>
+                </div>
+                <!-- Description -->
+                <div class="input-container">
+                    <div class="label" style="margin-top: 30px;">Description</div>
+                    <textarea class="input-field-description" placeholder="Description product" [(ngModel)]="product.Description" readonly></textarea>
+                </div>
+                <!-- Dimension -->
+
+                <div class="input-container">
+                    <div class="label">Dimension</div>
+                    <input type="text" class="input-field" placeholder="Enter Dimension" [(ngModel)]="product.Dimension" readonly>
+                </div>
+            </div>
+        </div>
+        <!-- Second Box -->
+        <div class="box" [ngClass]="{ 'product-no-image': product.Image.length === 0, 'product-has-image': product.Image.length > 0 }">
+            <div class="upload-title">Upload images</div>
+            <!-- Input chọn nhiều ảnh -->
+            <input type="file" (change)="onFilesSelected($event)" multiple accept="image/*" id="file-upload" style="display: none;" >
+            <!-- Khu vực hiển thị ảnh đã chọn -->
+            <div class="preview-container">
+                <!-- Ảnh lớn -->
+                <div class="main-image-container" *ngIf="product.Image.length > 0">
+                    <img [src]="product.Image[0]" class="main-image">
+                </div>
+                <!-- Ảnh nhỏ -->
+                <div class="image-thumbnails">
+                    <div *ngFor="let image of product.Image.slice(1, 5); let i = index" class="thumbnail-container">
+                        <img [src]="image" class="thumbnail">
+                    </div>                       
+                </div>
+            </div>
+    </div>
+
+    </div>
+
+    <div class="custom-container">
+        <!-- Third Box -->
+        <div class="product-info-box34">
+            <div class="product-info-content">
+                <div class="product-info-title">Pricing and Stock</div>
+                <div class="inputs-container">
+                    <!-- Price -->
+                    <div class="input-container2">
+                        <div class="label">Price</div>
+                        <div class="input-box">
+                            <input type="text" class="input-field" placeholder="Enter Price" [(ngModel)]="product.Price" readonly>
+                            <div class="label2">USD</div>
+                        </div>
+                    </div>
+
+
+                    <!-- Stock -->
+                    <div class="input-container">
+                        <div class="label1">Stock</div>
+                        <input type="text" class="input-field" placeholder="Enter Stock" [(ngModel)]="product.Quantity">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fourth Box -->
+        <div class="box1">
+            <div class="product-info-content">
+                <div class="product-info-title">Category</div>
+                <div class="input-container">
+                    <div class="input-container">
+                        <div class="label1">Product category</div>
+                        <select class="input-field" [(ngModel)]="product.category_id">
+                            <option value="" disabled hidden>Select Product Category</option>
+                            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

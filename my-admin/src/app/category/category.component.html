@@ -1,0 +1,98 @@
+<div class="main-content">
+  <h3>CATEGORY MANAGEMENT</h3>
+  <br />
+  <h4>Total Category ({{ categories.length }}) | Showing 6/{{ categories.length }}</h4>
+
+
+  <div class="actions">
+    <!-- button filter -->
+    <button class="filter-button">
+      <img src="images/order/Filter.svg" alt="Filter icon" />
+      <span class="filter-text">Filter by</span>
+    </button>
+    <div class="right-button">
+      <!--button Add Product -->
+      <button class="addproduct-button" routerLink="/admin-category-add">
+        <img src="images/product/add.png" alt="Add" />
+        <span>Add category</span>
+      </button>
+      <!-- button export -->
+      <button class="export-button" (click)="exportCategories()">
+        <img
+          src="images/product/export.svg"
+          alt="Export icon"
+          class="export-icon"
+        />
+        <span class="export-text">Exports</span>
+        <img
+          src="images/product/arrow.svg"
+          alt="Dropdown arrow"
+          class="dropdown-icon"
+        />
+      </button>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <table class="category-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Image</th>
+          <th>Category Name</th>
+          <th>Category ID</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of paginatedCategories; let i = index">
+          <td>{{ (currentPage - 1) * pageSize + (i + 1) }}</td>
+          <!-- Hiển thị hình ảnh -->
+          <!-- <td><img *ngIf="category.image" [src]="category.image" alt="Category Image" ></td> -->
+          <td>
+            <img *ngIf="category.image"
+                 [src]="category.image"
+                 alt="{{ category.name }}"
+                 width="50" />
+          </td>          
+          <!-- Hiển thị tên danh mục -->
+          <td>{{ category.name }}</td>
+          <!-- Hiển thị mã danh mục -->
+          <td>{{ category.id }}</td>
+          <!-- Hiển thị mô tả -->
+          <td>{{ category.description }}</td>
+          <td>
+            <button class="icon-btn" (click)="viewCategory(category)">
+              <img
+                src="images/product/view.svg"
+                alt="viewicon"
+                style="border: black"
+              />
+            </button>
+            <button class="icon-btn" (click)="editCategory(category)">
+              <img src="images/product/edit.svg" alt="editicon" />
+            </button>
+            <button class="icon-btn" (click)="deleteCategory(category)">
+              <img src="images/product/trash.svg" alt="trash icon" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+   <!-- Showing -->
+   <div class="show">Showing {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize }} of all results</div>
+
+   <!-- Pagination with page numbers -->
+   <div class="pagination">
+     <button class="prev-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+ 
+     <!-- Display all page numbers -->
+     <ng-container *ngFor="let page of pageNumbers()">
+       <button class="page-btn" (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
+     </ng-container>
+ 
+     <button class="next-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+   </div>
+ </div>

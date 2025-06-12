@@ -1,0 +1,320 @@
+* {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* Main Content */
+.main-content {
+  padding: 10px;
+  background-color: #fffcf3;
+  min-height: 100vh;
+}
+h3 {
+  text-align: left;
+  margin-left: 32px;
+  margin-top: 20px;
+  font-size: 30px;
+  color: #5e4c3e;
+  font-family: "Zen Old Mincho", serif;
+}
+h4 {
+  margin-left: 32px;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+}
+
+/* Container chứa các nút */
+.actions {
+  margin-top: 20px;
+  margin-right: 34px;
+  margin-bottom: 20px;
+  margin-left: 34px;
+  display: flex; /* Chuyển container thành flex */
+  justify-content: space-between; /* Căn chỉnh các phần tử con về phía bên phải */
+  align-self: stretch;
+}
+.right-button {
+  display: flex;
+  gap: 5px;
+}
+
+/* nút filter*/
+.filter-button {
+  max-width: 130px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  color: rgba(63, 35, 5, 1);
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.1px;
+  line-height: 1;
+  border-radius: 7px;
+  border: 1px solid rgba(63, 35, 5, 1);
+  display: flex;
+  padding: 6px 10px;
+  align-items: center;
+  gap: 14px;
+  background-color: transparent;
+  cursor: pointer;
+}
+.filter-text {
+  margin: auto 0;
+}
+
+/* Hover state for better UX */
+.filter-button:hover {
+  background-color: rgba(63, 35, 5, 0.05);
+}
+/* Focus state for accessibility */
+.filter-button:focus {
+  outline: 2px solid rgba(63, 35, 5, 0.5);
+  outline-offset: 2px;
+}
+/* nút add product */
+.addproduct-button {
+  width: 135px;
+  background: #525b4a;
+  color: #f2ead3;
+  border-radius: 7px;
+  border: 1px solid rgba(63, 35, 5, 1);
+  display: flex;
+  padding: 6px 5px;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  margin-right: 20px;
+}
+.addproduct-button:hover {
+  background-color: #474d40;
+  cursor: pointer;
+}
+/* nút export */
+.export-button {
+  max-width: 150px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  color: rgba(63, 35, 5, 1);
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: 0.1px;
+  line-height: 1;
+  border-radius: 7px;
+  background-color: rgba(197, 182, 167, 1);
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  gap: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.export-icon {
+  aspect-ratio: 1.17;
+  object-fit: contain;
+  object-position: center;
+  width: 28px;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+.export-text {
+  align-self: stretch;
+  margin: auto 0;
+}
+.dropdown-icon {
+  aspect-ratio: 2;
+  object-fit: contain;
+  object-position: center;
+  width: 12px;
+  align-self: stretch;
+  margin: auto 0;
+  flex-shrink: 0;
+}
+.export-button:hover {
+  background-color: rgba(187, 172, 157, 1);
+}
+.export-button:focus {
+  outline: 2px solid rgba(63, 35, 5, 0.5);
+  outline-offset: 2px;
+}
+/* Container chứa bảng */
+.table-container {
+  padding: 10px;
+  border-radius: 20px;
+  margin: 20px 34px;
+  overflow-x: auto;
+  border: 1px solid #3f2305;
+}
+
+/* Bảng */
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+  table-layout: auto;
+}
+/* Điều chỉnh độ rộng cho từng cột */
+.category-table th:nth-child(1) {
+  /* No */
+  width: 5%;
+  min-width: 50px;
+}
+
+.category-table th:nth-child(2) {
+  /* Image */
+  width: 12%;
+  min-width: 100px;
+}
+
+.category-table th:nth-child(3) {
+  /* Category Name */
+  width: 18%;
+  min-width: 160px;
+}
+.category-table th:nth-child(4) {
+  /* Category ID */
+  width: 10%;
+  min-width: 100px;
+}
+
+.category-table th:nth-child(5) {
+  /* Description */
+  width: 35%;
+  min-width: 200px;
+}
+
+.category-table th:nth-child(6) {
+  /* Action */
+  width: 15%;
+  min-width: 100px;
+}
+
+.category-table th {
+  background-color: #5e4c3e;
+  color: #f2ead3;
+  padding: 10px 5px;
+  text-align: center;
+  border-bottom: 1px solid #482d2d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+}
+.category-table td {
+  border-bottom: 0.5px solid #482d2d;
+  color: rgba(0, 0, 0, 0.5);
+  padding: 10px 5px;
+  text-align: center;
+  vertical-align: middle;
+  height: 60px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 16px;
+}
+
+/* Cho phép description hiển thị nhiều dòng */
+.category-table td:nth-child(5) {
+  white-space: normal;
+  line-height: 1.2;
+  max-height: 3.6em;
+}
+
+/* Cho phép category name hiển thị tốt hơn */
+.category-table td:nth-child(3) {
+  white-space: normal;
+  line-height: 1.2;
+  padding: 5px 10px;
+  text-align: center;
+}
+
+/* Action buttons container */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.5);
+  /* margin-left: 5px; */
+}
+
+.icon-btn:hover {
+  color: rgb(189, 97, 97);
+}
+
+.icon-btn img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .table-container {
+    margin: 10px;
+  }
+
+  .category-table td,
+  .category-table th {
+    padding: 10px 5px;
+  }
+
+  .action-buttons {
+    gap: 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h3,
+  h4 {
+    text-align: center;
+    margin-left: 0;
+  }
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+}
+
+.pagination button {
+  padding: 10px;
+  background-color: #5e4c3e;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #a79786;
+}
+
+.page-number {
+  margin: 0 10px;
+  font-size: 18px;
+  cursor: pointer;
+  font-weight: 200;
+  font-family: "Inter", sans-serif;
+}
+.show {
+  justify-content: flex-end;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  margin-right: 34px;
+  display: flex;
+}

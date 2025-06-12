@@ -1,0 +1,78 @@
+<title>ORDER MANAGEMENT PAGE</title>
+<div class="main-content">
+  <h3>ORDER MANAGEMENT</h3>
+  <br />
+  <h4>Total Orders {{ totalOrders }} | Showing {{ endOrder }}/{{ totalOrders }}</h4>
+  <div class="actions">
+    <!-- button filter -->
+    <button class="filter-button">
+      <img src="images/order/Filter.svg" alt="Filter icon" />
+      <span class="filter-text">Filter by</span>
+    </button>
+    <!-- button export -->
+    <button class="export-button" (click)="exportOrders()">
+      <img
+        src="images/product/export.svg"
+        alt="Export icon"
+        class="export-icon"
+      />
+      <span class="export-text">Exports</span>
+      <img src="images/product/arrow.svg" alt="Dropdown arrow" />
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table class="order-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Order ID</th>
+          <th>Customer Name</th>
+          <th>Order Date</th>
+          <th>Total Price</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tr *ngFor="let order of displayedOrders; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ order._id }}</td>
+        <td>{{ customerNames[order.Customer_id] || "Loading..." }}</td>
+        <td>{{ order.OrderDate }}</td>
+        <td>{{ order.TotalPrice }}</td>
+        <td>{{ order.Status }}</td>
+        <td>
+          <div class="action-buttons">
+            <button
+              class="view-btn"
+              [routerLink]="['/order-detail', order._id]"
+            >
+              <img src="images/product/view.svg" alt="View icon" />
+            </button>
+            <button class="delete-btn">
+              <img src="images/product/trash.svg" alt="Delete icon" />
+            </button>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+  <!-- Showing -->
+  <div class="pagination">
+    <button class="prev-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+  
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button class="page-number" (click)="changePage(i + 1)" [class.active]="currentPage === (i + 1)">
+        {{ i + 1 }}
+      </button>
+    </span>
+  
+    <button class="next-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  </div>
+  <div class="showing-results">
+    <p>Showing {{ startOrder }} to {{ endOrder }} of {{ totalOrders }} results</p>
+  </div>
+    
+

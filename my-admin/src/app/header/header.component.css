@@ -1,0 +1,128 @@
+/* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cấu trúc chung */
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #FFFCF3;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FFFCF3;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Search Box */
+.search {
+    display: flex;
+    align-items: center;
+    background: #F5EEDA;
+    padding: 5px 15px;
+    border-radius: 20px;
+    height: 40px;
+    width: 50%;  /* Search bar spans more width */
+}
+
+.search input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 5px;
+    width: 100%;
+    font-size: 14px;
+}
+.search button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* User Actions */
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Điều chỉnh khoảng cách giữa các phần tử */
+}
+
+/* Notification Icon */
+.notification {
+    display: flex;
+    align-items: center;
+}
+
+.notification img {
+    height: 25px; /* Giữ icon nhỏ gọn */
+    cursor: pointer;
+}
+
+/* User Profile */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Điều chỉnh khoảng cách hợp lý */
+}
+
+.user-profile span {
+    font-size: 14px;
+    color: #5C4433;
+    font-weight: bold;
+    font-family: Inter;
+}
+
+.user-profile img {
+    height: 32px;
+    width: 32px; /* Đảm bảo hình vuông trước khi bo tròn */
+    border-radius: 50%; /* Bo tròn avatar */
+    object-fit: cover; /* Cắt hình vừa với khung tròn */
+    cursor: pointer;
+    border: 1px solid #ddd; /* Thêm viền nhẹ giúp avatar nổi bật */
+}
+.logout-btn {
+    background-color: rgba(197, 182, 167, 1);/* Màu nâu nhẹ */
+    color: rgba(63, 35, 5, 1);
+    padding: 8px 15px;
+    border: none;
+    border-radius: 6px; /* Bo góc */
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Tạo khoảng cách giữa icon và chữ */
+    transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #A67C52; /* Tối hơn khi hover */
+}
+
+.logout-icon {
+    height: 18px; /* Điều chỉnh kích thước icon */
+    width: 18px;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .search {
+        width: 80%;
+    }
+
+    .user-actions {
+        gap: 10px;
+    }
+}
