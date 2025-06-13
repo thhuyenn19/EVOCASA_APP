@@ -191,6 +191,8 @@ public class EditPersonalFragment extends Fragment {
 
 
 
+
+
         //Address
         EditText edtLocation = view.findViewById(R.id.edtLocation);
         edtLocation.setOnClickListener(v -> {

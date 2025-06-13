@@ -21,16 +21,27 @@
 
 
     <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <!-- Nền bo góc -->
         <item name="android:background">@drawable/bg_dialog_rounded</item>
 
         <!-- Màu chữ -->
-        <item name="android:textColor">@color/color_5E4C3E</item>
         <item name="android:textColorPrimary">@color/color_5E4C3E</item>
         <item name="android:textColorSecondary">@color/color_5E4C3E</item>
 
-        <!-- Màu cho nút "OK" và "Cancel" -->
-        <item name="colorAccent">@color/color_5E4C3E</item>
+        <!-- Màu ngày được chọn -->
+        <item name="colorControlActivated">@color/color_5E4C3E</item>
+        <item name="android:colorAccent">@color/color_5E4C3E</item>
+
+        <!-- Nút OK / Cancel -->
+        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButton</item>
     </style>
+
+    <style name="DialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/color_5E4C3E</item>
+    </style>
+
+
 
 
 
