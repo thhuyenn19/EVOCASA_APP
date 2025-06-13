@@ -1,9 +1,12 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
+    android:fillViewport="true"
     android:background="@color/color_bg"
+    android:overScrollMode="never"
     tools:context=".WishlistFragment">
 
     <LinearLayout
@@ -14,21 +17,21 @@
         <!-- Thanh trên -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
             android:layout_height="56dp"
             android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:gravity="center_vertical">
+
             <LinearLayout
                 android:id="@+id/btnBack"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:background="@drawable/bg_rounded_button"
                 android:orientation="vertical"
                 android:clickable="true"
-
-                android:focusable="true">
+                android:focusable="true"
+                android:background="@drawable/bg_rounded_button">
 
                 <ImageView
                     android:id="@+id/imgWishlistBack"
@@ -39,13 +42,11 @@
                     android:src="@drawable/ic_back" />
             </LinearLayout>
 
-            <!-- Spacer để căn giữa title -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="0.4" />
 
-            <!-- Tiêu đề tùy chỉnh -->
             <TextView
                 android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
@@ -56,7 +57,6 @@
                 android:textColor="@color/color_5E4C3E"
                 android:textSize="20sp" />
 
-            <!-- Spacer phải -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -67,11 +67,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:background="@drawable/bg_rounded_button"
                 android:orientation="vertical"
                 android:clickable="true"
-
-                android:focusable="true">
+                android:focusable="true"
+                android:background="@drawable/bg_rounded_button">
 
                 <ImageView
                     android:id="@+id/imgWishlistSearch"
@@ -92,11 +91,10 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:gravity="center"
-                android:background="@drawable/bg_rounded_button"
                 android:orientation="vertical"
                 android:clickable="true"
-
-                android:focusable="true">
+                android:focusable="true"
+                android:background="@drawable/bg_rounded_button">
 
                 <ImageView
                     android:id="@+id/imgWishlistEdit"
@@ -108,147 +106,123 @@
             </LinearLayout>
         </LinearLayout>
 
-
-
-
-        <!-- Option -->
-        <LinearLayout
+        <!-- Filter Section -->
+        <HorizontalScrollView
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
             android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:layout_height="match_parent">
+            android:paddingEnd="15dp">
 
-            <!-- Filter - Horizontal Scrollable -->
-            <HorizontalScrollView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scrollbars="none">
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/btnAll"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp">
+                    android:layout_height="40dp"
+                    android:background="@drawable/filter_button_selector_choose"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/title_wishlist_all_products"
+                    android:textColor="#5E4C3E"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/btnAll"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:background="@drawable/filter_button_selector_choose"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="@string/title_wishlist_all_products"
-                        android:textColor="#5E4C3E"
-                        android:textSize="14sp" />
+                <Space android:layout_width="8dp" android:layout_height="wrap_content" />
 
-                    <Space android:layout_width="8dp" android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/btnSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/filter_button_selector"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/title_wishlist_on_sale"
+                    android:textColor="#5E4C3E"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/btnSale"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:background="@drawable/filter_button_selector"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="@string/title_wishlist_on_sale"
-                        android:textColor="#5E4C3E"
-                        android:textSize="14sp" />
+                <Space android:layout_width="8dp" android:layout_height="wrap_content" />
 
-                    <Space android:layout_width="8dp" android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/btnLowStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/filter_button_selector"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/title_wishlist_low_stock"
+                    android:textColor="#5E4C3E"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/btnLowStock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:background="@drawable/filter_button_selector"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="@string/title_wishlist_low_stock"
-                        android:textColor="#5E4C3E"
-                        android:textSize="14sp" />
+                <Space android:layout_width="8dp" android:layout_height="wrap_content" />
 
-                    <Space android:layout_width="8dp" android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/btnOutOfStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/filter_button_selector"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/title_wishlist_out_of_stock"
+                    android:textColor="#5E4C3E"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:id="@+id/btnOutOfStock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:background="@drawable/filter_button_selector"
-                        android:gravity="center"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:text="@string/title_wishlist_out_of_stock"
-                        android:textColor="#5E4C3E"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-            </HorizontalScrollView>
-
-        </LinearLayout>
-
-
+            </LinearLayout>
+        </HorizontalScrollView>
 
         <!-- Sort by -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:baselineAligned="false">
 
-            <!-- Filter -->
-            <LinearLayout
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvSortBy"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:text="@string/title_wishlist_sort"
+                android:textColor="#5E4C3E"
+                android:textSize="16sp" />
 
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:gravity="center_vertical"
-                android:background="@color/color_bg"
-                android:baselineAligned="false"
-                android:weightSum="1">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.01" />
 
-                <TextView
-                    android:id="@+id/tvSortBy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_wishlist_sort"
-                    android:textColor="#5E4C3E"
-                    android:textSize="16sp" />
+            <ImageView
+                android:id="@+id/ivArrowDown"
+                android:layout_marginTop="2dp"
+                android:layout_width="15dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_arrow_down" />
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.01" />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.99" />
 
-                <ImageView
-                    android:id="@+id/ivArrowDown"
-                    android:layout_marginTop="1.5dp"
-                    android:layout_width="15dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_arrow_down" />
-
-                <!-- Spacer -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="0.99" />
-
-                <ImageView
-                    android:id="@+id/ivFilter"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_filter"/>
-            </LinearLayout>
-
+            <ImageView
+                android:id="@+id/ivFilter"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_filter" />
         </LinearLayout>
-
 
         <!-- Wishlist product RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -256,15 +230,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:clipToPadding="false"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
             android:overScrollMode="never" />
 
-
-
-        <!-- Recommend -->
+        <!-- Recommend title -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -275,7 +247,6 @@
             android:paddingTop="12dp"
             android:paddingBottom="16dp">
 
-            <!-- Line bên trái -->
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -283,28 +254,24 @@
                 android:layout_gravity="center_vertical"
                 android:background="@color/color_5E4C3E" />
 
-            <!-- Khoảng cách nhỏ giữa line và chữ -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="0.5" />
 
-            <!-- Text tiêu đề -->
             <TextView
                 android:id="@+id/txtViewRcm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_wishlist_recommend"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="18sp"/>
+                android:textSize="18sp" />
 
-            <!-- Khoảng cách nhỏ giữa chữ và line -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="0.5" />
 
-            <!-- Line bên phải -->
             <ImageView
                 android:layout_width="0dp"
                 android:layout_height="1dp"
@@ -313,19 +280,15 @@
                 android:background="@color/color_5E4C3E" />
         </LinearLayout>
 
-
-
-        <!-- Recommend RecyclerView -->
+        <!-- Suggested products RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSuggestedProducts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:nestedScrollingEnabled="false"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
+            android:clipToPadding="false"
+            android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
-
     </LinearLayout>
-
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
