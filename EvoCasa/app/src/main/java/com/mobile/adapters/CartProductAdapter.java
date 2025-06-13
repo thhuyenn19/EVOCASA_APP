@@ -38,16 +38,17 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartProduct product = productList.get(position);
 
-        // Bước 1: Xoá listener cũ trước khi set lại trạng thái checkbox
+        // Reset listener để tránh trigger lỗi khi recyclerview cập nhật
         holder.checkboxSelect.setOnCheckedChangeListener(null);
 
-        // Bước 2: Gán trạng thái checkbox đúng theo model
+        // Gán trạng thái checkbox đúng với model
         holder.checkboxSelect.setChecked(product.isSelected());
 
-        // Bước 3: Gán listener lại sau khi đã setChecked
+        // Gán listener mới
         holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
             product.setSelected(isChecked);
         });
+
 
         // Set các view còn lại
         holder.imgProduct.setImageResource(product.getImageResId());
@@ -81,6 +82,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.checkboxSelect.setButtonTintList(null);
         }
+
+
 
     }
 

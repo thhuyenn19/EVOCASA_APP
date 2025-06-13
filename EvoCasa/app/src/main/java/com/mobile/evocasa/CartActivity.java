@@ -94,7 +94,7 @@ public class CartActivity extends AppCompatActivity {
 
         CheckBox checkboxAllProducts = findViewById(R.id.checkboxAllProducts);
 
-// Gán listener cho checkbox "All Products"
+        // Gán listener cho checkbox "All Products"
         checkboxAllProducts.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Cập nhật trạng thái tất cả sản phẩm
             for (CartProduct product : cartProductList) {
