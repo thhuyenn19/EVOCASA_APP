@@ -37,15 +37,23 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
         CartProduct product = productList.get(position);
+
+        // Bước 1: Xoá listener cũ trước khi set lại trạng thái checkbox
+        holder.checkboxSelect.setOnCheckedChangeListener(null);
+
+        // Bước 2: Gán trạng thái checkbox đúng theo model
         holder.checkboxSelect.setChecked(product.isSelected());
+
+        // Bước 3: Gán listener lại sau khi đã setChecked
+        holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            product.setSelected(isChecked);
+        });
+
+        // Set các view còn lại
         holder.imgProduct.setImageResource(product.getImageResId());
         holder.tvTitle.setText(product.getTitle());
         holder.tvPrice.setText(String.format("$%,.0f", product.getPrice()));
         holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
-
-        holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            product.setSelected(isChecked);
-        });
 
         holder.btnPlus.setOnClickListener(v -> {
             product.setQuantity(product.getQuantity() + 1);
@@ -65,16 +73,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             notifyItemRangeChanged(position, productList.size());
         });
 
-        holder.checkboxSelect.setChecked(productList.get(position).isSelected());
-
-        holder.checkboxSelect.setOnCheckedChangeListener(null); // Xoá listener cũ
-        holder.checkboxSelect.setChecked(productList.get(position).isSelected());
-        holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            productList.get(position).setSelected(isChecked);
-        });
-
-
-        //set font
+        // Set font
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvTitle);
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvPrice);
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvQuantity);
@@ -82,7 +81,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             holder.checkboxSelect.setButtonTintList(null);
         }
-
 
     }
 

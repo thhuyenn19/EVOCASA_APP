@@ -23,31 +23,27 @@
             android:button="@drawable/custom_checkbox_cart"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="3dp"/>
-
+            android:layout_marginStart="3dp" />
 
         <!-- Product Image -->
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgProduct"
             android:layout_width="80dp"
-            android:layout_height="match_parent"
+            android:layout_height="99dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="10dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@mipmap/ic_cart_product"
-            app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
-            app:layout_constraintStart_toEndOf="@+id/checkboxSelect"
-            app:layout_constraintTop_toTopOf="parent"
+            app:cornerFamily="rounded"
             app:cornerSize="10dp"
-            app:cornerFamily="rounded" />
+            app:shapeAppearance="@style/ShapeAppearance.MaterialComponents.SmallComponent"
+            app:srcCompat="@mipmap/ic_cart_product" />
 
-
+        <!-- Content Area -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="12dp">
 
             <!-- Title -->
             <TextView
@@ -57,10 +53,7 @@
                 android:layout_marginEnd="8dp"
                 android:text="@string/title_cart_product"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/imgProduct"
-                app:layout_constraintTop_toTopOf="@id/imgProduct" />
+                android:textSize="16sp" />
 
             <!-- Price -->
             <TextView
@@ -70,32 +63,24 @@
                 android:text="$3,500"
                 android:textColor="@color/color_5E4C3E"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="@+id/txtTitle"
-                app:layout_constraintTop_toBottomOf="@id/txtTitle" />
+                android:textSize="16sp" />
 
+            <!-- Spacer -->
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="match_parent"
-                android:layout_height="39dp" />
+                android:layout_height="32dp" />
 
+            <!-- Quantity + Delete -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <!-- Minus button -->
-
-
-                <!-- Quantity -->
-
                 <ImageView
                     android:id="@+id/btnMinus"
-                    android:layout_width="24dp"
+                    android:layout_width="19dp"
                     android:layout_height="match_parent"
-                    android:src="@drawable/ic_minus"
-                    app:layout_constraintStart_toStartOf="@+id/txtPrice"
-                    app:layout_constraintTop_toBottomOf="@+id/txtPrice" />
+                    android:src="@drawable/ic_minus" />
 
                 <TextView
                     android:id="@+id/tvQuantity"
@@ -104,45 +89,40 @@
                     android:text="@string/title_cart_quantity"
                     android:textSize="16sp"
                     android:layout_marginStart="8dp"
-                    app:layout_constraintStart_toEndOf="@+id/btnMinus"
-                    app:layout_constraintTop_toTopOf="@+id/btnMinus"
                     android:layout_gravity="center_vertical"
-                    android:textColor="@color/color_5E4C3E"/>
+                    android:textColor="@color/color_5E4C3E" />
 
-                <!-- Plus button -->
-
-
-                <!-- Spacer để căn giữa title -->
                 <ImageView
                     android:id="@+id/btnPlus"
-                    android:layout_width="27dp"
+                    android:layout_width="20dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="top"
                     android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_plus"
-                    app:layout_constraintStart_toEndOf="@+id/txtQuantity"
-                    app:layout_constraintTop_toTopOf="@+id/btnMinus" />
+                    android:layout_gravity="top"
+                    android:src="@drawable/ic_plus" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="1dp"
                     android:layout_weight="1" />
 
-                <!-- Trash icon -->
                 <ImageView
                     android:id="@+id/btnDelete"
-                    android:layout_width="28dp"
-                    android:layout_height="29dp"
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
                     android:src="@drawable/ic_trash"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_gravity="center_vertical"/>
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
-
-
         </LinearLayout>
-
-
     </LinearLayout>
+
+    <!-- Bottom Line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/color_5E4C3E"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
