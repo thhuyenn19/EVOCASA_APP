@@ -227,10 +227,11 @@
 
                 <ImageView
                     android:id="@+id/ivArrowDown"
+                    android:layout_marginTop="1.5dp"
                     android:layout_width="15dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/ic_arrow_down"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_arrow_down" />
 
                 <!-- Spacer -->
                 <View
@@ -257,6 +258,8 @@
             android:layout_marginTop="4dp"
             android:clipToPadding="false"
             android:paddingBottom="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
 
@@ -276,7 +279,7 @@
             <!-- Line bên trái -->
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_weight="1.5"
                 android:layout_gravity="center_vertical"
                 android:background="@color/color_5E4C3E" />
@@ -294,7 +297,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/title_wishlist_recommend"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <!-- Khoảng cách nhỏ giữa chữ và line -->
             <View
@@ -305,7 +308,7 @@
             <!-- Line bên phải -->
             <ImageView
                 android:layout_width="0dp"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_weight="1.5"
                 android:layout_gravity="center_vertical"
                 android:background="@color/color_5E4C3E" />
@@ -320,6 +323,8 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:nestedScrollingEnabled="false"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:overScrollMode="never" />
 
     </LinearLayout>
