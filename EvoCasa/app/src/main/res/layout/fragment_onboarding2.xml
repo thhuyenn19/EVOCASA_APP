@@ -33,7 +33,7 @@
         <TextView
             android:id="@+id/txtView2"
             android:layout_width="match_parent"
-            android:layout_height="83dp" />
+            android:layout_height="67dp" />
 
         <TextView
             android:id="@+id/txtViewExplore"
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
-            android:layout_marginTop="-15dp"
+            android:layout_marginTop="-20dp"
             android:text="@string/title_onboarding2_line_2"
             android:textColor="#FFFFFF"
             android:textSize="36sp" />
@@ -60,7 +60,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="18dp"
-            android:layout_marginTop="-12dp"
+            android:layout_marginTop="-15dp"
             android:text="@string/title_onboarding2_line_3"
             android:textColor="#FFFFFF"
             android:textSize="48sp" />
