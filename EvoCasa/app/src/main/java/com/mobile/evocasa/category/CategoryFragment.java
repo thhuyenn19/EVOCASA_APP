@@ -7,24 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import com.mobile.evocasa.R;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.google.android.material.appbar.AppBarLayout;
 import com.mobile.adapters.SubCategoryAdapter;
 import com.mobile.adapters.SubCategoryProductAdapter;
 import com.mobile.models.SubCategory;
 import com.mobile.models.SuggestedProducts;
-
+import com.mobile.utils.FontUtils;
 import java.util.ArrayList;
 import java.util.List;
-import com.mobile.utils.FontUtils;
+import com.mobile.evocasa.R;
 
 public class CategoryFragment extends Fragment {
 
@@ -34,8 +33,6 @@ public class CategoryFragment extends Fragment {
     private SubCategoryProductAdapter productAdapter;
     private List<SubCategory> subCategoryList;
     private List<SuggestedProducts> allProducts;
-
-    // Views cho hiệu ứng cuộn
     private AppBarLayout appBarLayout;
     private TextView txtCollapsedTitle, tvShortBy;
     private TextView txtSubCategoryShop;
@@ -43,26 +40,19 @@ public class CategoryFragment extends Fragment {
     private View heroSection;
     private View sortFilterSection;
     private Toolbar toolbar;
-
-    // Biến để tránh animation giật
     private ValueAnimator backgroundAnimator;
     private ValueAnimator titleAnimator;
     private boolean isAnimating = false;
     private float lastPercentage = -1f;
-
-    // Optimization cho slow scroll
     private long lastUpdateTime = 0;
-    private static final long UPDATE_INTERVAL = 8; // Tăng lên 120fps
+    private static final long UPDATE_INTERVAL = 8;
     private Runnable pendingUpdate;
     private android.os.Handler mainHandler;
-
-    // Pre-calculated values để tránh tính toán trong scroll
     private int backgroundColor;
     private float[] alphaLookupTable;
     private boolean isLookupTableInitialized = false;
 
     public CategoryFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -74,10 +64,8 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Khởi tạo handler
         mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
 
-        // Khởi tạo views
         recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
         appBarLayout = view.findViewById(R.id.appBarLayout);
@@ -89,7 +77,13 @@ public class CategoryFragment extends Fragment {
         heroSection = view.findViewById(R.id.heroSection);
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
         FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtSubCategoryShop));
+        FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtCollapsedTitle));
         FontUtils.setMediumFont(requireContext(), view.findViewById(R.id.tvSortBy));
+
+        // Set custom behavior for AppBarLayout
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        params.setBehavior(new FlingBehavior(getContext(), null));
+        appBarLayout.setLayoutParams(params);
 
         setupSubCategories();
         setupProducts();
@@ -99,29 +93,23 @@ public class CategoryFragment extends Fragment {
     }
 
     private void initializeLookupTable() {
-        // Pre-calculate alpha values để tránh tính toán runtime
-        alphaLookupTable = new float[101]; // 0-100%
+        alphaLookupTable = new float[101];
         for (int i = 0; i <= 100; i++) {
             float percentage = i / 100f;
             alphaLookupTable[i] = smoothInterpolate(percentage);
         }
-
-        // Cache background color
         if (getContext() != null) {
             backgroundColor = getResources().getColor(R.color.color_bg);
         }
-
         isLookupTableInitialized = true;
     }
 
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
         String[] subCategoryNames = {"All products", "Seating", "Tables", "Casegoods"};
-
         for (int i = 0; i < subCategoryNames.length; i++) {
             subCategoryList.add(new SubCategory(subCategoryNames[i], i == 0));
         }
-
         subCategoryAdapter = new SubCategoryAdapter(subCategoryList, selected -> filterProductsBySubCategory(selected));
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
@@ -129,42 +117,33 @@ public class CategoryFragment extends Fragment {
 
     private void setupProducts() {
         allProducts = new ArrayList<>();
-        // Dummy data
         allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
         allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
         allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
         allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-
         productAdapter = new SubCategoryProductAdapter(allProducts);
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerViewProducts.setAdapter(productAdapter);
     }
 
     private void optimizeScrolling() {
-        // Tối ưu RecyclerView để scroll mượt hơn
         if (recyclerViewProducts != null) {
             recyclerViewProducts.setHasFixedSize(true);
-            recyclerViewProducts.setItemAnimator(null); // Tắt animation default
+            recyclerViewProducts.setItemAnimator(null);
             recyclerViewProducts.setDrawingCacheEnabled(true);
             recyclerViewProducts.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-            // Thêm smooth scrolling
             recyclerViewProducts.setNestedScrollingEnabled(true);
         }
-
         if (recyclerViewSubCategory != null) {
             recyclerViewSubCategory.setHasFixedSize(true);
             recyclerViewSubCategory.setItemAnimator(null);
-            recyclerViewSubCategory.setNestedScrollingEnabled(false); // Tránh conflict
+            recyclerViewSubCategory.setNestedScrollingEnabled(false);
         }
-
-        // Tối ưu toolbar
         if (toolbar != null) {
             toolbar.setContentInsetsAbsolute(0, 0);
             toolbar.setContentInsetsRelative(0, 0);
             toolbar.setPadding(0, 0, 0, 0);
         }
-
-        // Force hardware acceleration cho các view quan trọng
         if (heroSection != null) {
             heroSection.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         }
@@ -180,13 +159,8 @@ public class CategoryFragment extends Fragment {
                 public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
                     int totalScrollRange = appBarLayout.getTotalScrollRange();
                     if (totalScrollRange == 0) return;
-
                     float percentage = Math.abs(verticalOffset) / (float) totalScrollRange;
-
-                    // Chỉ update khi thay đổi đáng kể
-                    if (Math.abs(percentage - lastPercentage) < 0.002f) return;
-
-                    // Immediate update cho slow scroll - không dùng Handler
+                    if (Math.abs(percentage - lastPercentage) < 0.005f) return;
                     performUltraSmoothUpdate(percentage);
                     lastPercentage = percentage;
                 }
@@ -196,45 +170,35 @@ public class CategoryFragment extends Fragment {
 
     private void performUltraSmoothUpdate(float percentage) {
         if (!isLookupTableInitialized) return;
-
-        // Sử dụng lookup table thay vì tính toán
         int index = Math.min(100, Math.max(0, (int)(percentage * 100)));
         float smoothPercentage = alphaLookupTable[index];
-
-        // Inline updates để tránh method call overhead
         updateToolbarBackgroundFast(smoothPercentage);
         updateCollapsedTitleFast(smoothPercentage);
         updateElementsVisibilityFast(smoothPercentage);
     }
 
     private float smoothInterpolate(float input) {
-        // Sử dụng cubic interpolation để làm mượt
         return input * input * (3.0f - 2.0f * input);
     }
 
     private void updateToolbarBackgroundFast(float percentage) {
         if (toolbar == null) return;
-
-        // Fast calculation với pre-cached color
         if (percentage > 0.3f) {
-            float backgroundAlpha = Math.min(0.95f, (percentage - 0.3f) * 2.5f); // Pre-calculated multiplier
+            float backgroundAlpha = Math.min(0.95f, (percentage - 0.3f) * 2.5f);
             int alpha = (int)(255 * backgroundAlpha);
             int transparentColor = (alpha << 24) | (backgroundColor & 0x00FFFFFF);
             toolbar.setBackgroundColor(transparentColor);
         } else {
-            toolbar.setBackgroundColor(0x00000000); // Transparent
+            toolbar.setBackgroundColor(0x00000000);
         }
     }
 
     private void updateCollapsedTitleFast(float percentage) {
         if (txtCollapsedTitle == null) return;
-
         if (percentage > 0.7f) {
-            float titleAlpha = Math.min(1f, (percentage - 0.7f) * 3.33f); // Pre-calculated
+            float titleAlpha = Math.min(1f, (percentage - 0.7f) * 3.33f);
             txtCollapsedTitle.setAlpha(titleAlpha);
             txtCollapsedTitle.setVisibility(View.VISIBLE);
-
-            // Micro scale effect
             float scale = 0.96f + (titleAlpha * 0.04f);
             txtCollapsedTitle.setScaleX(scale);
             txtCollapsedTitle.setScaleY(scale);
@@ -244,51 +208,38 @@ public class CategoryFragment extends Fragment {
     }
 
     private void updateElementsVisibilityFast(float percentage) {
-        // Hero section
         if (heroSection != null) {
             float heroAlpha = Math.max(0f, 1f - (percentage * 1.2f));
             heroSection.setAlpha(heroAlpha);
-            heroSection.setTranslationY(-percentage * 30f); // Reduced translation
+            heroSection.setTranslationY(-percentage * 30f);
         }
-
-        // SubCategory RecyclerView
         if (recyclerViewSubCategory != null) {
             if (percentage > 0.2f) {
                 float subCategoryAlpha = Math.max(0f, 1f - ((percentage - 0.2f) * 4f));
                 recyclerViewSubCategory.setAlpha(subCategoryAlpha);
-                recyclerViewSubCategory.setVisibility(subCategoryAlpha > 0.1f ? View.VISIBLE : View.GONE);
+                recyclerViewSubCategory.setVisibility(subCategoryAlpha > 0.1f ? View.VISIBLE : View.INVISIBLE);
             } else {
                 recyclerViewSubCategory.setAlpha(1f);
                 recyclerViewSubCategory.setVisibility(View.VISIBLE);
             }
         }
-
-        // Sort Filter Section
         if (sortFilterSection != null) {
             if (percentage > 0.35f) {
                 float sortFilterAlpha = Math.max(0f, 1f - ((percentage - 0.35f) * 4f));
                 sortFilterSection.setAlpha(sortFilterAlpha);
-                sortFilterSection.setVisibility(sortFilterAlpha > 0.1f ? View.VISIBLE : View.GONE);
+                sortFilterSection.setVisibility(sortFilterAlpha > 0.1f ? View.VISIBLE : View.INVISIBLE);
             } else {
                 sortFilterSection.setAlpha(1f);
                 sortFilterSection.setVisibility(View.VISIBLE);
             }
         }
-
-        // Original title
         if (txtSubCategoryShop != null) {
             txtSubCategoryShop.setAlpha(Math.max(0f, 1f - (percentage * 1.3f)));
         }
     }
 
-    // Easing function để làm animation mượt hơn
-    private float easeOutQuart(float t) {
-        return 1f - (float)Math.pow(1f - Math.min(1f, t), 4);
-    }
-
     private void filterProductsBySubCategory(String selectedCategory) {
         List<SuggestedProducts> filteredList = new ArrayList<>();
-
         if (selectedCategory.equals("All products")) {
             filteredList.addAll(allProducts);
         } else {
@@ -298,29 +249,23 @@ public class CategoryFragment extends Fragment {
                 }
             }
         }
-
         productAdapter = new SubCategoryProductAdapter(filteredList);
         recyclerViewProducts.setAdapter(productAdapter);
     }
 
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
-        // Cleanup animators để tránh memory leak
         if (backgroundAnimator != null) {
             backgroundAnimator.cancel();
         }
         if (titleAnimator != null) {
             titleAnimator.cancel();
         }
-
-        // Cleanup handler
         if (mainHandler != null && pendingUpdate != null) {
             mainHandler.removeCallbacks(pendingUpdate);
         }
-
-        // Reset layer types
         if (heroSection != null) {
             heroSection.setLayerType(View.LAYER_TYPE_NONE, null);
         }
