@@ -116,6 +116,7 @@ public class EditPersonalFragment extends Fragment {
             // Ánh xạ các nút trong custom_exit_dialog (ví dụ: Confirm và Cancel)
             Button btnExit = dialog.findViewById(R.id.btn_exit);
             Button btnSave = dialog.findViewById(R.id.btn_save);
+            ImageView btnExitIcon = dialog.findViewById(R.id.btn_close_icon);
 
             btnExit.setOnClickListener(confirmView -> {
                 // Xử lý khi người dùng chọn xác nhận (ví dụ: thoát Fragment, hoặc thoát Activity)
@@ -128,6 +129,11 @@ public class EditPersonalFragment extends Fragment {
 
                 dialog.dismiss();
             });
+
+            btnExitIcon.setOnClickListener(view -> {
+                dialog.dismiss(); // chỉ đóng dialog
+            });
+
 
             btnSave.setOnClickListener(cancelView -> {
                 // Đóng dialog nếu người dùng huỷ
