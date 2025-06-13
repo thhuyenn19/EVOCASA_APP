@@ -75,6 +75,19 @@ public class ProfileFragment extends Fragment {
 
         });
 
+        //Mở WishlistFragment khi bấm vào imgArrowWish
+        View imgArrowWish = view.findViewById(R.id.imgArrowWish);
+        imgArrowWish.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new WishlistFragment())
+                .addToBackStack(null)
+                .commit();
+
+        });
+
+
+
         ImageView imgAvatar = view.findViewById(R.id.img_avatar);
         ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         imgAvatar.setOnClickListener(v -> {
