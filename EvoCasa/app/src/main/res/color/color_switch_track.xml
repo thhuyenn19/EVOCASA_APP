@@ -3,6 +3,6 @@
     <!-- Bật -->
     <item android:color="#5E4C3E" android:state_checked="true" />
     <!-- Tắt -->
-    <item android:color="#ECEFF1" />
+    <item android:color="#505E4C3E" />
 
 </selector>

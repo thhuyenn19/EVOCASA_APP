@@ -206,9 +206,10 @@
                 android:id="@+id/switchDefault"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:thumbTint="@color/color_switch_thumb"
-                android:trackTint="@color/color_switch_track"
-                android:gravity="end|center_vertical"/>
+                app:thumbTint="@color/color_switch_thumb"
+                app:trackTint="@color/color_switch_track" />
+
+
 
         </LinearLayout>
 
