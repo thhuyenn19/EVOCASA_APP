@@ -121,6 +121,17 @@ public class ProfileDetailFragment extends Fragment {
                     .commit();
         });
 
+        ImageView iconEditName = view.findViewById(R.id.iconEditName);
+        iconEditName.setOnClickListener(v -> {
+            // Chuyển sang EditPersonalFragment
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
+                    .addToBackStack(null) // Cho phép quay lại bằng nút back
+                    .commit();
+        });
+
 
         //Edit ẢNH
 //        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
