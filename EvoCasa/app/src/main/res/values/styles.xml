@@ -18,6 +18,20 @@
         <item name="android:textStyle">bold</item>
         <item name="android:padding">8dp</item>
     </style>
-    
+
+
+    <style name="DatePickerDialogTheme" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:background">@drawable/bg_dialog_rounded</item>
+
+        <!-- Màu chữ -->
+        <item name="android:textColor">@color/color_5E4C3E</item>
+        <item name="android:textColorPrimary">@color/color_5E4C3E</item>
+        <item name="android:textColorSecondary">@color/color_5E4C3E</item>
+
+        <!-- Màu cho nút "OK" và "Cancel" -->
+        <item name="colorAccent">@color/color_5E4C3E</item>
+    </style>
+
+
 
 </resources>

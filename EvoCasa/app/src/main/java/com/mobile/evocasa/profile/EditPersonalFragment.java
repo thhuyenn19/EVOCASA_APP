@@ -162,23 +162,34 @@ public class EditPersonalFragment extends Fragment {
 
         ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(
                 requireContext(),
-                android.R.layout.simple_dropdown_item_1line,
+                R.layout.item_dropdown_gender,
                 genderOptions
         );
         genderDropdown.setAdapter(genderAdapter);
 
+
+
         // Show dropdown when clicking the field
         genderDropdown.setOnClickListener(v -> genderDropdown.showDropDown());
+
 
         // Birthday DatePicker setup
         EditText edtBirthday = view.findViewById(R.id.edtBirthday);
         edtBirthday.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
-            new DatePickerDialog(requireContext(), (datePicker, year, month, day) -> {
-                String selected = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
-                edtBirthday.setText(selected);
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+            new DatePickerDialog(
+                    requireContext(),
+                    R.style.DatePickerDialogTheme,  // 👈 Thêm dòng này để áp theme bo góc
+                    (datePicker, year, month, day) -> {
+                        String selected = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
+                        edtBirthday.setText(selected);
+                    },
+                    c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
+            ).show();
+
         });
+
+
 
         //Address
         EditText edtLocation = view.findViewById(R.id.edtLocation);

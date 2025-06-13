@@ -136,7 +136,9 @@
                     android:text="@string/title_edit_gender_box"
                     android:textColor="@color/color_5E4C3E"
                     android:background="@drawable/edittext_background_infor"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    />
             </LinearLayout>
 
             <!-- Birthday Section -->
