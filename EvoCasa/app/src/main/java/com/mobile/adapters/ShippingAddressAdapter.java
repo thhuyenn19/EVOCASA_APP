@@ -3,6 +3,9 @@ package com.mobile.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +30,8 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtDefaultTag, txtPhone, txtAddress, txtEditLabel;
+        ImageView imgEditLabel;
+        LinearLayout btnEdit;
 
         public ViewHolder(View view) {
             super(view);
@@ -35,6 +40,8 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
             txtPhone = view.findViewById(R.id.txtPhone);
             txtAddress = view.findViewById(R.id.txtAddress);
             txtEditLabel = view.findViewById(R.id.txtEditLabel);
+            imgEditLabel = view.findViewById(R.id.imgEditLabel);
+            btnEdit = view.findViewById(R.id.btnEdit);
         }
     }
 
@@ -67,6 +74,19 @@ public class ShippingAddressAdapter extends RecyclerView.Adapter<ShippingAddress
                 editClickListener.onEditClick(item);
             }
         });
+
+        holder.imgEditLabel.setOnClickListener(v -> {
+            if (editClickListener != null) {
+                editClickListener.onEditClick(item);
+            }
+        });
+
+        holder.btnEdit.setOnClickListener(v -> {
+            if (editClickListener != null) {
+                editClickListener.onEditClick(item);
+            }
+        });
+
 
 
         // Set font:
