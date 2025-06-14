@@ -1,7 +1,10 @@
 package com.mobile.evocasa.category;
 
+import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
+
 import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.mobile.adapters.SubCategoryAdapter;
@@ -110,9 +114,39 @@ public class CategoryFragment extends Fragment {
         for (int i = 0; i < subCategoryNames.length; i++) {
             subCategoryList.add(new SubCategory(subCategoryNames[i], i == 0));
         }
+
         subCategoryAdapter = new SubCategoryAdapter(subCategoryList, selected -> filterProductsBySubCategory(selected));
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
+
+        // ✅ Thêm auto scroll functionality cho subcategory
+        subCategoryAdapter.setOnSubCategoryClickListener(position -> {
+            recyclerViewSubCategory.post(() -> {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSubCategory.getLayoutManager();
+                if (layoutManager != null) {
+                    RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
+                        @Override
+                        protected int getHorizontalSnapPreference() {
+                            return SNAP_TO_START; // hoặc SNAP_TO_CENTER
+                        }
+
+                        @Override
+                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                            return 100f / displayMetrics.densityDpi; // ✅ điều chỉnh tốc độ scroll
+                        }
+
+                        @Override
+                        public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
+                            int viewCenter = (viewStart + viewEnd) / 2;
+                            int boxCenter = (boxStart + boxEnd) / 2;
+                            return boxCenter - viewCenter;
+                        }
+                    };
+                    smoothScroller.setTargetPosition(position);
+                    layoutManager.startSmoothScroll(smoothScroller);
+                }
+            });
+        });
     }
 
     private void setupProducts() {
@@ -252,7 +286,6 @@ public class CategoryFragment extends Fragment {
         productAdapter = new SubCategoryProductAdapter(filteredList);
         recyclerViewProducts.setAdapter(productAdapter);
     }
-
 
     @Override
     public void onDestroyView() {

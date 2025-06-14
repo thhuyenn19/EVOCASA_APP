@@ -23,8 +23,19 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         void onSubCategorySelected(String subCategoryName);
     }
 
+    // ✅ Thêm interface để handle position click cho auto scroll
+    public interface OnSubCategoryPositionClickListener {
+        void onSubCategoryClick(int position);
+    }
+
     private final List<SubCategory> list;
     private final OnSubCategoryClickListener listener;
+    private OnSubCategoryPositionClickListener positionClickListener;
+
+    // ✅ Thêm setter cho position click listener
+    public void setOnSubCategoryClickListener(OnSubCategoryPositionClickListener positionClickListener) {
+        this.positionClickListener = positionClickListener;
+    }
 
     public SubCategoryAdapter(List<SubCategory> list, OnSubCategoryClickListener listener) {
         this.list = list;
@@ -53,8 +64,6 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     public void onBindViewHolder(@NonNull SubCategoryAdapter.ViewHolder holder, int position) {
         SubCategory subCategory = list.get(position);
         Context context = holder.itemView.getContext();
-
-        // ✅ Gán font Inter-Medium từ FontUtils
         FontUtils.setMediumFont(context, holder.txtSubCategory);
 
         holder.txtSubCategory.setText(subCategory.getName());
@@ -69,12 +78,14 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
 
         holder.container.setOnClickListener(v -> {
             for (int i = 0; i < list.size(); i++) {
-                list.get(i).setSelected(i == holder.getAdapterPosition());
+                list.get(i).setSelected(i == position);
             }
             notifyDataSetChanged();
-
             if (listener != null) {
                 listener.onSubCategorySelected(subCategory.getName());
+            }
+            if (positionClickListener != null) {
+                positionClickListener.onSubCategoryClick(position);
             }
         });
     }
