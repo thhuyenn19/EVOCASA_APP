@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="16dp"
     card_view:cardElevation="4dp"
-    android:layout_margin="12dp">
+    android:layout_margin="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,28 +17,44 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp">
+            android:layout_height="130dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imgProduct"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clipToOutline="true"
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_lighting_brasslamp"
-                android:clipToOutline="true"
                 app:cornerRadius="8dp" />
+            <!--tag-->
+            <TextView
+                android:id="@+id/tvTagDiscountTop"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:text="Hot"
+                android:textColor="#FFD64F"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+
+                android:gravity="center"
+                android:background="@drawable/bg_hot_top_tag" />
 
             <!-- Icon yêu thích -->
             <ImageView
                 android:id="@+id/imgFavorite"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="12dp"
                 android:src="@drawable/ic_favourite"/>
         </RelativeLayout>
-
 
         <!-- Product Name -->
         <TextView
@@ -47,9 +63,9 @@
             android:layout_height="wrap_content"
             android:text="MCM Brass Lamp"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="2dp" />
 
         <!-- Old Price -->
         <TextView
@@ -58,15 +74,13 @@
             android:layout_height="wrap_content"
             android:text="$109"
             android:textColor="#9C9999"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp" />
+            android:textSize="12sp" />
 
         <!-- Sale Price + Discount + Rating -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="4dp"
             android:gravity="center_vertical">
 
             <!-- Sale Price -->
@@ -76,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:text="$85"
                 android:textColor="#E24747"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <!-- Discount Tag -->
@@ -93,7 +107,7 @@
                 android:paddingRight="6dp"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
 
             <!-- Spacer + Rating -->
             <LinearLayout
@@ -105,8 +119,8 @@
                 android:layout_marginStart="8dp">
 
                 <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
                     android:src="@drawable/ic_star_yellow" />
 
                 <TextView
@@ -115,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:text="5.0"
                     android:textColor="@color/color_5E4C3E"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:layout_marginStart="4dp" />
             </LinearLayout>
         </LinearLayout>

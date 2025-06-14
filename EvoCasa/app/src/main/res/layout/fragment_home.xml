@@ -69,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
@@ -120,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="0dp"
+                android:layout_marginBottom="6dp"
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
@@ -188,18 +189,17 @@
                 android:id="@+id/recyclerViewFlashSale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginHorizontal="8dp"
                 android:clipToPadding="false"
-                android:paddingBottom="8dp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
-            <!-- Flash Sale Header -->
+            <!-- Hot products Header -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="0dp"
+                android:layout_marginVertical="6dp"
                 android:layout_marginHorizontal="16dp">
 
                 <TextView
@@ -241,9 +241,8 @@
                 android:id="@+id/recyclerViewHotProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+              android:layout_marginHorizontal="8dp"
                 android:clipToPadding="false"
-                android:paddingBottom="8dp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never" />
             <!-- Banner 2-->
@@ -257,6 +256,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:layout_marginTop="6dp"
                     android:src="@mipmap/ic_banner2"
                     app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
 
@@ -281,7 +281,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_margin="16dp">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="6dp">
 
                 <TextView
                     android:id="@+id/txtCollection"
