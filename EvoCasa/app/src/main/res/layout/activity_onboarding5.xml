@@ -1,108 +1,106 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="@mipmap/onboarding_bg_5"
     tools:context=".onboarding.Onboarding5Activity">
 
-
+    <!-- Background giữ nguyên tỉ lệ -->
     <ImageView
-        android:id="@+id/imgLogoOnboarding"
         android:layout_width="match_parent"
-        android:layout_height="206dp"
-        android:src="@mipmap/imglogoonboarding"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="10dp"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/onboarding_bg_5"
+        android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/txtView2"
-        android:layout_width="match_parent"
-        android:layout_height="232dp" />
-
-    <TextView
-        android:id="@+id/txtViewOnboarding5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:text="@string/title_onboarding5_line_1"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"/>
-
-    <TextView
-        android:id="@+id/txtView3"
-        android:layout_width="wrap_content"
-        android:layout_height="63dp"
-        android:layout_marginEnd="5dp"
-        android:paddingStart="10dp"
-        android:text="@string/title_onboarding5_description"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp" />
-
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnCreateAccountOnboarding5"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/button_pressed_effect_onboarding4"
-        android:elevation="2dp"
-        android:text="@string/title_create_account_onboarding5"
-        android:textAllCaps="true"
-        android:textColor="#000000"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"/>
-
-<!--    <androidx.appcompat.widget.AppCompatButton-->
-<!--        android:id="@+id/btnCreateAccountOnboarding5"-->
-<!--        android:layout_width="376dp"-->
-<!--        android:layout_height="56dp"-->
-<!--        android:layout_marginBottom="24dp"-->
-<!--        android:background="@drawable/button_pressed_effect_onboarding4"-->
-<!--        android:elevation="2dp"-->
-<!--        android:text="@string/title_create_account_onboarding5"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textColor="#000000"-->
-<!--        android:textSize="18sp"-->
-<!--        android:textStyle="bold"-->
-<!--        android:layout_gravity="center"/>-->
-
+    <!-- Nội dung phía trên nền -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-30dp"
-        android:layout_marginBottom="40dp"
-        android:layout_marginStart="15dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:gravity="top">
+
+        <ImageView
+            android:id="@+id/imgLogoOnboarding"
+            android:layout_width="match_parent"
+            android:layout_height="206dp"
+            android:src="@mipmap/imglogoonboarding"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp" />
 
         <TextView
-            android:id="@+id/txtHaveAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/title_already_account"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp" />
+            android:id="@+id/txtView2"
+            android:layout_width="match_parent"
+            android:layout_height="232dp" />
 
-        <Button
-            android:id="@+id/btnLogIn"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/txtViewOnboarding5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="-20sp"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/title_loginin"
+            android:paddingStart="10dp"
+            android:text="@string/title_onboarding5_line_1"
+            android:textAlignment="center"
             android:textColor="#FFFFFF"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/txtView3"
+            android:layout_width="wrap_content"
+            android:layout_height="63dp"
+            android:layout_marginEnd="5dp"
+            android:paddingStart="10dp"
+            android:text="@string/title_onboarding5_description"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCreateAccountOnboarding5"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_pressed_effect_onboarding4"
+            android:elevation="2dp"
+            android:text="@string/title_create_account_onboarding5"
+            android:textAllCaps="true"
+            android:textColor="#000000"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-30dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtHaveAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_already_account"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnLogIn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-20sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:text="@string/title_loginin"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

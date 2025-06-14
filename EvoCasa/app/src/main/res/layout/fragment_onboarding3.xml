@@ -1,35 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/onboarding_bg_3"
-    android:orientation="vertical"
-    android:fitsSystemWindows="true"
     tools:context=".onboarding.Onboarding3Fragment">
 
-    <TextView
-        android:id="@+id/textView3"
+    <!-- Background Image giữ nguyên tỉ lệ -->
+    <ImageView
+        android:id="@+id/bgImage"
         android:layout_width="match_parent"
-        android:layout_height="274dp" />
+        android:layout_height="match_parent"
+        android:src="@mipmap/onboarding_bg_3"
+        android:scaleType="centerCrop"
+        android:contentDescription="@null" />
 
-    <TextView
-        android:id="@+id/txtViewOnboarding3"
+    <!-- Nội dung hiển thị phía trên ảnh -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:paddingStart="20dp"
-        android:text="@string/title_onboarding3_line_1"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="48dp"
+        android:paddingBottom="48dp"
+        android:fitsSystemWindows="true">
 
-    <TextView
-        android:id="@+id/txtView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="20dp"
-        android:paddingEnd="10dp"
-        android:text="@string/title_onboarding3_description"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="274dp" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/txtViewOnboarding3"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingStart="20dp"
+            android:text="@string/title_onboarding3_line_1"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/txtView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="20dp"
+            android:paddingEnd="10dp"
+            android:text="@string/title_onboarding3_description"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</FrameLayout>
