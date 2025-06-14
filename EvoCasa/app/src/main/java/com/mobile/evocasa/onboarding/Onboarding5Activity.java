@@ -28,37 +28,30 @@ public class Onboarding5Activity extends AppCompatActivity {
         final boolean[] showCursor = {true};
 
         textView.setText("");
-        final Runnable[] cursorRunnable = new Runnable[1];
 
-        cursorRunnable[0] = new Runnable() {
+        final Runnable typingRunnable = new Runnable() {
             @Override
             public void run() {
                 if (index[0] <= fullText.length()) {
                     String visibleText = fullText.substring(0, index[0]);
                     textView.setText(visibleText + (showCursor[0] ? cursor : ""));
                     showCursor[0] = !showCursor[0];
-                    textView.postDelayed(this, 500);
-                }
-            }
-        };
-        textView.post(cursorRunnable[0]);
 
-        Runnable typingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index[0] < fullText.length()) {
-                    index[0]++;
-                    textView.postDelayed(this, charDelay);
-                } else {
-                    textView.removeCallbacks(cursorRunnable[0]);
-                    textView.postDelayed(() -> {
-                        textView.setText(fullText);
-                        if (onComplete != null) onComplete.run();
-                    }, 800);
+                    if (index[0] < fullText.length()) {
+                        index[0]++;
+                        textView.postDelayed(this, charDelay);
+                    } else {
+                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
+                        textView.postDelayed(() -> {
+                            textView.setText(fullText); // ẩn cursor
+                            if (onComplete != null) onComplete.run();
+                        }, 500);
+                    }
                 }
             }
         };
-        textView.postDelayed(typingRunnable, 300);
+
+        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
     }
 
 
@@ -101,15 +94,15 @@ public class Onboarding5Activity extends AppCompatActivity {
 
 
         txtViewOnboarding5.setVisibility(View.VISIBLE);
-        typeTextWithCursor(txtViewOnboarding5, line1, 15, () -> {
+        typeTextWithCursor(txtViewOnboarding5, line1, 50, () -> {
             txtView3.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtView3, line2, 10, () -> {
+            typeTextWithCursor(txtView3, line2, 50, () -> {
                 btnCreateAccountOnboarding5.setVisibility(View.VISIBLE);
-                typeTextWithCursor(btnCreateAccountOnboarding5, getString(R.string.title_create_account), 5, () -> {
+                typeTextWithCursor(btnCreateAccountOnboarding5, getString(R.string.title_create_account), 15, () -> {
                     txtHaveAccount.setVisibility(View.VISIBLE);
-                    typeTextWithCursor(txtHaveAccount, getString(R.string.title_already_account), 5, () -> {
+                    typeTextWithCursor(txtHaveAccount, getString(R.string.title_already_account), 15, () -> {
                         btnLogIn.setVisibility(View.VISIBLE);
-                        typeTextWithCursor(btnLogIn, getString(R.string.title_loginin), 5, null);
+                        typeTextWithCursor(btnLogIn, getString(R.string.title_loginin), 15, null);
                     });
                 });
             });

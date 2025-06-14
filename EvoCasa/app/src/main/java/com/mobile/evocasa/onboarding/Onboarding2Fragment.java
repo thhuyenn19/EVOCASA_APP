@@ -72,42 +72,31 @@ public class Onboarding2Fragment extends Fragment {
         final String cursor = "|";
         final boolean[] showCursor = {true};
 
-        textView.setText(""); // Clear initial
+        textView.setText("");
 
-        // Runnable nhấp nháy cursor
-        final Runnable[] cursorRunnable = new Runnable[1];
-
-        cursorRunnable[0] = new Runnable() {
+        final Runnable typingRunnable = new Runnable() {
             @Override
             public void run() {
                 if (index[0] <= fullText.length()) {
                     String visibleText = fullText.substring(0, index[0]);
                     textView.setText(visibleText + (showCursor[0] ? cursor : ""));
                     showCursor[0] = !showCursor[0];
-                    textView.postDelayed(cursorRunnable[0], 500); // Blink cursor
-                }
-            }
-        };
-        textView.post(cursorRunnable[0]);
 
-        // Runnable đánh máy từng chữ
-        Runnable typingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index[0] < fullText.length()) {
-                    index[0]++;
-                    textView.postDelayed(this, charDelay);
-                } else {
-                    // Kết thúc: dừng cursor và ẩn sau 0.8s
-                    textView.removeCallbacks(cursorRunnable[0]);
-                    textView.postDelayed(() -> {
-                        textView.setText(fullText); // Xoá cursor
-                        if (onComplete != null) onComplete.run();
-                    }, 800);
+                    if (index[0] < fullText.length()) {
+                        index[0]++;
+                        textView.postDelayed(this, charDelay);
+                    } else {
+                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
+                        textView.postDelayed(() -> {
+                            textView.setText(fullText); // ẩn cursor
+                            if (onComplete != null) onComplete.run();
+                        }, 500);
+                    }
                 }
             }
         };
-        textView.postDelayed(typingRunnable, 300); // Delay start
+
+        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
     }
 
 
@@ -169,16 +158,17 @@ public class Onboarding2Fragment extends Fragment {
 
 // Gõ từng dòng với cursor
         txtViewExplore.setVisibility(View.VISIBLE);
-        typeTextWithCursor(txtViewExplore, text1, 50, () -> {
+        typeTextWithCursor(txtViewExplore, text1, 100, () -> { // tăng delay lên
             txtViewTheSoulOf.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewTheSoulOf, text2, 50, () -> {
+            typeTextWithCursor(txtViewTheSoulOf, text2, 100, () -> {
                 txtViewEvoCasa.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtViewEvoCasa, text3, 50, () -> {
+                typeTextWithCursor(txtViewEvoCasa, text3, 100, () -> {
                     txtView3.setVisibility(View.VISIBLE);
-                    typeTextWithCursor(txtView3, text4, 20, null);
+                    typeTextWithCursor(txtView3, text4, 80, null); // đoạn mô tả cuối nhanh hơn 1 chút
                 });
             });
         });
+
 
 
 

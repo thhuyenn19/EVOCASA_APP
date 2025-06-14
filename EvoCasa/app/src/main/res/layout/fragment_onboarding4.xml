@@ -20,7 +20,7 @@
         android:paddingStart="20dp"
         android:text=""
         android:textColor="#FFFFFF"
-        android:textSize="24sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:id="@+id/txtView3"
