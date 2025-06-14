@@ -1,11 +1,14 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -36,16 +39,19 @@ public class TrackOrderActivity extends AppCompatActivity {
         applyCustomFonts();
     // 1. Chuẩn bị dữ liệu timeline
         List<TimelineItem> timelineItems = new ArrayList<>();
+
         timelineItems.add(new HeaderItem("23rd, May"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at the delivery station", true));
         timelineItems.add(new EventItem("09:30", "Your order has left the sorting facility", false));
+
         timelineItems.add(new HeaderItem("22nd, May"));
         timelineItems.add(new EventItem("16:30", "Your order has arrived at shipping center", false));
         timelineItems.add(new EventItem("09:30", "Your order has been sent to shipping party", false));
+
         timelineItems.add(new HeaderItem("21st, May"));
         timelineItems.add(new EventItem("16:30", "Your order is being prepared", false));
         timelineItems.add(new EventItem("09:30", "Your order is placed", false));
-        // ... thêm các header và event khác tương tự
+
 
         // 2. Khởi tạo RecyclerView và Adapter
         RecyclerView rv = findViewById(R.id.rvTimeline);
@@ -56,6 +62,50 @@ public class TrackOrderActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v ->{
             finish();
         });
+        int currentStep = 1;
+
+// Step title TextViews
+        TextView[] stepTitles = {
+                findViewById(R.id.tvPickedUp),
+                findViewById(R.id.tvInTransit),
+                findViewById(R.id.tvOutDeli),
+                findViewById(R.id.tvDeli)
+        };
+
+// Set màu text cố định (đậm)
+        for (TextView tv : stepTitles) {
+            tv.setTextColor(ContextCompat.getColor(this, R.color.color_active)); // #3F2305
+        }
+
+// Step icons
+        ImageView[] stepIcons = {
+                findViewById(R.id.iconStep1),
+                findViewById(R.id.iconStep2),
+                findViewById(R.id.iconStep3),
+                findViewById(R.id.iconStep4)
+        };
+
+// Connecting lines
+        View[] lines = {
+                findViewById(R.id.line1),
+                findViewById(R.id.line2),
+                findViewById(R.id.line3)
+        };
+
+// Apply color and icon based on current step
+        for (int i = 0; i < stepIcons.length; i++) {
+            boolean isActive = i <= currentStep;
+
+            stepIcons[i].setImageResource(isActive
+                    ? R.drawable.ic_check_circle_active
+                    : R.drawable.ic_check_circle_inactive);
+        }
+
+        for (int i = 0; i < lines.length; i++) {
+            boolean isLineActive = i < currentStep;
+            lines[i].setBackgroundColor(ContextCompat.getColor(this,
+                    isLineActive ? R.color.color_active : R.color.color_inactive));
+        }
 
     }
 

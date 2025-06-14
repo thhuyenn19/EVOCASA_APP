@@ -13,7 +13,7 @@
                           C4.27827,16.5 0.5,12.8917 0.5,8.5
                           C0.5,4.10826 4.27827,0.5 9,0.5 Z"
         android:fillColor="@android:color/transparent"
-        android:strokeColor="@color/color_3F2305"
+        android:strokeColor="@color/color_inactive"
         android:strokeWidth="1"/>
 
     <!-- Check mark -->
@@ -22,7 +22,7 @@
                           L8,10.625
                           L12,7.08331"
         android:fillColor="@android:color/transparent"
-        android:strokeColor="@color/color_3F2305"
+        android:strokeColor="@color/color_inactive"
         android:strokeWidth="1"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"/>

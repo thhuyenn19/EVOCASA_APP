@@ -1,6 +1,9 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobile.evocasa.R;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
+import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
 import java.util.List;
@@ -104,7 +108,21 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.itemContainer.requestLayout();
         holder.itemContainer.invalidate();
 // 3. Gán total dựa trên toàn bộ items
-        holder.txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
+        String boldPart = "Total";
+        String normalPart = " (" + items.size() + " items): $" + totalPrice;
+        String fullText = boldPart + normalPart;
+
+        SpannableString spannable = new SpannableString(fullText);
+
+        Typeface boldFont = FontUtils.getSemiBold(context);
+        Typeface regularFont = FontUtils.getRegular(context);
+
+        spannable.setSpan(new CustomTypefaceSpan(boldFont), 0, boldPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new CustomTypefaceSpan(regularFont), boldPart.length(), fullText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        holder.txtTotal.setText(spannable);
+
+
 
 
         // Show or hide "View More"

@@ -18,13 +18,16 @@
     <color name="color_bg_btn_buynow">#525B4A</color>
     <color name="color_cmt_rv">#888888</color>
     <color name="color_333333">#333333</color>
-    <color name="orange_active">#B3FF6600</color>   <!-- FF6600 với 70% alpha -->
-    <color name="gray_inactive">#B3000000</color>  <!-- 000000 với 70% alpha -->
+    <color name="orange_active">#B3FF6600</color>
+    <color name="gray_inactive">#B3000000</color>
     <color name="color_E24747">#E24747</color>
     <color name="color_525B4A">#525B4A</color>
     <color name="color_805E4C3E">#805E4C3E</color>
     <color name="color_yellow">#FFD64F</color>
     <color name="gray">#C0C0C0</color>
+    <color name="color_active">#3F2305</color>
+    <color name="color_inactive">#D6CFC7</color>
+
 
 
 </resources>

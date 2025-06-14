@@ -1,6 +1,9 @@
 package com.mobile.evocasa;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,9 +17,11 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
+import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
@@ -27,6 +32,7 @@ public class LeaveReviewActivity extends AppCompatActivity {
     private TextView txtTotal, btnViewMore;
     private AppCompatButton btnAction;
     private LinearLayout btnViewMoreContainer;
+    private ImageView iconArrow;
     private boolean isExpanded = false;
 
 
@@ -52,9 +58,14 @@ public class LeaveReviewActivity extends AppCompatActivity {
         btnAction = orderGroupView.findViewById(R.id.btnAction);
         btnViewMoreContainer = orderGroupView.findViewById(R.id.btnViewMoreContainer);
         btnViewMore = orderGroupView.findViewById(R.id.btnViewMore);
+        iconArrow = orderGroupView.findViewById(R.id.iconArrow);
 
         OrderGroup mockGroup = createMockOrderGroup();
         renderOrderGroup(mockGroup);
+        LinearLayout btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v ->{
+            finish();
+        });
     }
 
     private void renderOrderGroup(OrderGroup orderGroup) {
@@ -64,9 +75,12 @@ public class LeaveReviewActivity extends AppCompatActivity {
         List<OrderItem> items = orderGroup.getItems();
         List<OrderItem> showList = isExpanded ? items : items.subList(0, Math.min(1, items.size()));
 
-        for (OrderItem item : showList) {
+        for (OrderItem item : items) {
             totalPrice += item.getPrice() * item.getQuantity();
-
+        }
+        int showCount = orderGroup.isExpanded() ? items.size() : Math.min(1, items.size());
+        for (int i = 0; i < showCount; i++) {
+            OrderItem item = items.get(i);
             View productView = LayoutInflater.from(this)
                     .inflate(R.layout.item_order_product, itemContainer, false);
 
@@ -86,16 +100,34 @@ public class LeaveReviewActivity extends AppCompatActivity {
 
             itemContainer.addView(productView);
         }
+        itemContainer.requestLayout();
+        itemContainer.invalidate();
 
-        txtTotal.setText("Total (" + items.size() + " items): $" + totalPrice);
+        String boldPart = "Total";
+        String normalPart = " (" + items.size() + " items): $" + totalPrice;
+        String fullText = boldPart + normalPart;
 
-        // ✅ Show View More nếu có nhiều hơn 1 item và chưa mở rộng
-        if (items.size() > 1 && !isExpanded) {
+        SpannableString spannable = new SpannableString(fullText);
+
+        Typeface boldFont = FontUtils.getSemiBold(this);
+        Typeface regularFont = FontUtils.getRegular(this);
+
+        spannable.setSpan(new CustomTypefaceSpan(boldFont), 0, boldPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannable.setSpan(new CustomTypefaceSpan(regularFont), boldPart.length(), fullText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        txtTotal.setText(spannable);
+
+        // Show or hide "View More"
+        if (items.size() > 1) {
             btnViewMoreContainer.setVisibility(View.VISIBLE);
-            FontUtils.setMediumFont(this, btnViewMore); // ✅ set font Medium
-            btnViewMore.setOnClickListener(v -> {
-                isExpanded = true;
-                renderOrderGroup(orderGroup); // re-render
+            boolean expanded = orderGroup.isExpanded();
+            btnViewMore.setText(expanded ? "View Less" : "View More");
+            FontUtils.setMediumFont(this, btnViewMore);
+            iconArrow.setRotation(expanded ? 270 : 90);
+
+            btnViewMoreContainer.setOnClickListener(v -> {
+                orderGroup.setExpanded(!orderGroup.isExpanded());
+                renderOrderGroup(orderGroup);
             });
         } else {
             btnViewMoreContainer.setVisibility(View.GONE);
