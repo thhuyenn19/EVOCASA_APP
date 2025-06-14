@@ -86,7 +86,7 @@ public class Onboarding1Activity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Onboarding1Activity.this, Onboarding5Activity.class);
                 startActivity(intent);
-                finish(); // nếu bạn muốn không quay lại màn hình onboarding1 khi nhấn back
+                finish(); //không quay lại màn hình onboarding1 khi nhấn back
             }
         });
 
