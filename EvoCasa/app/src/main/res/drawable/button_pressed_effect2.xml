@@ -3,5 +3,5 @@
 
     <item android:drawable="@drawable/button_layered" android:state_pressed="true" />
 
-    <item android:drawable="@drawable/button_view_img_profile_rounded" />
+    <item android:drawable="@drawable/btn_view_effect2" />
 </selector>

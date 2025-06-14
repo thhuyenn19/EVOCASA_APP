@@ -41,9 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:fontFamily="@font/zen_old_mincho"
+        android:fontFamily="@font/zen_old_mincho_black"
         android:gravity="center"
-        android:text="Items in Cart"
+        android:text="@string/title_items_in_cart"
         android:textColor="@color/color_5E4C3E"
         android:textSize="20sp"
         android:textStyle="bold" />
