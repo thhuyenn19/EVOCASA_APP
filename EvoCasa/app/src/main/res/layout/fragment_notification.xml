@@ -18,30 +18,17 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
-
-        <TextView
-            android:id="@+id/txtNotificationDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TODAY"
-            android:textColor="#5E4C3E"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/inter" />
-
         <TextView
             android:id="@+id/txtMarkAllRead"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Mark all as read"
+            android:gravity="end"
             android:textColor="#704F38"
             android:textSize="14sp"
-            android:fontFamily="@font/zen_old_mincho" />
+            android:fontFamily="@font/inter" />
     </LinearLayout>
 
     <!-- RecyclerView hiển thị danh sách notification -->
@@ -50,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:layout_marginHorizontal="16dp"
         android:clipToPadding="false"
         android:overScrollMode="never" />
 </LinearLayout>

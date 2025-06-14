@@ -1,0 +1,188 @@
+[
+  {
+    "_id": {
+      "$oid": "665400000000000000000000"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa01"
+    },
+    "TrackingNumber": "TRK922032",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203358"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203366"
+    },
+    "Status": "Pending",
+    "Phone": "0987654321",
+    "Email": "huyenntt@gmail.com",
+    "Address": "Hà Nội, Việt Nam",
+    "PaymentMethod": "Credit / Debit Card",
+    "TotalPrice": 28475,
+    "PrePrice": 28350,
+    "DeliveryFee": 200,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a04a46527d4bf49e483c"
+      },
+      "Quantity": 3,
+      "Customize": null
+    },
+    "Note": "",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    }
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000001"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa02"
+    },
+    "TrackingNumber": "TRK584633",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203385"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203386"
+    },
+    "Status": "Delivered",
+    "Phone": "0978123456",
+    "Email": "nhungjapan@gmail.com",
+    "Address": "Hồ Chí Minh, Việt Nam",
+    "PaymentMethod": "COD",
+    "TotalPrice": 44475,
+    "PrePrice": 44250,
+    "DeliveryFee": 300,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a14646527d4bf49e483d"
+      },
+      "Quantity": 3,
+      "Customize": {
+        "Type": "Sand",
+        "Image": "/images/custom/sand.jpg"
+      }
+    },
+    "Note": "Call before delivery",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    }
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000002"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa03"
+    },
+    "TrackingNumber": "TRK621792",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203397"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203399"
+    },
+    "Status": "Delivered",
+    "Phone": "0965234789",
+    "Email": "nhuxinhgai01@gmail.com",
+    "Address": "Đà Nẵng, Việt Nam",
+    "PaymentMethod": "COD",
+    "TotalPrice": 6225,
+    "PrePrice": 6000,
+    "DeliveryFee": 300,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a32346527d4bf49e483e"
+      },
+      "Quantity": 1,
+      "Customize": null
+    },
+    "Note": "Leave at front door",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    }
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000003"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa04"
+    },
+    "TrackingNumber": "TRK838245",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203409"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203411"
+    },
+    "Status": "Shipped",
+    "Phone": "0954678912",
+    "Email": "thao21@gmail.com",
+    "Address": "Hải Phòng, Việt Nam",
+    "PaymentMethod": "Credit / Debit Card",
+    "TotalPrice": 49625,
+    "PrePrice": 49500,
+    "DeliveryFee": 200,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a3a946527d4bf49e4840"
+      },
+      "Quantity": 3,
+      "Customize": {
+        "Type": "Slate",
+        "Image": "/images/custom/slate.jpg"
+      }
+    },
+    "Note": "",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    }
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000004"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa05"
+    },
+    "TrackingNumber": "TRK337926",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203420"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203422"
+    },
+    "Status": "Delivered",
+    "Phone": "0945789123",
+    "Email": "trang@gmail.com",
+    "Address": "Cần Thơ, Việt Nam",
+    "PaymentMethod": "Internet Banking",
+    "TotalPrice": 2625,
+    "PrePrice": 2450,
+    "DeliveryFee": 250,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a62f46527d4bf49e4847"
+      },
+      "Quantity": 1,
+      "Customize": null
+    },
+    "Note": "Leave at front door",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    }
+  }
+]

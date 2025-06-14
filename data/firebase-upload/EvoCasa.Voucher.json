@@ -1,0 +1,130 @@
+[{
+  "_id": {
+    "$oid": "6832b33d6ea7983009fbc2e6"
+  },
+  "Name": "Summer Sale",
+  "Category": "Seasonal",
+  "DiscountPercent": 15,
+  "ExpireDate": {
+    "$date": "2025-06-30T00:00:00.000Z"
+  },
+  "Minimum order value": 300,
+  "Maximum threshold": 20
+},
+{
+  "_id": {
+    "$oid": "6832b82b6ea7983009fbc2e8"
+  },
+  "Name": "Seasonal Flash Offer",
+  "Category": "Seasonal",
+  "DiscountPercent": 10,
+  "ExpireDate": {
+    "$date": "2025-09-30T00:00:00.000Z"
+  },
+  "Minimum order value": 400,
+  "Maximum threshold": 30
+},
+{
+  "_id": {
+    "$oid": "6832b8386ea7983009fbc2e9"
+  },
+  "Name": "First Order",
+  "Category": "User Type",
+  "DiscountPercent": 20,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 200,
+  "Maximum threshold": 15
+},
+{
+  "_id": {
+    "$oid": "6832eb7f9e02b2d459083d35"
+  },
+  "Name": "New User Welcome",
+  "Category": "User Type",
+  "DiscountPercent": 20,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 100,
+  "Maximum threshold": 15
+},
+{
+  "_id": {
+    "$oid": "6832ebab9e02b2d459083d36"
+  },
+  "Name": "Personal Birthday Gift",
+  "Category": "Personalized",
+  "DiscountPercent": 15,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 100,
+  "Maximum threshold": 15
+},
+{
+  "_id": {
+    "$oid": "6832ec369e02b2d459083d37"
+  },
+  "Name": "Just for You Deal",
+  "Category": "Personalized",
+  "DiscountPercent": 20,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 250,
+  "Maximum threshold": 40
+},
+{
+  "_id": {
+    "$oid": "6832ec999e02b2d459083d38"
+  },
+  "Name": "Special Event Discount",
+  "Category": "Seasonal",
+  "DiscountPercent": 20,
+  "ExpireDate": {
+    "$date": "2025-07-31T00:00:00.000Z"
+  },
+  "Minimum order value": 200,
+  "Maximum threshold": 30
+},
+{
+  "_id": {
+    "$oid": "6832ed3e9e02b2d459083d39"
+  },
+  "Name": "Returning Customer Bonus",
+  "Category": "User Type",
+  "DiscountPercent": 18,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 150,
+  "Maximum threshold": 15
+},
+{
+  "_id": {
+    "$oid": "6832eddb9e02b2d459083d3a"
+  },
+  "Name": "Mid-Year Big Sale",
+  "Category": "Seasonal",
+  "DiscountPercent": 25,
+  "ExpireDate": {
+    "$date": "2025-07-31T00:00:00.000Z"
+  },
+  "Minimum order value": 300,
+  "Maximum threshold": 75
+},
+{
+  "_id": {
+    "$oid": "6832ee4a9e02b2d459083d3b"
+  },
+  "Name": "Regular Customer Coupon",
+  "Category": "User Type",
+  "DiscountPercent": 10,
+  "ExpireDate": {
+    "$date": "2025-12-31T00:00:00.000Z"
+  },
+  "Minimum order value": 100,
+  "Maximum threshold": 10
+}]

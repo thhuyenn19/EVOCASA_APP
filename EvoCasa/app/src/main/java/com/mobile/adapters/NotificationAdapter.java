@@ -58,13 +58,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             vh.txtTitle.setText(item.getTitle());
             vh.txtMessage.setText(item.getMessage());
             vh.txtTime.setText(item.getTime());
-             // Làm mờ nếu đã đọc
+             /*// Làm mờ nếu đã đọc
             float alpha = item.isRead() ? 0.7f : 1.0f;
-            vh.itemView.setAlpha(alpha);
-
+            vh.itemView.setAlpha(alpha);*/
             // Thêm background color khi đã đọc
             if (item.isRead()) {
-                vh.bgNotiMessage.setBackgroundColor(0x26D9CDB6); // Mã màu #D9CDB6
+                vh.bgNotiMessage.setBackgroundColor(0x26D9CDB6); // Mã màu #D9CDB6 15%
             } else {
                 vh.bgNotiMessage.setBackgroundColor(0x00000000); // Transparent khi chưa đọc
             }
