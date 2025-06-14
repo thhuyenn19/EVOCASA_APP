@@ -58,9 +58,10 @@ public class Onboarding1Activity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewPager.getCurrentItem() <2 ){
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                }
+               viewPager.setCurrentItem(2);
+//                if (viewPager.getCurrentItem() <2 ){
+//                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+//                }
             }
         });
 
