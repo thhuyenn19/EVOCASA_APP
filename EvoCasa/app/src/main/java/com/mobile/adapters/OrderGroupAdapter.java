@@ -108,24 +108,24 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
 
 
         // Show or hide "View More"
-        if (items.size() > showCount) {
+        if (items.size() > 1) {
             holder.btnViewMoreContainer.setVisibility(View.VISIBLE);
-            holder.btnViewMore.setText("View More");
+            boolean expanded = group.isExpanded();
+            holder.btnViewMore.setText(expanded ? "View Less" : "View More");
             FontUtils.setMediumFont(holder.itemView.getContext(), holder.btnViewMore);
-            holder.iconArrow.setRotation(90); // Hướng xuống
+            holder.iconArrow.setRotation(expanded ? 270 : 90);
 
-            holder.btnViewMore.setOnClickListener(v -> {
-                group.setExpanded(true);
+            holder.btnViewMoreContainer.setOnClickListener(v -> {
+                group.setExpanded(!group.isExpanded());
                 int pos = holder.getAdapterPosition();
                 if (pos != RecyclerView.NO_POSITION) {
-                    group.setExpanded(true);
                     notifyItemChanged(pos);
                 }
-
             });
         } else {
             holder.btnViewMoreContainer.setVisibility(View.GONE);
         }
+
 
 
         holder.btnAction.setOnClickListener(v -> {
