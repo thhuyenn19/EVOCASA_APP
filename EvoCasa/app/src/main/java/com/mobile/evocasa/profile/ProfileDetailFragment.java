@@ -140,7 +140,10 @@ public class ProfileDetailFragment extends Fragment {
         //Mở popup đổi avatar
         ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         btnEditAvatar.setOnClickListener(v -> showBottomSheetDialog());
-        
+
+        ImageView btnEditAvatarImage = view.findViewById(R.id.img_avatar);
+        btnEditAvatarImage.setOnClickListener(v -> showBottomSheetDialog());
+
 
 
     }
