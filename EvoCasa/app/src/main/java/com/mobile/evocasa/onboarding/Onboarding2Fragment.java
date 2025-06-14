@@ -169,11 +169,11 @@ public class Onboarding2Fragment extends Fragment {
 
 // Gõ từng dòng với cursor
         txtViewExplore.setVisibility(View.VISIBLE);
-        typeTextWithCursor(txtViewExplore, text1, 60, () -> {
+        typeTextWithCursor(txtViewExplore, text1, 50, () -> {
             txtViewTheSoulOf.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewTheSoulOf, text2, 60, () -> {
+            typeTextWithCursor(txtViewTheSoulOf, text2, 50, () -> {
                 txtViewEvoCasa.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtViewEvoCasa, text3, 60, () -> {
+                typeTextWithCursor(txtViewEvoCasa, text3, 50, () -> {
                     txtView3.setVisibility(View.VISIBLE);
                     typeTextWithCursor(txtView3, text4, 20, null);
                 });

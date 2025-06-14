@@ -136,9 +136,9 @@ public class Onboarding3Fragment extends Fragment {
             String line2 = getString(R.string.title_onboarding3_description);
 
             txtViewOnboarding3.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewOnboarding3, line1, 60, () -> {
+            typeTextWithCursor(txtViewOnboarding3, line1, 40, () -> {
                 txtView3.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtView3, line2, 40, null);
+                typeTextWithCursor(txtView3, line2, 20, null);
             });
 
         }
