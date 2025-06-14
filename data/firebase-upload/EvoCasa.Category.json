@@ -1,0 +1,264 @@
+[{
+  "_id": {
+    "$oid": "507f191e810c19729de860eb"
+  },
+  "Name": "Furniture",
+  "Description": "All kinds of furniture products.",
+  "Slug": "furniture",
+  "ParentCategory": null,
+  "Image": "/images/Furniture/Alfred Christensen Chair - Floral12.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860ec"
+  },
+  "Name": "Tables",
+  "Description": "Furniture products for tables.",
+  "Slug": "tables",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860eb"
+  },
+  "Image": "/images/Furniture/Ambiance Coffee Table1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860ed"
+  },
+  "Name": "Seating",
+  "Description": "Furniture products for seating.",
+  "Slug": "seating",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860eb"
+  },
+  "Image": "/images/Furniture/1950s Kooky Metal Chair1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860ee"
+  },
+  "Name": "Casegoods",
+  "Description": "Furniture products like cabinets, bookshelves, etc.",
+  "Slug": "casegoods",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860eb"
+  },
+  "Image": "/images/Furniture/Brazilian Jangada Armchair2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Name": "Decor",
+  "Description": "Decorative items for homes and offices.",
+  "Slug": "decor",
+  "ParentCategory": null,
+  "Image": "/images/Decor/Magazine Book Rack1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f1"
+  },
+  "Name": "Vases & Vessels",
+  "Description": "Various types of vases and vessels for decoration.",
+  "Slug": "vases-vessels",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Image": "/images/Decor/Devon Vase1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f3"
+  },
+  "Name": "Bowls & Dishes",
+  "Description": "Bowls and dishes for decorative purposes.",
+  "Slug": "bowls-dishes",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Image": "/images/Dining & Entertaining/Thrown Salad Bowl1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f4"
+  },
+  "Name": "Mirrors",
+  "Description": "Decorative mirrors for homes.",
+  "Slug": "mirrors",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Image": "/images/Decor/Ornate Barcelona Mirror1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f5"
+  },
+  "Name": "Utility",
+  "Description": "Practical and functional decor items.",
+  "Slug": "utility",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Image": "/images/Dining & Entertaining/Frigast Silver Tongs2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f6"
+  },
+  "Name": "Bath Accessories",
+  "Description": "Decorative and functional items for bathrooms.",
+  "Slug": "bath-accessories",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f0"
+  },
+  "Image": "/images/Decor/Antique Jade Jewelry Box1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Name": "Dining & Entertaining",
+  "Description": "Furniture and accessories for dining and entertaining.",
+  "Slug": "dining-entertaining",
+  "ParentCategory": null,
+  "Image": "/images/Dining & Entertaining/Swedish Kitchen Rack2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f8"
+  },
+  "Name": "Kitchen Accessories",
+  "Description": "Accessories for kitchens.",
+  "Slug": "kitchen-accessories",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Image": "/images/Dining & Entertaining/Lignum Vitae Mortar & Pestle2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860f9"
+  },
+  "Name": "Serving Dishes",
+  "Description": "Dishes used for serving food.",
+  "Slug": "serving-dishes",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Image": "/images/Dining & Entertaining/Belgian Dining Platter3.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860fa"
+  },
+  "Name": "Barware",
+  "Description": "Accessories for serving drinks.",
+  "Slug": "barware",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Image": "/images/Dining & Entertaining/Vintage Gold Rimmed Coupes1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860fb"
+  },
+  "Name": "Utensils",
+  "Description": "Utensils for dining and cooking.",
+  "Slug": "utensils",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Image": "/images/Dining & Entertaining/Canadian Railway Creamer3.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860fd"
+  },
+  "Name": "Glassware",
+  "Description": "Glassware for dining and entertaining.",
+  "Slug": "glassware",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860f7"
+  },
+  "Image": "/images/Dining & Entertaining/Gold Accented Juice Glasses1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860fe"
+  },
+  "Name": "Soft Goods",
+  "Description": "Soft products like cushions, rugs, bedding, etc.",
+  "Slug": "soft-goods",
+  "ParentCategory": null,
+  "Image": "/images/Soft Goods/Autumn Harvest Pillow2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de860ff"
+  },
+  "Name": "Pillows",
+  "Description": "Soft pillows for decoration and comfort.",
+  "Slug": "pillows",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de860fe"
+  },
+  "Image": "/images/Soft Goods/River Leaf Pillow1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de86100"
+  },
+  "Name": "Lighting",
+  "Description": "Lighting solutions for home and office.",
+  "Slug": "lighting",
+  "ParentCategory": null,
+  "Image": "/images/Lighting/Copper Lamp4.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de86101"
+  },
+  "Name": "Lamps",
+  "Description": "Various types of lamps for lighting.",
+  "Slug": "lamps",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de86100"
+  },
+  "Image": "/images/Lighting/Grapevine Leaf Table Lamp2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de86102"
+  },
+  "Name": "Art",
+  "Description": "Artworks and decorative pieces.",
+  "Slug": "art",
+  "ParentCategory": null,
+  "Image": "/images/Art/Lighthouse Oil Painting2.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de86103"
+  },
+  "Name": "Vintage",
+  "Description": "Vintage artworks and decor.",
+  "Slug": "vintage",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de86102"
+  },
+  "Image": "/images/Art/Waterside Oil Painting1.jpg"
+},
+{
+  "_id": {
+    "$oid": "507f191e810c19729de86104"
+  },
+  "Name": "Artisan",
+  "Description": "Handmade and artisan artworks.",
+  "Slug": "artisan",
+  "ParentCategory": {
+    "$oid": "507f191e810c19729de86102"
+  },
+  "Image": "/images/Art/Lighthouse Oil Painting2.jpg"
+}]

@@ -25,7 +25,7 @@
             android:name=".TrackOrderActivity"
             android:exported="false" />
         <activity
-            android:name=".productdetails.ProductDetailsActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".payment.PaymentActivity"
@@ -40,7 +40,7 @@
             android:name=".onboarding.Onboarding1Activity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".productdetails.ProductDetailsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

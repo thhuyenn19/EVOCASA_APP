@@ -1,0 +1,114 @@
+[{
+  "_id": {
+    "$oid": "683310be9b0e4db63febfd92"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa01"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0b01cc5fec55b70d0fc9b"
+    },
+    {
+      "$oid": "67c0b61ac5fec55b70d0fca6"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683310fa9b0e4db63febfd97"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa02"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0b663c5fec55b70d0fca7"
+    },
+    {
+      "$oid": "67c0b7d2c5fec55b70d0fca9"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683311329b0e4db63febfd9c"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa03"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0b96dc5fec55b70d0fcad"
+    },
+    {
+      "$oid": "67c0cdd0c5fec55b70d0fcd8"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6833115f9b0e4db63febfd9d"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa04"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0b56b46527d4bf49e4865"
+    },
+    {
+      "$oid": "67c0b95446527d4bf49e4873"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6833118e9b0e4db63febfda0"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa05"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0bdc5c5fec55b70d0fcb0"
+    },
+    {
+      "$oid": "67c0a5e246527d4bf49e4846"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "683311d19b0e4db63febfda7"
+  },
+  "Customer_id": {
+    "$oid": "65c0b01cc5fec55b70d0fa06"
+  },
+  "Product_id": [
+    {
+      "$oid": "67c0b29d46527d4bf49e485d"
+    },
+    {
+      "$oid": "67c0bd2846527d4bf49e4885"
+    }
+  ],
+  "CreatedAt": {
+    "$date": "2025-05-25T00:00:00.000Z"
+  }
+}]
