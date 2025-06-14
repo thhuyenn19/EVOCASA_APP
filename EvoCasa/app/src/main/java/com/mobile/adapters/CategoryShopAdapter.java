@@ -62,7 +62,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
 
         int paddingLeft = 0;
         if ("Furniture".equals(category.getName()) || "Lighting".equals(category.getName())) {
-            paddingLeft = (int) (10 * context.getResources().getDisplayMetrics().density);
+            paddingLeft = (int) (9 * context.getResources().getDisplayMetrics().density);
         }
         holder.txtCategoryName.setPadding(paddingLeft, 0, 0, 0);
 

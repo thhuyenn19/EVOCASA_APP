@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +57,9 @@ public class CategoryFragment extends Fragment {
     private float[] alphaLookupTable;
     private boolean isLookupTableInitialized = false;
 
+    // Thêm biến cho back button
+    private LinearLayout btnBack;
+
     public CategoryFragment() {
     }
 
@@ -80,6 +84,10 @@ public class CategoryFragment extends Fragment {
         topBarContainer = view.findViewById(R.id.topBarContainer);
         heroSection = view.findViewById(R.id.heroSection);
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
+
+        // Tìm back button từ included layout
+        btnBack = view.findViewById(R.id.btnBack);
+
         FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtSubCategoryShop));
         FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtCollapsedTitle));
         FontUtils.setMediumFont(requireContext(), view.findViewById(R.id.tvSortBy));
@@ -94,6 +102,22 @@ public class CategoryFragment extends Fragment {
         setupCollapsingEffect();
         optimizeScrolling();
         initializeLookupTable();
+        setupBackButton(); // Thêm setup cho back button
+    }
+
+    // Thêm method setup back button
+    private void setupBackButton() {
+        if (btnBack != null) {
+            btnBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Trở về ShopFragment
+                    if (getParentFragmentManager() != null) {
+                        getParentFragmentManager().popBackStack();
+                    }
+                }
+            });
+        }
     }
 
     private void initializeLookupTable() {
