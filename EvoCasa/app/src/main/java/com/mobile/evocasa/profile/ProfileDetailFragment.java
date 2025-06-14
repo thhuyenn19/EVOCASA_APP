@@ -94,7 +94,10 @@ public class ProfileDetailFragment extends Fragment {
         btnBack.setOnClickListener(v -> {
             requireActivity()
                     .getSupportFragmentManager()
-                    .popBackStack(); // Quay lại fragment trước (ProfileFragment)
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .addToBackStack(null)
+                    .commit();
         });
 
 

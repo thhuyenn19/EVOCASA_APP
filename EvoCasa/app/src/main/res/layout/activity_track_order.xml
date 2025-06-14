@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="Order ID: ..."
             android:textColor="#E24747"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
         <!-- Order Date with icon -->
         <LinearLayout
@@ -34,10 +34,10 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_pending" />
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="9dp"
+                android:src="@drawable/ic_order_date" />
 
             <TextView
                 android:id="@+id/tvOrderDate"
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="Order Date: ..."
                 android:textColor="#5E4C3E"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
 
@@ -57,10 +57,10 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_in_transit" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="4dp"
+                android:src="@drawable/ic_estimated_deli" />
 
             <TextView
                 android:id="@+id/tvEstimatedDelivery"
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:text="Estimated delivery: ..."
                 android:textColor="#5E4C3E"
-                android:textSize="18sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
     <!-- ─── Status Timeline ─────────────────────────── -->
@@ -96,7 +96,7 @@
                 android:gravity="center"
                 android:text="Picked up"
                 android:textColor="#3F2305"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="2dp"
@@ -111,7 +111,7 @@
                 android:gravity="center"
                 android:text="In transit"
                 android:textColor="#3F2305"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="0dp"
@@ -126,7 +126,7 @@
                 android:gravity="center"
                 android:text="Out For Delivery"
                 android:textColor="#3F2305"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="0dp"
@@ -141,7 +141,7 @@
                 android:gravity="center"
                 android:text="Delivered"
                 android:textColor="#3F2305"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <!-- Row 2: Icons & Connectors -->
@@ -151,26 +151,28 @@
             android:orientation="horizontal"
             android:weightSum="11"
             android:gravity="center_vertical">
-
+            <!-- Connector 1 -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1" />
             <!-- Step 1 -->
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="2"
                 android:src="@drawable/ic_check_circle" />
 
             <!-- Connector 1 -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@color/color_3F2305"/>
 
             <!-- Step 2 -->
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="2"
                 android:src="@drawable/ic_check_circle" />
 
             <!-- Connector 2 -->
@@ -179,27 +181,25 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_weight="1"
+                android:layout_weight="3"
                 android:background="@color/color_3F2305"/>
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="2"
                 android:src="@drawable/ic_check_circle" />
 
             <!-- Connector 3 -->
             <View
                 android:layout_width="0dp"
                 android:layout_height="2dp"
-                android:layout_weight="1"
-                android:background="@color/color_3F2305"/>
+                android:layout_weight="3"
+                android:background="@color/color_3F2305" />
 
             <!-- Step 4 -->
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_weight="2"
                 android:src="@drawable/ic_check_circle" />
         </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -50,6 +51,12 @@ public class TrackOrderActivity extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.rvTimeline);
         rv.setLayoutManager(new LinearLayoutManager(this));
         rv.setAdapter(new TimelineAdapter(this, timelineItems));
+
+        LinearLayout btnBack = findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v ->{
+            finish();
+        });
+
     }
 
     private void applyCustomFonts() {

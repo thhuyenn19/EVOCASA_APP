@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
-    android:paddingBottom="8dp">
+    android:paddingBottom="12dp">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgProduct"
@@ -24,8 +24,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingStart="12dp">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtTitle"
@@ -34,7 +33,7 @@
             android:text="Travertine Table Lamp"
             android:textStyle="bold"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/txtPrice"
@@ -54,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quantity: 1"
-            android:textColor="@color/color_5E4C3E"
+            android:textColor="#888888"
             android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>
