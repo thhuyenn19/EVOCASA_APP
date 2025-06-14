@@ -1,6 +1,7 @@
 package com.mobile.evocasa.onboarding;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -19,6 +20,46 @@ public class Onboarding5Activity extends AppCompatActivity {
     private TextView txtHaveAccount;
     private Button btnCreateAccountOnboarding5;
     private Button btnLogIn;
+
+
+    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+        final int[] index = {0};
+        final String cursor = "|";
+        final boolean[] showCursor = {true};
+
+        textView.setText("");
+        final Runnable[] cursorRunnable = new Runnable[1];
+
+        cursorRunnable[0] = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] <= fullText.length()) {
+                    String visibleText = fullText.substring(0, index[0]);
+                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+                    showCursor[0] = !showCursor[0];
+                    textView.postDelayed(this, 500);
+                }
+            }
+        };
+        textView.post(cursorRunnable[0]);
+
+        Runnable typingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] < fullText.length()) {
+                    index[0]++;
+                    textView.postDelayed(this, charDelay);
+                } else {
+                    textView.removeCallbacks(cursorRunnable[0]);
+                    textView.postDelayed(() -> {
+                        textView.setText(fullText);
+                        if (onComplete != null) onComplete.run();
+                    }, 800);
+                }
+            }
+        };
+        textView.postDelayed(typingRunnable, 300);
+    }
 
 
     @Override
@@ -44,6 +85,22 @@ public class Onboarding5Activity extends AppCompatActivity {
         FontUtils.setRegularFont(this, txtHaveAccount);
         FontUtils.setBoldFont(this, btnCreateAccountOnboarding5);
         FontUtils.setMediumFont(this, btnLogIn);
+
+
+        //Animation
+        // Lấy chuỗi từ strings.xml
+        String line1 = getString(R.string.title_onboarding5_line_1);
+        String line2 = getString(R.string.title_onboarding5_description);
+
+        // Ẩn ban đầu
+        txtViewOnboarding5.setVisibility(View.INVISIBLE);
+        txtView3.setVisibility(View.INVISIBLE);
+
+        txtViewOnboarding5.setVisibility(View.VISIBLE);
+        typeTextWithCursor(txtViewOnboarding5, line1, 60, () -> {
+            txtView3.setVisibility(View.VISIBLE);
+            typeTextWithCursor(txtView3, line2, 40, null);
+        });
 
 
     }

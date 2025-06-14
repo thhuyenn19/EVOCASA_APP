@@ -20,7 +20,8 @@
         android:paddingStart="20dp"
         android:text="@string/title_onboarding3_line_1"
         android:textColor="#FFFFFF"
-        android:textSize="28sp" />
+        android:textSize="24sp"
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/txtView3"
@@ -30,6 +31,7 @@
         android:paddingEnd="10dp"
         android:text="@string/title_onboarding3_description"
         android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+        android:textSize="14sp"
+        android:visibility="invisible"/>
 
 </LinearLayout>

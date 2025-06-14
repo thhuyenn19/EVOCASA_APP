@@ -55,6 +55,45 @@ public class Onboarding4Fragment extends Fragment {
         return fragment;
     }
 
+    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+        final int[] index = {0};
+        final String cursor = "|";
+        final boolean[] showCursor = {true};
+
+        textView.setText("");
+        final Runnable[] cursorRunnable = new Runnable[1];
+
+        cursorRunnable[0] = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] <= fullText.length()) {
+                    String visibleText = fullText.substring(0, index[0]);
+                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+                    showCursor[0] = !showCursor[0];
+                    textView.postDelayed(this, 500);
+                }
+            }
+        };
+        textView.post(cursorRunnable[0]);
+
+        Runnable typingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] < fullText.length()) {
+                    index[0]++;
+                    textView.postDelayed(this, charDelay);
+                } else {
+                    textView.removeCallbacks(cursorRunnable[0]);
+                    textView.postDelayed(() -> {
+                        textView.setText(fullText);
+                        if (onComplete != null) onComplete.run();
+                    }, 800);
+                }
+            }
+        };
+        textView.postDelayed(typingRunnable, 300);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,5 +130,35 @@ public class Onboarding4Fragment extends Fragment {
         FontUtils.setBoldFont(requireContext(), btn_lets_start);
 
         return view;
+    }
+
+    private boolean hasStartedTyping = false;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!hasStartedTyping && isVisible()) {
+            hasStartedTyping = true;
+
+            View view = getView();
+            if (view == null) return;
+
+            TextView txtViewOnboarding4 = view.findViewById(R.id.txtViewOnboarding4);
+            TextView txtView3 = view.findViewById(R.id.txtView3);
+
+            txtViewOnboarding4.setVisibility(View.INVISIBLE);
+            txtView3.setVisibility(View.INVISIBLE);
+
+            String line1 = getString(R.string.title_onboarding4_line_1);
+            String line2 = getString(R.string.title_onboarding4_description);
+
+            txtViewOnboarding4.setVisibility(View.VISIBLE);
+            typeTextWithCursor(txtViewOnboarding4, line1, 60, () -> {
+                txtView3.setVisibility(View.VISIBLE);
+                typeTextWithCursor(txtView3, line2, 40, null);
+            });
+
+        }
     }
 }

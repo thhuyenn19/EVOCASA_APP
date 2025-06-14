@@ -65,6 +65,54 @@ public class Onboarding2Fragment extends Fragment {
         return fragment;
     }
 
+
+    //Animation
+    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+        final int[] index = {0};
+        final String cursor = "|";
+        final boolean[] showCursor = {true};
+
+        textView.setText(""); // Clear initial
+
+        // Runnable nhấp nháy cursor
+        final Runnable[] cursorRunnable = new Runnable[1];
+
+        cursorRunnable[0] = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] <= fullText.length()) {
+                    String visibleText = fullText.substring(0, index[0]);
+                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+                    showCursor[0] = !showCursor[0];
+                    textView.postDelayed(cursorRunnable[0], 500); // Blink cursor
+                }
+            }
+        };
+        textView.post(cursorRunnable[0]);
+
+        // Runnable đánh máy từng chữ
+        Runnable typingRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (index[0] < fullText.length()) {
+                    index[0]++;
+                    textView.postDelayed(this, charDelay);
+                } else {
+                    // Kết thúc: dừng cursor và ẩn sau 0.8s
+                    textView.removeCallbacks(cursorRunnable[0]);
+                    textView.postDelayed(() -> {
+                        textView.setText(fullText); // Xoá cursor
+                        if (onComplete != null) onComplete.run();
+                    }, 800);
+                }
+            }
+        };
+        textView.postDelayed(typingRunnable, 300); // Delay start
+    }
+
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,23 +154,31 @@ public class Onboarding2Fragment extends Fragment {
 
 
         //Animation
+        txtViewExplore.setVisibility(View.INVISIBLE);
+        txtViewTheSoulOf.setVisibility(View.INVISIBLE);
+        txtViewEvoCasa.setVisibility(View.INVISIBLE);
+        txtView3.setVisibility(View.INVISIBLE);
 
-        TextView txt1 = view.findViewById(R.id.txtViewExplore);
-        TextView txt2 = view.findViewById(R.id.txtViewTheSoulOf);
-        TextView txt3 = view.findViewById(R.id.txtViewEvoCasa);
-        TextView txt4 = view.findViewById(R.id.txtView3);
+        // Gán text
 
-// Load từng animation
-        Animation anim1 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_1);
-        Animation anim2 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_2);
-        Animation anim3 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_3);
-        Animation anim4 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_4);
+        String text1 = getString(R.string.title_onboarding2_line_1);
+        String text2 = getString(R.string.title_onboarding2_line_2);
+        String text3 = getString(R.string.title_onboarding2_line_3);
+        String text4 = getString(R.string.title_onboarding2_description);
 
-// Start lần lượt
-        txt1.startAnimation(anim1);
-        txt2.startAnimation(anim2);
-        txt3.startAnimation(anim3);
-        txt4.startAnimation(anim4);
+
+// Gõ từng dòng với cursor
+        txtViewExplore.setVisibility(View.VISIBLE);
+        typeTextWithCursor(txtViewExplore, text1, 60, () -> {
+            txtViewTheSoulOf.setVisibility(View.VISIBLE);
+            typeTextWithCursor(txtViewTheSoulOf, text2, 60, () -> {
+                txtViewEvoCasa.setVisibility(View.VISIBLE);
+                typeTextWithCursor(txtViewEvoCasa, text3, 60, () -> {
+                    txtView3.setVisibility(View.VISIBLE);
+                    typeTextWithCursor(txtView3, text4, 20, null);
+                });
+            });
+        });
 
 
 

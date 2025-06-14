@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:paddingStart="20dp"
-        android:text="@string/title_onboarding4_line_1"
+        android:text=""
         android:textColor="#FFFFFF"
         android:textSize="24sp" />
 
@@ -28,7 +28,7 @@
         android:layout_height="60dp"
         android:paddingStart="20dp"
         android:paddingEnd="10dp"
-        android:text="@string/title_onboarding4_description"
+        android:text=""
         android:textColor="#FFFFFF"
         android:textSize="14sp" />
 
