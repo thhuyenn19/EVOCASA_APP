@@ -1,5 +1,6 @@
 package com.mobile.evocasa.onboarding;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -83,12 +84,23 @@ public class Onboarding1Activity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               viewPager.setCurrentItem(2);
-//                if (viewPager.getCurrentItem() <2 ){
-//                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-//                }
+                Intent intent = new Intent(Onboarding1Activity.this, Onboarding5Activity.class);
+                startActivity(intent);
+                finish(); // nếu bạn muốn không quay lại màn hình onboarding1 khi nhấn back
             }
         });
+
+
+
+//        tvSkip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//               viewPager.setCurrentItem(2);
+////                if (viewPager.getCurrentItem() <2 ){
+////                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+////                }
+//            }
+//        });
 
         FontUtils.initFonts(this);
 
