@@ -136,17 +136,11 @@ public class ProfileDetailFragment extends Fragment {
         });
 
 
-        //Edit ẢNH
-//        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
-//        btnEditAvatar.setOnClickListener(v -> {
-//            ProfileImageDialogFragment dialog = new ProfileImageDialogFragment();
-//            dialog.show(getChildFragmentManager(), "ProfileImageDialog");
-//        });
 
+        //Mở popup đổi avatar
         ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         btnEditAvatar.setOnClickListener(v -> showBottomSheetDialog());
-
-
+        
 
 
     }
