@@ -49,39 +49,6 @@
         android:textStyle="bold" />
 
     <!-- Step Indicator -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="-10dp"
-        android:layout_marginBottom="40dp"
-        android:orientation="horizontal">
-
-        <!-- Step 1 - Active -->
-        <View
-            android:id="@+id/step1"
-            android:layout_width="28dp"
-            android:layout_height="6dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/step_active"
-            android:backgroundTint="#5E4C3E" />
-
-        <!-- Step 2 - Inactive -->
-        <View
-            android:id="@+id/step2"
-            android:layout_width="28dp"
-            android:layout_height="6dp"
-            android:layout_marginEnd="5dp"
-            android:background="@drawable/step_active" />
-
-        <!-- Step 3 - Inactive -->
-        <View
-            android:id="@+id/step3"
-            android:layout_width="28dp"
-            android:layout_height="6dp"
-            android:background="@drawable/step_active" />
-
-    </LinearLayout>
 
     <!-- Password Label -->
     <TextView
