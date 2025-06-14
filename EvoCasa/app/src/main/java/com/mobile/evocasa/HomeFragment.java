@@ -14,10 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+import android.os.Handler;
+import android.util.Log;
 
 import com.mobile.adapters.CategoryAdapter;
 import com.mobile.utils.FontUtils;
 
+import com.mobile.adapters.BannerPagerAdapter;
 import com.mobile.adapters.CollectionAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
@@ -34,8 +38,21 @@ public class HomeFragment extends Fragment {
     private ArrayList<Object> categoryList;
     private CategoryAdapter adapter;
     private View view;
+    private List<Integer> imageList;
 
     private ImageView imgCart;
+
+    private ViewPager2 viewPagerBanner;
+    private Handler sliderHandler = new Handler();
+    private Runnable sliderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Log.d("BannerSlider", "Sliding banner. Current item: " + viewPagerBanner.getCurrentItem());
+            int nextItem = (viewPagerBanner.getCurrentItem() + 1) % imageList.size();
+            viewPagerBanner.setCurrentItem(nextItem, true);
+            sliderHandler.postDelayed(this, 4000); // Trượt sau 4 giây
+        }
+    };
 
     //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
 //    private void addViews() {
@@ -147,25 +164,19 @@ public class HomeFragment extends Fragment {
         CollectionAdapter collectionAdapter = new CollectionAdapter(collectionList);
         recyclerViewCollections.setAdapter(collectionAdapter);
 
+        // Khởi tạo ViewPager2 cho Banner
+        viewPagerBanner = view.findViewById(R.id.viewPagerBanner);
+        imageList = new ArrayList<>();
+        imageList.add(R.mipmap.ic_banner);
+        imageList.add(R.mipmap.ic_banner2);
+        imageList.add(R.mipmap.ic_banner3);
+        // Thêm các hình ảnh khác vào đây nếu có
 
+        BannerPagerAdapter bannerAdapter = new BannerPagerAdapter(imageList);
+        viewPagerBanner.setAdapter(bannerAdapter);
 
-        // Bắt sự kiện click giỏ hàng (imgCart) => Mở Empty Cart
-//        ImageView imgCart = view.findViewById(R.id.imgCart);
-//        if (imgCart != null) {
-//            imgCart.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    // Mở CartFragment
-//                    Fragment cartFragment = new CartEmptyFragment();
-//                    requireActivity().getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.fragment_container, cartFragment) // ID container trong NavBarActivity
-//                            .addToBackStack(null) // để quay lại được
-//                            .commit();
-//                }
-//            });
-//        }
-
+        // Bắt đầu tự động trượt
+        sliderHandler.postDelayed(sliderRunnable, 4000);
 
         // Bắt sự kiện click giỏ hàng (imgCart) => Mở Cart Product
         ImageView imgCart = view.findViewById(R.id.imgCart);
@@ -181,6 +192,18 @@ public class HomeFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sliderHandler.removeCallbacks(sliderRunnable);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sliderHandler.postDelayed(sliderRunnable, 4000);
     }
 
     private void applyCustomFonts() {
