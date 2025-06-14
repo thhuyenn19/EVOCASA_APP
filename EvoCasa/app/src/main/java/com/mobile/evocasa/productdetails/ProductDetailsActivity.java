@@ -1,6 +1,8 @@
 package com.mobile.evocasa.productdetails;
 
+import android.graphics.Matrix;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -76,6 +78,30 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         // Initialize UI elements
         initViews();
+        ImageView imageView = findViewById(R.id.imgProduct);
+        imageView.post(() -> {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable == null) return;
+
+            float scale;
+            Matrix matrix = new Matrix();
+
+            int imageWidth = drawable.getIntrinsicWidth();
+            int imageHeight = drawable.getIntrinsicHeight();
+            int viewWidth = imageView.getWidth();
+            int viewHeight = imageView.getHeight();
+
+            // Scale theo chiều rộng
+            scale = (float) viewWidth / (float) imageWidth;
+
+            // Dịch ảnh lên để phần dưới được giữ lại
+            float dy = viewHeight - imageHeight * scale;
+
+            matrix.setScale(scale, scale);
+            matrix.postTranslate(0, dy); // Dịch theo chiều dọc
+
+            imageView.setImageMatrix(matrix);
+        });
 
         // Set fonts for UI elements
         setFonts();

@@ -1,17 +1,22 @@
 package com.mobile.evocasa.productdetails;
 
+import android.content.Context;
+import android.graphics.text.LineBreaker;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.evocasa.R;
+import com.mobile.utils.FontUtils;
 
 public class DescriptionFragment extends Fragment {
 
@@ -26,6 +31,11 @@ public class DescriptionFragment extends Fragment {
 
         TextView txtDescription = view.findViewById(R.id.txtDescription);
         txtDescription.setText("Oversized travertine table lamp at 24.5\" tall, this Asian inspired sculptural lamp has a weighted travertine base and verdigris metal body. An empire style metal shade and finial completes each piece. Rewired to US standard with neutral double twist cord.");
+        Context context = null;
+        txtDescription.setTypeface(FontUtils.getRegular(null));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            txtDescription.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
+        }
         return view;
     }
 }

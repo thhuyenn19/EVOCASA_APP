@@ -35,7 +35,7 @@
                     android:id="@+id/imgProduct"
                     android:layout_width="match_parent"
                     android:layout_height="342dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="matrix"
                     android:src="@mipmap/ic_lighting_brasslamp" />
 
                 <!-- Nút yêu thích + chia sẻ -->
@@ -47,17 +47,17 @@
                     android:orientation="horizontal">
 
                     <ImageButton
-                        android:id="@+id/btnFavorite"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginEnd="8dp"
-                        android:src="@drawable/ic_favourite" />
+                        android:id="@+id/btnShare"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/share" />
 
                     <ImageButton
-                        android:id="@+id/btnShare"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_sharing" />
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/favourite" />
                 </LinearLayout>
 
                 <!-- Chỉ số ảnh -->
@@ -217,7 +217,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="0.5dp"
             android:background="@color/color_bg_btn_addtocart" />
 
         <LinearLayout

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:lineSpacingExtra="4dp"
-        android:textColor="@color/color_5E4C3E"
+        android:textColor="@color/color_cmt_rv"
         android:textSize="14sp" />
 
 </LinearLayout>
