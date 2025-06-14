@@ -81,15 +81,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="5dp"
+                android:paddingHorizontal="16dp"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp">
 
-                <!-- Category -->
+                <!-- Orders -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="16dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -145,8 +144,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp">
+                            android:layout_width="45dp"
+                            android:layout_height="45dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -174,7 +173,7 @@
                             android:layout_marginTop="4dp"
                             android:text="@string/txt_status_pending"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -186,8 +185,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp">
+                            android:layout_width="45dp"
+                            android:layout_height="45dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -215,7 +214,7 @@
                             android:layout_marginTop="4dp"
                             android:text="@string/title_string_pick_up"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -227,8 +226,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp">
+                            android:layout_width="45dp"
+                            android:layout_height="45dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -255,7 +254,7 @@
                             android:layout_marginTop="4dp"
                             android:text="@string/title_status_in_transit"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -267,8 +266,8 @@
                         android:orientation="vertical">
 
                         <FrameLayout
-                            android:layout_width="50dp"
-                            android:layout_height="50dp">
+                            android:layout_width="45dp"
+                            android:layout_height="45dp">
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -295,7 +294,7 @@
                             android:layout_marginTop="4dp"
                             android:text="@string/title_review"
                             android:textColor="@color/color_5E4C3E"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -555,15 +554,15 @@
 
                     <ImageView
                         android:id="@+id/icChat"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="23dp"
+                        android:layout_height="23dp"
                         android:src="@drawable/ic_chat_with" />
 
                     <TextView
                         android:id="@+id/txtChat"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
+                        android:layout_marginStart="9dp"
                         android:text="@string/title_chat_with_evocasa"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="16sp" />
