@@ -55,37 +55,37 @@ public class Onboarding4Fragment extends Fragment {
         return fragment;
     }
 
-    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
-        final int[] index = {0};
-        final String cursor = "|";
-        final boolean[] showCursor = {true};
-
-        textView.setText("");
-
-        final Runnable typingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index[0] <= fullText.length()) {
-                    String visibleText = fullText.substring(0, index[0]);
-                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
-                    showCursor[0] = !showCursor[0];
-
-                    if (index[0] < fullText.length()) {
-                        index[0]++;
-                        textView.postDelayed(this, charDelay);
-                    } else {
-                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
-                        textView.postDelayed(() -> {
-                            textView.setText(fullText); // ẩn cursor
-                            if (onComplete != null) onComplete.run();
-                        }, 500);
-                    }
-                }
-            }
-        };
-
-        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
-    }
+//    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+//        final int[] index = {0};
+//        final String cursor = "|";
+//        final boolean[] showCursor = {true};
+//
+//        textView.setText("");
+//
+//        final Runnable typingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (index[0] <= fullText.length()) {
+//                    String visibleText = fullText.substring(0, index[0]);
+//                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+//                    showCursor[0] = !showCursor[0];
+//
+//                    if (index[0] < fullText.length()) {
+//                        index[0]++;
+//                        textView.postDelayed(this, charDelay);
+//                    } else {
+//                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
+//                        textView.postDelayed(() -> {
+//                            textView.setText(fullText); // ẩn cursor
+//                            if (onComplete != null) onComplete.run();
+//                        }, 500);
+//                    }
+//                }
+//            }
+//        };
+//
+//        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,33 +131,33 @@ public class Onboarding4Fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (!hasStartedTyping && isVisible()) {
-            hasStartedTyping = true;
-
-            View view = getView();
-            if (view == null) return;
-
-            TextView txtViewOnboarding4 = view.findViewById(R.id.txtViewOnboarding4);
-            TextView txtView3 = view.findViewById(R.id.txtView3);
-            Button btn_lets_start = view.findViewById(R.id.btn_lets_start);
-
-            txtViewOnboarding4.setVisibility(View.INVISIBLE);
-            txtView3.setVisibility(View.INVISIBLE);
-            btn_lets_start.setVisibility(View.INVISIBLE);
-
-            String line1 = getString(R.string.title_onboarding4_line_1);
-            String line2 = getString(R.string.title_onboarding4_description);
-
-            txtViewOnboarding4.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewOnboarding4, line1, 50, () -> {
-                txtView3.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtView3, line2, 50, () -> {
-                    // Hiện nút sau khi hoàn tất dòng thứ 2
-                    btn_lets_start.setVisibility(View.VISIBLE);
-                    typeTextWithCursor(btn_lets_start, getString(R.string.title_let_start), 15, null);
-                });
-            });
-
-        }
+//        if (!hasStartedTyping && isVisible()) {
+//            hasStartedTyping = true;
+//
+//            View view = getView();
+//            if (view == null) return;
+//
+//            TextView txtViewOnboarding4 = view.findViewById(R.id.txtViewOnboarding4);
+//            TextView txtView3 = view.findViewById(R.id.txtView3);
+//            Button btn_lets_start = view.findViewById(R.id.btn_lets_start);
+//
+//            txtViewOnboarding4.setVisibility(View.INVISIBLE);
+//            txtView3.setVisibility(View.INVISIBLE);
+//            btn_lets_start.setVisibility(View.INVISIBLE);
+//
+//            String line1 = getString(R.string.title_onboarding4_line_1);
+//            String line2 = getString(R.string.title_onboarding4_description);
+//
+//            txtViewOnboarding4.setVisibility(View.VISIBLE);
+//            typeTextWithCursor(txtViewOnboarding4, line1, 50, () -> {
+//                txtView3.setVisibility(View.VISIBLE);
+//                typeTextWithCursor(txtView3, line2, 50, () -> {
+//                    // Hiện nút sau khi hoàn tất dòng thứ 2
+//                    btn_lets_start.setVisibility(View.VISIBLE);
+//                    typeTextWithCursor(btn_lets_start, getString(R.string.title_let_start), 15, null);
+//                });
+//            });
+//
+//        }
     }
 }

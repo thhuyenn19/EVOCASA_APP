@@ -50,37 +50,38 @@ public class Onboarding3Fragment extends Fragment {
         return fragment;
     }
 
-    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
-        final int[] index = {0};
-        final String cursor = "|";
-        final boolean[] showCursor = {true};
-
-        textView.setText("");
-
-        final Runnable typingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index[0] <= fullText.length()) {
-                    String visibleText = fullText.substring(0, index[0]);
-                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
-                    showCursor[0] = !showCursor[0];
-
-                    if (index[0] < fullText.length()) {
-                        index[0]++;
-                        textView.postDelayed(this, charDelay);
-                    } else {
-                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
-                        textView.postDelayed(() -> {
-                            textView.setText(fullText); // ẩn cursor
-                            if (onComplete != null) onComplete.run();
-                        }, 500);
-                    }
-                }
-            }
-        };
-
-        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
-    }
+    //Animation
+//    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+//        final int[] index = {0};
+//        final String cursor = "|";
+//        final boolean[] showCursor = {true};
+//
+//        textView.setText("");
+//
+//        final Runnable typingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (index[0] <= fullText.length()) {
+//                    String visibleText = fullText.substring(0, index[0]);
+//                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+//                    showCursor[0] = !showCursor[0];
+//
+//                    if (index[0] < fullText.length()) {
+//                        index[0]++;
+//                        textView.postDelayed(this, charDelay);
+//                    } else {
+//                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
+//                        textView.postDelayed(() -> {
+//                            textView.setText(fullText); // ẩn cursor
+//                            if (onComplete != null) onComplete.run();
+//                        }, 500);
+//                    }
+//                }
+//            }
+//        };
+//
+//        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
+//    }
 
 
     @Override
@@ -113,28 +114,28 @@ public class Onboarding3Fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        if (!hasStartedTyping && isVisible()) {
-            hasStartedTyping = true;
-
-            View view = getView();
-            if (view == null) return;
-
-            TextView txtViewOnboarding3 = view.findViewById(R.id.txtViewOnboarding3);
-            TextView txtView3 = view.findViewById(R.id.txtView3);
-
-            txtViewOnboarding3.setVisibility(View.INVISIBLE);
-            txtView3.setVisibility(View.INVISIBLE);
-
-            String line1 = getString(R.string.title_onboarding3_line_1);
-            String line2 = getString(R.string.title_onboarding3_description);
-
-            txtViewOnboarding3.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewOnboarding3, line1, 100, () -> {
-                txtView3.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtView3, line2, 50, null);
-            });
-
-        }
+//        if (!hasStartedTyping && isVisible()) {
+//            hasStartedTyping = true;
+//
+//            View view = getView();
+//            if (view == null) return;
+//
+//            TextView txtViewOnboarding3 = view.findViewById(R.id.txtViewOnboarding3);
+//            TextView txtView3 = view.findViewById(R.id.txtView3);
+//
+//            txtViewOnboarding3.setVisibility(View.INVISIBLE);
+//            txtView3.setVisibility(View.INVISIBLE);
+//
+//            String line1 = getString(R.string.title_onboarding3_line_1);
+//            String line2 = getString(R.string.title_onboarding3_description);
+//
+//            txtViewOnboarding3.setVisibility(View.VISIBLE);
+//            typeTextWithCursor(txtViewOnboarding3, line1, 100, () -> {
+//                txtView3.setVisibility(View.VISIBLE);
+//                typeTextWithCursor(txtView3, line2, 50, null);
+//            });
+//
+//        }
     }
 
 }

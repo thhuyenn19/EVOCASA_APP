@@ -22,37 +22,37 @@ public class Onboarding5Activity extends AppCompatActivity {
     private Button btnLogIn;
 
 
-    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
-        final int[] index = {0};
-        final String cursor = "|";
-        final boolean[] showCursor = {true};
-
-        textView.setText("");
-
-        final Runnable typingRunnable = new Runnable() {
-            @Override
-            public void run() {
-                if (index[0] <= fullText.length()) {
-                    String visibleText = fullText.substring(0, index[0]);
-                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
-                    showCursor[0] = !showCursor[0];
-
-                    if (index[0] < fullText.length()) {
-                        index[0]++;
-                        textView.postDelayed(this, charDelay);
-                    } else {
-                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
-                        textView.postDelayed(() -> {
-                            textView.setText(fullText); // ẩn cursor
-                            if (onComplete != null) onComplete.run();
-                        }, 500);
-                    }
-                }
-            }
-        };
-
-        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
-    }
+//    private void typeTextWithCursor(final TextView textView, final String fullText, final long charDelay, final Runnable onComplete) {
+//        final int[] index = {0};
+//        final String cursor = "|";
+//        final boolean[] showCursor = {true};
+//
+//        textView.setText("");
+//
+//        final Runnable typingRunnable = new Runnable() {
+//            @Override
+//            public void run() {
+//                if (index[0] <= fullText.length()) {
+//                    String visibleText = fullText.substring(0, index[0]);
+//                    textView.setText(visibleText + (showCursor[0] ? cursor : ""));
+//                    showCursor[0] = !showCursor[0];
+//
+//                    if (index[0] < fullText.length()) {
+//                        index[0]++;
+//                        textView.postDelayed(this, charDelay);
+//                    } else {
+//                        // Đã hiện hết chữ, tiếp tục nháy cursor một chút rồi kết thúc
+//                        textView.postDelayed(() -> {
+//                            textView.setText(fullText); // ẩn cursor
+//                            if (onComplete != null) onComplete.run();
+//                        }, 500);
+//                    }
+//                }
+//            }
+//        };
+//
+//        textView.postDelayed(typingRunnable, 200); // bắt đầu sau 300ms
+//    }
 
 
     @Override
@@ -82,31 +82,31 @@ public class Onboarding5Activity extends AppCompatActivity {
 
         //Animation
         // Lấy chuỗi từ strings.xml
-        String line1 = getString(R.string.title_onboarding5_line_1);
-        String line2 = getString(R.string.title_onboarding5_description);
-
-        // Ẩn ban đầu
-        txtViewOnboarding5.setVisibility(View.INVISIBLE);
-        txtView3.setVisibility(View.INVISIBLE);
-        txtHaveAccount.setVisibility(View.INVISIBLE);
-        btnCreateAccountOnboarding5.setVisibility(View.INVISIBLE);
-        btnLogIn.setVisibility(View.INVISIBLE);
-
-
-        txtViewOnboarding5.setVisibility(View.VISIBLE);
-        typeTextWithCursor(txtViewOnboarding5, line1, 50, () -> {
-            txtView3.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtView3, line2, 50, () -> {
-                btnCreateAccountOnboarding5.setVisibility(View.VISIBLE);
-                typeTextWithCursor(btnCreateAccountOnboarding5, getString(R.string.title_create_account), 15, () -> {
-                    txtHaveAccount.setVisibility(View.VISIBLE);
-                    typeTextWithCursor(txtHaveAccount, getString(R.string.title_already_account), 15, () -> {
-                        btnLogIn.setVisibility(View.VISIBLE);
-                        typeTextWithCursor(btnLogIn, getString(R.string.title_loginin), 15, null);
-                    });
-                });
-            });
-        });
+//        String line1 = getString(R.string.title_onboarding5_line_1);
+//        String line2 = getString(R.string.title_onboarding5_description);
+//
+//        // Ẩn ban đầu
+//        txtViewOnboarding5.setVisibility(View.INVISIBLE);
+//        txtView3.setVisibility(View.INVISIBLE);
+//        txtHaveAccount.setVisibility(View.INVISIBLE);
+//        btnCreateAccountOnboarding5.setVisibility(View.INVISIBLE);
+//        btnLogIn.setVisibility(View.INVISIBLE);
+//
+//
+//        txtViewOnboarding5.setVisibility(View.VISIBLE);
+//        typeTextWithCursor(txtViewOnboarding5, line1, 50, () -> {
+//            txtView3.setVisibility(View.VISIBLE);
+//            typeTextWithCursor(txtView3, line2, 50, () -> {
+//                btnCreateAccountOnboarding5.setVisibility(View.VISIBLE);
+//                typeTextWithCursor(btnCreateAccountOnboarding5, getString(R.string.title_create_account), 15, () -> {
+//                    txtHaveAccount.setVisibility(View.VISIBLE);
+//                    typeTextWithCursor(txtHaveAccount, getString(R.string.title_already_account), 15, () -> {
+//                        btnLogIn.setVisibility(View.VISIBLE);
+//                        typeTextWithCursor(btnLogIn, getString(R.string.title_loginin), 15, null);
+//                    });
+//                });
+//            });
+//        });
 
 
 
