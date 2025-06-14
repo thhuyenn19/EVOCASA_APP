@@ -3,6 +3,7 @@ package com.mobile.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName, txtPhone, txtAddress, txtEditLabel, txtDefaultTag;
         RadioButton radioSelect;
+        LinearLayout btnEdit;
 
         public ViewHolder(View view) {
             super(view);
@@ -43,6 +45,7 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
             txtEditLabel = view.findViewById(R.id.txtEditLabel);
             txtDefaultTag = view.findViewById(R.id.txtDefaultTag);
             radioSelect = view.findViewById(R.id.radioSelect);
+            btnEdit = view.findViewById(R.id.btnEdit); // 👈 THÊM DÒNG NÀY
         }
     }
 
@@ -62,9 +65,8 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
         holder.txtPhone.setText(item.getPhone());
         holder.txtAddress.setText(item.getAddress());
         holder.txtDefaultTag.setVisibility(item.isDefault() ? View.VISIBLE : View.GONE);
-        holder.txtEditLabel.setText("Edit");
 
-        // Chỉ hiển thị RadioButton được chọn, không set background
+        // Chỉ hiển thị RadioButton được chọn
         holder.radioSelect.setChecked(position == selectedPosition);
 
         holder.radioSelect.setButtonTintList(
@@ -81,7 +83,7 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
         holder.itemView.setOnClickListener(selectListener);
         holder.radioSelect.setOnClickListener(selectListener);
 
-        holder.txtEditLabel.setOnClickListener(v -> {
+        holder.btnEdit.setOnClickListener(v -> {
             if (editClickListener != null) {
                 editClickListener.onEditClick(item);
             }
