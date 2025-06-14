@@ -146,17 +146,23 @@ public class Onboarding4Fragment extends Fragment {
 
             TextView txtViewOnboarding4 = view.findViewById(R.id.txtViewOnboarding4);
             TextView txtView3 = view.findViewById(R.id.txtView3);
+            Button btn_lets_start = view.findViewById(R.id.btn_lets_start);
 
             txtViewOnboarding4.setVisibility(View.INVISIBLE);
             txtView3.setVisibility(View.INVISIBLE);
+            btn_lets_start.setVisibility(View.INVISIBLE);
 
             String line1 = getString(R.string.title_onboarding4_line_1);
             String line2 = getString(R.string.title_onboarding4_description);
 
             txtViewOnboarding4.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtViewOnboarding4, line1, 60, () -> {
+            typeTextWithCursor(txtViewOnboarding4, line1, 10, () -> {
                 txtView3.setVisibility(View.VISIBLE);
-                typeTextWithCursor(txtView3, line2, 40, null);
+                typeTextWithCursor(txtView3, line2, 8, () -> {
+                    // Hiện nút sau khi hoàn tất dòng thứ 2
+                    btn_lets_start.setVisibility(View.VISIBLE);
+                    typeTextWithCursor(btn_lets_start, getString(R.string.title_let_start), 5, null);
+                });
             });
 
         }

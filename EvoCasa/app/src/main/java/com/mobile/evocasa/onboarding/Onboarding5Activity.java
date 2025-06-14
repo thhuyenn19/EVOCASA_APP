@@ -95,12 +95,26 @@ public class Onboarding5Activity extends AppCompatActivity {
         // Ẩn ban đầu
         txtViewOnboarding5.setVisibility(View.INVISIBLE);
         txtView3.setVisibility(View.INVISIBLE);
+        txtHaveAccount.setVisibility(View.INVISIBLE);
+        btnCreateAccountOnboarding5.setVisibility(View.INVISIBLE);
+        btnLogIn.setVisibility(View.INVISIBLE);
+
 
         txtViewOnboarding5.setVisibility(View.VISIBLE);
-        typeTextWithCursor(txtViewOnboarding5, line1, 60, () -> {
+        typeTextWithCursor(txtViewOnboarding5, line1, 15, () -> {
             txtView3.setVisibility(View.VISIBLE);
-            typeTextWithCursor(txtView3, line2, 40, null);
+            typeTextWithCursor(txtView3, line2, 10, () -> {
+                btnCreateAccountOnboarding5.setVisibility(View.VISIBLE);
+                typeTextWithCursor(btnCreateAccountOnboarding5, getString(R.string.title_create_account), 5, () -> {
+                    txtHaveAccount.setVisibility(View.VISIBLE);
+                    typeTextWithCursor(txtHaveAccount, getString(R.string.title_already_account), 5, () -> {
+                        btnLogIn.setVisibility(View.VISIBLE);
+                        typeTextWithCursor(btnLogIn, getString(R.string.title_loginin), 5, null);
+                    });
+                });
+            });
         });
+
 
 
     }

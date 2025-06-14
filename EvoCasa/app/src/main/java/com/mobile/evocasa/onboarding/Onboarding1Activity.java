@@ -48,6 +48,31 @@ public class Onboarding1Activity extends AppCompatActivity {
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 2){
+                    tvSkip.setVisibility(View.GONE);
+                }
+                else {
+                    tvSkip.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
     }
 
     private void initUI() {
@@ -58,9 +83,10 @@ public class Onboarding1Activity extends AppCompatActivity {
         tvSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewPager.getCurrentItem() <2 ){
-                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-                }
+               viewPager.setCurrentItem(2);
+//                if (viewPager.getCurrentItem() <2 ){
+//                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
+//                }
             }
         });
 

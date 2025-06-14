@@ -22,7 +22,7 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="35dp"
-        app:ci_drawable="@drawable/bg_circle"
+        app:ci_drawable="@drawable/bg_rectangle_indicator_selector"
         android:background="@android:color/transparent" />
 
     <!-- TextView Skip đè lên dưới góc phải -->
