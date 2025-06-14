@@ -1,0 +1,317 @@
+* {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  padding: 20px 40px;
+  background-color: #fffcf3;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.order-detail-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  color: #3f2305;
+  font-family: "Zen Old Mincho";
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Align vertically */
+}
+
+.back-button {
+  display: flex;
+  align-items: center; /* Align the text and icon vertically */
+  padding: 3px 5px; /* Reduced padding to bring text closer */
+  font-size: 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  background-color: #f6efdd;
+  color: #3f2305;
+  gap: 3px; /* Reduced gap between the icon and text */
+}
+
+.back-button img {
+  width: 40%;
+  margin-bottom: 5px;
+}
+
+.save-button {
+  display: flex;
+  align-items: center; /* Align the text and icon vertically */
+  padding: 9px;
+  font-size: 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  background-color: #525b4a;
+  color: #fffcf3;
+  border: none;
+  gap: 5px;
+}
+
+.save-button img {
+  width: 50%;
+}
+
+.order-info-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 15px 0;
+}
+
+.order-info-header > div {
+  flex: 1;
+  text-align: center;
+}
+
+.info-label {
+  margin-bottom: 8px;
+  color: #3f2305;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.info-value {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 16px;
+}
+
+.content-wrapper {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.left-content {
+  flex: 1;
+}
+
+.right-content {
+  width: 250px;
+  height: auto;
+  margin-top: 90px;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+.order-table th {
+  background-color: #52331d;
+  text-align: left;
+  padding: 12px;
+  color: #f2ead3;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.order-table td {
+  padding: 12px;
+  color: #000000;
+  background-color: #f2ead3;
+  border-bottom: 0.5px solid #000000;
+  vertical-align: middle;
+}
+
+.price-details {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.price-row {
+  margin: 10px 0;
+}
+
+.price-row.total {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.info-container {
+  padding: 20px;
+  /* height: 100%; */
+  border-radius: 15px;
+  background: #f2ead3;
+  padding-bottom: 30px; /* Added padding at the bottom for better spacing */
+}
+
+.customer-info h3,
+.order-note h3 {
+  color: #3f2305;
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 10px; /* Adds space between the title and content */
+}
+.customer-info {
+  margin-bottom: 20px; /* Space below the customer information */
+}
+.customer-info div {
+  margin-bottom: 10px; /* Adds space between the lines (name, address, phone) */
+}
+
+.order-note {
+  margin-top: 10px; /* Space between order note and customer info */
+}
+.customer-info hr,
+.order-note hr {
+  border: 0;
+  border-top: 2px dashed #3f2305; /* Dashed line */
+  margin-top: 10px;
+  margin-bottom: 10px; /* Space around the dashed line */
+  width: 100%;
+}
+.status-buttons {
+  justify-content: space-between;
+  display: flex;
+  gap: 20px;
+}
+
+.status-buttons button {
+  padding: 10px 40px;
+  margin-left: 15px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  color: #3f2305;
+  cursor: pointer;
+  font-size: 16px;
+  background: #f2ead3;
+}
+
+.status-buttons button.active {
+  border: 2px solid #5e4c3e;
+  /* color: #fff; */
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 20px 10px;
+  }
+
+  .content-wrapper {
+    flex-direction: column;
+  }
+
+  .left-content,
+  .right-content {
+    width: 100%;
+  }
+
+  .order-info-header {
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .status-buttons {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .order-info-header {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .order-info-header > div {
+    margin-bottom: 10px;
+  }
+
+  .order-table th,
+  .order-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .price-details,
+  .price-row {
+    font-size: 14px;
+  }
+
+  .price-row.total {
+    font-size: 16px;
+  }
+
+  .right-content {
+    width: 100%;
+  }
+
+  .status-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .main-content {
+    padding: 10px;
+  }
+
+  .order-info-header {
+    flex-direction: column;
+    padding: 10px 0;
+  }
+
+  .order-table th,
+  .order-table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .price-details,
+  .price-row {
+    font-size: 12px;
+  }
+
+  .price-row.total {
+    font-size: 14px;
+  }
+
+  .status-buttons button {
+    padding: 8px 20px;
+  }
+}
+
+.product-info {
+  /* color: rgba(0, 0, 0, 0.7); */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.color-body {
+  color: rgba(0, 0, 0, 0.7) !important;
+}

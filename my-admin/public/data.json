@@ -1,0 +1,243 @@
+{
+    "dashboard_data": {
+      "total_orders": {
+        "week": {
+          "current": 500,
+          "growth_percentage": 12,
+          "growth_amount": 55
+        },
+        "month": {
+          "current": 2200,
+          "growth_percentage": 15,
+          "growth_amount": 300
+        },
+        "year": {
+          "current": 25641,
+          "growth_percentage": 18,
+          "growth_amount": 3900
+        }
+      },
+      "total_sales": {
+        "week": {
+          "current": 10500,
+          "growth_percentage": 10,
+          "growth_amount": 900
+        },
+        "month": {
+          "current": 45000,
+          "growth_percentage": 12,
+          "growth_amount": 4800
+        },
+        "year": {
+          "current": 898231,
+          "growth_percentage": 15,
+          "growth_amount": 120000
+        }
+      },
+      "conversation_rate": {
+        "week": {
+          "current": 88,
+          "growth_percentage": 3,
+          "growth_amount": 4
+        },
+        "month": {
+          "current": 90,
+          "growth_percentage": 5,
+          "growth_amount": 10
+        },
+        "year": {
+          "current": 92,
+          "growth_percentage": 7,
+          "growth_amount": 15
+        }
+      },
+      "visits": {
+        "week": {
+          "current": 3500,
+          "growth_percentage": 5,
+          "growth_amount": 150
+        },
+        "month": {
+          "current": 15000,
+          "growth_percentage": 8,
+          "growth_amount": 1100
+        },
+        "year": {
+          "current": 180000,
+          "growth_percentage": 10,
+          "growth_amount": 16000
+        }
+      },
+      "top_products": [
+        {
+          "product_id": "67c0be8cc5fec55b70d0fcb3",
+          "name": "Blush Pillow",
+          "weekly_sales": {
+            "quantity_sold": 150,
+            "total_sales": 33750,
+            "growth_percentage": 8
+          },
+          "monthly_sales": {
+            "quantity_sold": 1500,
+            "total_sales": 337500,
+            "growth_percentage": 10
+          },
+          "yearly_sales": {
+            "quantity_sold": 18000,
+            "total_sales": 4050000,
+            "growth_percentage": 12
+          }
+        },
+        {
+          "product_id": "67c0b278c5fec55b70d0fc9e",
+          "name": "Swedish Kitchen Rack",
+          "weekly_sales": {
+            "quantity_sold": 100,
+            "total_sales": 28500,
+            "growth_percentage": 5
+          },
+          "monthly_sales": {
+            "quantity_sold": 1200,
+            "total_sales": 342000,
+            "growth_percentage": 7
+          },
+          "yearly_sales": {
+            "quantity_sold": 15000,
+            "total_sales": 4275000,
+            "growth_percentage": 8
+          }
+        },
+        {
+          "product_id": "67c0be49c5fec55b70d0fcb2",
+          "name": "Golden Cat Tail Pillow",
+          "weekly_sales": {
+            "quantity_sold": 50,
+            "total_sales": 14750,
+            "growth_percentage": 6
+          },
+          "monthly_sales": {
+            "quantity_sold": 800,
+            "total_sales": 236000,
+            "growth_percentage": 7
+          },
+          "yearly_sales": {
+            "quantity_sold": 10000,
+            "total_sales": 2950000,
+            "growth_percentage": 9
+          }
+        }
+      ],
+      "revenue_by_day": [
+        {
+          "date": "2025-02-01",
+          "total_sales": 2500,
+          "orders": 20
+        },
+        {
+          "date": "2025-02-02",
+          "total_sales": 3200,
+          "orders": 25
+        },
+        {
+          "date": "2025-02-03",
+          "total_sales": 2100,
+          "orders": 15
+        },
+        {
+          "date": "2025-02-04",
+          "total_sales": 4000,
+          "orders": 30
+        },
+        {
+          "date": "2025-02-05",
+          "total_sales": 3700,
+          "orders": 28
+        }
+      ],
+      "revenue_by_month": [
+        {
+          "month": "2025-02",
+          "total_sales": 28000,
+          "orders": 200,
+          "growth_percentage": 5
+        },
+        {
+          "month": "2025-01",
+          "total_sales": 30000,
+          "orders": 250,
+          "growth_percentage": 6
+        }
+      ],
+      "revenue_by_year": [
+        {
+          "year": 2024,
+          "total_sales": 350000,
+          "orders": 3000
+        },
+        {
+          "year": 2025,
+          "total_sales": 28000,
+          "orders": 200,
+          "growth_percentage_sales": 8,
+          "growth_percentage_orders": 15
+        }
+      ],
+      "recent_activity": [
+        {
+          "customer_id": "65c0b01cc5fec55b70d0fa01",
+          "product_name": "Blush Pillow",
+          "quantity": 2,
+          "total_price": 450,
+          "order_date": "2025-02-13"
+        },
+        {
+          "customer_id": "65c0b01cc5fec55b70d0fa02",
+          "product_name": "Swedish Kitchen Rack",
+          "quantity": 1,
+          "total_price": 285,
+          "order_date": "2025-02-02"
+        },
+        {
+          "customer_id": "65c0b01cc5fec55b70d0fa03",
+          "product_name": "Golden Cat Tail Pillow",
+          "quantity": 3,
+          "total_price": 885,
+          "order_date": "2025-02-04"
+        }
+      ],
+      "customer_data": [
+        {
+          "customer_id": "65c0b01cc5fec55b70d0fa01",
+          "name": "Huyền",
+          "phone": "0987654321",
+          "email": "huyen@example.com",
+          "dob": "1995-05-12",
+          "address": "Hà Nội, Việt Nam",
+          "gender": "Female",
+          "image": "/images/profile/huyen.jpg",
+          "cart": [
+            {
+              "product_id": "67c0b01cc5fec55b70d0fc9b",
+              "quantity": 1
+            }
+          ]
+        },
+        {
+          "customer_id": "65c0b01cc5fec55b70d0fa02",
+          "name": "Nhung",
+          "phone": "0978123456",
+          "email": "nhung@example.com",
+          "dob": "1993-08-22",
+          "address": "Hồ Chí Minh, Việt Nam",
+          "gender": "Female",
+          "image": "/images/profile/nhung.jpg",
+          "cart": [
+            {
+              "product_id": "67c0b01cc5fec55b70d0fc9b",
+              "quantity": 1
+            }
+          ]
+        }
+      ]
+    }
+  }

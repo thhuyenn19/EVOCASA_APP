@@ -42,7 +42,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="0.25" />
+            android:layout_weight="0.2" />
 
         <!-- Tiêu đề tùy chỉnh -->
         <TextView
@@ -60,7 +60,7 @@
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="0.4" />
+            android:layout_weight="0.5" />
     </LinearLayout>
 
     <!--Main-->
@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapWords|textPersonName"
-                android:hint="@string/title_edit_name_box"
+                android:text="@string/title_edit_name_box"
                 android:textColor="@color/color_5E4C3E"
                 android:background="@drawable/edittext_background_infor"
                 android:textSize="15sp"
@@ -133,10 +133,12 @@
                     android:drawableEnd="@drawable/ic_arrow_down"
                     android:drawablePadding="8dp"
                     android:padding="8dp"
-                    android:hint="@string/title_edit_gender_box"
+                    android:text="@string/title_edit_gender_box"
                     android:textColor="@color/color_5E4C3E"
                     android:background="@drawable/edittext_background_infor"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    />
             </LinearLayout>
 
             <!-- Birthday Section -->
@@ -168,7 +170,7 @@
                     android:drawableEnd="@drawable/ic_calendar"
                     android:drawablePadding="8dp"
                     android:padding="8dp"
-                    android:hint="@string/title_edit_birthday_box"
+                    android:text="@string/title_edit_birthday_box"
                     android:textColor="@color/color_5E4C3E" />
             </LinearLayout>
         </LinearLayout>
@@ -196,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="@string/title_edit_email_box"
+                android:text="@string/title_edit_email_box"
                 android:background="@drawable/edittext_background_infor"
                 android:textSize="15sp"
                 android:textColor="@color/color_5E4C3E"
@@ -226,7 +228,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
-                android:hint="@string/title_edit_phone_box"
+                android:text="@string/title_edit_phone_box"
                 android:background="@drawable/edittext_background_infor"
                 android:textSize="15sp"
                 android:textColor="@color/color_5E4C3E"

@@ -1,0 +1,25 @@
+ <header>
+   <div class="navbar">
+     <div class="search">
+       <button>
+         <img src="images/header/Search-icon.svg" alt="Search" />
+       </button>
+       <input type="text" placeholder="SEARCH" />
+     </div>
+ 
+     <div class="user-actions">
+       <div class="notification">
+         <img src="images/header/Noti-icon.png" alt="Notifications" />
+       </div>
+       <div class="user-profile">
+        <span><a>HI, {{ getLastNameUppercase() }}</a></span>
+        <img [src]="currentAdmin?.Image " alt="User Profile" />
+      </div>
+      <button class="logout-btn" (click)="logout()">
+        <img src="images/header/sign_out.svg" alt="Logout Icon" class="logout-icon" />
+        Sign out
+      </button>
+     </div>
+   </div>
+ </header>
+ 

@@ -1,0 +1,776 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #FFFCF3;
+  color: #3F2307;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.dashboard {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px auto;
+  padding: 0 15px;
+  position: relative;
+  transition: all 0.3s ease;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+header h1 {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 30px;
+  margin: 0;
+  color: #3F2307;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+/* Container chứa các nút */
+.actions {
+  margin-top: 20px;
+  margin-right: 34px;
+  margin-bottom: 20px;
+  display: flex; /* Chuyển container thành flex */
+  justify-content: flex-end; /* Căn chỉnh các phần tử con về phía bên phải */
+  gap: 10px; /* Khoảng cách giữa các nút */
+}
+
+/* nút filter*/
+.filter-button {
+  max-width: 130px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  color: rgba(63, 35, 5, 1);
+  font-weight: 500;
+  text-align: center;
+  letter-spacing: 0.1px;
+  line-height: 1;
+  border-radius: 7px;
+  border: 1px solid rgba(63, 35, 5, 1);
+  display: flex;
+  padding: 6px 10px;
+  align-items: center;
+  gap: 14px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.filter-text {
+  margin: auto 0;
+}
+
+/* Hover state for better UX */
+.filter-button:hover {
+  background-color: rgba(63, 35, 5, 0.05);
+}
+
+/* Focus state for accessibility */
+.filter-button:focus {
+  outline: 2px solid rgba(63, 35, 5, 0.5);
+  outline-offset: 2px;
+}
+
+/* nút export */
+.export-button {
+  max-width: 150px;
+  font-family: Inter, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  color: rgba(63, 35, 5, 1);
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+  letter-spacing: 0.1px;
+  line-height: 1;
+  border-radius: 7px;
+  background-color: rgba(197, 182, 167, 1);
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  gap: 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.export-icon {
+  aspect-ratio: 1.17;
+  object-fit: contain;
+  object-position: center;
+  width: 28px;
+  align-self: stretch;
+  flex-shrink: 0;
+}
+
+.export-text {
+  align-self: stretch;
+  margin: auto 0;
+}
+
+.dropdown-icon {
+  aspect-ratio: 2;
+  object-fit: contain;
+  object-position: center;
+  width: 12px;
+  align-self: stretch;
+  margin: auto 0;
+  flex-shrink: 0;
+}
+
+.export-button:hover {
+  background-color: rgba(187, 172, 157, 1);
+}
+
+.export-button:focus {
+  outline: 2px solid rgba(63, 35, 5, 0.5);
+  outline-offset: 2px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.header-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #E0D5C5;
+  background-color: white;
+}
+
+.exports-btn {
+  background-color: #E0D5C5;
+  color: #3F2307;
+}
+
+/* Main content layout */
+.main-content {
+  margin-bottom: 30px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr) 2fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column: span 2;
+  gap: 20px;
+}
+
+.card {
+  background-color: #FFFCF3;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  padding: 25px;
+  border: 1px solid #E0D5C5;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.stat-box {
+  background-color: #FFFCF3;
+  padding: 15px;
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #E0D5C5;
+  box-sizing: border-box;
+}
+
+.stat-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #3F2307;
+  font-size: 16px;
+}
+
+.more-options {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: #A89B8C;
+  cursor: pointer;
+}
+
+.stat-content {
+  margin-right: 30px;
+}
+
+.stat-box p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #8C7B6B;
+  font-weight: 500;
+}
+
+.stat-box h2 {
+  margin: 0 0 15px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #3F2307;
+}
+
+.change {
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.change.positive {
+  color: #4D7F58;
+}
+
+.change span {
+  color: #8C7B6B;
+  margin-left: 5px;
+}
+
+.view-report-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #E0D5C5;
+  color: #3F2307;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.view-report-btn:hover {
+  background-color: #D6C9B6;
+}
+
+.view-report-btn::after {
+  content: "→";
+  font-size: 16px;
+}
+
+/* Card styles for sections */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3F2307;
+  margin: 0;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-actions select, .period-selector {
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #E0D5C5;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  outline: none;
+  background-color: #E0D5C5;
+  color: #3F2307;
+}
+
+.card-actions button.view-all {
+  background: none;
+  border: none;
+  color: #4D7F58;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+/* Dashboard bottom layout */
+.dashboard-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Chart container */
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+/* Table styling */
+.activity-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+}
+
+.activity-table th {
+  text-align: left;
+  padding: 12px 15px;
+  font-weight: 600;
+  color: #8C7B6B;
+  border-bottom: 1px solid #E0D5C5;
+  font-size: 13px;
+}
+
+.activity-table td {
+  padding: 15px;
+  border-bottom: 1px solid #E0D5C5;
+  color: #3F2307;
+}
+
+.customer-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customer-avatar {
+  width: 30px;
+  height: 30px;
+  background-color: #E0D5C5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #3F2307;
+  font-weight: 600;
+}
+
+/* Legend styling */
+.chart-legend {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #8C7B6B;
+}
+
+.color-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.color-dot.green {
+  background-color: #4D7F58;
+}
+
+.color-dot.black {
+  background-color: #000;
+}
+
+#top-products-chart {
+  height: 220px;
+}
+
+/* New products chart layout with legend on right */
+.products-layout {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.products-chart-container {
+  flex: 0 0 60%;
+  position: relative;
+  width: 60%;
+  max-width: 60%;
+  height: 220px;
+  box-sizing: border-box;
+}
+
+.product-legend {
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 40%;
+  max-width: 40%;
+  box-sizing: border-box;
+}
+
+/* Keep existing CSS rules above the media queries */
+
+/* Main content wrapper to prevent sidebar overlap */
+:host {
+  display: block;
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+/* Responsive design - reorganized and enhanced */
+/* Extra large screens */
+@media (max-width: 1400px) {
+  .dashboard {
+    max-width: 100%;
+    padding: 0 15px;
+  }
+}
+
+/* Large desktop screens */
+@media (max-width: 1200px) {
+  .stats-container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: span 2;
+  }
+}
+
+/* Tablet and small desktop */
+@media (max-width: 992px) {
+  .dashboard {
+    width: 100%;
+    padding: 0 15px;
+  }
+  
+  .stats-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .dashboard-bottom {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    padding: 20px 15px;
+  }
+}
+
+/* Mobile landscape and tablet portrait */
+@media (max-width: 768px) {
+  .dashboard {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .header-actions {
+    align-self: stretch;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .actions {
+    margin-right: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter-button, .export-button {
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .chart-container {
+    height: 250px;
+    overflow-x: auto; /* Allow horizontal scroll for charts */
+  }
+  
+  .stats-container {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .card, .stat-box {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* Mobile phones */
+@media (max-width: 576px) {
+  .dashboard {
+    padding: 0 8px;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .card-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .filter-text, .export-text {
+    font-size: 14px;
+  }
+  
+  .stat-box {
+    padding: 12px;
+  }
+  
+  .stat-box h2 {
+    font-size: 22px;
+  }
+  
+  .activity-table {
+    font-size: 13px;
+  }
+  
+  .activity-table th, .activity-table td {
+    padding: 10px 8px;
+  }
+  
+  .chart-container {
+    height: 200px;
+    overflow-x: auto; /* Allow horizontal scroll for charts */
+  }
+  
+  .activity-table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .activity-table {
+    min-width: 450px;
+  }
+}
+
+/* Small mobile phones */
+@media (max-width: 400px) {
+  header h1 {
+    font-size: 24px;
+  }
+  
+  .filter-button, .export-button {
+    max-width: none;
+    padding: 6px 8px;
+  }
+  
+  .actions {
+    gap: 8px;
+  }
+  
+  .stat-box h2 {
+    font-size: 20px;
+  }
+  
+  .chart-legend {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card {
+    padding: 15px 10px;
+  }
+}
+
+@media (max-width: 992px) {
+  .products-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .products-chart-container {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Allow horizontal scroll for charts */
+  }
+  
+  .product-legend {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  #top-products-chart {
+    height: 220px;
+    width: 100%;
+  }
+  
+  .product-legend {
+    gap: 10px;
+  }
+  
+  .legend-item {
+    flex: 0 0 calc(50% - 10px);
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 576px) {
+  .products-chart-container {
+    height: 200px;
+  }
+  
+  .product-legend {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .legend-item {
+    flex: 0 0 100%;
+  }
+}
+
+/* New responsive and overflow effects additions */
+
+/* Ensure body does not shrink elements excessively */
+body {
+    overflow-x: auto;
+}
+
+.dashboard {
+    min-width: 320px; /* Prevent excessive shrinking */
+    overflow-x: auto;
+}
+
+/* Ensuring tables and wide elements can scroll horizontally */
+.activity-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.activity-table {
+    min-width: 600px; /* Ensure tables are readable */
+}
+
+.chart-container {
+    min-width: 400px;
+    overflow-x: auto;
+}
+
+/* Responsive design updates */
+@media (max-width: 992px) {
+    .stats-container {
+        grid-template-columns: 1fr; /* Avoid excessive shrinking */
+    }
+    
+    .dashboard-bottom {
+        grid-template-columns: 1fr; /* Maintain structure */
+    }
+    
+    .products-layout {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .products-chart-container {
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        width: 100%;
+        padding: 0 10px;
+        min-width: 400px;
+        overflow-x: auto;
+    }
+  
+    .stats {
+        grid-template-columns: 1fr;
+    }
+  
+    .chart-container {
+        min-width: 100%;
+        overflow-x: auto;
+    }
+  
+    .activity-table {
+        min-width: 600px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard {
+        padding: 0 8px;
+        min-width: 380px;
+        overflow-x: auto;
+    }
+  
+    .activity-table {
+        min-width: 500px;
+    }
+  
+    .chart-container {
+        min-width: 100%;
+    }
+}
+

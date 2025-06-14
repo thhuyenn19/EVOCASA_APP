@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.CartProductAdapter;
+import com.mobile.evocasa.payment.PaymentActivity;
 import com.mobile.models.CartProduct;
 import com.mobile.utils.FontUtils;
 
@@ -92,7 +94,7 @@ public class CartActivity extends AppCompatActivity {
 
         CheckBox checkboxAllProducts = findViewById(R.id.checkboxAllProducts);
 
-// Gán listener cho checkbox "All Products"
+        // Gán listener cho checkbox "All Products"
         checkboxAllProducts.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Cập nhật trạng thái tất cả sản phẩm
             for (CartProduct product : cartProductList) {
@@ -107,6 +109,18 @@ public class CartActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             checkboxAll.setButtonTintList(null);
         }
+
+
+
+        // Nút "Check Out"
+        Button btnCheckOut = findViewById(R.id.btnCheckOut);
+        if (btnCheckOut != null) {
+            btnCheckOut.setOnClickListener(v -> {
+                Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
+                startActivity(intent);
+            });
+        }
+
 
 
     }

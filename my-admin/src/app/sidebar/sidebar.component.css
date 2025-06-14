@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+* {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Sidebar Background with Gradient */
+h1{
+    color: #F2EAD3;
+    padding-top: 0px;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 11px;
+    height: 20px;
+    font-size: 40px;
+    font-weight: 100;
+}
+
+.navigate__bar {
+    position: fixed;
+    background: #5E4C3E;
+    top: 0;
+    left: 0;
+    width: 20%;
+    height: 100%;
+    padding: 15px 0;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nav__title {
+    text-align: center;
+}
+
+
+/* Navigation Links */
+.nav__content {
+    list-style: none;
+    color: #F2EAD3;
+    margin-top: 55px;
+    font-size: 18px;
+}
+
+.navigate__bar--link {
+    display: flex;
+    color:#F2EAD3;
+    align-items: center;
+    text-decoration: none;
+    padding: 12px 10px;
+    border-radius: 0px;
+    transition: background 0.3s ease, color 0.3s ease;
+    margin: 10px 0;
+}
+
+.navigate__bar--link:hover {
+    background: #C5B6A7;
+    color: #5E4C3E;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+
+/* Dropdown Menu */
+.nav__item--dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+
+.dropdown-list {
+    visibility: hidden;
+    display: none;
+    flex-direction: column;
+    margin-top: 10px;
+    margin-left: 30px;
+    gap: 10px;
+    transition: visibility 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    padding-left: 15px;
+}
+
+.nav__item--dropdown:hover .dropdown-list {
+    visibility: visible;
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    
+}
+
+.item--dropdown {
+    color:#F2EAD3;
+    text-decoration: none;
+    padding: 12px 10px;
+    font-size: 18px;
+    transition: background 0.3s ease;
+    border-radius: 0px;
+
+}
+
+.item--dropdown:hover {
+    background: #C5B6A7;
+    color: #5E4C3E;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+/* Hover Effect for Icons */
+.material-icons-outlined {
+    color: #F2EAD3;
+    margin-right: 12px;
+    padding-left: 10px;
+    transition: color 0.3s ease;
+}
+
+.material-symbols-outlined {
+    color: #F2EAD3;
+    margin-left: 8px;
+    align-self: right;
+    transition: color 0.3s ease;
+    transform: rotate(270deg);
+}
+
+.navigate__bar--link:hover .material-icons-outlined {
+    color: #5E4C3E;
+}
+
+
+.nav__item--dropdown:hover .material-symbols-outlined {
+    color: #5E4C3E;
+    transform: rotate(0deg);  /* Quay 0 độ khi hover vào dropdown */
+
+} 
+
+
+/* Giữ nguyên màu sắc hover cho các liên kết đang được chọn */
+.navigate__bar--link.active {
+    background: #C5B6A7;
+    color: #5E4C3E;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+.navigate__bar--link.active .material-icons-outlined {
+    color: #5E4C3E;
+}
+
+/* Hiệu ứng hover cho item trong dropdown */
+.item--dropdown:hover, .item--dropdown.active {
+    background: #C5B6A7;
+    color: #5E4C3E;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+.nav__item--dropdown.active .material-symbols-outlined {
+    color: #5E4C3E;
+    transform: rotate(0deg);
+}
+
+.dropdown-list.show-dropdown {
+    visibility: visible;
+    display: flex;
+    opacity: 1;
+}
+
+
+.item--dropdown.active {
+    background: #C5B6A7;
+    color: #5E4C3E;
+    font-weight: bold;
+    margin-left: 0px;
+}
+
+
+/* Đối với màn hình nhỏ hơn 1024px (tablet và laptop nhỏ) */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 30px; /* Giảm kích thước h1 cho smartphone */
+        letter-spacing: 8px; /* Giảm khoảng cách chữ */
+    }
+    .navigate__bar {
+        width: 25%; /* Điều chỉnh chiều rộng sidebar */
+    }
+    .navigate__bar--link {
+        font-size: 16px; /* Giảm font-size cho các liên kết */
+    }
+    .dropdown-list {
+        margin-left: 20px; /* Giảm khoảng cách bên trái dropdown */
+    }
+    .item--dropdown{
+        font-size: 16px; /* Giảm font-size cho các liên kết */
+    }
+}
+
+/* Đối với màn hình nhỏ hơn 768px (mobile) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 28px; /* Giảm kích thước h1 cho smartphone */
+        letter-spacing: 8px; /* Giảm khoảng cách chữ */
+    }
+    .navigate__bar {
+        width: 25%; /* Điều chỉnh sidebar trên các thiết bị nhỏ */
+    }
+    .nav__content {
+        margin-top: 40px; /* Điều chỉnh khoảng cách giữa các mục */
+        font-size: 16px; /* Giảm kích thước font */
+    }
+    .dropdown-list {
+        margin-left: 10px; /* Giảm khoảng cách bên trái dropdown */
+    }
+    .navigate__bar--link {
+        font-size: 14px; /* Font-size nhỏ hơn cho các liên kết */
+        padding: 10px 15px; /* Giảm padding cho các mục */
+    }
+    .item--dropdown{
+        font-size: 14px; /* Font-size nhỏ hơn cho các liên kết */
+        padding: 10px 15px; /* Giảm padding cho các mục */
+    }
+}
+
+/* Đối với màn hình nhỏ hơn 480px (smartphone) */
+@media (max-width: 480px) {
+    h1 {
+        font-size: 5px; /* Giảm kích thước h1 cho smartphone */
+        letter-spacing: 1px; /* Giảm khoảng cách chữ */
+    }
+    .navigate__bar {
+        width: 25%; /* Tăng chiều rộng sidebar một chút */
+    }
+    .navigate__bar--link {
+        font-size: 1px; /* Giảm font-size cho các mục */
+        padding: 8px 10px; /* Giảm padding */
+    }
+    .dropdown-list {
+        margin-left: 5px; /* Giảm khoảng cách bên trái dropdown */
+    }
+}

@@ -1,0 +1,183 @@
+<div class="main-content">
+  <h3>PRODUCT MANAGEMENT</h3>
+  <br />
+  <h4>
+    Total Product ({{ totalItems }}) | Showing {{ filteredProducts.length }}/{{
+      totalItems
+    }}
+  </h4>
+  <div class="actions">
+    <!-- button filter -->
+    <button
+      class="filter-button"
+      [class.active]="showFilter"
+      (click)="applyFilter()"
+    >
+      <img src="images/order/Filter.svg" alt="Filter icon" />
+      <span class="filter-text">Filter by</span>
+    </button>
+    <div class="right-button">
+      <!--button Add Product -->
+      <div class="addproduct-button" (click)="addProduct()">
+        <img src="images/product/add.png" alt="Add" />
+        <span>Add product</span>
+      </div>
+      <!-- button export -->
+      <button class="export-button" (click)="exportProducts()">
+        <img
+          src="images/product/export.svg"
+          alt="Export icon"
+          class="export-icon"
+        />
+        <span class="export-text">Exports</span>
+        <img
+          src="images/product/arrow.svg"
+          alt="Dropdown arrow"
+          class="dropdown-icon"
+        />
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Panel -->
+  <div class="filter-container" *ngIf="showFilter">
+    <form [formGroup]="filterForm" (ngSubmit)="applyFilterChanges()">
+      <h4>Filter Products</h4>
+
+      <div class="filter-grid">
+        <!-- Category filter -->
+        <div class="filter-group">
+          <label for="category">Category</label>
+          <select
+            id="category"
+            formControlName="category"
+            class="filter-select"
+          >
+            <option value="">All Categories</option>
+            <option *ngFor="let category of categories" [value]="category.name">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Price range filter -->
+        <div class="filter-group">
+          <label>Price Range ($)</label>
+          <div class="range-inputs">
+            <input
+              type="number"
+              formControlName="minPrice"
+              placeholder="Min"
+              class="filter-input"
+            />
+            <span>-</span>
+            <input
+              type="number"
+              formControlName="maxPrice"
+              placeholder="Max"
+              class="filter-input"
+            />
+          </div>
+        </div>
+
+        <!-- Inventory range filter -->
+        <div class="filter-group">
+          <label>Inventory</label>
+          <div class="range-inputs">
+            <input
+              type="number"
+              formControlName="minInventory"
+              placeholder="Min"
+              class="filter-input"
+            />
+            <span>-</span>
+            <input
+              type="number"
+              formControlName="maxInventory"
+              placeholder="Max"
+              class="filter-input"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="reset-filter-btn" (click)="resetFilter()">
+          Clear Filters
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Hiển thị lỗi nếu có -->
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div class="table-container">
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Inventory</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts; let i = index">
+          <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+          <td>
+            <!-- Hiển thị hình ảnh đầu tiên nếu có -->
+            <img
+              *ngIf="product.Image && product.Image.length > 0"
+              [src]="product.Image[0]"
+              alt="{{ product.Name }}"
+              width="50"
+            />
+            <span *ngIf="!product.Image || product.Image.length === 0">{{
+              product._id
+            }}</span>
+          </td>
+          <td>{{ product.Name }}</td>
+          <td>{{ product.Price }}</td>
+          <td>{{ product.category_name || "N/A" }}</td>
+          <td>{{ product.Quantity }}</td>
+          <td>
+            <button class="icon-btn" (click)="viewProduct(product)">
+              <img
+                src="images/product/view.svg"
+                (click)="viewProduct(product)"
+                alt="viewicon"
+                style="border: black"
+              />
+            </button>
+            <button class="icon-btn" (click)="editProduct(product)">
+              <img src="images/product/edit.svg" alt="editicon" />
+            </button>
+            <button class="icon-btn" (click)="deleteProduct(product._id || '')">
+              <img src="images/product/trash.svg" alt="trashicon" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Showing -->
+  <div class="show">
+    Showing {{ filteredProducts.length }}/{{ totalItems }} of all results
+  </div>
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    <button class="prev-btn" (click)="prevPage()"><</button>
+    <span
+      *ngFor="let page of pageNumbers"
+      class="page-number"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+      >{{ page }}</span
+    >
+    <button class="next-btn" (click)="nextPage()">></button>
+  </div>
+</div>

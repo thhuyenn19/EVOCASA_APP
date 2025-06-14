@@ -86,8 +86,9 @@
             android:layout_height="match_parent"
             android:layout_marginStart="9dp"
             android:button="@drawable/custom_checkbox_cart"
-            android:focusable="true"
-            android:focusableInTouchMode="true" />
+            android:clickable="true"
+            android:focusable="false"
+            android:focusableInTouchMode="false" />
 
         <TextView
             android:id="@+id/txtAllProducts"
@@ -117,7 +118,7 @@
         android:orientation="vertical"
         android:padding="16dp"
         android:elevation="4dp"
-        android:background="@color/color_80F2EAD3">
+        android:background="@color/color_50F2EAD3">
 
         <!-- Sub total -->
         <LinearLayout

@@ -11,6 +11,8 @@ import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -101,6 +103,28 @@ public class Onboarding2Fragment extends Fragment {
 
         TextView txtView3 = view.findViewById(R.id.txtView3);
         FontUtils.setItalicFont(requireContext(), txtView3);
+
+
+        //Animation
+
+        TextView txt1 = view.findViewById(R.id.txtViewExplore);
+        TextView txt2 = view.findViewById(R.id.txtViewTheSoulOf);
+        TextView txt3 = view.findViewById(R.id.txtViewEvoCasa);
+        TextView txt4 = view.findViewById(R.id.txtView3);
+
+// Load từng animation
+        Animation anim1 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_1);
+        Animation anim2 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_2);
+        Animation anim3 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_3);
+        Animation anim4 = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_4);
+
+// Start lần lượt
+        txt1.startAnimation(anim1);
+        txt2.startAnimation(anim2);
+        txt3.startAnimation(anim3);
+        txt4.startAnimation(anim4);
+
+
 
 
         return view;

@@ -1,0 +1,177 @@
+<div class="dashboard" *ngIf="dashboardData">
+  <header>
+    <h1>Dashboard</h1>
+    <div class="actions">
+      <!-- button filter -->
+      <button class="filter-button">
+        <img src="images/order/Filter.svg" alt="Filter icon" />
+        <span class="filter-text">Filter by</span>
+      </button>
+      <!-- button export -->
+      <button class="export-button" (click)="exportCharts()">
+        <img
+          src="images/product/export.svg"
+          alt="Export icon"
+          class="export-icon"
+        />
+        <span class="export-text">Exports</span>
+        <img
+          src="images/product/arrow.svg"
+          alt="Dropdown arrow"
+          class="dropdown-icon"
+        />
+      </button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="stats-container">
+      <div class="stats">
+        <div class="stat-box">
+          <div class="more-options">•••</div>
+          <div class="stat-content">
+            <p>Total orders</p>
+            <h2>{{ formatNumber(getStatValue('total_orders').current) }}</h2>
+            <p class="change positive">
+              ↑ + {{ getStatValue('total_orders').growth_percentage }}%
+              <span>+ {{ getStatValue('total_orders').growth_amount }} {{ statsPeriod }}</span>
+            </p>
+          </div>
+          <button class="view-report-btn">View report</button>
+        </div>
+
+        <div class="stat-box">
+          <div class="more-options">•••</div>
+          <div class="stat-content">
+            <p>Total sales</p>
+            <h2>{{ formatCurrency(getStatValue('total_sales').current) }}</h2>
+            <p class="change positive">
+              ↑ + {{ getStatValue('total_sales').growth_percentage }}%
+              <span>+ {{ formatCurrency(getStatValue('total_sales').growth_amount) }} {{ statsPeriod }}</span>
+            </p>
+          </div>
+          <button class="view-report-btn">View report</button>
+        </div>
+
+        <div class="stat-box">
+          <div class="more-options">•••</div>
+          <div class="stat-content">
+            <p>Visits</p>
+            <h2>{{ formatNumber(getStatValue('visits').current) }}</h2>
+            <p class="change positive">
+              ↑ + {{ getStatValue('visits').growth_percentage }}%
+              <span>+ {{ getStatValue('visits').growth_amount }} {{ statsPeriod }}</span>
+            </p>
+          </div>
+          <button class="view-report-btn">View report</button>
+        </div>
+
+        <div class="stat-box">
+          <div class="more-options">•••</div>
+          <div class="stat-content">
+            <p>Conversation rate</p>
+            <h2>{{ getStatValue('conversation_rate').current }}%</h2>
+            <p class="change positive">
+              ↑ + {{ getStatValue('conversation_rate').growth_percentage }}%
+              <span>+ {{ getStatValue('conversation_rate').growth_amount }} {{ statsPeriod }}</span>
+            </p>
+          </div>
+          <button class="view-report-btn">View report</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h3>Revenue</h3>
+          <div class="card-actions">
+            <select class="period-selector" [(ngModel)]="revenuePeriod" (change)="updateRevenuePeriod(revenuePeriod)">
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="color-dot green"></div>
+            <span>This month</span>
+          </div>
+          <div class="legend-item">
+            <div class="color-dot black"></div>
+            <span>Prev month</span>
+          </div>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenue-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard-bottom">
+        <div class="card">
+          <div class="card-header">
+            <h3>Recent activity</h3>
+            <div class="card-actions">
+              <select class="period-selector" [(ngModel)]="activityPeriod" (change)="updateActivityPeriod(activityPeriod)">
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+              </select>
+            </div>
+          </div>
+          <table class="activity-table">
+            <thead>
+              <tr>
+                <th>Customer ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let activity of getRecentActivity()">
+                    <td>{{ activity.customer_id }}</td>
+                    <td>
+                      <div class="customer-info">
+                        <div class="customer-avatar">
+                          {{ getCustomerData(activity.customer_id)?.name ? getCustomerInitials(getCustomerData(activity.customer_id).name) : '' }}
+                        </div>
+                        <span>{{ getCustomerData(activity.customer_id)?.name || 'Unknown' }}</span>
+                      </div>
+                    </td>
+                    <td>{{ activity.product_name }}</td>
+                    <td>{{ activity.quantity }}</td>
+                    <td>{{ formatCurrency(activity.total_price) }}</td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+  
+      <div class="card">
+        <div class="card-header">
+          <h3>Top products</h3>
+          <div class="card-actions">
+            <select class="period-selector" [(ngModel)]="productsPeriod" (change)="updateProductsPeriod(productsPeriod)">
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Year</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="products-layout">
+          <div class="products-chart-container">
+            <canvas id="top-products-chart"></canvas>
+          </div>
+          <div class="product-legend">
+            <div class="legend-item" *ngFor="let product of dashboardData.top_products">
+              <div class="color-dot" [style.backgroundColor]="product.color"></div>
+              <span>{{ product.name }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
