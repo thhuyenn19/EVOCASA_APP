@@ -20,17 +20,22 @@ public class OrderStatusAdapter extends RecyclerView.Adapter<OrderStatusAdapter.
     public interface OnStatusClickListener {
         void onStatusSelected(String status);
     }
-
+    public interface OnStatusPositionClickListener {
+        void onStatusClick(int position);
+    }
 
     private final List<OrderStatus> list;
 
     private final OnStatusClickListener listener;
+    private OnStatusPositionClickListener positionClickListener;
+    public void setOnStatusClickListener(OnStatusPositionClickListener positionClickListener) {
+        this.positionClickListener = positionClickListener;
+    }
 
     public OrderStatusAdapter(List<OrderStatus> list, OnStatusClickListener listener) {
         this.list = list;
         this.listener = listener;
     }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtOrderStatus;
         LinearLayout container;
@@ -71,6 +76,11 @@ public class OrderStatusAdapter extends RecyclerView.Adapter<OrderStatusAdapter.
             if (listener != null) {
                 listener.onStatusSelected(status.getTitle());
             }
+// ✅ Gọi callback để fragment biết và scroll tới vị trí
+            if (positionClickListener != null) {
+                positionClickListener.onStatusClick(position);
+            }
+
         });
     }
 

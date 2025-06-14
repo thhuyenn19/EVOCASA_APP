@@ -1,5 +1,7 @@
 package com.mobile.evocasa;
 
+import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
+
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -7,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,7 +112,34 @@ public class OrdersFragment extends Fragment {
 
         rvOrders.setAdapter(orderGroupAdapter);
 
+        // ✅ Tự động scroll khi chọn status
+        statusAdapter.setOnStatusClickListener(position -> {
+            rvStatus.post(() -> {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) rvStatus.getLayoutManager();
+                if (layoutManager != null) {
+                    RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
+                        @Override
+                        protected int getHorizontalSnapPreference() {
+                            return SNAP_TO_START; // hoặc SNAP_TO_CENTER
+                        }
 
+                        @Override
+                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                            return 100f / displayMetrics.densityDpi; // ✅ tăng số này nếu muốn chậm hơn
+                        }
+                        @Override
+                        public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
+                            int viewCenter = (viewStart + viewEnd) / 2;
+                            int boxCenter = (boxStart + boxEnd) / 2;
+                            return boxCenter - viewCenter;
+                        }
+                    };
+                    smoothScroller.setTargetPosition(position);
+                    layoutManager.startSmoothScroll(smoothScroller);
+
+                }
+            });
+        });
         // 5) Lọc và hiển thị lần đầu
         filterOrdersByStatus(selectedStatus);
 
