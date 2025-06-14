@@ -13,7 +13,7 @@
         android:theme="@style/Theme.EvoCasa"
         tools:targetApi="31">
         <activity
-            android:name=".ChatActitivy2"
+            android:name=".ChatActivity2"
             android:exported="false" />
         <activity
             android:name=".BuyAgainActivity"
@@ -37,10 +37,10 @@
             android:name=".ChatActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".onboarding.Onboarding1Activity"
             android:exported="true" />
         <activity
-            android:name=".onboarding.Onboarding1Activity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
