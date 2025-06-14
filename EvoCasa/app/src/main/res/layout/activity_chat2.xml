@@ -14,8 +14,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"/>
 
-
-
     <!-- Placeholder for chat content -->
     <ScrollView
         android:layout_width="match_parent"
@@ -194,7 +192,7 @@
                         android:orientation="vertical"
                         android:layout_margin="5dp"
                         android:elevation="3dp"
-                        android:background="#F9F4EB"> <!-- nền kem -->
+                        android:background="#F2EAD3">
 
                         <!-- Thân sản phẩm: ảnh + nội dung -->
                         <LinearLayout
@@ -261,7 +259,7 @@
                         android:orientation="vertical"
                         android:layout_margin="5dp"
                         android:elevation="3dp"
-                        android:background="#F9F4EB"> <!-- nền kem -->
+                        android:background="#F2EAD3"> <!-- nền kem -->
 
                         <!-- Thân sản phẩm: ảnh + nội dung -->
                         <LinearLayout
@@ -334,7 +332,7 @@
                         android:id="@+id/product_recommendations_container"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
+                        android:paddingRight="10dp"
                         android:layout_below="@+id/bot_message_3_container"
 
                         android:orientation="vertical">
@@ -342,12 +340,11 @@
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="26dp"
                             android:layout_gravity="right"
                             android:orientation="vertical"
                             android:layout_margin="5dp"
                             android:elevation="3dp"
-                            android:background="#F9F4EB"> <!-- nền kem -->
+                            android:background="#F2EAD3"> <!-- nền kem -->
 
                             <!-- Thân sản phẩm: ảnh + nội dung -->
                             <LinearLayout
@@ -391,18 +388,6 @@
                                         android:layout_marginTop="4dp"/>
                                 </LinearLayout>
                             </LinearLayout>
-
-                            <!-- Nút chọn sản phẩm -->
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="#C5B6A7"
-                                android:text="Choose this product"
-                                android:textColor="@color/color_333333"
-                                android:textSize="10sp"
-                                android:fontFamily="@font/inter_semibold"
-                                android:paddingVertical="6dp"
-                                android:textAlignment="center"/>
                         </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -417,7 +402,7 @@
                 android:gravity="end">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_chat_bubble_user_filled"
                     android:paddingStart="16dp"
@@ -604,11 +589,10 @@
                     android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="Hi there! I'm John from the EVOCASA team – so nice to chat with you today 😊. How can I assist you with your home decor needs?"
                         android:textColor="@color/color_333333"
-
                         android:textSize="12sp"/>
                 </LinearLayout>
             </LinearLayout>
@@ -659,7 +643,7 @@
                     android:elevation="3dp">
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="Thanks for reaching out! I'd be happy to help. May I ask where you're located so I can check if same-day delivery is available for your area?"
                         android:textColor="@color/color_333333"
@@ -713,7 +697,7 @@
                     android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="Great! We do offer same-day delivery within Ho Chi Minh City for items that are in stock.\nTo make sure you receive your lamp today, please place your order before 3:00 PM. Orders confirmed after that will be delivered the next working day."
                         android:textColor="@color/color_333333"
@@ -767,7 +751,7 @@
                     android:elevation="4dp">
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="Thank you so much for reaching out to Evocasa, dear customer! 💕 Aside from the information I’ve just shared, is there anything else I can help you with today?."
                         android:textColor="@color/color_333333"
@@ -799,7 +783,7 @@
                     android:elevation="3dp">
 
                     <TextView
-                        android:layout_width="300dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:text="If you have no further questions, I’ll go ahead and end our chat here. Feel free to reach out anytime if you need more help! 😊🌈"
                         android:textColor="@color/color_333333"
