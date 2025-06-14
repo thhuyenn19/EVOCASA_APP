@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="vertical">
     <LinearLayout
         android:id="@+id/bgNotiMessage"
         android:layout_width="match_parent"
@@ -52,12 +52,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:fontFamily="@font/zen_old_mincho"
+            android:fontFamily="@font/inter"
             android:text="Today 11:10"
             android:paddingTop="5dp"
             android:paddingBottom="6dp"
-            android:textColor="#3F2305"
+            android:textColor="#CC000000"
             android:textSize="10sp" />
     </LinearLayout>
     </LinearLayout>
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#5E4C3E"/>
 </LinearLayout>

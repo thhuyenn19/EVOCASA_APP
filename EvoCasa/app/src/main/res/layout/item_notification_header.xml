@@ -6,5 +6,5 @@
     android:text="TODAY"
     android:textSize="16sp"
     android:textStyle="bold"
-    android:textColor="#5E4C3E"
+    android:textColor="#CC000000"
     android:fontFamily="@font/inter" />

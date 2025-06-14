@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp">
         <!-- Tiêu đề -->
         <include layout="@layout/topbar_blog" />
 
@@ -22,16 +22,16 @@
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginBottom="8dp"
-            android:background="#F5F5F5">
+            android:background="@drawable/bg_blog_tab">
 
             <TextView
                 android:id="@+id/tab_recent"
                 style="@style/TabStyle"
-                android:text="Recent"
                 android:background="@drawable/tab_bg_selector"
-                android:textColor="#5E4C3E"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:text="Recent"
+                android:textColor="#5E4C3E" />
 
             <TextView
                 android:id="@+id/tab_recommended"

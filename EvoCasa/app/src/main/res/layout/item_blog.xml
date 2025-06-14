@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Blog Title"
                 android:fontFamily="@font/zen_old_mincho_black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 android:maxLines="2"
                 android:ellipsize="end"/>
