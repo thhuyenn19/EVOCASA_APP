@@ -47,9 +47,20 @@
                 <img *ngIf="previewImage" [src]="previewImage" class="main-image-x">
     
                 <!-- Nút thêm chỉ xuất hiện nếu chưa có ảnh -->
-                <div class="add-image" *ngIf="!previewImage" (click)="triggerFileInput()">
-                    <label for="file-upload">+</label>
-                </div>    
+                <!-- <div class="add-image" *ngIf="!previewImage" (click)="triggerFileInput()">
+                    <label for="file-upload">
+                        <img src="images/category-detail/add_image.png" alt="AddImage">
+                    </label>
+                </div>     -->
+
+                <!-- Ẩn input file -->
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;">
+
+                <!-- Click add-image sẽ gọi click() của input -->
+                <div class="add-image" *ngIf="!previewImage" (click)="fileInput.click()">
+                    <img src="images/category-detail/add_image.png" alt="AddImage">
+                </div>
+
     
                 <!-- Nút xóa ảnh -->
                 <button *ngIf="previewImage" class="remove-btn" (click)="removeImage()">✖</button>
@@ -64,14 +75,22 @@
                     <!-- Category Name -->
                     <div class="input-container">
                         <div class="label">Category Name</div>
-                        <input type="text" class="input-field1" [(ngModel)]="category.name" placeholder="Enter Category Name">
+                        <input type="text" class="input-field1" [(ngModel)]="category.name" placeholder="Enter category name">
+                    </div>
+                </div>
+
+                <div class="input-container">
+                    <!-- Category ID -->
+                    <div class="input-container">
+                        <div class="label2">Category ID</div>
+                        <input type="text" class="input-field2" [(ngModel)]="category.id" placeholder="Enter category ID">
                     </div>
                 </div>
 
                 <!-- Description -->
                 <div class="input-container">
                     <div class="label" style="margin-top: 30px;">Description</div>
-                    <textarea class="input-field-description"  [(ngModel)]="category.description" placeholder="Description category"></textarea>
+                    <textarea class="input-field-description"  [(ngModel)]="category.description" placeholder="Write a brief description of your category"></textarea>
                 </div>
 
                 <!-- Parent category -->
@@ -79,7 +98,7 @@
                     <div class="label">Parent Category</div>
                     <div class="combo-box-container">
                         <select class="input-field" [(ngModel)]="category.parentCategory">
-                            <option value="" disabled selected hidden>Select Parent Category</option>
+                            <option value="" disabled selected hidden class>Select parent category</option>
                             <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
                         </select>
                         <img src="images/category-detail/more.png" alt="icon" class="combo-box-icon">
