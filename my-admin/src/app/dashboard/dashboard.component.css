@@ -4,18 +4,44 @@ body {
   padding: 0;
   background-color: #FFFCF3;
   color: #3F2307;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
+}
+
+/* Container for sidebar and dashboard */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar styling (assumed) */
+.sidebar {
+  width: 250px; /* Adjust this to match your sidebar width */
+  background-color: #5A3726;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+/* Main content wrapper */
+.dashboard-wrapper {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 15px;
+  box-sizing: border-box;
+  margin-left: 250px; /* Matches sidebar width to prevent overlap */
 }
 
 .dashboard {
   width: 100%;
-  max-width: 100%;
-  margin: 20px auto;
-  padding: 0 15px;
+  max-width: 1200px; /* Optional: limit max width for better readability */
+  margin: 0 auto;
   position: relative;
   transition: all 0.3s ease;
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  box-sizing: border-box;
+  overflow-x: auto;
 }
 
 header {
@@ -40,9 +66,9 @@ header h1 {
   margin-top: 20px;
   margin-right: 34px;
   margin-bottom: 20px;
-  display: flex; /* Chuyển container thành flex */
-  justify-content: flex-end; /* Căn chỉnh các phần tử con về phía bên phải */
-  gap: 10px; /* Khoảng cách giữa các nút */
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 /* nút filter*/
@@ -248,7 +274,8 @@ header h1 {
 }
 
 .change.positive {
-  color: #4D7F58;
+  color: #4A6F29 !important;
+  font-weight: bold !important;
 }
 
 .change span {
@@ -279,6 +306,23 @@ header h1 {
 .view-report-btn::after {
   content: "→";
   font-size: 16px;
+}
+
+/* New View More Button */
+.view-more-btn {
+  padding: 8px 15px;
+  background-color: #E0D5C5;
+  color: #3F2307;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.view-more-btn:hover {
+  background-color: #D6C9B6;
 }
 
 /* Card styles for sections */
@@ -445,8 +489,6 @@ header h1 {
   box-sizing: border-box;
 }
 
-/* Keep existing CSS rules above the media queries */
-
 /* Main content wrapper to prevent sidebar overlap */
 :host {
   display: block;
@@ -479,9 +521,13 @@ header h1 {
 
 /* Tablet and small desktop */
 @media (max-width: 992px) {
+  .dashboard-wrapper {
+    margin-left: 0;
+    padding: 10px;
+  }
   .dashboard {
     width: 100%;
-    padding: 0 15px;
+    padding: 0;
   }
   
   .stats-container {
@@ -499,9 +545,23 @@ header h1 {
 
 /* Mobile landscape and tablet portrait */
 @media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+  .dashboard-wrapper {
+    margin-left: 0;
+    padding: 10px;
+    width: 100%;
+  }
+  
   .dashboard {
     width: 100%;
-    padding: 0 10px;
+    padding: 0;
     box-sizing: border-box;
   }
   
@@ -536,7 +596,7 @@ header h1 {
   
   .chart-container {
     height: 250px;
-    overflow-x: auto; /* Allow horizontal scroll for charts */
+    overflow-x: auto;
   }
   
   .stats-container {
@@ -550,55 +610,49 @@ header h1 {
   }
 }
 
-/* Mobile phones */
-@media (max-width: 576px) {
+/* Mobile phones - Ultra small screens */
+@media (max-width: 480px) {
   .dashboard {
-    padding: 0 8px;
+    padding: 0 5px;
   }
   
-  .card-header {
-    flex-direction: column;
-    align-items: flex-start;
+  .stats-container {
+    grid-template-columns: 1fr;
     gap: 10px;
   }
   
-  .card-actions {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
-  .filter-text, .export-text {
-    font-size: 14px;
+  .card {
+    padding: 15px 10px;
   }
   
   .stat-box {
-    padding: 12px;
+    padding: 10px;
   }
   
   .stat-box h2 {
-    font-size: 22px;
+    font-size: 20px;
   }
   
-  .activity-table {
-    font-size: 13px;
+  .change {
+    font-size: 12px;
   }
   
-  .activity-table th, .activity-table td {
-    padding: 10px 8px;
+  .view-report-btn {
+    padding: 8px 10px;
+    font-size: 12px;
   }
   
   .chart-container {
-    height: 200px;
-    overflow-x: auto; /* Allow horizontal scroll for charts */
-  }
-  
-  .activity-table-container {
-    width: 100%;
+    height: 180px;
     overflow-x: auto;
   }
   
   .activity-table {
-    min-width: 450px;
+    font-size: 12px;
+  }
+  
+  .activity-table th, .activity-table td {
+    padding: 8px;
   }
 }
 
@@ -614,11 +668,11 @@ header h1 {
   }
   
   .actions {
-    gap: 8px;
+    gap: 6px;
   }
   
   .stat-box h2 {
-    font-size: 20px;
+    font-size: 18px;
   }
   
   .chart-legend {
@@ -627,7 +681,7 @@ header h1 {
   }
   
   .card {
-    padding: 15px 10px;
+    padding: 12px 8px;
   }
 }
 
@@ -641,8 +695,8 @@ header h1 {
     flex: 0 0 100%;
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px;
-    overflow-x: auto; /* Allow horizontal scroll for charts */
+    margin-bottom: 15px;
+    overflow-x: auto;
   }
   
   .product-legend {
@@ -657,23 +711,23 @@ header h1 {
 
 @media (max-width: 768px) {
   #top-products-chart {
-    height: 220px;
+    height: 200px;
     width: 100%;
   }
   
   .product-legend {
-    gap: 10px;
+    gap: 8px;
   }
   
   .legend-item {
-    flex: 0 0 calc(50% - 10px);
+    flex: 0 0 calc(50% - 8px);
     box-sizing: border-box;
   }
 }
 
 @media (max-width: 576px) {
   .products-chart-container {
-    height: 200px;
+    height: 180px;
   }
   
   .product-legend {
@@ -686,91 +740,17 @@ header h1 {
   }
 }
 
-/* New responsive and overflow effects additions */
-
-/* Ensure body does not shrink elements excessively */
-body {
-    overflow-x: auto;
-}
-
-.dashboard {
-    min-width: 320px; /* Prevent excessive shrinking */
-    overflow-x: auto;
-}
-
 /* Ensuring tables and wide elements can scroll horizontally */
 .activity-table-container {
-    width: 100%;
-    overflow-x: auto;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .activity-table {
-    min-width: 600px; /* Ensure tables are readable */
+  min-width: 600px;
 }
 
 .chart-container {
-    min-width: 400px;
-    overflow-x: auto;
+  min-width: 300px;
+  overflow-x: auto;
 }
-
-/* Responsive design updates */
-@media (max-width: 992px) {
-    .stats-container {
-        grid-template-columns: 1fr; /* Avoid excessive shrinking */
-    }
-    
-    .dashboard-bottom {
-        grid-template-columns: 1fr; /* Maintain structure */
-    }
-    
-    .products-layout {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .products-chart-container {
-        flex: 0 0 100%;
-        width: 100%;
-        max-width: 100%;
-        overflow-x: auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .dashboard {
-        width: 100%;
-        padding: 0 10px;
-        min-width: 400px;
-        overflow-x: auto;
-    }
-  
-    .stats {
-        grid-template-columns: 1fr;
-    }
-  
-    .chart-container {
-        min-width: 100%;
-        overflow-x: auto;
-    }
-  
-    .activity-table {
-        min-width: 600px;
-    }
-}
-
-@media (max-width: 576px) {
-    .dashboard {
-        padding: 0 8px;
-        min-width: 380px;
-        overflow-x: auto;
-    }
-  
-    .activity-table {
-        min-width: 500px;
-    }
-  
-    .chart-container {
-        min-width: 100%;
-    }
-}
-

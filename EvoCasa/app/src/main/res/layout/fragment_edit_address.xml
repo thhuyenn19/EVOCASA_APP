@@ -133,20 +133,23 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Viet Nam" />
+                        android:text="Viet Nam"
+                        android:textColor="@color/color_5E4C3E"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ho Chi Minh City"
-                        android:layout_marginTop="3dp"/>
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/color_5E4C3E"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thu Duc"
                         android:textStyle="bold"
-                        android:layout_marginTop="3dp"/>
+                        android:layout_marginTop="3dp"
+                        android:textColor="@color/color_5E4C3E"/>
                 </LinearLayout>
 
 
@@ -177,11 +180,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="20dp"
                     android:paddingBottom="8dp"
                     android:text="A"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/color_5E4C3E"/>
 
 
                 <LinearLayout
@@ -237,11 +240,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="20dp"
                     android:paddingBottom="8dp"
                     android:text="L"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:textColor="@color/color_5E4C3E"/>
 
 
                 <LinearLayout
