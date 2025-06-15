@@ -165,7 +165,7 @@ html, body {
 
 .product-info-box {
     width: 65%;
-    height: 400px;
+    height: 420px;
     position: relative;
     background: rgba(246, 239, 221, 0.50);
     border-radius: 7px;
@@ -188,7 +188,28 @@ html, body {
     margin-top: 20px;
 }
 
-.inputs-container {
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    height: 30px;
+    padding-left: 15px;
+    border-radius: 7px;
+    margin-top: 5px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    color: #3F2305;
+}
+
+.input-field::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input-container-price-stock {
     display: flex;
     gap: 30px;
     margin-top: 10px;
@@ -197,10 +218,155 @@ html, body {
     width: 100%;
 }
 
-.input-container {
-    display: flex;
-    flex-direction: column;
+.input-field-price, .input-field-stock {
+    height: 30px;
+    padding-left: 15px;
+    border-radius: 7px;
+    margin-top: 5px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    color: #3F2305;
 }
+
+.label-price {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.label-stock {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.label-product-name {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.label-product-id {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 20px;
+}
+
+.input-row {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.input-group {
+  flex: 1 1 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-description {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.input-field-description {
+    height: 90px;
+    padding-left: 15px;
+    border-radius: 7px;
+    margin-top: 5px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    resize: none;
+    padding-top: 10px;
+    color: #3F2305;
+}
+
+.label-dimension {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.label-category {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.label-origin {
+    color: rgba(0, 0, 0, 0.7);
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.input-field-dimension1 {
+    width: 80px;
+    height: 30px;
+    border-radius: 7px;
+    margin-top: 5px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    color: #3F2305;
+}
+
+.input-field-dimension2 {
+    width: 90px;
+    height: 30px;
+    border-radius: 7px;
+    margin-top: 5px;
+    padding-left: 15px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    color: #3F2305;
+}
+
+.input-field-dimension3{
+    width: 60px;
+    height: 30px;
+    border-radius: 7px;
+    margin-top: 5px;
+    border: 1px solid #F2EAD3;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    background: #F2EAD3;
+    color: #3F2305;
+}
+
+.input-field-dimension1::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input-field-dimension2::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input-field-dimension3.add-product {
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.input-row-dimension {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
 
 .label {
     color: rgba(0, 0, 0, 0.7);
@@ -231,26 +397,8 @@ html, body {
     background: #F2EAD3;
 }
 
-.input-field-description {
-    height: 90px;
-    padding-left: 15px;
-    border-radius: 7px;
-    margin-top: 5px;
-    border: 1px solid #F2EAD3;
-    font-size: 14px;
-    font-family: 'Inter', sans-serif;
-    background: #F2EAD3;
-    resize: none;
-    padding-top: 10px;
-}
 
-.input-field::placeholder {
-    color: #3F2305;
-}
 
-.input-field-description::placeholder {
-    color: #3F2305;
-}
 
 
 
@@ -328,7 +476,7 @@ html, body {
 
 .product-info-box34 {
     width: 65%;
-    height: 150px;
+    height: 200px;
     position: relative;
     background: rgba(246, 239, 221, 0.50);
     border-radius: 7px;
@@ -336,7 +484,7 @@ html, body {
 
 .box1 {
     width: 35%;
-    height: 150px;
+    height: 200px;
     position: relative;
     background: rgba(246, 239, 221, 0.50);
     border-radius: 7px;

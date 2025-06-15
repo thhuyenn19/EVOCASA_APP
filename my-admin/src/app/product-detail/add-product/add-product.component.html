@@ -49,29 +49,69 @@
         <div class="product-info-box">
             <div class="product-info-content">
                 <div class="product-info-title">Product Information</div>
-                <div class="input-container">
-                    <!-- First Input: Product Name -->
-                    <div class="input-container">
-                        <div class="label">Product Name</div>
-                        <input type="text" class="input-field" placeholder="Enter Product Name" [(ngModel)]="product.Name">
+                <div class="input-row">
+                    <!-- Product Name -->
+                    <div class="input-group">
+                        <label class="label-product-name" for="productName">Product Name</label>
+                        <input
+                        id="productName"
+                        type="text"
+                        class="input-field"
+                        placeholder="Enter Product Name"
+                        [(ngModel)]="product.Name"
+                        />
                     </div>
-                    <!-- Second Input: Product ID -->
-                    <!-- <div class="input-container">
-                        <div class="label">Product ID</div>
-                        <input type="text" class="input-field" placeholder="Enter Product ID">
-                    </div> -->
+                    <!-- Product ID -->
+                    <div class="input-group">
+                        <label class="label-product-id" for="productId">Product ID</label>
+                        <input
+                        id="productId"
+                        type="text"
+                        class="input-field"
+                        placeholder="Enter Product ID"
+                        />
+                    </div>
                 </div>
+
                 <!-- Description -->
                 <div class="input-container">
-                    <div class="label" style="margin-top: 30px;">Description</div>
-                    <textarea class="input-field-description" placeholder="Description product" [(ngModel)]="product.Description"></textarea>
+                    <div class="label-description">Description</div>
+                    <textarea class="input-field-description" placeholder="Write a brief description of your product" [(ngModel)]="product.Description"></textarea>
                 </div>
-                <!-- Dimension -->
+                
+                <div class="input-row">
+                    <!-- Dimension -->
+                    <div class="input-group">
+                        <div class="label-dimension">Dimension</div>
+                        <div class="input-row-dimension">
+                            <select class="input-field-dimension1">
+                                <option value="" disabled hidden></option>
+                                <option *ngFor="" [value]=""></option>
+                            </select>
+                            <input id="Dimension2" type="text" class="input-field-dimension2"/>
+                            <select class="input-field-dimension3">
+                                <option value="" disabled hidden></option>
+                                <option *ngFor="" [value]=""></option>
+                            </select>
+                        </div> 
+                    </div>
+                    <!-- Product category & Origin -->
+                    <div class="input-group">
+                        <div class="label-category">Product category</div>
+                            <select class="input-field" [(ngModel)]="product.category_id">
+                                <option value="" disabled hidden>Select Product Category</option>
+                                <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+                            </select>
+                        <div class="label-origin">Origin</div>
+                            <input
+                            id="Origin"
+                            type="text"
+                            class="input-field"
+                            placeholder="Enter Origin"
+                            />
+                    </div>
+                </div>
 
-                <div class="input-container">
-                    <div class="label">Dimension</div>
-                    <input type="text" class="input-field" placeholder="Enter Dimension" [(ngModel)]="product.Dimension">
-                </div>
             </div>
         </div>
         <!-- Second Box -->
@@ -105,23 +145,9 @@
         <!-- Third Box -->
         <div class="product-info-box34">
             <div class="product-info-content">
-                <div class="product-info-title">Pricing and Stock</div>
-                <div class="inputs-container">
-                    <!-- Price -->
-                    <div class="input-container">
-                        <div class="label1">Price</div>
-                        <div class="input-box">
-                            <input type="text" class="input-field" placeholder="Enter Price" [(ngModel)]="product.Price">
-                            <div class="label2">USD</div>
-                        </div>
-                    </div>
-
-
-                    <!-- Stock -->
-                    <div class="input-container">
-                        <div class="label1">Stock</div>
-                        <input type="text" class="input-field" placeholder="Enter Stock" [(ngModel)]="product.Quantity">
-                    </div>
+                <div class="product-info-title">Customize</div>
+                <div class="input-container">
+                    
                 </div>
             </div>
         </div>
@@ -129,19 +155,27 @@
         <!-- Fourth Box -->
         <div class="box1">
             <div class="product-info-content">
-                <div class="product-info-title">Category</div>
-                <div class="input-container">
-                    <div class="input-container">
-                        <div class="label">Product category</div>
-                            <select class="input-field" [(ngModel)]="product.category_id">
-                                <option value="" disabled hidden>Select Product Category</option>
-                                <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
-                            </select>
+                <div class="product-info-title">Pricing and Stock</div>
+                <div class="input-container-price-stock">
+                    <div>
+                        <!-- Price -->
+                        <div class="label-price">Price</div>
+                        <div class="input-box">
+                            <input type="text" class="input-field-price" placeholder="Enter Price" [(ngModel)]="product.Price">
+                            <div class="label2">USD</div>
+                        </div>
+
+                        <!-- Stock -->
+                        <div class="label-stock">Stock</div>
+                        <div class="input-box">
+                            <input type="text" class="input-field-stock" placeholder="Enter Stock" [(ngModel)]="product.Quantity">
+                            <div class="label2">Item</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
+    </div>
 </body>
     
 
