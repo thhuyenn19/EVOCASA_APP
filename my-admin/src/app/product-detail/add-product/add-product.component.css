@@ -151,52 +151,6 @@ html, body {
     flex: 1;
 }
 
-.flex-container {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
-
-.button {
-    height: 30px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 7px;
-    font-family: 'Inter', sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 20px;
-    letter-spacing: 0.10px;
-    word-wrap: break-word;
-    cursor: pointer;
-    padding-right: 5px;
-    padding-left: 5px;
-}
-
-/* .save-draft {
-    border: 1px solid #3F2305;
-    color: #3F2305;
-} */
-
-.add-product {
-    background: #525B4A;
-    color: #F2EAD3;
-}
-
-.cancel {
-    border: 1px solid #3F2305;
-    color: #3F2305;
-    margin-right: 30px;
-}
-
-.button img {
-    width: 22px;
-    height: 22px;
-}
 
 .custom-container {
     display: flex;
