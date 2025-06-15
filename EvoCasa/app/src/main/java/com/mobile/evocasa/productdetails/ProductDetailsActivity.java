@@ -127,6 +127,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
         // Setup initial height after adapter is set
         viewPagerHelper.setupInitialHeight();
 
+        // Giữ tất cả fragment để chuyển mượt hơn
+        viewPager.setOffscreenPageLimit(3);
+
+        // Tắt hiệu ứng kéo vượt quá => Khi vuốt nhanh, ViewPager2 có hiệu ứng overscroll (lò xo hoặc sáng góc),có thể gây cảm giác lag hoặc không mượt.
+        viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+
         // Gán TabLayout với ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";

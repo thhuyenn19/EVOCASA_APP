@@ -120,22 +120,24 @@
                         android:layout_height="20dp"
                         android:src="@drawable/ic_note" />
 
-                    <TextView
-                        android:id="@+id/txtMessageForShop"
+                    <EditText
+                        android:id="@+id/edtMessageForShop"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-
                         android:layout_weight="1"
-                        android:text="@string/title_message_for_shop"
+                        android:hint="@string/title_message_for_shop"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:background="@android:color/transparent"
+                        android:inputType="text"
+                        />
 
-                    <ImageView
-                        android:id="@+id/imgMoreMessageForShop"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/icon__1_" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/imgMoreMessageForShop"-->
+<!--                        android:layout_width="12dp"-->
+<!--                        android:layout_height="12dp"-->
+<!--                        android:src="@drawable/icon__1_" />-->
                 </LinearLayout>
 
                 <TextView
