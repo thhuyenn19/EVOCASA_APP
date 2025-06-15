@@ -261,6 +261,31 @@ h4 {
   margin-top: 5px;
   table-layout: fixed;
 }
+/* Set width for specific columns */
+.product-table th:nth-child(1),
+.product-table td:nth-child(1) {
+  width: 5%; /* Column No */
+}
+
+.product-table th:nth-child(3),
+.product-table td:nth-child(3) {
+  width: 25%; /* Product Name column */
+}
+
+.product-table th:nth-child(4),
+.product-table td:nth-child(4) {
+  width: 18%; /* Product id column */
+}
+
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+  width: 10%; /* Price column */
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 5%; /* Inventory column */
+}
 
 .product-table th {
   background-color: #3f2305;
@@ -273,7 +298,7 @@ h4 {
 .product-table td {
   border-bottom: 0.5px solid #482d2d;
   color: rgba(0, 0, 0, 0.5);
-  padding: 15px;
+  padding: 5px;
   text-align: center;
   vertical-align: middle;
   height: 60px;
