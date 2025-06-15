@@ -21,7 +21,7 @@ export class OrderComponent {
   selectedOrder: Order | null = null;
 
   currentPage: number = 1;
-  itemsPerPage: number = 4;
+  itemsPerPage: number = 5;
 
   constructor(
     private orderService: OrderService,
@@ -50,8 +50,8 @@ export class OrderComponent {
     const endIndex = startIndex + this.itemsPerPage;
     this.displayedOrders = this.orders.slice(startIndex, endIndex);
   }
-   // Pagination: change the page
-   changePage(page: number): void {
+  // Pagination: change the page
+  changePage(page: number): void {
     this.currentPage = page;
     this.updateDisplayedOrders();
   }
@@ -102,19 +102,28 @@ export class OrderComponent {
       alert('No data available for export!');
       return;
     }
-  
-    const headers = ['No', 'Order ID', 'Customer Name', 'Order Date', 'Total Price', 'Status'];
+
+    const headers = [
+      'No',
+      'Order ID',
+      'Customer Name',
+      'Order Date',
+      'Total Price',
+      'Status',
+    ];
     const csvRows = this.orders.map((order, index) => [
       index + 1,
       `"${order._id}"`,
       `"${this.customerNames[order.Customer_id] || 'Unknown'}"`,
       `"${order.OrderDate}"`,
       `"${order.TotalPrice}"`,
-      `"${order.Status}"`
+      `"${order.Status}"`,
     ]);
-  
-    const csvContent = [headers, ...csvRows].map(row => row.join(',')).join('\n');
-  
+
+    const csvContent = [headers, ...csvRows]
+      .map((row) => row.join(','))
+      .join('\n');
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

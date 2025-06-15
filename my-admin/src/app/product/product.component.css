@@ -263,7 +263,7 @@ h4 {
 }
 
 .product-table th {
-  background-color: #5e4c3e;
+  background-color: #3f2305;
   color: #f2ead3;
   padding: 15px 5px;
   text-align: center;
@@ -351,6 +351,8 @@ h4 {
   align-items: center;
   color: rgba(0, 0, 0, 0.5);
   margin-left: 10px;
+  width: 20px; /* cố định chiều rộng để đồng đều */
+  height: 20px; /* cố định chiều cao */
 }
 .icon-btn img {
   padding: auto;
