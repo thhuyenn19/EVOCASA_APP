@@ -57,7 +57,7 @@
                         id="productName"
                         type="text"
                         class="input-field"
-                        placeholder="Enter Product Name"
+                        placeholder="Enter product name"
                         [(ngModel)]="product.Name"
                         />
                     </div>
@@ -68,7 +68,7 @@
                         id="productId"
                         type="text"
                         class="input-field"
-                        placeholder="Enter Product ID"
+                        placeholder="Enter product ID"
                         />
                     </div>
                 </div>
@@ -91,11 +91,7 @@
                                 <option value="height">Height</option>
                             </select>
                             <input id="Dimension2" type="text" class="input-field-dimension2"/>
-                            <select class="input-field-dimension3">
-                               <option value="in">in</option>
-                                <option value="m">m</option>
-                                <option value="cm">cm</option>
-                            </select>
+                            <div class="label2" style="margin-top: 12px;">in</div>
                         </div> 
                     </div>
                     <!-- Product category & Origin -->
@@ -110,7 +106,7 @@
                             id="Origin"
                             type="text"
                             class="input-field"
-                            placeholder="Enter Origin"
+                            placeholder="Enter origin"
                             />
                     </div>
                 </div>
@@ -147,11 +143,25 @@
     <div class="custom-container">
         <!-- Third Box -->
         <div class="product-info-box34">
-            <div class="product-info-content">
+            <div class="input-row-customize">
                 <div class="product-info-title">Customize</div>
-                <div class="input-container">
-                    
-                </div>
+                <!-- Combo box -->
+                <select class="input-field-customize">
+                <option value="color">Color</option>
+                <option value="dimension">Dimension</option>
+                <option value="price">Price</option>
+                </select>
+            </div>
+
+            <div class="input-row-customize">
+                <img src="images/product-detail/add_customize.png" id="add_customize"alt="Add_customize" style="margin-top: 10px;">
+                <span class="label-type">Type:</span>
+                <input id="Type" type="text" class="input-field-type"/>
+
+                <span class="label-price">Price:</span>
+                <input id="Price" type="text" class="input-field-price"/>
+
+                <span class="label-image">Image:</span>
             </div>
         </div>
 
