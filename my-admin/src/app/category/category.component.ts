@@ -48,7 +48,6 @@ export class CategoryComponent implements OnInit {
         console.log('Categories fetched successfully:', data);
         this.categories = data;
         this.processCategoryImages(); // Process images after fetching categories
-
         this.totalPages = Math.ceil(this.categories.length / this.pageSize);
         this.updatePaginatedCategories();
         // Organize into main categories and subcategories
