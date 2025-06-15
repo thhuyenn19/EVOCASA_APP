@@ -178,6 +178,10 @@
     <string name="title_out_for_delivery">Out For Delivery</string>
     <string name="title_delivered">Delivered</string>
     <string name="title_items_in_cart">Items in Cart</string>
+    <string name="popup_description">Do not miss out on elegant home pieces!</string>
+    <string name="popup_sales">SAVE UP TO 20%</string>
+    <string name="popup_title">NEW COLLECTION</string>
+    <string name="popup_cta">SHOP NOW</string>
 
 
 

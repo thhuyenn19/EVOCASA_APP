@@ -20,7 +20,7 @@ public class BottomNavFragment extends Fragment {
     private ImageView imgHome, imgShop, imgNotification, imgProfile;
 
     private Typeface fontSelected, fontRegular;
-    private int selectedTab = 0;
+    private static int selectedTab = 0;
 
     public static BottomNavFragment newInstance(int selectedTab) {
         BottomNavFragment fragment = new BottomNavFragment();
@@ -72,6 +72,7 @@ public class BottomNavFragment extends Fragment {
     }
 
     public void selectTab(int pos) {
+        selectedTab = pos; // Cập nhật selectedTab
         highlightTab(pos);
         if (getActivity() instanceof OnBottomNavSelectedListener) {
             ((OnBottomNavSelectedListener) getActivity()).onBottomNavSelected(pos);
@@ -122,5 +123,13 @@ public class BottomNavFragment extends Fragment {
 
     public interface OnBottomNavSelectedListener {
         void onBottomNavSelected(int position);
+    }
+
+    // Thêm method để cập nhật position từ bên ngoài
+    public void setSelectedPosition(int position) {
+        selectedTab = position;
+        if (isAdded()) { // Kiểm tra fragment đã được add vào activity chưa
+            highlightTab(position);
+        }
     }
 }

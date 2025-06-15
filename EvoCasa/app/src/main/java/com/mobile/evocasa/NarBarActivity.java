@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import com.mobile.evocasa.profile.ProfileFragment;
 
 public class NarBarActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavSelectedListener {
 
+    private BottomNavFragment bottomNavFragment; // Khai báo như instance variable
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,11 +24,32 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
         // Load nội dung chính (fragment tương ứng)
         showFragment(tabPos);
 
-        // Truyền tabPos vào BottomNavFragment
-        BottomNavFragment bottomNavFragment = BottomNavFragment.newInstance(tabPos);
+        // Truyền tabPos vào BottomNavFragment và lưu reference
+        bottomNavFragment = BottomNavFragment.newInstance(tabPos);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.bottom_nav_container, bottomNavFragment)
                 .commit();
+
+        // Tạo và hiển thị popup với callback
+        PopupDialog popupDialog = new PopupDialog();
+        popupDialog.setOnShopClickListener(new PopupDialog.OnShopClickListener() {
+            @Override
+            public void onShopClick() {
+                // Chuyển đến tab Shop (position 1)
+                navigateToShop();
+            }
+        });
+        popupDialog.show(getSupportFragmentManager(), "popup");
+    }
+
+    private void navigateToShop() {
+        // Chuyển đến ShopFragment
+        showFragment(1);
+
+        // Cập nhật bottom navigation để highlight tab Shop
+        if (bottomNavFragment != null) {
+            bottomNavFragment.setSelectedPosition(1);
+        }
     }
 
     @Override
