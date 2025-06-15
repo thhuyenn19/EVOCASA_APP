@@ -120,7 +120,7 @@
     <string name="txt_help_center">Help Center</string>
     <string name="title_suggested_for_you">Suggested for you</string>
     <string name="title_personal_info">Personal Information</string>
-    <string name="title_shipping_address">Shipping Address</string>
+    <string name="title_shipping_address">Shipping Information</string>
     <string name="title_edit">Edit</string>
     <string name="title_description_shop">Celebrating patina, heritage, and the comfort of the past.</string>
     <string name="title_all_categories">All categories</string>
@@ -182,7 +182,7 @@
     <string name="popup_sales">SAVE UP TO 20%</string>
     <string name="popup_title">NEW COLLECTION</string>
     <string name="popup_cta">SHOP NOW</string>
-
+    <string name="title_order_detail">Order Details</string>
 
 
 </resources>

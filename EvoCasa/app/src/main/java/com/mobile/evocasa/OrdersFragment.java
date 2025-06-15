@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
@@ -93,12 +94,18 @@ public class OrdersFragment extends Fragment {
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
 
         orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>(),  group -> {
+            OrderDetailFragment detail = new OrderDetailFragment();
             String status = group.getStatus();
             switch (status) {
                 case "Pending":
                 case "Pick Up":
                 case "In Transit":
-                    startActivity(new Intent(getContext(), TrackOrderActivity.class));
+                    FragmentActivity activity = (FragmentActivity) getContext();
+                    activity.getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, detail)
+                            .addToBackStack(null)    // để back về list được
+                            .commit();
                     break;
                 case "Review":
                     startActivity(new Intent(getContext(), LeaveReviewActivity.class));
