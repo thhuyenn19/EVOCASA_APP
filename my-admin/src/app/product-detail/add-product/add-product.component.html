@@ -84,14 +84,17 @@
                     <div class="input-group">
                         <div class="label-dimension">Dimension</div>
                         <div class="input-row-dimension">
+                            <!-- Combo box chọn loại kích thước -->
                             <select class="input-field-dimension1">
-                                <option value="" disabled hidden></option>
-                                <option *ngFor="" [value]=""></option>
+                                <option value="length">Length</option>
+                                <option value="width">Width</option>
+                                <option value="height">Height</option>
                             </select>
                             <input id="Dimension2" type="text" class="input-field-dimension2"/>
                             <select class="input-field-dimension3">
-                                <option value="" disabled hidden></option>
-                                <option *ngFor="" [value]=""></option>
+                               <option value="in">in</option>
+                                <option value="m">m</option>
+                                <option value="cm">cm</option>
                             </select>
                         </div> 
                     </div>

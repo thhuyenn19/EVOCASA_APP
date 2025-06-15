@@ -313,7 +313,8 @@ html, body {
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     background: #F2EAD3;
-    color: #3F2305;
+    color:rgba(0, 0, 0, 0.5);
+     padding-left: 5px;
 }
 
 .input-field-dimension2 {
@@ -338,11 +339,8 @@ html, body {
     font-size: 14px;
     font-family: 'Inter', sans-serif;
     background: #F2EAD3;
-    color: #3F2305;
-}
-
-.input-field-dimension1::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.5);
+    padding-left: 5px;
 }
 
 .input-field-dimension2::placeholder {
@@ -358,6 +356,10 @@ html, body {
   gap: 5px;
   flex-wrap: wrap;
 }
+
+
+
+
 
 
 
@@ -396,10 +398,6 @@ html, body {
     font-family: 'Inter', sans-serif;
     background: #F2EAD3;
 }
-
-
-
-
 
 
 /* Second box */

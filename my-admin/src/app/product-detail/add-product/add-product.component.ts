@@ -17,6 +17,7 @@ export class AddProductComponent {
     previewImages: string[] = []; // Ảnh xem trước
     maxImages: number = 5; // Giới hạn số ảnh có thể tải lên
     categories: Category[] = []; // Lưu danh sách category từ API
+    DimensionType?: string;   
 
     public setProduct(p: Product) {
       this.product = p;
