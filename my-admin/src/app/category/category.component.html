@@ -1,8 +1,9 @@
 <div class="main-content">
   <h3>CATEGORY MANAGEMENT</h3>
   <br />
-  <h4>Total Category ({{ categories.length }}) | Showing 6/{{ categories.length }}</h4>
-
+  <h4>
+    Total Category ({{ categories.length }}) | Showing 4/{{ categories.length }}
+  </h4>
 
   <div class="actions">
     <!-- button filter -->
@@ -11,7 +12,7 @@
       <span class="filter-text">Filter by</span>
     </button>
     <div class="right-button">
-      <!--button Add Product -->
+      <!--button Add Category -->
       <button class="addproduct-button" routerLink="/admin-category-add">
         <img src="images/product/add.png" alt="Add" />
         <span>Add category</span>
@@ -51,11 +52,15 @@
           <!-- Hiển thị hình ảnh -->
           <!-- <td><img *ngIf="category.image" [src]="category.image" alt="Category Image" ></td> -->
           <td>
-            <img *ngIf="category.image"
-                 [src]="category.image"
-                 alt="{{ category.name }}"
-                 width="50" />
-          </td>          
+            <img
+              *ngIf="category.image"
+              [src]="getCategoryImageForTable(category)"
+              alt="{{ category.name }}"
+              width="50"
+              style="object-fit: cover"
+            />
+            <span *ngIf="!category.image">{{ category.id }}</span>
+          </td>
           <!-- Hiển thị tên danh mục -->
           <td>{{ category.name }}</td>
           <!-- Hiển thị mã danh mục -->
@@ -71,7 +76,7 @@
               />
             </button>
             <button class="icon-btn" (click)="editCategory(category)">
-              <img src="images/product/edit.svg" alt="editicon" />
+              <img src="images/product/editicon.svg" alt="editicon" />
             </button>
             <button class="icon-btn" (click)="deleteCategory(category)">
               <img src="images/product/trash.svg" alt="trash icon" />
@@ -81,18 +86,39 @@
       </tbody>
     </table>
   </div>
-   <!-- Showing -->
-   <div class="show">Showing {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize }} of all results</div>
+  <!-- Showing -->
+  <div class="show">
+    Showing {{ (currentPage - 1) * pageSize + 1 }} -
+    {{ currentPage * pageSize }} of all results
+  </div>
 
-   <!-- Pagination with page numbers -->
-   <div class="pagination">
-     <button class="prev-btn" (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
- 
-     <!-- Display all page numbers -->
-     <ng-container *ngFor="let page of pageNumbers()">
-       <button class="page-btn" (click)="goToPage(page)" [class.active]="currentPage === page">{{ page }}</button>
-     </ng-container>
- 
-     <button class="next-btn" (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
-   </div>
- </div>
+  <!-- Pagination with page numbers -->
+  <div class="pagination">
+    <button
+      class="prev-btn"
+      (click)="goToPage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      &lt;
+    </button>
+
+    <!-- Display all page numbers -->
+    <ng-container *ngFor="let page of pageNumbers()">
+      <button
+        class="page-btn"
+        (click)="goToPage(page)"
+        [class.active]="currentPage === page"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+
+    <button
+      class="next-btn"
+      (click)="goToPage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+    >
+      &gt;
+    </button>
+  </div>
+</div>
