@@ -112,12 +112,8 @@
           <div class="card-header">
             <h3>Recent activity</h3>
             <div class="card-actions">
-              <select class="period-selector" [(ngModel)]="activityPeriod" (change)="updateActivityPeriod(activityPeriod)">
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-              </select>
-            </div>
+              <button class="view-more-btn">View more</button>
+          </div>
           </div>
           <table class="activity-table">
             <thead>
