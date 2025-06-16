@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -46,16 +48,16 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPagerBanner;
     private Handler sliderHandler = new Handler();
     private Runnable sliderRunnable = new Runnable() {
-        @Override
-        public void run() {
-            Log.d("BannerSlider", "Sliding banner. Current item: " + viewPagerBanner.getCurrentItem());
-            int nextItem = (viewPagerBanner.getCurrentItem() + 1) % imageList.size();
-            viewPagerBanner.setCurrentItem(nextItem, true);
-            sliderHandler.postDelayed(this, 4000); // Trượt sau 4 giây
-        }
-    };
+            @Override
+            public void run() {
+                int nextItem = (viewPagerBanner.getCurrentItem() + 1) % imageList.size();
+                viewPagerBanner.setCurrentItem(nextItem, false); // <--- Tắt hiệu ứng trượt ngang
+                sliderHandler.postDelayed(this, 4000);
+            }
+        };
 
-    //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
+
+        //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
 //    private void addViews() {
 //        txtEvocasa = findViewById(R.id.txtEvocasa);
 //        txtHome = findViewById(R.id.txtHome);
@@ -175,11 +177,24 @@ public class HomeFragment extends Fragment {
 
         BannerPagerAdapter bannerAdapter = new BannerPagerAdapter(imageList);
         viewPagerBanner.setAdapter(bannerAdapter);
-        // Dòng này để tạo hiệu ứng cuộn mềm mượt
-        viewPagerBanner.setPageTransformer(new MarginPageTransformer(40));
 
-        // Bắt đầu tự động trượt
+// Tạo hiệu ứng fade mượt + triệt tiêu hiệu ứng slide ngang
+        CompositePageTransformer transformer = new CompositePageTransformer();
+        transformer.addTransformer((page, position) -> {
+            // Giữ ảnh đứng yên tại chỗ, không trượt ngang
+            page.setTranslationX(0);
+
+            // Fade in – fade out hiệu ứng
+            float alpha = 1 - Math.abs(position);
+            page.setAlpha(alpha);
+        });
+        viewPagerBanner.setPageTransformer(transformer);
+
+        viewPagerBanner.setPageTransformer(transformer);
+
+// Bắt đầu tự động trượt
         sliderHandler.postDelayed(sliderRunnable, 4000);
+
 
         // Bắt sự kiện click giỏ hàng (imgCart) => Mở Cart Product
         ImageView imgCart = view.findViewById(R.id.imgCart);
