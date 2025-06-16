@@ -9,13 +9,13 @@ admin.initializeApp({
 
 console.log("Firebase initialized, reading file...");
 const db = admin.firestore();
-const data = JSON.parse(fs.readFileSync('EvoCasa.Category.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('EvoCasa.Product.json', 'utf8'));
 
 console.log("Data loaded:", data);
 for (const item of data) {
   const id = item._id['$oid']; // Lấy ObjectId làm document ID
   console.log(`Adding document ${id}...`);
-  db.collection('Category').doc(id).set(item)
+  db.collection('Product').doc(id).set(item)
     .then(() => console.log(`Added document ${id} successfully`))
     .catch(error => console.error(`Error adding ${id}:`, error));
 }
