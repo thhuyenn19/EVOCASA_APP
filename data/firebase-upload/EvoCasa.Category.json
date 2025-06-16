@@ -1,264 +1,266 @@
-[{
-  "_id": {
-    "$oid": "507f191e810c19729de860eb"
+[
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860eb"
+    },
+    "Name": "Furniture",
+    "Description": "All kinds of furniture products.",
+    "Slug": "furniture",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FFurniture%2FAlfred%20Christensen%20Chair%20-%20Floral12.jpg?alt=media"
   },
-  "Name": "Furniture",
-  "Description": "All kinds of furniture products.",
-  "Slug": "furniture",
-  "ParentCategory": null,
-  "Image": "/images/Furniture/Alfred Christensen Chair - Floral12.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860ec"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860ec"
+    },
+    "Name": "Tables",
+    "Description": "Furniture products for tables.",
+    "Slug": "tables",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860eb"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FFurniture%2FAmbiance%20Coffee%20Table1.jpg?alt=media"
   },
-  "Name": "Tables",
-  "Description": "Furniture products for tables.",
-  "Slug": "tables",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860eb"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860ed"
+    },
+    "Name": "Seating",
+    "Description": "Furniture products for seating.",
+    "Slug": "seating",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860eb"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FFurniture%2F1950s%20Kooky%20Metal%20Chair1.jpg?alt=media"
   },
-  "Image": "/images/Furniture/Ambiance Coffee Table1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860ed"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860ee"
+    },
+    "Name": "Casegoods",
+    "Description": "Furniture products like cabinets, bookshelves, etc.",
+    "Slug": "casegoods",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860eb"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FFurniture%2FBrazilian%20Jangada%20Armchair2.jpg?alt=media"
   },
-  "Name": "Seating",
-  "Description": "Furniture products for seating.",
-  "Slug": "seating",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860eb"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Name": "Decor",
+    "Description": "Decorative items for homes and offices.",
+    "Slug": "decor",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDecor%2FMagazine%20Book%20Rack1.jpg?alt=media"
   },
-  "Image": "/images/Furniture/1950s Kooky Metal Chair1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860ee"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f1"
+    },
+    "Name": "Vases & Vessels",
+    "Description": "Various types of vases and vessels for decoration.",
+    "Slug": "vases-vessels",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDecor%2FDevon%20Vase1.jpg?alt=media"
   },
-  "Name": "Casegoods",
-  "Description": "Furniture products like cabinets, bookshelves, etc.",
-  "Slug": "casegoods",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860eb"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f3"
+    },
+    "Name": "Bowls & Dishes",
+    "Description": "Bowls and dishes for decorative purposes.",
+    "Slug": "bowls-dishes",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FThrown%20Salad%20Bowl1.jpg?alt=media"
   },
-  "Image": "/images/Furniture/Brazilian Jangada Armchair2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f4"
+    },
+    "Name": "Mirrors",
+    "Description": "Decorative mirrors for homes.",
+    "Slug": "mirrors",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDecor%2FOrnate%20Barcelona%20Mirror1.jpg?alt=media"
   },
-  "Name": "Decor",
-  "Description": "Decorative items for homes and offices.",
-  "Slug": "decor",
-  "ParentCategory": null,
-  "Image": "/images/Decor/Magazine Book Rack1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f1"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f5"
+    },
+    "Name": "Utility",
+    "Description": "Practical and functional decor items.",
+    "Slug": "utility",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FFrigast%20Silver%20Tongs2.jpg?alt=media"
   },
-  "Name": "Vases & Vessels",
-  "Description": "Various types of vases and vessels for decoration.",
-  "Slug": "vases-vessels",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f6"
+    },
+    "Name": "Bath Accessories",
+    "Description": "Decorative and functional items for bathrooms.",
+    "Slug": "bath-accessories",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f0"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDecor%2FAntique%20Jade%20Jewelry%20Box1.jpg?alt=media"
   },
-  "Image": "/images/Decor/Devon Vase1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f3"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Name": "Dining & Entertaining",
+    "Description": "Furniture and accessories for dining and entertaining.",
+    "Slug": "dining-entertaining",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FSwedish%20Kitchen%20Rack2.jpg?alt=media"
   },
-  "Name": "Bowls & Dishes",
-  "Description": "Bowls and dishes for decorative purposes.",
-  "Slug": "bowls-dishes",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f8"
+    },
+    "Name": "Kitchen Accessories",
+    "Description": "Accessories for kitchens.",
+    "Slug": "kitchen-accessories",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FLignum%20Vitae%20Mortar%20%26%20Pestle2.jpg?alt=media"
   },
-  "Image": "/images/Dining & Entertaining/Thrown Salad Bowl1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f4"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860f9"
+    },
+    "Name": "Serving Dishes",
+    "Description": "Dishes used for serving food.",
+    "Slug": "serving-dishes",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FBelgian%20Dining%20Platter3.jpg?alt=media"
   },
-  "Name": "Mirrors",
-  "Description": "Decorative mirrors for homes.",
-  "Slug": "mirrors",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860fa"
+    },
+    "Name": "Barware",
+    "Description": "Accessories for serving drinks.",
+    "Slug": "barware",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FVintage%20Gold%20Rimmed%20Coupes1.jpg?alt=media"
   },
-  "Image": "/images/Decor/Ornate Barcelona Mirror1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f5"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860fb"
+    },
+    "Name": "Utensils",
+    "Description": "Utensils for dining and cooking.",
+    "Slug": "utensils",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FCanadian%20Railway%20Creamer3.jpg?alt=media"
   },
-  "Name": "Utility",
-  "Description": "Practical and functional decor items.",
-  "Slug": "utility",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860fd"
+    },
+    "Name": "Glassware",
+    "Description": "Glassware for dining and entertaining.",
+    "Slug": "glassware",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860f7"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FDining%20%26%20Entertaining%2FGold%20Accented%20Juice%20Glasses1.jpg?alt=media"
   },
-  "Image": "/images/Dining & Entertaining/Frigast Silver Tongs2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f6"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860fe"
+    },
+    "Name": "Soft Goods",
+    "Description": "Soft products like cushions, rugs, bedding, etc.",
+    "Slug": "soft-goods",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FSoft%20Goods%2FAutumn%20Harvest%20Pillow2.jpg?alt=media"
   },
-  "Name": "Bath Accessories",
-  "Description": "Decorative and functional items for bathrooms.",
-  "Slug": "bath-accessories",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f0"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de860ff"
+    },
+    "Name": "Pillows",
+    "Description": "Soft pillows for decoration and comfort.",
+    "Slug": "pillows",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de860fe"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FSoft%20Goods%2FRiver%20Leaf%20Pillow1.jpg?alt=media"
   },
-  "Image": "/images/Decor/Antique Jade Jewelry Box1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f7"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de86100"
+    },
+    "Name": "Lighting",
+    "Description": "Lighting solutions for home and office.",
+    "Slug": "lighting",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FLighting%2FCopper%20Lamp4.jpg?alt=media"
   },
-  "Name": "Dining & Entertaining",
-  "Description": "Furniture and accessories for dining and entertaining.",
-  "Slug": "dining-entertaining",
-  "ParentCategory": null,
-  "Image": "/images/Dining & Entertaining/Swedish Kitchen Rack2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f8"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de86101"
+    },
+    "Name": "Lamps",
+    "Description": "Various types of lamps for lighting.",
+    "Slug": "lamps",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de86100"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FLighting%2FGrapevine%20Leaf%20Table%20Lamp2.jpg?alt=media"
   },
-  "Name": "Kitchen Accessories",
-  "Description": "Accessories for kitchens.",
-  "Slug": "kitchen-accessories",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f7"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de86102"
+    },
+    "Name": "Art",
+    "Description": "Artworks and decorative pieces.",
+    "Slug": "art",
+    "ParentCategory": null,
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FArt%2FLighthouse%20Oil%20Painting2.jpg?alt=media"
   },
-  "Image": "/images/Dining & Entertaining/Lignum Vitae Mortar & Pestle2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860f9"
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de86103"
+    },
+    "Name": "Vintage",
+    "Description": "Vintage artworks and decor.",
+    "Slug": "vintage",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de86102"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FArt%2FWaterside%20Oil%20Painting1.jpg?alt=media"
   },
-  "Name": "Serving Dishes",
-  "Description": "Dishes used for serving food.",
-  "Slug": "serving-dishes",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f7"
-  },
-  "Image": "/images/Dining & Entertaining/Belgian Dining Platter3.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860fa"
-  },
-  "Name": "Barware",
-  "Description": "Accessories for serving drinks.",
-  "Slug": "barware",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f7"
-  },
-  "Image": "/images/Dining & Entertaining/Vintage Gold Rimmed Coupes1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860fb"
-  },
-  "Name": "Utensils",
-  "Description": "Utensils for dining and cooking.",
-  "Slug": "utensils",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f7"
-  },
-  "Image": "/images/Dining & Entertaining/Canadian Railway Creamer3.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860fd"
-  },
-  "Name": "Glassware",
-  "Description": "Glassware for dining and entertaining.",
-  "Slug": "glassware",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860f7"
-  },
-  "Image": "/images/Dining & Entertaining/Gold Accented Juice Glasses1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860fe"
-  },
-  "Name": "Soft Goods",
-  "Description": "Soft products like cushions, rugs, bedding, etc.",
-  "Slug": "soft-goods",
-  "ParentCategory": null,
-  "Image": "/images/Soft Goods/Autumn Harvest Pillow2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de860ff"
-  },
-  "Name": "Pillows",
-  "Description": "Soft pillows for decoration and comfort.",
-  "Slug": "pillows",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de860fe"
-  },
-  "Image": "/images/Soft Goods/River Leaf Pillow1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de86100"
-  },
-  "Name": "Lighting",
-  "Description": "Lighting solutions for home and office.",
-  "Slug": "lighting",
-  "ParentCategory": null,
-  "Image": "/images/Lighting/Copper Lamp4.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de86101"
-  },
-  "Name": "Lamps",
-  "Description": "Various types of lamps for lighting.",
-  "Slug": "lamps",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de86100"
-  },
-  "Image": "/images/Lighting/Grapevine Leaf Table Lamp2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de86102"
-  },
-  "Name": "Art",
-  "Description": "Artworks and decorative pieces.",
-  "Slug": "art",
-  "ParentCategory": null,
-  "Image": "/images/Art/Lighthouse Oil Painting2.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de86103"
-  },
-  "Name": "Vintage",
-  "Description": "Vintage artworks and decor.",
-  "Slug": "vintage",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de86102"
-  },
-  "Image": "/images/Art/Waterside Oil Painting1.jpg"
-},
-{
-  "_id": {
-    "$oid": "507f191e810c19729de86104"
-  },
-  "Name": "Artisan",
-  "Description": "Handmade and artisan artworks.",
-  "Slug": "artisan",
-  "ParentCategory": {
-    "$oid": "507f191e810c19729de86102"
-  },
-  "Image": "/images/Art/Lighthouse Oil Painting2.jpg"
-}]
+  {
+    "_id": {
+      "$oid": "507f191e810c19729de86104"
+    },
+    "Name": "Artisan",
+    "Description": "Handmade and artisan artworks.",
+    "Slug": "artisan",
+    "ParentCategory": {
+      "$oid": "507f191e810c19729de86102"
+    },
+    "Image": "https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FArt%2FLighthouse%20Oil%20Painting2.jpg?alt=media"
+  }
+]
