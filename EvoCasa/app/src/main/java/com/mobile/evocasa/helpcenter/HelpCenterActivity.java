@@ -1,6 +1,8 @@
 package com.mobile.evocasa.helpcenter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -8,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +28,8 @@ public class HelpCenterActivity extends AppCompatActivity {
     FaqAdapter faqAdapter;
     List<FaqItem> faqList;
 
+    LinearLayout policyPurchaseGroup, policyReturnGroup, policyPrivacyGroup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +41,6 @@ public class HelpCenterActivity extends AppCompatActivity {
 //            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 //            return insets;
 //        });
-
-
-        //Set font
-
-
-
 
         //FAQ
         setContentView(R.layout.activity_help_center);
@@ -65,5 +64,30 @@ public class HelpCenterActivity extends AppCompatActivity {
 
         faqAdapter = new FaqAdapter(this, faqList);
         recyclerView.setAdapter(faqAdapter);
+
+        //Mở Policy
+        policyPurchaseGroup = findViewById(R.id.policyPurchaseGroup);
+
+        policyPurchaseGroup.setOnClickListener(v -> {
+            Intent intent = new Intent(HelpCenterActivity.this, PurchasePolicyActivity.class);
+            startActivity(intent);
+        });
+
+        policyReturnGroup = findViewById(R.id.policyReturnGroup);
+
+        policyReturnGroup.setOnClickListener(v -> {
+            Intent intent = new Intent(HelpCenterActivity.this, ReturnExchangeActivity.class);
+            startActivity(intent);
+        });
+
+        policyPrivacyGroup = findViewById(R.id.policyPrivacyGroup);
+
+        policyPrivacyGroup.setOnClickListener(v -> {
+            Intent intent = new Intent(HelpCenterActivity.this, PrivacyPolicyActivity.class);
+            startActivity(intent);
+        });
+
+
+
     }
 }
