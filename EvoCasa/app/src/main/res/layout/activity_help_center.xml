@@ -95,6 +95,70 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/zen_old_mincho_black" />
 
+    <!-- Policy Summaries -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="24dp">
+
+        <!-- Purchase Policy -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_purchase_policy"
+            android:textColor="#3F2305"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_semibold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_purchase_policy_description"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter_tight_italic"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Return & Exchange Policy -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_return_policy"
+            android:textColor="#3F2305"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_semibold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_return_policy_description"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="13sp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/inter_tight_italic"/>
+
+        <!-- Privacy Policy -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_privacy_policy"
+            android:textColor="#3F2305"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/inter_semibold"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_privacy_policy_description"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="13sp"
+            android:fontFamily="@font/inter_tight_italic"/>
+    </LinearLayout>
 
 
 </LinearLayout>
