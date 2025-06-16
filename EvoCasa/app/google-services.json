@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "408656799826",
+    "project_id": "evocasa-da7f2",
+    "storage_bucket": "evocasa-da7f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408656799826:android:35e9e655ecb1b34bee578b",
+        "android_client_info": {
+          "package_name": "com.mobile.evocasa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RXAAeZzunRp4eWJhKPZJ8Y_A70WtLOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
