@@ -112,81 +112,129 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp">
 
-            <!-- Purchase Policy -->
-            <TextView
+            <!-- Purchase Policy Group -->
+            <LinearLayout
+                android:id="@+id/policyPurchaseGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_purchase_policy"
-                android:textColor="#3F2305"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_semibold" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_purchase_policy_description"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="13sp"
-                android:fontFamily="@font/inter_tight_italic"
-                android:layout_marginBottom="8dp" />
+                android:orientation="vertical">
 
-            <!-- Bottom Line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/color_333333"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_purchase_policy"
+                    android:textColor="#3F2305"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_semibold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_purchase_policy_description"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/inter_tight_italic" />
+                <TextView
+                    android:id="@+id/readMorePurchase"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_readmore"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/color_5E4C3E"
+                    android:layout_marginEnd="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/color_333333"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
 
-            <!-- Return & Exchange Policy -->
-            <TextView
+            <!-- Return Policy Group -->
+            <LinearLayout
+                android:id="@+id/policyReturnGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_return_policy"
-                android:textColor="#3F2305"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_semibold" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_return_policy_description"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="13sp"
-                android:layout_marginBottom="8dp"
-                android:fontFamily="@font/inter_tight_italic" />
+                android:orientation="vertical">
 
-            <!-- Bottom Line -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/color_333333"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="4dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_return_policy"
+                    android:textColor="#3F2305"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_semibold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_return_policy_description"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/inter_tight_italic" />
+                <TextView
+                    android:id="@+id/readMoreReturn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_readmore"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:layout_gravity="end"
+                    android:fontFamily="@font/inter_semibold"
+                    android:textColor="@color/color_5E4C3E"
+                    android:layout_marginEnd="10dp"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="@color/color_333333"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="4dp" />
+            </LinearLayout>
 
-            <!-- Privacy Policy -->
-            <TextView
+            <!-- Privacy Policy Group -->
+            <LinearLayout
+                android:id="@+id/policyPrivacyGroup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_privacy_policy"
-                android:textColor="#3F2305"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/inter_semibold" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title_privacy_policy_description"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="13sp"
-                android:fontFamily="@font/inter_tight_italic" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_privacy_policy"
+                    android:textColor="#3F2305"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter_semibold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_privacy_policy_description"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/inter_tight_italic" />
+                <TextView
+                    android:id="@+id/readMorePrivacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_readmore"
+                    android:textSize="12sp"
+                    android:textStyle="italic"
+                    android:layout_gravity="end"
+                    android:textColor="@color/color_5E4C3E"
+                    android:fontFamily="@font/inter_semibold"
+                    android:layout_marginEnd="10dp"/>
+            </LinearLayout>
 
 
         </LinearLayout>
