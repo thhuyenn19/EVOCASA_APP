@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.evocasa.R;
@@ -50,6 +51,14 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.FaqViewHolder> {
             item.setExpanded(!item.isExpanded());
             notifyItemChanged(position);
         });
+
+        //đổi màu
+        holder.container.setBackgroundColor(
+                item.isExpanded()
+                        ? ContextCompat.getColor(context, R.color.color_F2EAD3)  // màu khi mở
+                        : ContextCompat.getColor(context, R.color.color_bg)         // màu mặc định
+        );
+
     }
 
     @Override
@@ -61,6 +70,7 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.FaqViewHolder> {
         TextView tvQuestion, tvAnswer;
         ImageView ivToggle;
         LinearLayout questionLayout;
+        LinearLayout container;
 
         public FaqViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +78,7 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.FaqViewHolder> {
             tvAnswer = itemView.findViewById(R.id.tv_answer);
             ivToggle = itemView.findViewById(R.id.iv_toggle);
             questionLayout = itemView.findViewById(R.id.faq_question_layout);
+            container = itemView.findViewById(R.id.item_faq_container);
         }
     }
 }

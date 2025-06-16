@@ -1,6 +1,7 @@
 package com.mobile.evocasa.helpcenter;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobile.adapters.FaqAdapter;
 import com.mobile.evocasa.R;
 import com.mobile.models.FaqItem;
+import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,13 @@ public class HelpCenterActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
+
+        //Set font
+
+
+
+
+        //FAQ
         setContentView(R.layout.activity_help_center);
 
         recyclerView = findViewById(R.id.recyclerView);
@@ -53,7 +62,6 @@ public class HelpCenterActivity extends AppCompatActivity {
                 "Delivery times vary based on your location and the type of product.\n" +
                         "In-stock items: 2–5 business days\n" +
                         "Custom or made-to-order items: 7–14 business days"));
-
 
         faqAdapter = new FaqAdapter(this, faqList);
         recyclerView.setAdapter(faqAdapter);

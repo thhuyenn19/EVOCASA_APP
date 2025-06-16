@@ -11,7 +11,7 @@
     android:paddingBottom="4dp"
     android:layout_marginStart="15dp"
     android:layout_marginEnd="15dp"
-    android:background="@color/color_F2EAD3">
+    android:background="@color/color_bg">
 
     <!-- Question row -->
     <LinearLayout
@@ -26,9 +26,9 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/color_3F2305" />
+            android:textSize="14sp"
+            android:textColor="@color/color_3F2305"
+            android:fontFamily="@font/inter_semibold" />
 
         <ImageView
             android:id="@+id/iv_toggle"
@@ -42,10 +42,11 @@
         android:id="@+id/tv_answer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:visibility="gone"
         android:paddingTop="4dp"
-        android:textColor="@color/color_5E4C3E" />
+        android:textColor="@color/color_5E4C3E"
+        android:fontFamily="@font/inter" />
 
     <!-- Bottom Line -->
     <View
