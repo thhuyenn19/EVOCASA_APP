@@ -22,6 +22,7 @@ import com.mobile.evocasa.ChatActivity;
 import com.mobile.evocasa.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
+import com.mobile.evocasa.helpcenter.HelpCenterActivity;
 import com.mobile.models.SuggestedProducts;
 import com.mobile.utils.FontUtils;
 
@@ -85,6 +86,22 @@ public class ProfileFragment extends Fragment {
                 .commit();
 
         });
+
+        //Mở HelpCenter
+        ImageView imgHelpCenter = view.findViewById(R.id.imgHelpCenter);
+        TextView txtHelpCenter = view.findViewById(R.id.txtHelpCenter);
+
+        View.OnClickListener openHelpCenter = v -> {
+            Intent intent = new Intent(getActivity(), HelpCenterActivity.class);
+            startActivity(intent);
+        };
+
+        if (imgHelpCenter != null) {
+            imgHelpCenter.setOnClickListener(openHelpCenter);
+        }
+        if (txtHelpCenter != null) {
+            txtHelpCenter.setOnClickListener(openHelpCenter);
+        }
 
 
 

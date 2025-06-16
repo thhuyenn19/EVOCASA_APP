@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/item_faq_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="4dp"
+    android:layout_marginStart="15dp"
+    android:layout_marginEnd="15dp"
+    android:background="@color/color_F2EAD3">
+
+    <!-- Question row -->
+    <LinearLayout
+        android:id="@+id/faq_question_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_question"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_3F2305" />
+
+        <ImageView
+            android:id="@+id/iv_toggle"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_plus_helpcenter" />
+    </LinearLayout>
+
+    <!-- Answer -->
+    <TextView
+        android:id="@+id/tv_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:visibility="gone"
+        android:paddingTop="4dp"
+        android:textColor="@color/color_5E4C3E" />
+
+    <!-- Bottom Line -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/color_333333"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp" />
+</LinearLayout>

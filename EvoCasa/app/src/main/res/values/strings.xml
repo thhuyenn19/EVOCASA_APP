@@ -184,5 +184,10 @@
     <string name="popup_cta">SHOP NOW</string>
     <string name="title_order_detail">Order Details</string>
 
+    <string name="title_help_center">Help Center</string>
+    <string name="title_faq">FAQ</string>
+
+
+
 
 </resources>
