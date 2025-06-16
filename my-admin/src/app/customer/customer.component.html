@@ -2,28 +2,42 @@
 <h1> CUSTOMER MANAGEMENT </h1>
     
     <div class="summary-container">
-        <div class="summary-card">
-          <h2>Total customers</h2>
-          <div class="value-container">
-            <p class="value">{{ customers.length }}</p>
-            <p class="percentage">+15% <span>This month</span></p>
-          </div>
-        </div>
-        <div class="summary-card">
-          <h2>New customers</h2>
-          <div class="value-container">
-            <p class="value">110</p>
-            <p class="percentage">+10% <span>This month</span></p>
-          </div>
-        </div>
-        <div class="summary-card">
-          <h2>Total orders</h2>
-          <div class="value-container">
-            <p class="value">10,641</p>
-            <p class="percentage">+10% <span>This month</span></p>
-          </div>
-        </div>
+  <!-- Total Customers -->
+  <div class="summary-card">
+    <div class="icon-box">
+      <span class="material-icons-outlined">groups</span>
     </div>
+    <div class="card-content">
+      <p class="card-title">Total customers</p>
+      <p class="card-value">5,641</p>
+      <p class="card-change"><span class="material-icons-outlined arrow-icon">arrow_upward</span> +15%</p>
+    </div>
+  </div>
+
+  <!-- New Customers -->
+  <div class="summary-card">
+    <div class="icon-box dual-icon">
+      <span class="material-icons-outlined">person</span>
+    </div>
+    <div class="card-content">
+      <p class="card-title">New customers</p>
+      <p class="card-value">110</p>
+      <p class="card-change"><span class="material-icons-outlined arrow-icon">arrow_upward</span> +10%</p>
+    </div>
+  </div>
+
+  <!-- Total Orders -->
+  <div class="summary-card">
+    <div class="icon-box">
+      <span class="material-icons-outlined">shopping_cart</span>
+    </div>
+    <div class="card-content">
+      <p class="card-title">Total orders</p>
+      <p class="card-value">10,641</p>
+      <p class="card-change"><span class="material-icons-outlined arrow-icon">arrow_upward</span> +10%</p>
+    </div>
+  </div>
+</div>
 
     <div class="actions">
         <button class="filter-button" >

@@ -13,6 +13,141 @@
     font-family: 'Zen Old Mincho', serif; /* Áp dụng font Zen Old Mincho */
   }
   
+  /* Tổng thể container */
+.summary-container {
+  display: flex;
+  margin: 0 34px;
+  gap: 20px;
+}
+
+ /* Các card */
+  .summary-card {
+    width: 100%;
+    border-radius: 5px;
+    color: rgb(0, 0, 0,0.5);
+    border: 1px solid #3F2305; /* Thêm viền */
+  }
+
+/* Icon wrapper */
+.icon-wrapper {
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.icon-wrapper .material-icons-outlined {
+  font-size: 30px;
+  color: #5E4C3E;
+}
+
+.icon-wrapper .star-icon {
+  position: absolute;
+  right: -8px;
+  bottom: -8px;
+  font-size: 18px;
+  color: #5E4C3E;
+}
+
+/* Nội dung bên phải */
+.summary-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.summary-content .title {
+  font-size: 14px;
+  color: #5E4C3E;
+  margin: 0;
+  font-weight: 400;
+}
+
+.summary-content .value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3F2305;
+  margin: 5px 0;
+}
+
+.summary-content .percentage {
+  color: green;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.arrow-up {
+  font-weight: bold;
+  margin-right: 4px;
+}
+.summary-container {
+    display: flex;
+    margin-left: 34px;
+    margin-right: 34px;
+    gap: 20px; /* Khoảng cách giữa các card */
+}
+
+.summary-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f9f6f2;
+  border: 1px solid #3F2305;
+  border-radius: 8px;
+  padding: 16px;
+  gap: 12px;
+}
+
+.icon-box {
+  background-color: #e8e1d1;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-box .material-icons-outlined {
+  font-size: 32px;
+  color: #5E4C3E;
+}
+
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-title {
+  font-size: 14px;
+  color: #5E4C3E;
+  margin: 0;
+  margin-bottom: 4px;
+}
+
+.card-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3F2305;
+  margin: 0;
+}
+
+.card-change {
+  font-size: 14px;
+  color: green;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.arrow-icon {
+  font-size: 16px;
+  color: green;
+}
 /* Container chứa các card */
 .summary-container {
     display: flex;
