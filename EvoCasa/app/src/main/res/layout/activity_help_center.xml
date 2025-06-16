@@ -74,8 +74,6 @@
         android:layout_marginBottom="5dp"
         android:fontFamily="@font/inter_tight_italic" />
 
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

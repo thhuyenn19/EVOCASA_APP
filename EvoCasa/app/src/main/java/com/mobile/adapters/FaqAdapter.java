@@ -55,7 +55,7 @@ public class FaqAdapter extends RecyclerView.Adapter<FaqAdapter.FaqViewHolder> {
         //đổi màu
         holder.container.setBackgroundColor(
                 item.isExpanded()
-                        ? ContextCompat.getColor(context, R.color.color_F2EAD3)  // màu khi mở
+                        ? ContextCompat.getColor(context, R.color.white)  // màu khi mở
                         : ContextCompat.getColor(context, R.color.color_bg)         // màu mặc định
         );
 
