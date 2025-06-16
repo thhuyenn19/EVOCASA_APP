@@ -13,7 +13,6 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:gravity="center"
-        android:background="@drawable/bg_rounded_button"
         android:orientation="vertical"
         android:clickable="true"
         android:focusable="true">
@@ -23,7 +22,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/bg_rounded_button"
             android:scaleType="centerInside"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back"
+            android:visibility="invisible"/>
     </LinearLayout>
 
     <!-- Spacer để căn giữa title -->

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -174,6 +175,8 @@ public class HomeFragment extends Fragment {
 
         BannerPagerAdapter bannerAdapter = new BannerPagerAdapter(imageList);
         viewPagerBanner.setAdapter(bannerAdapter);
+        // Dòng này để tạo hiệu ứng cuộn mềm mượt
+        viewPagerBanner.setPageTransformer(new MarginPageTransformer(40));
 
         // Bắt đầu tự động trượt
         sliderHandler.postDelayed(sliderRunnable, 4000);
