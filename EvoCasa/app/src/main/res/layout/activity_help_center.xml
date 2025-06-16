@@ -1,164 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg"
+    android:fillViewport="true"
     android:fitsSystemWindows="true"
-    android:orientation="vertical"
     tools:context=".helpcenter.HelpCenterActivity">
 
-    <include layout="@layout/topbar_helpcenter" />
-
-    <!-- Banner -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginVertical="12dp"
-        android:layout_marginHorizontal="16dp">
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/imgBanner2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:layout_marginTop="1dp"
-            android:src="@mipmap/ic_banner2"
-            app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:gravity="center">
-            <TextView
-                android:id="@+id/textOverlay1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_helpcenter_description"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </FrameLayout>
-
-
-    <!-- Title FAQ -->
-    <TextView
-        android:id="@+id/txtFAQTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_faq"
-        android:textColor="#3F2305"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="10dp"
-        android:fontFamily="@font/zen_old_mincho_black" />
-
-    <TextView
-        android:id="@+id/txtFAQDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_faq_description"
-        android:textColor="@color/color_5E4C3E"
-        android:textSize="13sp"
-        android:gravity="center"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/inter_tight_italic" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <!-- Title Policy -->
-    <TextView
-        android:id="@+id/txtPolicyTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_policy"
-        android:textColor="#3F2305"
-        android:textSize="19sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/zen_old_mincho_black" />
-
-    <!-- Policy Summaries -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingBottom="24dp">
+        >
 
-        <!-- Purchase Policy -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_purchase_policy"
-            android:textColor="#3F2305"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/inter_semibold"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_purchase_policy_description"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="13sp"
-            android:fontFamily="@font/inter_tight_italic"
-            android:layout_marginBottom="8dp"/>
+        <include layout="@layout/topbar_helpcenter" />
 
-        <!-- Return & Exchange Policy -->
-        <TextView
+        <!-- Banner -->
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_return_policy"
-            android:textColor="#3F2305"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/inter_semibold"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_return_policy_description"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="13sp"
-            android:layout_marginBottom="8dp"
-            android:fontFamily="@font/inter_tight_italic"/>
+            android:layout_height="150dp"
+            android:layout_marginVertical="12dp"
+            android:layout_marginHorizontal="16dp">
 
-        <!-- Privacy Policy -->
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgBanner2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_marginTop="1dp"
+                android:src="@mipmap/ic_banner2"
+                app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/textOverlay1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_helpcenter_description"
+                    android:textColor="#FFFFFF"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <!-- Title FAQ -->
         <TextView
+            android:id="@+id/txtFAQTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_privacy_policy"
+            android:text="@string/title_faq"
             android:textColor="#3F2305"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/inter_semibold"/>
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/zen_old_mincho_black" />
+
         <TextView
+            android:id="@+id/txtFAQDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_privacy_policy_description"
+            android:text="@string/title_faq_description"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="13sp"
-            android:fontFamily="@font/inter_tight_italic"/>
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/inter_tight_italic" />
+
+        <!-- Nếu item FAQ ít thì vẫn có thể dùng RecyclerView trong ScrollView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never" />
+
+        <!-- Title Policy -->
+        <TextView
+            android:id="@+id/txtPolicyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_policy"
+            android:textColor="#3F2305"
+            android:textSize="19sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/zen_old_mincho_black" />
+
+        <!-- Policy Summaries -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="24dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <!-- Purchase Policy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_purchase_policy"
+                android:textColor="#3F2305"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/inter_semibold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_purchase_policy_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="13sp"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Bottom Line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/color_333333"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Return & Exchange Policy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_return_policy"
+                android:textColor="#3F2305"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/inter_semibold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_return_policy_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="13sp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/inter_tight_italic" />
+
+            <!-- Bottom Line -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/color_333333"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="4dp" />
+
+            <!-- Privacy Policy -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_privacy_policy"
+                android:textColor="#3F2305"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/inter_semibold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_privacy_policy_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="13sp"
+                android:fontFamily="@font/inter_tight_italic" />
+
+
+        </LinearLayout>
+
     </LinearLayout>
-
-
-</LinearLayout>
+</ScrollView>
