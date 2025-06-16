@@ -1,16 +1,29 @@
 
-<h1> CUSTOMER DETAILS </h1>
+<div class="header-wrapper">
+  <h1>CUSTOMER DETAILS</h1>
+  <button class="chat-button">
+    <img src="images/customer/chat.svg" alt="Chat icon" />
+    Chat with Customer
+  </button>
+</div>
     <div class="customer-info" *ngIf="selectedCustomer">
         <div class="profile-card">
-            <div class="profile-pic"></div>
+          <div class="profile-pic"></div>
+          <div class="profile-info-wrapper">
             <div class="profile-details">
-                <p><strong>Name:</strong> {{ selectedCustomer.Name }}</p>
-                <p><strong>Gender:</strong> {{ selectedCustomer.Gender }}</p>
-                <p><strong>Email:</strong> {{ selectedCustomer.Mail }}</p>
-                <p><strong>Phone:</strong> {{ selectedCustomer.Phone }}</p>
-                <p><strong>Address:</strong> {{ selectedCustomer.Address}}</p>
+              <p><strong>Name:</strong> {{ selectedCustomer.Name }}</p>
+              <p><strong>Gender:</strong> {{ selectedCustomer.Gender }}</p>
+              <p><strong>Email:</strong> {{ selectedCustomer.Mail }}</p>
+              <p><strong>Phone:</strong> {{ selectedCustomer.Phone }}</p>
+              <p><strong>Address:</strong> {{ selectedCustomer.Address }}</p>
             </div>
+            <div class="view-more-wrapper">
+              <span class="view-more">View More<span class="material-icons-outlined">chevron_right</span></span>
+            </div>
+          </div>
         </div>
+
+
         <div class="summary-container">
             <div class="summary-card">
                 <h2>Total Orders</h2>

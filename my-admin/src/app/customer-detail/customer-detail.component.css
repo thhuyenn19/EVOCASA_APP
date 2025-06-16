@@ -5,7 +5,6 @@
 }
     h1{
     text-align: left;
-    margin-left: 32px;
     margin-top: 10px;
     font-size: 30px;
     margin-bottom: 10px;
@@ -34,7 +33,7 @@
     border-radius: 10px;
     flex: 1;
     margin-left: 34px;
-    height: 154px;
+    height: 170px;
 }
 .profile-pic {
     width: 150px;
@@ -50,6 +49,61 @@
     color: #70706E;
     padding:3px
 }
+
+.profile-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 32px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 30px;
+}
+
+.chat-button {
+  background-color: #525B4A;
+  color: #F2EAD3;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.chat-button:hover {
+  background-color: #3C4038;
+}
+
+.view-more-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-more {
+  font-size: 18px;
+  color: #70706E;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.view-more:hover {
+  color: #5E4C3E;
+}
+
+
 
 /* Container chứa các card */
 .summary-container {
@@ -72,6 +126,8 @@
   .summary-card h2 {
     font-size: 16px;
     margin-left: 15px;
+    margin-bottom: 13px;
+    margin-top: 15px;
     font-weight: 100;
   }
 
@@ -95,7 +151,8 @@
   
   /* Phần trăm thay đổi */
   .summary-card .percentage {
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: bold;
     color: green;
   }
   

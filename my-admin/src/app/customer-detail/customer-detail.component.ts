@@ -24,7 +24,6 @@ export class CustomerDetailComponent {
   currentPage: number = 1;
   itemsPerPage: number = 4; 
 
-
   constructor(private customerService: CustomerService,  private router: Router, private route: ActivatedRoute, private orderService: OrderService) {}
 
   ngOnInit(): void {

@@ -15,74 +15,6 @@
   
   /* Tổng thể container */
 .summary-container {
-  display: flex;
-  margin: 0 34px;
-  gap: 20px;
-}
-
- /* Các card */
-  .summary-card {
-    width: 100%;
-    border-radius: 5px;
-    color: rgb(0, 0, 0,0.5);
-    border: 1px solid #3F2305; /* Thêm viền */
-  }
-
-/* Icon wrapper */
-.icon-wrapper {
-  padding: 10px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.icon-wrapper .material-icons-outlined {
-  font-size: 30px;
-  color: #5E4C3E;
-}
-
-.icon-wrapper .star-icon {
-  position: absolute;
-  right: -8px;
-  bottom: -8px;
-  font-size: 18px;
-  color: #5E4C3E;
-}
-
-/* Nội dung bên phải */
-.summary-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.summary-content .title {
-  font-size: 14px;
-  color: #5E4C3E;
-  margin: 0;
-  font-weight: 400;
-}
-
-.summary-content .value {
-  font-size: 22px;
-  font-weight: bold;
-  color: #3F2305;
-  margin: 5px 0;
-}
-
-.summary-content .percentage {
-  color: green;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.arrow-up {
-  font-weight: bold;
-  margin-right: 4px;
-}
-.summary-container {
     display: flex;
     margin-left: 34px;
     margin-right: 34px;
@@ -93,27 +25,25 @@
   flex: 1;
   display: flex;
   align-items: center;
-  background-color: #f9f6f2;
   border: 1px solid #3F2305;
   border-radius: 8px;
-  padding: 16px;
+  padding: 15px;
   gap: 12px;
 }
-
 .icon-box {
-  background-color: #e8e1d1;
-  border-radius: 8px;
-  padding: 12px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-right: 20px;
+  padding-left: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .icon-box .material-icons-outlined {
-  font-size: 32px;
+  font-size: 50px;
   color: #5E4C3E;
 }
-
 
 .card-content {
   display: flex;
@@ -125,80 +55,47 @@
   font-size: 14px;
   color: #5E4C3E;
   margin: 0;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.card-data-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 120px;
+}
+
+.card-data-row-total-orders {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 95px;
 }
 
 .card-value {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #3F2305;
   margin: 0;
 }
 
 .card-change {
-  font-size: 14px;
+  font-size: 16px;
   color: green;
-  margin: 0;
+  font-weight: bold;
   display: flex;
   align-items: center;
   gap: 4px;
+  margin: 0;
 }
 
 .arrow-icon {
-  font-size: 16px;
+  font-size: 18px;
   color: green;
+  font-weight: bold;
+  margin-right: 3px;
 }
-/* Container chứa các card */
-.summary-container {
-    display: flex;
-    margin-left: 34px;
-    margin-right: 34px;
-    gap: 20px; /* Khoảng cách giữa các card */
-  }
-  
-  /* Các card */
-  .summary-card {
-    width: 100%;
-    border-radius: 5px;
-    color: rgb(0, 0, 0,0.5);
-    border: 1px solid #3F2305; /* Thêm viền */
-  }
-  
-  /* Tiêu đề */
-  .summary-card h2 {
-    font-size: 16px;
-    margin-left: 15px;
-    font-weight: 100;
-  }
 
-  .value-container {
-    display: flex; /* Căn chỉnh các phần tử con (value và percentage) trên cùng 1 hàng */
-    justify-content: space-between; /* Căn giữa khoảng cách giữa các phần tử */
-    align-items: center; /* Đảm bảo rằng các phần tử con nằm giữa theo chiều dọc */
-    margin-right: 20px;
-  }
-  
-  
-  /* Giá trị chính */
-  .summary-card .value {
-    font-size: 24px;
-    font-weight: bold;
-    color: #5E4C3E;
-    margin-bottom: 10px;
-    margin-top: 0px;
-    margin-left: 25px;
-  }
-  
-  /* Phần trăm thay đổi */
-  .summary-card .percentage {
-    font-size: 14px;
-    color: green;
-  }
-  
-  .summary-card .percentage span {
-    font-size: 14px;
-    color: #5E4C3E;
-  }
   
   /* Container chứa các nút */
     .actions {
