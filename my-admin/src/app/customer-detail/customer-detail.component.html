@@ -18,7 +18,7 @@
               <p><strong>Address:</strong> {{ selectedCustomer.Address }}</p>
             </div>
             <div class="view-more-wrapper">
-              <span class="view-more">View More<span class="material-icons-outlined">chevron_right</span></span>
+              <span class="view-more" (click)="openPopup()" >View More<span class="material-icons-outlined">chevron_right</span></span>
             </div>
           </div>
         </div>
@@ -96,4 +96,39 @@
           <span class="page-number">&gt;</span>
         </button>
       </div>
-      
+
+    <!-- Popup: Shipping Address (tĩnh) -->
+<div class="popup-overlay" *ngIf="showPopup" (click)="onOverlayClick($event)">
+  <div class="popup-modal address-popup" (click)="$event.stopPropagation()">
+    <div class="popup-header dark">
+      <h2>Shipping Address:</h2>
+      <button class="close-btn" (click)="closePopup()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+
+    <ul class="address-list clean-bullets">
+      <li>
+        <span class="address-text">123 Nguyễn Trãi, Quận 1, TP.HCM</span>
+        <div class="action-icons">
+          <img src="images/customer/edit.svg" alt="Edit" class="action-icon" />
+          <img src="images/customer/trash.svg" alt="Delete" class="action-icon" />
+        </div>
+      </li>
+      <li>
+        <span class="address-text">456 Cộng Hòa, Tân Bình, TP.HCM</span>
+        <div class="action-icons">
+          <img src="images/customer/edit.svg" alt="Edit" class="action-icon" />
+          <img src="images/customer/trash.svg" alt="Delete" class="action-icon" />
+        </div>
+      </li>
+      <li>
+        <span class="address-text">789 Lê Lai, Quận 3, TP.HCM</span>
+        <div class="action-icons">
+          <img src="images/customer/edit.svg" alt="Edit" class="action-icon" />
+          <img src="images/customer/trash.svg" alt="Delete" class="action-icon" />
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

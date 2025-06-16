@@ -5,8 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../services/order.service'; 
 import { Order } from '../interfaces/order';
 
-
-
 @Component({
   selector: 'app-customer-detail',
   standalone: false,
@@ -23,6 +21,9 @@ export class CustomerDetailComponent {
   customerNames: { [key: string]: string } = {};
   currentPage: number = 1;
   itemsPerPage: number = 4; 
+  
+  // Thêm thuộc tính để điều khiển popup
+  showPopup: boolean = false;
 
   constructor(private customerService: CustomerService,  private router: Router, private route: ActivatedRoute, private orderService: OrderService) {}
 
@@ -48,7 +49,6 @@ export class CustomerDetailComponent {
     );
   }
   
-
   fetchOrders(customerId: string): void {
     this.orderService.getOrdersByCustomer(customerId).subscribe(
       (response: any) => {
@@ -66,7 +66,6 @@ export class CustomerDetailComponent {
     );
   }
   
-
   getTotalAmount(): number {
     return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
   }
@@ -74,7 +73,6 @@ export class CustomerDetailComponent {
   getOrderQuantity(order: Order): number {
     return order.OrderProduct.reduce((total, product) => total + product.Quantity, 0);
   }
-  
   
   get totalPages(): number {
     return Math.ceil(this.orders.length / this.itemsPerPage);
@@ -93,5 +91,21 @@ export class CustomerDetailComponent {
   updateDisplayedOrders(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
+  }
+
+  // Thêm methods để điều khiển popup
+  openPopup(): void {
+    this.showPopup = true;
+  }
+
+  closePopup(): void {
+    this.showPopup = false;
+  }
+
+  // Method để đóng popup khi click outside
+  onOverlayClick(event: Event): void {
+    if ((event.target as HTMLElement).classList.contains('popup-overlay')) {
+      this.closePopup();
+    }
   }
 }
