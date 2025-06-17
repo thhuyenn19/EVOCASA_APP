@@ -38,7 +38,7 @@
                 android:fontFamily="@font/zen_old_mincho_black"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:ellipsize="end"/>
             <LinearLayout
                 android:layout_width="match_parent"
