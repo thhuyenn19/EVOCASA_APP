@@ -1,61 +1,64 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
-import { catchError, tap, map } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 import { Admin } from '../interfaces/admin';
+
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { db } from '../firebase-config'; // ⚠️ Import db đã khởi tạo
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
-
-  private apiUrl = 'http://localhost:3002'; 
-  
-
   private currentAdminSubject = new BehaviorSubject<Admin | null>(null);
   public currentAdmin$ = this.currentAdminSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-
+  constructor() {
     const storedAdmin = localStorage.getItem('currentAdmin');
     if (storedAdmin) {
       this.currentAdminSubject.next(JSON.parse(storedAdmin));
     }
   }
 
+  // ⚠️ Lấy danh sách Admin từ Firestore thay vì HTTP
   getAllAdmins(): Observable<Admin[]> {
-    return this.http.get<Admin[]>(`${this.apiUrl}/admins`)
-      .pipe(
-        catchError(this.handleError<Admin[]>('getAllAdmins', []))
-      );
-  }
+  return new Observable(observer => {
+    getDocs(collection(db, 'Admin'))
+      .then(snapshot => {
+        const admins: Admin[] = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          admins.push({ ...(data as Admin), _id: doc.id });
+        });
 
-
-  getAdminById(id: string): Observable<Admin> {
-    return this.http.get<Admin>(`${this.apiUrl}/admins/${id}`)
-      .pipe(
-        catchError(this.handleError<Admin>('getAdminById'))
-      );
-  }
-
+        console.log('📦 Admins from Firestore:', admins); // ✅ Log dữ liệu toàn bộ
+        observer.next(admins);
+        observer.complete();
+      })
+      .catch(error => {
+        console.error('❌ Firestore error:', error);
+        observer.error(error);
+      });
+  });
+}
 
   login(employeeId: string, password: string): Observable<Admin | null> {
     return this.getAllAdmins().pipe(
       map(admins => {
-        const admin = admins.find(a => 
-          a.employeeid.toLowerCase() === employeeId.toLowerCase() && 
+        const admin = admins.find(a =>
+          a.employeeid.toLowerCase() === employeeId.toLowerCase() &&
           a.Password === password
         );
-        
+
         if (admin) {
           localStorage.setItem('currentAdmin', JSON.stringify(admin));
           this.currentAdminSubject.next(admin);
           return admin;
         }
-        
+
         return null;
       }),
-      catchError(this.handleError<null>('login'))
+      catchError(() => of(null))
     );
   }
 
@@ -72,20 +75,12 @@ export class AdminService {
     return !!this.currentAdminSubject.value;
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
+  validateCurrentAdmin(): Observable<boolean> {
+    const admin = this.getCurrentAdmin();
+    if (!admin) return of(false);
+    return this.getAllAdmins().pipe(
+      map(admins => admins.some(a => a._id === admin._id)),
+      catchError(() => of(false))
+    );
   }
-
-validateCurrentAdmin(): Observable<boolean> {
-  const admin = this.getCurrentAdmin();
-  if (!admin) return of(false);
-  
-  return this.getAdminById(admin._id).pipe(
-    map(serverAdmin => !!serverAdmin),
-    catchError(() => of(false))
-  );
-}
 }

@@ -25,6 +25,9 @@ export class LoginComponent implements OnInit {
       employeeId: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+     this.adminService.getAllAdmins().subscribe(admins => {
+    console.log('🔥 Admins fetched on init:', admins);
+  });
   }
 
   togglePasswordVisibility(): void {
