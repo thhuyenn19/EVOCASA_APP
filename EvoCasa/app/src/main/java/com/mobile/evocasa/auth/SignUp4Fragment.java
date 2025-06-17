@@ -213,13 +213,15 @@ public class SignUp4Fragment extends Fragment {
         // Hash password with bcrypt
         String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
+        // Account document (for authentication only)
         Map<String, Object> account = new HashMap<>();
         account.put("Contact", phone);
         account.put("ContactType", "Phone");
-        account.put("Name", "");
+        account.put("Name", ""); // Chưa nhập nên để trống
         account.put("Password", hashedPassword);
-        account.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
+
+        // Customers document (for personal info)
         Map<String, Object> customer = new HashMap<>();
         customer.put("Name", "");
         customer.put("Phone", phone);
@@ -234,15 +236,27 @@ public class SignUp4Fragment extends Fragment {
         customer.put("Voucher", new ArrayList<>());
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Step 1: Save Account
         db.collection("Account").document(uid).set(account)
-                .addOnSuccessListener(aVoid -> db.collection("Customer").document(uid).set(customer)
-                        .addOnSuccessListener(doc -> {
-                            Toast.makeText(getContext(), "SignUp Successfully!", Toast.LENGTH_SHORT).show();
-                            navigateToSignUp5Fragment();
-                        })
-                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show()))
-                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show());
+                .addOnSuccessListener(aVoid -> {
+                    // Step 2: Save Customers
+                    db.collection("Customers").document(uid).set(customer)
+                            .addOnSuccessListener(doc -> {
+                                Toast.makeText(getContext(), "SignUp Successfully!", Toast.LENGTH_SHORT).show();
+                                navigateToSignUp5Fragment();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(getContext(), "Error Customers: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Error Account: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                });
     }
+
 
     private void navigateToSignUp5Fragment() {
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();

@@ -1,4 +1,6 @@
 package com.mobile.evocasa.profile;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.utils.UserSessionManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +41,8 @@ public class ProfileFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         applyCustomFonts(view);
+        txtName = view.findViewById(R.id.txtName);
+        loadCustomerName();
         /* Suggested Products */
         RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
 
@@ -180,6 +184,32 @@ public class ProfileFragment extends Fragment {
         }
 
         return view;
+    }
+    private void loadCustomerName() {
+        UserSessionManager sessionManager = new UserSessionManager(requireContext());
+        String uid = sessionManager.getUid();
+
+        if (uid != null) {
+            FirebaseFirestore.getInstance()
+                    .collection("Customers")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            String name = documentSnapshot.getString("Name");
+                            if (name != null && !name.isEmpty()) {
+                                txtName.setText(name);
+                            } else {
+                                txtName.setText("No Name");
+                            }
+                        } else {
+                            txtName.setText("No Profile Found");
+                        }
+                    })
+                    .addOnFailureListener(e -> txtName.setText("Error"));
+        } else {
+            txtName.setText("Not logged in");
+        }
     }
     private void applyCustomFonts(View view) {
         TextView txtName = view.findViewById(R.id.txtName);

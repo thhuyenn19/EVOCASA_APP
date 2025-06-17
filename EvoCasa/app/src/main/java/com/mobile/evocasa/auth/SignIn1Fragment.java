@@ -1,112 +1,134 @@
 package com.mobile.evocasa.auth;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.*;
+import com.mobile.utils.UserSessionManager;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
+
+import java.util.Objects;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class SignIn1Fragment extends Fragment {
 
     private TextView txtTitle, txtEmailPhoneLabel, txtPassword, txtTerm, txtPrivacy, txtForgotPassword, txtBy;
     private EditText edtEmailPhone, edtPassword;
-    private Button btnContinue, btnForgotPassword;
-
-    public SignIn1Fragment() {
-        // Required empty public constructor
-    }
-
-    public static SignIn1Fragment newInstance(String param1, String param2) {
-        SignIn1Fragment fragment = new SignIn1Fragment();
-        Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private ImageView btnTogglePassword;
+    private AppCompatButton btnContinue;
+    private boolean isPasswordVisible = false;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            // Retrieve parameters if necessary
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sign_in1, container, false);
 
-        // Get references to the views
         txtTitle = rootView.findViewById(R.id.txtTitle);
         txtEmailPhoneLabel = rootView.findViewById(R.id.txtEmailPhoneLabel);
         txtPassword = rootView.findViewById(R.id.txtPassword);
         txtTerm = rootView.findViewById(R.id.txtTerm);
         txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
-        btnForgotPassword = rootView.findViewById(R.id.btnForgotPassword); // Corrected to btnForgotPassword
+        txtForgotPassword = rootView.findViewById(R.id.btnForgotPassword);
         txtBy = rootView.findViewById(R.id.txtBy);
 
         edtEmailPhone = rootView.findViewById(R.id.edtEmailPhone);
         edtPassword = rootView.findViewById(R.id.edtPassword);
+        edtEmailPhone.setInputType(android.text.InputType.TYPE_CLASS_PHONE);
 
+        btnTogglePassword = rootView.findViewById(R.id.btnTogglePassword);
         btnContinue = rootView.findViewById(R.id.btnContinue);
 
-        // Create Typeface from font in assets
-        Typeface regularFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Regular.otf");
-        Typeface semiBoldFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-SemiBold.otf");
-        Typeface boldFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Bold.otf");
-        Typeface mediumFont = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Inter-Medium.otf");
+        Typeface regularFont = Typeface.createFromAsset(requireActivity().getAssets(), "fonts/Inter-Regular.otf");
+        Typeface semiBoldFont = Typeface.createFromAsset(requireActivity().getAssets(), "fonts/Inter-SemiBold.otf");
+        Typeface boldFont = Typeface.createFromAsset(requireActivity().getAssets(), "fonts/Inter-Bold.otf");
+        Typeface mediumFont = Typeface.createFromAsset(requireActivity().getAssets(), "fonts/Inter-Medium.otf");
 
-        // Apply the custom fonts to the views
-        txtTitle.setTypeface(boldFont); // Title - Bold
-        txtEmailPhoneLabel.setTypeface(mediumFont); // Email/Phone Label - Medium
-        txtPassword.setTypeface(mediumFont); // Password Label - Medium
-        txtTerm.setTypeface(semiBoldFont); // Terms - SemiBold
-        txtPrivacy.setTypeface(semiBoldFont); // Privacy Policy - SemiBold
-        btnForgotPassword.setTypeface(semiBoldFont); // Forgot Password - SemiBold
+        txtTitle.setTypeface(boldFont);
+        txtEmailPhoneLabel.setTypeface(mediumFont);
+        txtPassword.setTypeface(mediumFont);
+        txtTerm.setTypeface(semiBoldFont);
+        txtPrivacy.setTypeface(semiBoldFont);
+        txtForgotPassword.setTypeface(semiBoldFont);
         txtBy.setTypeface(regularFont);
-        edtEmailPhone.setTypeface(regularFont); // Email/Phone Input - Regular
-        edtPassword.setTypeface(regularFont); // Password Input - Regular
-        btnContinue.setTypeface(semiBoldFont); // Continue Button - SemiBold
+        edtEmailPhone.setTypeface(regularFont);
+        edtPassword.setTypeface(regularFont);
+        btnContinue.setTypeface(semiBoldFont);
 
-        // Underline the "Forgot Password" TextView
-        btnForgotPassword.setPaintFlags(btnForgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        txtForgotPassword.setPaintFlags(txtForgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        // Set up the click listener for the "Forgot Password" button
-        btnForgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Navigate to the Forgot1Fragment
-                Forgot1Fragment forgot1Fragment = new Forgot1Fragment();
+        txtForgotPassword.setOnClickListener(v -> {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, new Forgot1Fragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
 
-                // Begin the fragment transaction
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, forgot1Fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+        btnTogglePassword.setOnClickListener(v -> {
+            if (isPasswordVisible) {
+                edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                btnTogglePassword.setImageResource(R.drawable.ic_eye_off);
+            } else {
+                edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                btnTogglePassword.setImageResource(R.drawable.ic_eye_on);
             }
-        });
-        btnContinue.setOnClickListener(v -> {
-            // Khi bấm vào btnSignIn, mở NarBarActivity
-            Intent intent = new Intent(getActivity(), NarBarActivity.class);
-            startActivity(intent);
-            getActivity().finish();  // Đóng màn hình SignIn1Fragment lại
+            isPasswordVisible = !isPasswordVisible;
+            edtPassword.setSelection(edtPassword.getText().length());
         });
 
+        btnContinue.setOnClickListener(v -> {
+            String phone = edtEmailPhone.getText().toString().trim();
+            String password = edtPassword.getText().toString().trim();
+
+            if (phone.isEmpty() || password.isEmpty()) {
+                Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String formattedPhone = phone.startsWith("0") ? "+84" + phone.substring(1) : phone;
+
+            FirebaseFirestore.getInstance().collection("Account")
+                    .whereEqualTo("Contact", formattedPhone)
+                    .get()
+                    .addOnSuccessListener(query -> {
+                        if (query.isEmpty()) {
+                            Toast.makeText(getContext(), "Account not found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            DocumentSnapshot doc = query.getDocuments().get(0);
+                            String storedHash = Objects.requireNonNull(doc.getString("Password"));
+                            BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), storedHash);
+
+                            if (result.verified) {
+                                // Lưu UID bằng UserSessionManager
+                                String uid = doc.getId();
+                                UserSessionManager sessionManager = new UserSessionManager(requireContext());
+                                sessionManager.saveUid(uid);
+
+                                // Mở màn hình chính
+                                Intent intent = new Intent(getActivity(), NarBarActivity.class);
+                                startActivity(intent);
+                                requireActivity().finish();
+                            } else {
+                                Toast.makeText(getContext(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(getContext(), "Login failed", Toast.LENGTH_SHORT).show());
+        });
         return rootView;
     }
 }

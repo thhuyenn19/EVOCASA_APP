@@ -1,7 +1,7 @@
 package com.mobile.evocasa.auth;
 
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,8 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.R;
 
 import java.util.concurrent.TimeUnit;
@@ -31,33 +33,53 @@ public class SignUp2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up2, container, false);
 
-        edtPhone = view.findViewById(R.id.edtEmailPhone);  // giữ ID cũ để không cần sửa layout
+        edtPhone = view.findViewById(R.id.edtEmailPhone); // giữ nguyên ID nếu bạn không muốn đổi layout
         btnContinue = view.findViewById(R.id.btnContinue);
         mAuth = FirebaseAuth.getInstance();
 
-        setClickListener();
+        // Cài đặt input type để hiện bàn phím số
+        edtPhone.setInputType(InputType.TYPE_CLASS_PHONE);
 
-        return view;
-    }
-
-    private void setClickListener() {
         btnContinue.setOnClickListener(v -> {
-            btnContinue.setEnabled(false); // Tạm khóa nút để tránh spam
+            btnContinue.setEnabled(false);
 
             String phone = edtPhone.getText().toString().trim();
             if (!isValidVietnamPhone(phone)) {
-                edtPhone.setError("Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)");
-                btnContinue.setEnabled(true); // Mở lại nút nếu lỗi
+                edtPhone.setError("Invalid phone number (10 digits, starts with 0)");
+                btnContinue.setEnabled(true);
                 return;
             }
 
             String formattedPhone = "+84" + phone.substring(1);
-            sendOtp(formattedPhone);
+            checkIfPhoneExists(formattedPhone);
         });
+
+        return view;
     }
 
     private boolean isValidVietnamPhone(String phone) {
         return phone.length() == 10 && phone.startsWith("0") && phone.matches("\\d{10}");
+    }
+
+    private void checkIfPhoneExists(String fullPhoneNumber) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Customers")
+                .whereEqualTo("Phone", fullPhoneNumber)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        QuerySnapshot snapshot = task.getResult();
+                        if (!snapshot.isEmpty()) {
+                            edtPhone.setError("Phone number already exists");
+                            btnContinue.setEnabled(true);
+                        } else {
+                            sendOtp(fullPhoneNumber);
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Failed to check phone", Toast.LENGTH_SHORT).show();
+                        btnContinue.setEnabled(true);
+                    }
+                });
     }
 
     private void sendOtp(String fullPhoneNumber) {
@@ -75,26 +97,24 @@ public class SignUp2Fragment extends Fragment {
 
                 @Override
                 public void onVerificationCompleted(com.google.firebase.auth.PhoneAuthCredential credential) {
-                    // Auto verification nếu có thể
-                    Toast.makeText(getContext(), "Xác minh tự động", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Auto verification", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onVerificationFailed(FirebaseException e) {
-                    Toast.makeText(getContext(), "Lỗi gửi OTP: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    btnContinue.setEnabled(true); // Mở lại nút nếu có lỗi
+                    Toast.makeText(getContext(), "Failed to send OTP: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    btnContinue.setEnabled(true);
                 }
 
                 @Override
                 public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-                    // Gửi sang SignUp3Fragment
-                    Toast.makeText(getContext(), "Đã gửi mã xác thực", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Verification code sent", Toast.LENGTH_SHORT).show();
                     SignUp3Fragment fragment = SignUp3Fragment.newInstance(verificationId, edtPhone.getText().toString());
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment_container, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
-                    btnContinue.setEnabled(true); // Mở lại nút sau khi gửi thành công
+                    btnContinue.setEnabled(true);
                 }
             };
 }

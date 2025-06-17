@@ -6,16 +6,13 @@ import android.text.TextWatcher;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.*;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.R;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SignUp3Fragment extends Fragment {
 
@@ -64,7 +61,6 @@ public class SignUp3Fragment extends Fragment {
         };
 
         btnVerify = view.findViewById(R.id.btnVerifyEmail);
-
         setupInputBehaviour();
 
         btnVerify.setOnClickListener(v -> {
@@ -110,30 +106,11 @@ public class SignUp3Fragment extends Fragment {
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 clearError();
-                saveAccount();
+                goToNextStep();
             } else {
                 showError("Mã không chính xác");
             }
         });
-    }
-
-    private void saveAccount() {
-        String uid = mAuth.getCurrentUser().getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        Map<String, Object> account = new HashMap<>();
-        account.put("Contact", phoneNumber);
-        account.put("ContactType", "Phone");
-        account.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
-
-        db.collection("Account").document(uid).set(account)
-                .addOnSuccessListener(unused -> {
-                    Toast.makeText(getContext(), "Successfully!", Toast.LENGTH_SHORT).show();
-                    goToNextStep();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi lưu dữ liệu", Toast.LENGTH_SHORT).show();
-                });
     }
 
     private void goToNextStep() {
@@ -147,7 +124,7 @@ public class SignUp3Fragment extends Fragment {
     private void showError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         for (EditText edt : codeInputs) {
-            edt.setBackgroundResource(R.drawable.code_input_error_background); // bạn cần tạo drawable này
+            edt.setBackgroundResource(R.drawable.code_input_error_background);
         }
     }
 
