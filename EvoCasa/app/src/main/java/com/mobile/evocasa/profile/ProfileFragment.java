@@ -22,7 +22,7 @@ import com.mobile.evocasa.ChatActivity;
 import com.mobile.evocasa.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
-import com.mobile.evocasa.helpcenter.HelpCenterActivity;
+import com.mobile.evocasa.helpcenter.HelpCenterFragment;
 import com.mobile.models.SuggestedProducts;
 import com.mobile.utils.FontUtils;
 
@@ -88,21 +88,24 @@ public class ProfileFragment extends Fragment {
         });
 
         //Mở HelpCenter
-        ImageView imgHelpCenter = view.findViewById(R.id.imgHelpCenter);
+        View imgHelpCenter = view.findViewById(R.id.imgHelpCenter);
+        imgHelpCenter.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HelpCenterFragment())
+                    .addToBackStack(null)
+                    .commit();
+
+        });
         TextView txtHelpCenter = view.findViewById(R.id.txtHelpCenter);
+        txtHelpCenter.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new HelpCenterFragment())
+                    .addToBackStack(null)
+                    .commit();
 
-        View.OnClickListener openHelpCenter = v -> {
-            Intent intent = new Intent(getActivity(), HelpCenterActivity.class);
-            startActivity(intent);
-        };
-
-        if (imgHelpCenter != null) {
-            imgHelpCenter.setOnClickListener(openHelpCenter);
-        }
-        if (txtHelpCenter != null) {
-            txtHelpCenter.setOnClickListener(openHelpCenter);
-        }
-
+        });
 
 
         ImageView imgAvatar = view.findViewById(R.id.img_avatar);

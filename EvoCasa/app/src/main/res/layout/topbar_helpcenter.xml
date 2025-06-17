@@ -6,7 +6,8 @@
     android:background="@color/color_bg"
     android:gravity="center_vertical"
     android:paddingStart="15dp"
-    android:paddingEnd="15dp">
+    android:paddingEnd="15dp"
+    android:id="@+id/helpCenterTopbar">
 
     <!-- Nút back -->
     <LinearLayout

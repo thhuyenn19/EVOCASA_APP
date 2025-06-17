@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollPrivacyPolicy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:id="@+id/btnPrivacyBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgPrivacyBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/txtPrivacyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Privacy Policy"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txtPrivacyIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We respect your privacy. Please review how we collect, use, and protect your personal information."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:text="Information Collection"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="We collect your name, contact information, and order details when you shop with us. This helps us process your orders and provide support."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Use of Information"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Your data is used to fulfill orders, communicate with you, and improve our services. We do not sell your data to third parties."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Data Security"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="We use industry-standard security measures to protect your personal information against unauthorized access or disclosure."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="Your Rights"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="You may request to view, update, or delete your personal data at any time by contacting our support team."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="24dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

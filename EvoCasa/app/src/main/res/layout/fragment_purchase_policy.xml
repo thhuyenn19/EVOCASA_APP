@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollPurchasePolicy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
+
+    <!--Gói tất cả vào LinearLayout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <!-- Nút back -->
+            <LinearLayout
+                android:id="@+id/btnPurchaseBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgPurchaseBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+
+            </LinearLayout>
+
+            <!-- Spacer để căn giữa title -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <!-- Tiêu đề tùy chỉnh -->
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Purchase Policy"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <!-- Spacer phải -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+        <!-- Các View tiếp theo -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <!-- Title -->
+
+            <!-- Description -->
+            <TextView
+                android:id="@+id/txtPurchaseIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="We want you to have a seamless shopping experience. Please read our purchase policy below:"
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Policy Sections -->
+            <TextView
+                android:text="Order Placement"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="You can place orders online anytime by browsing our products and adding them to your cart. Make sure to provide accurate shipping details."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="Payment Methods"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="We support Cash on Delivery, bank transfer, and e-wallet payments. Full payment instructions will be shown at checkout."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="Shipping and Handling"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="Orders are processed within 1–2 business days. Delivery time ranges from 2–7 days depending on location and product type."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="Support"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:text="If you have any questions about your order, please contact our support team via hotline or email."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="24dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+

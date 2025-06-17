@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/topbar_helpcenter" />
+
+
+    <!-- Phần chính Help Center ban đầu -->
+    <ScrollView
+        android:id="@+id/help_center_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true">
+
+        <!-- Layout như bạn đã làm -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Banner -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginVertical="12dp"
+                android:layout_marginHorizontal="16dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgBanner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="1dp"
+                    android:src="@mipmap/ic_banner2"
+                    app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <TextView
+                        android:id="@+id/textOverlay1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_helpcenter_description"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Title FAQ -->
+            <TextView
+                android:id="@+id/txtFAQTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_faq"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <TextView
+                android:id="@+id/txtFAQDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_faq_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/inter_tight_italic" />
+
+            <!-- Nếu item FAQ ít thì vẫn có thể dùng RecyclerView trong ScrollView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never" />
+
+            <!-- Title Policy -->
+            <TextView
+                android:id="@+id/txtPolicyTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title_policy"
+                android:textColor="#3F2305"
+                android:textSize="19sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <!-- Policy Summaries -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp"
+                android:paddingBottom="24dp">
+
+                <!-- Purchase Policy Group -->
+                <LinearLayout
+                    android:id="@+id/policyPurchaseGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_purchase_policy"
+                        android:textColor="#3F2305"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_semibold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_purchase_policy_description"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/inter_tight_italic" />
+                    <TextView
+                        android:id="@+id/readMorePurchase"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_readmore"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        android:layout_gravity="end"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textColor="@color/color_5E4C3E"
+                        android:layout_marginEnd="10dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/color_333333"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- Return Policy Group -->
+                <LinearLayout
+                    android:id="@+id/policyReturnExchangeGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_return_policy"
+                        android:textColor="#3F2305"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_semibold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_return_policy_description"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/inter_tight_italic" />
+                    <TextView
+                        android:id="@+id/readMoreReturn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_readmore"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        android:layout_gravity="end"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textColor="@color/color_5E4C3E"
+                        android:layout_marginEnd="10dp"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:background="@color/color_333333"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+
+                <!-- Privacy Policy Group -->
+                <LinearLayout
+                    android:id="@+id/policyPrivacyGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_privacy_policy"
+                        android:textColor="#3F2305"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_semibold" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_privacy_policy_description"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/inter_tight_italic" />
+                    <TextView
+                        android:id="@+id/readMorePrivacy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_readmore"
+                        android:textSize="12sp"
+                        android:textStyle="italic"
+                        android:layout_gravity="end"
+                        android:textColor="@color/color_5E4C3E"
+                        android:fontFamily="@font/inter_semibold"
+                        android:layout_marginEnd="10dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
