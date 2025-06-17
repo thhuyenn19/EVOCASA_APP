@@ -54,6 +54,7 @@
 
         <!-- Featured blog -->
         <LinearLayout
+            android:id="@+id/cardFeaturedBlog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

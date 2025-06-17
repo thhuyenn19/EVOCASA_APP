@@ -60,11 +60,12 @@
 
         <!-- First image -->
         <ImageView
+            android:id="@+id/img_blog_detail_1"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_blogdetail6" />
+            android:src="@mipmap/ic_blogdetail16" />
 
         <!-- Heading 1 -->
 
@@ -94,11 +95,12 @@
 
         <!-- Second image -->
         <ImageView
+            android:id="@+id/img_blog_detail_2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="24dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_blogdetail1" />
+            android:src="@mipmap/ic_blogdetail11" />
 
         <!-- Heading 3-->
         <TextView
@@ -138,11 +140,12 @@
 
         <!-- Third image -->
         <ImageView
+            android:id="@+id/img_blog_detail_3"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="24dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_blogdetail2" />
+            android:src="@mipmap/ic_blogdetail12" />
         <!-- Heading 3-->
         <TextView
             android:id="@+id/txtHeading3"
@@ -180,11 +183,12 @@
             android:justificationMode="inter_word"/>
         <!-- 4th image -->
         <ImageView
+            android:id="@+id/img_blog_detail_4"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="24dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/ic_blogdetail3" />
+            android:src="@mipmap/ic_blogdetail13" />
 
         <!-- Heading 4-->
         <TextView
@@ -211,6 +215,7 @@
             android:justificationMode="inter_word"/>
         <!-- 5th image -->
         <ImageView
+            android:id="@+id/img_blog_detail_5"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="24dp"
