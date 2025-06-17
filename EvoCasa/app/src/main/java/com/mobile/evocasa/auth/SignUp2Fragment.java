@@ -1,188 +1,88 @@
 package com.mobile.evocasa.auth;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.mobile.evocasa.R;
+
+import java.util.concurrent.TimeUnit;
 
 public class SignUp2Fragment extends Fragment {
 
-    // UI Components
-    private ImageView btnBack, btnHelp;
-    private TextView txtTitle, txtEmailPhoneLabel, txtTerm, txtPrivacy, txtBy;
-    private EditText edtEmailPhone;
+    private EditText edtPhone;
     private AppCompatButton btnContinue;
+    private FirebaseAuth mAuth;
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    public SignUp2Fragment() {
-        // Required empty public constructor
-    }
-
-    public static SignUp2Fragment newInstance(String param1, String param2) {
-        SignUp2Fragment fragment = new SignUp2Fragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public SignUp2Fragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up2, container, false);
 
-        // Initialize UI components
-        initViews(view);
+        edtPhone = view.findViewById(R.id.edtEmailPhone);  // giữ ID cũ để không cần sửa layout
+        btnContinue = view.findViewById(R.id.btnContinue);
+        mAuth = FirebaseAuth.getInstance();
 
-        // Set custom fonts
-        setCustomFonts();
+        btnContinue.setOnClickListener(v -> {
+            String phone = edtPhone.getText().toString().trim();
 
-        // Set click listeners
-        setClickListeners();
+            if (!isValidVietnamPhone(phone)) {
+                edtPhone.setError("Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)");
+                return;
+            }
+
+            String formattedPhone = "+84" + phone.substring(1); // Chuyển 090xxxxxxx → +8490xxxxxxx
+            sendOtp(formattedPhone);
+        });
 
         return view;
     }
 
-    private void initViews(View view) {
-        btnBack = view.findViewById(R.id.btnBack);
-        btnHelp = view.findViewById(R.id.btnHelp);
-        txtTitle = view.findViewById(R.id.txtTitle);
-        txtEmailPhoneLabel = view.findViewById(R.id.txtEmailPhoneLabel);
-        edtEmailPhone = view.findViewById(R.id.edtEmailPhone);
-        btnContinue = view.findViewById(R.id.btnContinue);
-        txtTerm = view.findViewById(R.id.txtTerm);
-        txtPrivacy = view.findViewById(R.id.txtPrivacy);
-        txtBy = view.findViewById(R.id.txtBy);
+    private boolean isValidVietnamPhone(String phone) {
+        return phone.length() == 10 && phone.startsWith("0") && phone.matches("\\d{10}");
     }
 
-    private void setCustomFonts() {
-        try {
-            // Load custom fonts from assets/fonts
-            Typeface bold = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Bold.otf");
-            Typeface medium = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Medium.otf");
-            Typeface semiBold = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-SemiBold.otf");
-            Typeface regular = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
-
-            if (bold != null && medium != null && semiBold != null && regular != null) {
-                // Set typefaces for TextViews and Buttons
-                txtTitle.setTypeface(bold); // Title - Bold
-                txtEmailPhoneLabel.setTypeface(medium); // Email/Phone Label - Medium
-                txtTerm.setTypeface(semiBold); // Term - SemiBold
-                txtPrivacy.setTypeface(semiBold); // Privacy - SemiBold
-                txtBy.setTypeface(regular); // "By Using" - Regular
-                btnContinue.setTypeface(semiBold); // Continue Button - SemiBold
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            // Fallback to default fonts if custom fonts are not available
-            setDefaultFonts();
-        }
+    private void sendOtp(String fullPhoneNumber) {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(fullPhoneNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(getActivity())
+                .setCallbacks(callbacks)
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    private void setDefaultFonts() {
-        // Fallback fonts if custom fonts are not available
-        txtTitle.setTypeface(null, Typeface.BOLD);
-        txtEmailPhoneLabel.setTypeface(null, Typeface.NORMAL);
-        txtTerm.setTypeface(null, Typeface.BOLD);
-        txtPrivacy.setTypeface(null, Typeface.BOLD);
-        txtBy.setTypeface(null, Typeface.NORMAL);
-        btnContinue.setTypeface(null, Typeface.BOLD);
-    }
-
-    private void setClickListeners() {
-        // Back button click
-        btnBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
-        });
-
-        // Help button click
-        btnHelp.setOnClickListener(v -> {
-            // TODO: Implement help functionality
-            // showHelpDialog() or navigate to help screen
-        });
-
-        // Continue button click
-        btnContinue.setOnClickListener(v -> {
-            String emailPhone = edtEmailPhone.getText().toString().trim();
-            if (validateInput(emailPhone)) {
-                // Proceed to next step
-                proceedToNextStep(emailPhone);
-            }
-        });
-
-        // Terms click
-        txtTerm.setOnClickListener(v -> {
-            // TODO: Open Terms page
-            openTerms();
-        });
-
-        // Privacy Policy click
-        txtPrivacy.setOnClickListener(v -> {
-            // TODO: Open Privacy Policy page
-            openPrivacyPolicy();
-        });
-    }
-
-    private boolean validateInput(String input) {
-        if (input.isEmpty()) {
-            edtEmailPhone.setError("Please enter email or phone number");
-            edtEmailPhone.requestFocus();
-            return false;
+    PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(com.google.firebase.auth.PhoneAuthCredential credential) {
+            // Auto verification nếu có thể
         }
 
-        // Basic validation - you can enhance this
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(input).matches() &&
-                !android.util.Patterns.PHONE.matcher(input).matches()) {
-            edtEmailPhone.setError("Please enter a valid email or phone number");
-            edtEmailPhone.requestFocus();
-            return false;
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(getContext(), "Lỗi gửi OTP: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
-        return true;
-    }
-
-    private void proceedToNextStep(String emailPhone) {
-        // Navigate to SignUp3Fragment
-        SignUp3Fragment signUp3Fragment = new SignUp3Fragment();
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, signUp3Fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-
-    private void openTerms() {
-        // TODO: Implement terms page navigation
-    }
-
-    private void openPrivacyPolicy() {
-        // TODO: Implement privacy policy page navigation
-    }
+        @Override
+        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+            // Gửi sang SignUp3Fragment
+            SignUp3Fragment fragment = SignUp3Fragment.newInstance(verificationId, edtPhone.getText().toString());
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, fragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }
+    };
 }

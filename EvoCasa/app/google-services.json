@@ -12,7 +12,20 @@
           "package_name": "com.mobile.evocasa"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "408656799826-va72rte43fjrqosh708d8o5r3pa4eva1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "eab2477f32fae1322df028fc5b494f9beddfbb95"
+          }
+        },
+        {
+          "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC0RXAAeZzunRp4eWJhKPZJ8Y_A70WtLOQ"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

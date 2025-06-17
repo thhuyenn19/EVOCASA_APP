@@ -1,71 +1,45 @@
-body {
+* {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #FFFCF3;
-  color: #3F2307;
-  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
-/* Container for sidebar and dashboard */
-.app-container {
-  display: flex;
+/* Main Content - giống như category */
+.main-content {
+  padding: 10px;
+  background-color: #FFFCF3;
   min-height: 100vh;
   width: 100%;
 }
 
-/* Sidebar styling (assumed) */
-.sidebar {
-  width: 250px; /* Adjust this to match your sidebar width */
-  background-color: #5A3726;
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 1;
-}
-
-/* Main content wrapper */
-.dashboard-wrapper {
-  flex: 1;
-  min-width: 0;
-  padding: 20px 15px;
-  box-sizing: border-box;
-  margin-left: 250px; /* Matches sidebar width to prevent overlap */
-}
-
 .dashboard {
   width: 100%;
-  max-width: 1200px; /* Optional: limit max width for better readability */
-  margin: 0 auto;
-  position: relative;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-  overflow-x: auto;
+  background-color: #FFFCF3;
+  color: #3F2307;
 }
 
+/* FIX: Header cùng margin với stats-container */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  margin: 20px 34px 30px 34px; /* Cùng margin với stats-container */
 }
 
 header h1 {
   font-family: 'Zen Old Mincho', serif;
   font-size: 30px;
   margin: 0;
-  color: #3F2307;
+  color: #5e4c3e;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-weight: bold;
 }
 
-/* Container chứa các nút */
+/* FIX: Actions cũng cùng margin với stats-container */
 .actions {
-  margin-top: 20px;
-  margin-right: 34px;
-  margin-bottom: 20px;
+  margin: 0 34px 20px 34px; /* Cùng margin với stats-container */
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -95,12 +69,10 @@ header h1 {
   margin: auto 0;
 }
 
-/* Hover state for better UX */
 .filter-button:hover {
   background-color: rgba(63, 35, 5, 0.05);
 }
 
-/* Focus state for accessibility */
 .filter-button:focus {
   outline: 2px solid rgba(63, 35, 5, 0.5);
   outline-offset: 2px;
@@ -182,19 +154,13 @@ header h1 {
   color: #3F2307;
 }
 
-/* Main content layout */
-.main-content {
-  margin-bottom: 30px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
+/* Main content layout với margin giống category */
 .stats-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr) 2fr;
   gap: 20px;
-  margin-bottom: 20px;
-  width: 100%;
+  margin: 20px 34px;
+  width: calc(100% - 68px);
   box-sizing: border-box;
 }
 
@@ -211,8 +177,8 @@ header h1 {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   padding: 25px;
   border: 1px solid #E0D5C5;
-  margin-bottom: 10px;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .stat-box {
@@ -224,6 +190,7 @@ header h1 {
   flex-direction: column;
   border: 1px solid #E0D5C5;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .stat-icon {
@@ -308,7 +275,6 @@ header h1 {
   font-size: 16px;
 }
 
-/* New View More Button */
 .view-more-btn {
   padding: 8px 15px;
   background-color: #E0D5C5;
@@ -325,7 +291,6 @@ header h1 {
   background-color: #D6C9B6;
 }
 
-/* Card styles for sections */
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -368,23 +333,21 @@ header h1 {
   margin: 0;
 }
 
-/* Dashboard bottom layout */
 .dashboard-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
-  width: 100%;
+  margin: 20px 34px;
+  width: calc(100% - 68px);
   box-sizing: border-box;
 }
 
-/* Chart container */
 .chart-container {
   position: relative;
   height: 300px;
   width: 100%;
 }
 
-/* Table styling */
 .activity-table {
   width: 100%;
   border-collapse: separate;
@@ -426,7 +389,6 @@ header h1 {
   font-weight: 600;
 }
 
-/* Legend styling */
 .chart-legend {
   display: flex;
   gap: 20px;
@@ -461,7 +423,6 @@ header h1 {
   height: 220px;
 }
 
-/* New products chart layout with legend on right */
 .products-layout {
   display: flex;
   align-items: center;
@@ -489,28 +450,34 @@ header h1 {
   box-sizing: border-box;
 }
 
-/* Main content wrapper to prevent sidebar overlap */
-:host {
-  display: block;
-  position: relative;
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;
-}
+/* RESPONSIVE DESIGN - FIX ĐỀ LÊN SIDEBAR */
 
-/* Responsive design - reorganized and enhanced */
-/* Extra large screens */
-@media (max-width: 1400px) {
-  .dashboard {
-    max-width: 100%;
-    padding: 0 15px;
+/* Desktop lớn */
+@media (min-width: 1400px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr) 2fr;
   }
 }
 
-/* Large desktop screens */
-@media (max-width: 1200px) {
+/* Desktop trung bình */
+@media (max-width: 1399px) and (min-width: 1201px) {
   .stats-container {
     grid-template-columns: 1fr 1fr;
+    margin: 20px 32px;
+    width: calc(100% - 64px);
+  }
+  
+  .dashboard-bottom {
+    margin: 20px 32px;
+    width: calc(100% - 64px);
+  }
+  
+  header {
+    margin: 20px 32px 30px 32px;
+  }
+  
+  .actions {
+    margin: 0 32px 20px 32px;
   }
   
   .stats {
@@ -519,173 +486,78 @@ header h1 {
   }
 }
 
-/* Tablet and small desktop */
-@media (max-width: 992px) {
-  .dashboard-wrapper {
-    margin-left: 0;
-    padding: 10px;
-  }
-  .dashboard {
-    width: 100%;
-    padding: 0;
-  }
-  
+/* Laptop nhỏ */
+@media (max-width: 1200px) and (min-width: 1025px) {
   .stats-container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    margin: 20px 30px;
+    width: calc(100% - 60px);
+    gap: 15px;
   }
   
   .dashboard-bottom {
     grid-template-columns: 1fr;
-  }
-  
-  .card {
-    padding: 20px 15px;
-  }
-}
-
-/* Mobile landscape and tablet portrait */
-@media (max-width: 768px) {
-  .app-container {
-    flex-direction: column;
-  }
-  .sidebar {
-    width: 100%;
-    position: relative;
-    height: auto;
-  }
-  .dashboard-wrapper {
-    margin-left: 0;
-    padding: 10px;
-    width: 100%;
-  }
-  
-  .dashboard {
-    width: 100%;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  .stats {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    margin: 20px 30px;
+    width: calc(100% - 60px);
   }
   
   header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .header-actions {
-    align-self: stretch;
-    justify-content: space-between;
-    width: 100%;
+    margin: 20px 30px 30px 30px;
   }
   
   .actions {
-    margin-right: 0;
-    width: 100%;
-    justify-content: space-between;
+    margin: 0 30px 20px 30px;
   }
   
-  .filter-button, .export-button {
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .chart-container {
-    height: 250px;
-    overflow-x: auto;
-  }
-  
-  .stats-container {
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  .card, .stat-box {
-    width: 100%;
-    box-sizing: border-box;
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: span 2;
   }
 }
 
-/* Mobile phones - Ultra small screens */
-@media (max-width: 480px) {
+/* Tablet - Sidebar bắt đầu ẩn từ 1024px */
+@media (max-width: 1024px) {
+  .main-content {
+    width: 100% !important;
+    padding: 10px !important;
+    margin: 0 !important;
+  }
+  
   .dashboard {
-    padding: 0 5px;
+    width: 100% !important;
+    max-width: 100% !important;
   }
   
   .stats-container {
-    grid-template-columns: 1fr;
-    gap: 10px;
+    grid-template-columns: 1fr 1fr !important;
+    margin: 15px 20px !important;
+    width: calc(100% - 40px) !important;
+    gap: 15px;
   }
   
-  .card {
-    padding: 15px 10px;
+  .dashboard-bottom {
+    grid-template-columns: 1fr !important;
+    margin: 15px 20px !important;
+    width: calc(100% - 40px) !important;
   }
   
-  .stat-box {
-    padding: 10px;
-  }
-  
-  .stat-box h2 {
-    font-size: 20px;
-  }
-  
-  .change {
-    font-size: 12px;
-  }
-  
-  .view-report-btn {
-    padding: 8px 10px;
-    font-size: 12px;
-  }
-  
-  .chart-container {
-    height: 180px;
-    overflow-x: auto;
-  }
-  
-  .activity-table {
-    font-size: 12px;
-  }
-  
-  .activity-table th, .activity-table td {
-    padding: 8px;
-  }
-}
-
-/* Small mobile phones */
-@media (max-width: 400px) {
-  header h1 {
-    font-size: 24px;
-  }
-  
-  .filter-button, .export-button {
-    max-width: none;
-    padding: 6px 8px;
+  header {
+    margin: 15px 20px 25px 20px !important;
   }
   
   .actions {
-    gap: 6px;
+    margin: 0 20px 15px 20px !important;
   }
   
-  .stat-box h2 {
-    font-size: 18px;
-  }
-  
-  .chart-legend {
-    flex-direction: column;
-    align-items: center;
+  .stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-column: span 2 !important;
   }
   
   .card {
-    padding: 12px 8px;
+    padding: 18px 12px;
   }
-}
-
-@media (max-width: 992px) {
+  
   .products-layout {
     flex-direction: column;
     align-items: stretch;
@@ -696,7 +568,6 @@ header h1 {
     width: 100%;
     max-width: 100%;
     margin-bottom: 15px;
-    overflow-x: auto;
   }
   
   .product-legend {
@@ -709,48 +580,175 @@ header h1 {
   }
 }
 
+/* Mobile lớn */
 @media (max-width: 768px) {
+  .main-content {
+    width: 100% !important;
+    padding: 5px !important;
+    margin: 0 !important;
+  }
+  
+  .stats-container {
+    grid-template-columns: 1fr 1fr !important;
+    margin: 10px 15px !important;
+    width: calc(100% - 30px) !important;
+    gap: 12px;
+  }
+  
+  .dashboard-bottom {
+    margin: 10px 15px !important;
+    width: calc(100% - 30px) !important;
+    grid-template-columns: 1fr !important;
+  }
+  
+  header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    margin: 10px 15px 20px 15px !important;
+  }
+  
+  .actions {
+    margin: 0 15px 10px 15px !important;
+    width: calc(100% - 30px) !important;
+    justify-content: space-between;
+  }
+  
+  .filter-button, .export-button {
+    flex: 1;
+    justify-content: center;
+    max-width: calc(50% - 5px);
+  }
+  
+  .stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-column: span 2 !important;
+    gap: 12px;
+  }
+  
+  .chart-container {
+    height: 230px;
+  }
+  
   #top-products-chart {
-    height: 200px;
+    height: 180px;
+    width: 100%;
+  }
+}
+
+/* Mobile trung bình - 1 cột */
+@media (max-width: 600px) {
+  .stats-container {
+    grid-template-columns: 1fr !important;
+    margin: 10px 12px !important;
+    width: calc(100% - 24px) !important;
+    gap: 10px;
+  }
+  
+  .dashboard-bottom {
+    margin: 10px 12px !important;
+    width: calc(100% - 24px) !important;
+  }
+  
+  header {
+    margin: 10px 12px 15px 12px !important;
+  }
+  
+  .actions {
+    margin: 0 12px 10px 12px !important;
+    width: calc(100% - 24px) !important;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .filter-button, .export-button {
+    max-width: 100%;
     width: 100%;
   }
   
-  .product-legend {
-    gap: 8px;
+  .stats {
+    grid-template-columns: 1fr !important;
+    grid-column: span 1 !important;
   }
   
-  .legend-item {
-    flex: 0 0 calc(50% - 8px);
-    box-sizing: border-box;
-  }
-}
-
-@media (max-width: 576px) {
-  .products-chart-container {
-    height: 180px;
+  header h1 {
+    font-size: 24px;
   }
   
-  .product-legend {
-    flex-direction: column;
-    align-items: center;
+  .stat-box h2 {
+    font-size: 20px;
   }
   
-  .legend-item {
-    flex: 0 0 100%;
+  .card {
+    padding: 15px 10px;
   }
 }
 
-/* Ensuring tables and wide elements can scroll horizontally */
-.activity-table-container {
-  width: 100%;
-  overflow-x: auto;
+/* Mobile nhỏ */
+@media (max-width: 480px) {
+  .stats-container {
+    margin: 8px 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+  
+  .dashboard-bottom {
+    margin: 8px 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+  
+  header {
+    margin: 8px 10px 12px 10px !important;
+  }
+  
+  .actions {
+    margin: 0 10px 8px 10px !important;
+    width: calc(100% - 20px) !important;
+  }
+  
+  header h1 {
+    font-size: 20px;
+  }
+  
+  .filter-button, .export-button {
+    padding: 5px 8px;
+    font-size: 14px;
+  }
+  
+  .stat-box h2 {
+    font-size: 18px;
+  }
+  
+  .card {
+    padding: 12px 8px;
+  }
+  
+  .stat-box {
+    padding: 8px;
+  }
 }
 
-.activity-table {
-  min-width: 600px;
-}
-
-.chart-container {
-  min-width: 300px;
-  overflow-x: auto;
+/* Mobile rất nhỏ */
+@media (max-width: 360px) {
+  .stats-container {
+    margin: 5px !important;
+    width: calc(100% - 10px) !important;
+  }
+  
+  .dashboard-bottom {
+    margin: 5px !important;
+    width: calc(100% - 10px) !important;
+  }
+  
+  header {
+    margin: 5px 5px 10px 5px !important;
+  }
+  
+  .actions {
+    margin: 0 5px 5px 5px !important;
+    width: calc(100% - 10px) !important;
+  }
+  
+  header h1 {
+    font-size: 18px;
+  }
 }

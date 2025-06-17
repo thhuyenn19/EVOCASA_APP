@@ -49,6 +49,11 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation ("com.google.firebase:firebase-bom:33.1.2")
     implementation ("com.google.firebase:firebase-firestore:25.1.4")
+    implementation ("com.google.firebase:firebase-auth:23.2.1")
+    implementation ("androidx.credentials:credentials:1.5.0")
+    implementation ("androidx.credentials:credentials-play-services-auth:1.5.0")
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
 
     implementation ("me.relex:circleindicator:2.1.6")
     implementation ("com.google.android.material:material:1.9.0")
