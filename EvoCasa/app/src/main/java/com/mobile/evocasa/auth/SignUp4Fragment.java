@@ -176,6 +176,15 @@ public class SignUp4Fragment extends Fragment {
     private void updateCheckIndicator(View view, boolean valid) {
         view.setSelected(valid);
     }
+    private String generateRandomName() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder name = new StringBuilder("User_");
+        Random rand = new Random();
+        for (int i = 0; i < 6; i++) {
+            name.append(chars.charAt(rand.nextInt(chars.length())));
+        }
+        return name.toString();
+    }
 
     private void updateProgressBar() {
         int progress = 0;
@@ -210,20 +219,17 @@ public class SignUp4Fragment extends Fragment {
         String uid = currentUser.getUid();
         String phone = currentUser.getPhoneNumber() != null ? currentUser.getPhoneNumber() : "";
 
-        // Hash password with bcrypt
         String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
+        String randomName = generateRandomName(); // 💡 tên ngẫu nhiên
 
-        // Account document (for authentication only)
         Map<String, Object> account = new HashMap<>();
         account.put("Contact", phone);
         account.put("ContactType", "Phone");
-        account.put("Name", ""); // Chưa nhập nên để trống
+        account.put("Name", randomName);
         account.put("Password", hashedPassword);
 
-
-        // Customers document (for personal info)
         Map<String, Object> customer = new HashMap<>();
-        customer.put("Name", "");
+        customer.put("Name", randomName);
         customer.put("Phone", phone);
         customer.put("Mail", "");
         customer.put("DOB", null);
@@ -234,6 +240,7 @@ public class SignUp4Fragment extends Fragment {
         customer.put("Cart", new ArrayList<>());
         customer.put("Notification", new ArrayList<>());
         customer.put("Voucher", new ArrayList<>());
+
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
