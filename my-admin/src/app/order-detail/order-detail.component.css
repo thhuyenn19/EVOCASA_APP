@@ -70,6 +70,11 @@
 .save-button img {
   width: 50%;
 }
+/* order-detail.component.css */
+.order-id {
+  margin-bottom: 10px; /* cách Customer Information 1 khoảng */
+  font-style: italic;  /* nếu muốn nghiêng như hình */
+}
 
 .order-info-header {
   display: flex;
@@ -102,14 +107,16 @@
   margin-bottom: 30px;
 }
 
-.left-content {
+.right-content {
   flex: 1;
 }
 
-.right-content {
-  width: 250px;
-  height: auto;
-  margin-top: 90px;
+.left-content {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  /* height: auto; */
+  margin-top: 0px;
 }
 
 .order-table {
@@ -135,23 +142,68 @@
   vertical-align: middle;
 }
 
-.price-details {
-  text-align: right;
-  margin-top: 20px;
-  font-size: 16px;
+/* Wrapper cho toàn bộ khối giá */
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  /* margin-top: 20px; */
+  margin-right: 5px;
 }
 
-.price-row {
+/* PrePrice/Delivery/Discount: block cố định độ rộng, đẩy sang phải */
+.price-details {
+  width: 200px;       /* điều chỉnh vừa khít nội dung */
+  margin-left: auto;  /* đẩy block này sang lề phải */
+}
+.price-details .price-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top:8px;
+  opacity: 70%;
+}
+
+/* Dòng kẻ: full-width và canh trái */
+.price-divider {
+  align-self: flex-start;  /* canh hr về lề trái của wrapper */
+  width: 100%;             /* chạy full-width container */
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.3);
   margin: 10px 0;
 }
 
-.price-row.total {
-  margin-top: 20px;
+/* Total: block cùng width với price-details và đẩy sang phải */
+.price-total {
+  width: 200px;        /* phải trùng với .price-details để label thẳng hàng */
+  margin-left: auto;
+  display: flex;
+  justify-content: space-between;
   font-size: 18px;
   font-weight: 600;
+  color: #52331D;
 }
 
+/* Giữ chung min-width cho label để canh hàng */
+.price-row .label,
+.price-total .label {
+  min-width: 130px;
+}
+
+/* Canh phải cho value */
+.price-row .value,
+.price-total .value {
+  text-align: right;
+}
+
+
+
+
+
 .info-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;               /* chiếm hết không gian còn trống */
+  padding-bottom: 50px;  /* khoảng trắng ở đáy */
+  box-sizing: border-box;
   padding: 20px;
   /* height: 100%; */
   border-radius: 15px;
@@ -192,7 +244,7 @@
 }
 
 .status-buttons button {
-  padding: 10px 40px;
+  padding: 10px 35px;
   margin-left: 15px;
   margin-top: 15px;
   border: none;
@@ -204,7 +256,9 @@
 }
 
 .status-buttons button.active {
-  border: 2px solid #5e4c3e;
+  border: 2px solid #52331D;
+  background-color: #5E4C3E;
+  color: #F2EAD3;
   /* color: #fff; */
 }
 
