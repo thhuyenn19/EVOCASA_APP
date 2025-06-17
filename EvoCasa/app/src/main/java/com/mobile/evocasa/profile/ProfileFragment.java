@@ -1,5 +1,6 @@
 package com.mobile.evocasa.profile;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.evocasa.MainActivity;
 import com.mobile.utils.UserSessionManager;
 
 import android.content.Intent;
@@ -32,7 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends Fragment {
-    private TextView txtName;
+    private TextView txtName, txtLogOut;
+    private ImageView imgLogOut;
     private RecyclerView recyclerView;
     private View view;
     @Nullable
@@ -120,6 +122,14 @@ public class ProfileFragment extends Fragment {
                     .replace(R.id.fragment_container, new ProfileDetailFragment())
                     .addToBackStack(null)
                     .commit();
+        });
+        TextView txtLogOut = view.findViewById(R.id.txtLogOut);
+        ImageView imgLogOut = view.findViewById(R.id.imgLogOut);
+        txtLogOut.setOnClickListener(v -> {
+            new UserSessionManager(requireContext()).clearSession();
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         });
         btnEditAvatar.setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager()
