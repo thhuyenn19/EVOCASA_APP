@@ -54,7 +54,7 @@
                 android:gravity="center"
                 android:text="Return and Exchange Policy"
                 android:textColor="@color/color_5E4C3E"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 android:fontFamily="@font/zen_old_mincho_black" />
 
