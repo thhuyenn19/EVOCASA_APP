@@ -35,19 +35,25 @@ public class SignUp2Fragment extends Fragment {
         btnContinue = view.findViewById(R.id.btnContinue);
         mAuth = FirebaseAuth.getInstance();
 
-        btnContinue.setOnClickListener(v -> {
-            String phone = edtPhone.getText().toString().trim();
+        setClickListener();
 
+        return view;
+    }
+
+    private void setClickListener() {
+        btnContinue.setOnClickListener(v -> {
+            btnContinue.setEnabled(false); // Tạm khóa nút để tránh spam
+
+            String phone = edtPhone.getText().toString().trim();
             if (!isValidVietnamPhone(phone)) {
                 edtPhone.setError("Số điện thoại không hợp lệ (10 số, bắt đầu bằng 0)");
+                btnContinue.setEnabled(true); // Mở lại nút nếu lỗi
                 return;
             }
 
-            String formattedPhone = "+84" + phone.substring(1); // Chuyển 090xxxxxxx → +8490xxxxxxx
+            String formattedPhone = "+84" + phone.substring(1);
             sendOtp(formattedPhone);
         });
-
-        return view;
     }
 
     private boolean isValidVietnamPhone(String phone) {
@@ -58,31 +64,37 @@ public class SignUp2Fragment extends Fragment {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                 .setPhoneNumber(fullPhoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(getActivity())
+                .setActivity(requireActivity())
                 .setCallbacks(callbacks)
                 .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
-    PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-        @Override
-        public void onVerificationCompleted(com.google.firebase.auth.PhoneAuthCredential credential) {
-            // Auto verification nếu có thể
-        }
+    private final PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks =
+            new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
-        @Override
-        public void onVerificationFailed(FirebaseException e) {
-            Toast.makeText(getContext(), "Lỗi gửi OTP: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+                @Override
+                public void onVerificationCompleted(com.google.firebase.auth.PhoneAuthCredential credential) {
+                    // Auto verification nếu có thể
+                    Toast.makeText(getContext(), "Xác minh tự động", Toast.LENGTH_SHORT).show();
+                }
 
-        @Override
-        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
-            // Gửi sang SignUp3Fragment
-            SignUp3Fragment fragment = SignUp3Fragment.newInstance(verificationId, edtPhone.getText().toString());
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
-    };
+                @Override
+                public void onVerificationFailed(FirebaseException e) {
+                    Toast.makeText(getContext(), "Lỗi gửi OTP: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    btnContinue.setEnabled(true); // Mở lại nút nếu có lỗi
+                }
+
+                @Override
+                public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                    // Gửi sang SignUp3Fragment
+                    Toast.makeText(getContext(), "Đã gửi mã xác thực", Toast.LENGTH_SHORT).show();
+                    SignUp3Fragment fragment = SignUp3Fragment.newInstance(verificationId, edtPhone.getText().toString());
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_container, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    btnContinue.setEnabled(true); // Mở lại nút sau khi gửi thành công
+                }
+            };
 }

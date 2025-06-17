@@ -1,92 +1,95 @@
-[
-  {
-    "_id": {
-      "$oid": "67c1f612d202a289bd1bb345"
-    },
-    "FullName": "Nguyen Thi Huyen",
-    "Email": "nguyentihuyen23@gmail.com",
-    "Password": "PassHuyen2025!",
-    "Role": "Admin",
-    "Permissions": [
-      "ManageCustomer",
-      "ViewDashboard"
-    ],
-    "Status": "Active",
-    "LastLogin": "2025-02-06T17:29:52Z",
-    "CreatedAt": "2024-05-21T17:29:52Z",
-    "UpdatedAt": "2025-02-28T17:29:52Z",
-    "Image": "huyen_avatar.jpg"
+[{
+  "_id": {
+    "$oid": "67c1f612d202a289bd1bb345"
   },
-  {
-    "_id": {
-      "$oid": "67c1f612d202a289bd1bb346"
-    },
-    "FullName": "Tran Thi Nhung",
-    "Email": "tranthinhung45@gmail.com",
-    "Password": "NhuPassword!789",
-    "Role": "Manager",
-    "Permissions": [
-      "ManageEmployees",
-      "ViewDashboard"
-    ],
-    "Status": "Inactive",
-    "LastLogin": "2025-02-15T17:29:52Z",
-    "CreatedAt": "2024-04-17T17:29:52Z",
-    "UpdatedAt": "2025-02-28T17:29:52Z",
-    "Image": "nhung_avatar.jpg"
+  "FullName": "Nguyen Thi Huyen",
+  "Email": "nguyenhuyen@example.com",
+  "employeeid": "EMP001",
+  "Password": "password123",
+  "Role": "Sales",
+  "Permissions": [
+    "ManageCustomer",
+    "ViewDashboard"
+  ],
+  "Status": "Active",
+  "LastLogin": "2025-02-06 17:29:52",
+  "CreatedAt": "2024-05-21 17:29:52",
+  "UpdatedAt": "2025-02-28 17:29:52",
+  "Image": "/images/admin/huyen_avatar.jpg"
+},
+{
+  "_id": {
+    "$oid": "67c1f612d202a289bd1bb346"
   },
-  {
-    "_id": {
-      "$oid": "67c1f612d202a289bd1bb347"
-    },
-    "FullName": "Le Thi Nhu",
-    "Email": "lethinhu27@gmail.com",
-    "Password": "SecureNhu2025#",
-    "Role": "Support",
-    "Permissions": [
-      "ManageInvoices",
-      "ViewDashboard"
-    ],
-    "Status": "Active",
-    "LastLogin": "2025-02-12T17:29:52Z",
-    "CreatedAt": "2024-10-18T17:29:52Z",
-    "UpdatedAt": "2025-02-28T17:29:52Z",
-    "Image": "nhu_avatar.jpg"
+  "FullName": "Tran Thi Nhung",
+  "Email": "tranthinhung@example.com",
+  "employeeid": "EMP002",
+  "Password": "password123",
+  "Role": "HR",
+  "Permissions": [
+    "ManageEmployees",
+    "ViewDashboard"
+  ],
+  "Status": "Inactive",
+  "LastLogin": "2025-02-15 17:29:52",
+  "CreatedAt": "2024-04-17 17:29:52",
+  "UpdatedAt": "2025-02-28 17:29:52",
+  "Image": "/images/admin/nhung_avatar.jpg"
+},
+{
+  "_id": {
+    "$oid": "67c1f612d202a289bd1bb347"
   },
-  {
-    "_id": {
-      "$oid": "67c1f612d202a289bd1bb348"
-    },
-    "FullName": "Pham Thi Thao",
-    "Email": "phamthithao89@gmail.com",
-    "Password": "ThaoPass#2025",
-    "Role": "Admin",
-    "Permissions": [
-      "ManageSystems",
-      "ViewDashboard"
-    ],
-    "Status": "Active",
-    "LastLogin": "2025-01-29T17:29:52Z",
-    "CreatedAt": "2024-08-14T17:29:52Z",
-    "UpdatedAt": "2025-02-28T17:29:52Z",
-    "Image": "thao_avatar.jpg"
+  "FullName": "Le Thi Nhu",
+  "Email": "leminhnhu@example.com",
+  "employeeid": "EMP003",
+  "Password": "password123",
+  "Role": "Finance",
+  "Permissions": [
+    "ManageInvoices",
+    "ViewDashboard"
+  ],
+  "Status": "Active",
+  "LastLogin": "2025-02-12 17:29:52",
+  "CreatedAt": "2024-10-18 17:29:52",
+  "UpdatedAt": "2025-02-28 17:29:52",
+  "Image": "/images/admin/nhu_avatar.jpg"
+},
+{
+  "_id": {
+    "$oid": "67c1f612d202a289bd1bb348"
   },
-  {
-    "_id": {
-      "$oid": "67c1f612d202a289bd1bb349"
-    },
-    "FullName": "Dang Thanh Trang",
-    "Email": "dangthanhtrang55@gmail.com",
-    "Password": "Trang2025!Safe",
-    "Role": "Manager",
-    "Permissions": [
-      "ManageCampaigns",
-      "ViewDashboard"
-    ],
-    "Status": "Inactive",
-    "LastLogin": "2025-02-21T17:29:52Z",
-    "CreatedAt": "2024-03-20T17:29:52Z",
-    "UpdatedAt": "2025-02-28T17:29:52Z",
-    "Image": "trang_avatar.jpg"
-  }
-]
+  "FullName": "Pham Thi Thao",
+  "Email": "huyducthao@example.com",
+  "employeeid": "EMP004",
+  "Password": "password123",
+  "Role": "IT",
+  "Permissions": [
+    "ManageSystems",
+    "ViewDashboard"
+  ],
+  "Status": "Active",
+  "LastLogin": "2025-01-29 17:29:52",
+  "CreatedAt": "2024-08-14 17:29:52",
+  "UpdatedAt": "2025-02-28 17:29:52",
+  "Image": "/images/admin/thao_avatar.jpg"
+},
+{
+  "_id": {
+    "$oid": "67c1f612d202a289bd1bb349"
+  },
+  "FullName": "Dang Thanh Trang",
+  "Email": "dangthanhtrang@example.com",
+  "employeeid": "EMP005",
+  "Password": "password123",
+  "Role": "Marketing",
+  "Permissions": [
+    "ManageCampaigns",
+    "ViewDashboard"
+  ],
+  "Status": "Inactive",
+  "LastLogin": "2025-02-21 17:29:52",
+  "CreatedAt": "2024-03-20 17:29:52",
+  "UpdatedAt": "2025-02-28 17:29:52",
+  "Image": "/images/admin/trang_avatar.jpg"
+}]

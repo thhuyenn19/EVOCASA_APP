@@ -115,7 +115,7 @@
         android:layout_marginBottom="24dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="6">
 
         <EditText
             android:id="@+id/edtCode1"
@@ -178,6 +178,20 @@
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/code_input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textColor="#5E4C3E"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtCode6"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
             android:background="@drawable/code_input_background"
             android:gravity="center"
             android:inputType="number"
@@ -186,6 +200,7 @@
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
+
 
 
     <!-- Resend Code -->

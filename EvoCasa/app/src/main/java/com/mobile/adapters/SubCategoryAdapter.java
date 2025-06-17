@@ -23,7 +23,6 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         void onSubCategorySelected(String subCategoryName);
     }
 
-    // ✅ Thêm interface để handle position click cho auto scroll
     public interface OnSubCategoryPositionClickListener {
         void onSubCategoryClick(int position);
     }
@@ -32,7 +31,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     private final OnSubCategoryClickListener listener;
     private OnSubCategoryPositionClickListener positionClickListener;
 
-    // ✅ Thêm setter cho position click listener
+
     public void setOnSubCategoryClickListener(OnSubCategoryPositionClickListener positionClickListener) {
         this.positionClickListener = positionClickListener;
     }

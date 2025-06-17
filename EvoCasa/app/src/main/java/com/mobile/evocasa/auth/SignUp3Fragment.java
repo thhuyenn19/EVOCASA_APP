@@ -1,10 +1,9 @@
 package com.mobile.evocasa.auth;
 
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.*;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatButton;
@@ -26,7 +25,7 @@ public class SignUp3Fragment extends Fragment {
     private String verificationId;
     private String phoneNumber;
 
-    private EditText edtCode;
+    private EditText[] codeInputs;
     private AppCompatButton btnVerify;
     private FirebaseAuth mAuth;
 
@@ -45,7 +44,6 @@ public class SignUp3Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-
         if (getArguments() != null) {
             verificationId = getArguments().getString(ARG_VERIFICATION_ID);
             phoneNumber = getArguments().getString(ARG_PHONE);
@@ -56,13 +54,23 @@ public class SignUp3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up3, container, false);
 
-        edtCode = view.findViewById(R.id.edtCode1); // hoặc gộp nhiều ô như trước
+        codeInputs = new EditText[]{
+                view.findViewById(R.id.edtCode1),
+                view.findViewById(R.id.edtCode2),
+                view.findViewById(R.id.edtCode3),
+                view.findViewById(R.id.edtCode4),
+                view.findViewById(R.id.edtCode5),
+                view.findViewById(R.id.edtCode6)
+        };
+
         btnVerify = view.findViewById(R.id.btnVerifyEmail);
 
+        setupInputBehaviour();
+
         btnVerify.setOnClickListener(v -> {
-            String code = edtCode.getText().toString().trim();
-            if (TextUtils.isEmpty(code)) {
-                edtCode.setError("Nhập mã xác thực");
+            String code = getCodeFromInputs();
+            if (code.length() != 6) {
+                showError("Vui lòng nhập đầy đủ 6 số mã OTP");
                 return;
             }
             verifyCode(code);
@@ -71,13 +79,40 @@ public class SignUp3Fragment extends Fragment {
         return view;
     }
 
+    private void setupInputBehaviour() {
+        for (int i = 0; i < codeInputs.length; i++) {
+            final int index = i;
+            codeInputs[i].addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() == 1 && index < codeInputs.length - 1) {
+                        codeInputs[index + 1].requestFocus();
+                    } else if (s.length() == 0 && index > 0) {
+                        codeInputs[index - 1].requestFocus();
+                    }
+                }
+            });
+        }
+    }
+
+    private String getCodeFromInputs() {
+        StringBuilder codeBuilder = new StringBuilder();
+        for (EditText edt : codeInputs) {
+            codeBuilder.append(edt.getText().toString().trim());
+        }
+        return codeBuilder.toString();
+    }
+
     private void verifyCode(String code) {
         PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
         mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                clearError();
                 saveAccount();
             } else {
-                Toast.makeText(getContext(), "Mã không chính xác", Toast.LENGTH_SHORT).show();
+                showError("Mã không chính xác");
             }
         });
     }
@@ -93,7 +128,7 @@ public class SignUp3Fragment extends Fragment {
 
         db.collection("Account").document(uid).set(account)
                 .addOnSuccessListener(unused -> {
-                    Toast.makeText(getContext(), "Tạo tài khoản thành công!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Successfully!", Toast.LENGTH_SHORT).show();
                     goToNextStep();
                 })
                 .addOnFailureListener(e -> {
@@ -107,5 +142,18 @@ public class SignUp3Fragment extends Fragment {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        for (EditText edt : codeInputs) {
+            edt.setBackgroundResource(R.drawable.code_input_error_background); // bạn cần tạo drawable này
+        }
+    }
+
+    private void clearError() {
+        for (EditText edt : codeInputs) {
+            edt.setBackgroundResource(R.drawable.code_input_background);
+        }
     }
 }

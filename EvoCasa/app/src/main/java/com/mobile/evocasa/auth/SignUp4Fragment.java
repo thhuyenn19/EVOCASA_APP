@@ -2,20 +2,11 @@ package com.mobile.evocasa.auth;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.*;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -23,7 +14,14 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.R;
+
+import java.util.*;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class SignUp4Fragment extends Fragment {
 
@@ -35,14 +33,8 @@ public class SignUp4Fragment extends Fragment {
     private AppCompatButton btnCreateAccount;
     private TextView txtTitle, txtTerm, txtPrivacy, txtBy, txtPassword, txtTypePassword;
 
-    private boolean hasLength = false;
-    private boolean hasNumber = false;
-    private boolean hasSpecialChar = false;
-    private boolean hasUpperCase = false;
-    private boolean passwordsMatch = false;
-
-    private boolean isPasswordVisible = false;
-    private boolean isConfirmPasswordVisible = false;
+    private boolean hasLength = false, hasNumber = false, hasSpecialChar = false, hasUpperCase = false, passwordsMatch = false;
+    private boolean isPasswordVisible = false, isConfirmPasswordVisible = false;
 
     private Typeface fontRegular, fontBold, fontMedium, fontSemiBold;
 
@@ -59,8 +51,7 @@ public class SignUp4Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_sign_up4, container, false);
     }
 
@@ -125,74 +116,44 @@ public class SignUp4Fragment extends Fragment {
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
+            if (getActivity() != null) getActivity().onBackPressed();
         });
 
         btnHelp.setOnClickListener(v -> Toast.makeText(getContext(), "Help clicked", Toast.LENGTH_SHORT).show());
+        btnTogglePassword.setOnClickListener(v -> toggleVisibility(edtPassword, btnTogglePassword));
+        btnToggleConfirmPassword.setOnClickListener(v -> toggleVisibility(edtConfirmPassword, btnToggleConfirmPassword));
 
-        btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility());
-        btnToggleConfirmPassword.setOnClickListener(v -> toggleConfirmPasswordVisibility());
+        edtPassword.addTextChangedListener(new PasswordWatcher());
+        edtConfirmPassword.addTextChangedListener(new PasswordWatcher());
 
-        edtPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                validatePassword(s.toString());
-                checkPasswordsMatch();
-            }
-            @Override public void afterTextChanged(Editable s) {}
-        });
-
-        edtConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-                checkPasswordsMatch();
-            }
-            @Override public void afterTextChanged(Editable s) {}
-        });
-
-        // Add OnFocusChangeListener to show/hide password criteria
         edtPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                // Show progress bar and password criteria when focused
-                progressBar.setVisibility(View.VISIBLE);
-                passwordCriteriaLayout.setVisibility(View.VISIBLE);
-            } else {
-                // Hide progress bar and password criteria when focus is lost
-                progressBar.setVisibility(View.GONE);
-                passwordCriteriaLayout.setVisibility(View.GONE);
-            }
+            passwordCriteriaLayout.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+            progressBar.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
         });
 
         btnCreateAccount.setOnClickListener(v -> handleCreateAccount());
-
         txtTerm.setOnClickListener(v -> openTerms());
         txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
     }
 
-    private void togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            btnTogglePassword.setImageResource(R.drawable.ic_eye_off);
+    private void toggleVisibility(EditText editText, ImageView toggleBtn) {
+        if (editText.getTransformationMethod() instanceof PasswordTransformationMethod) {
+            editText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            toggleBtn.setImageResource(R.drawable.ic_eye_on);
         } else {
-            edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            btnTogglePassword.setImageResource(R.drawable.ic_eye_on);
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            toggleBtn.setImageResource(R.drawable.ic_eye_off);
         }
-        isPasswordVisible = !isPasswordVisible;
-        edtPassword.setSelection(edtPassword.getText().length());
+        editText.setSelection(editText.getText().length());
     }
 
-    private void toggleConfirmPasswordVisibility() {
-        if (isConfirmPasswordVisible) {
-            edtConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_off);
-        } else {
-            edtConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_on);
+    private class PasswordWatcher implements TextWatcher {
+        @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+            validatePassword(edtPassword.getText().toString());
+            checkPasswordsMatch();
         }
-        isConfirmPasswordVisible = !isConfirmPasswordVisible;
-        edtConfirmPassword.setSelection(edtConfirmPassword.getText().length());
+        @Override public void afterTextChanged(Editable s) {}
     }
 
     private void validatePassword(String password) {
@@ -212,8 +173,8 @@ public class SignUp4Fragment extends Fragment {
         updateCreateAccountButton();
     }
 
-    private void updateCheckIndicator(View indicator, boolean isValid) {
-        indicator.setSelected(isValid);
+    private void updateCheckIndicator(View view, boolean valid) {
+        view.setSelected(valid);
     }
 
     private void updateProgressBar() {
@@ -222,92 +183,84 @@ public class SignUp4Fragment extends Fragment {
         if (hasNumber) progress++;
         if (hasSpecialChar) progress++;
         if (hasUpperCase) progress++;
-
         progressBar.setProgress(progress);
     }
 
     private void checkPasswordsMatch() {
-        String password = edtPassword.getText().toString();
-        String confirmPassword = edtConfirmPassword.getText().toString();
-        passwordsMatch = !password.isEmpty() && password.equals(confirmPassword);
+        String p1 = edtPassword.getText().toString();
+        String p2 = edtConfirmPassword.getText().toString();
+        passwordsMatch = !p1.isEmpty() && p1.equals(p2);
         updateCreateAccountButton();
     }
 
     private void updateCreateAccountButton() {
-        boolean allValid = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
-        btnCreateAccount.setEnabled(allValid);
-
-        if (allValid) {
-            btnCreateAccount.setAlpha(1.0f);
-            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.green, null));
-        } else {
-            btnCreateAccount.setAlpha(0.5f);
-            btnCreateAccount.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.gray_light, null));
-        }
+        boolean enabled = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
+        btnCreateAccount.setEnabled(enabled);
+        btnCreateAccount.setAlpha(enabled ? 1f : 0.5f);
     }
 
     private void handleCreateAccount() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(getContext(), "Không tìm thấy người dùng", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String password = edtPassword.getText().toString();
-        String confirmPassword = edtConfirmPassword.getText().toString();
+        String uid = currentUser.getUid();
+        String phone = currentUser.getPhoneNumber() != null ? currentUser.getPhoneNumber() : "";
 
-        if (password.isEmpty()) {
-            Toast.makeText(getContext(), "Please enter a password", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        // Hash password with bcrypt
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
-        if (!password.equals(confirmPassword)) {
-            Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Map<String, Object> account = new HashMap<>();
+        account.put("Contact", phone);
+        account.put("ContactType", "Phone");
+        account.put("Name", "");
+        account.put("Password", hashedPassword);
+        account.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
 
-        if (!(hasLength && hasNumber && hasSpecialChar && hasUpperCase)) {
-            Toast.makeText(getContext(), "Password does not meet all requirements", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        Map<String, Object> customer = new HashMap<>();
+        customer.put("Name", "");
+        customer.put("Phone", phone);
+        customer.put("Mail", "");
+        customer.put("DOB", null);
+        customer.put("Address", null);
+        customer.put("Gender", "");
+        customer.put("Image", "");
+        customer.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
+        customer.put("Cart", new ArrayList<>());
+        customer.put("Notification", new ArrayList<>());
+        customer.put("Voucher", new ArrayList<>());
 
-        // Navigate to SignUp5Fragment
-        navigateToSignUp5Fragment();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Account").document(uid).set(account)
+                .addOnSuccessListener(aVoid -> db.collection("Customer").document(uid).set(customer)
+                        .addOnSuccessListener(doc -> {
+                            Toast.makeText(getContext(), "SignUp Successfully!", Toast.LENGTH_SHORT).show();
+                            navigateToSignUp5Fragment();
+                        })
+                        .addOnFailureListener(e -> Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show()))
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show());
     }
 
     private void navigateToSignUp5Fragment() {
-        // Navigate to the next fragment (SignUp5Fragment)
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, new SignUp5Fragment());
         transaction.addToBackStack(null);
         transaction.commit();
     }
 
     private void openTerms() {
-        // TODO: Implement opening the Terms and Conditions page
-        Toast.makeText(getContext(), "Opening Terms", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Điều khoản sử dụng", Toast.LENGTH_SHORT).show();
     }
 
     private void openPrivacyPolicy() {
-        // TODO: Implement opening the Privacy Policy page
-        Toast.makeText(getContext(), "Opening Privacy Policy", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Chính sách bảo mật", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        edtPassword = null;
-        edtConfirmPassword = null;
-        btnBack = null;
-        btnHelp = null;
-        btnTogglePassword = null;
-        btnToggleConfirmPassword = null;
-        progressBar = null;
-        passwordCriteriaLayout = null;
-        checkLength = null;
-        checkNumber = null;
-        checkSpecialChar = null;
-        checkUpperCase = null;
-        btnCreateAccount = null;
-        txtTitle = null;
-        txtTerm = null;
-        txtPrivacy = null;
-        txtBy = null;
-        txtPassword = null;
-        txtTypePassword = null;
     }
 }
