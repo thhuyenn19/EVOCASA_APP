@@ -189,11 +189,11 @@
     <string name="title_policy">Policy</string>
     <string name="title_helpcenter_description">How can we help you?</string>
     <string name="title_faq_description">At EvoCasa, we expect at a day’s start is you, better and happier than yesterday. We have got you covered share your concern or check our frequently asked questions listed below.</string>
-    <string name="title_purchase_policy">Purchase Policy</string>
-    <string name="title_purchase_policy_description">Guidelines on how to place, confirm, and pay for your order at EvoCasa.</string>
-    <string name="title_return_policy">Return and Exchange Policy</string>
-    <string name="title_return_policy_description">Learn about conditions and procedures for returning or exchanging products.</string>
-    <string name="title_privacy_policy">Privacy Policy</string>
-    <string name="title_privacy_policy_description">How your personal data is collected, stored, and protected on our platform.</string>
+    <string name="title_return_policy">Return Policy</string>
+    <string name="title_return_policy_description">The return policy applies to customers who shop and make payments on the EvoCasa app.</string>
+    <string name="title_warranty_policy">Warranty Policy</string>
+    <string name="title_warranty_policy_description">This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa app.</string>
+    <string name="title_shipping_policy">Shipping Policy</string>
+    <string name="title_shipping_policy_description">Shipping policy applies to customers who shop and make payments on the EvoCasa app.</string>
     <string name="title_readmore">Read more</string>
 </resources>

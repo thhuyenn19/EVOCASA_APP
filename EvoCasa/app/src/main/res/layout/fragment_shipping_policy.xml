@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollShippingPolicy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Top bar with back button and title -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:id="@+id/btnShippingBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgShippingBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/txtShippingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Shipping Policy"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <!-- Main content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txtShippingIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shipping policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa app."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Section: General Provisions -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="General Provisions"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Shipping carriers will not resolve compensation claims if you accept the package and sign the delivery receipt. Please inspect packaging before confirming receipt. If there are signs of damage (tears, dents, holes, or water damage), kindly refuse to accept and notify us immediately."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Orders will be delivered to your doorstep unless there is restricted access (e.g., offices or apartments), in which case delivery will be made to the main entrance only."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Customers are encouraged to record an unboxing video to document the condition of the package and its contents. This will help with complaint handling if needed."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="For complaints, please provide full order details, along with photos of the package and product, to ensure prompt resolution."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Section: Delivery Coverage -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Delivery Coverage"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="EvoCasa offers nationwide shipping within Vietnam. For international shipping, please contact Customer Support before ordering."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="During pandemics or unforeseen events, shipping areas may be adjusted according to government regulations."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Section: Delivery Time -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Delivery Time"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Deliveries occur during business hours, Monday to Saturday (excluding Sundays and public holidays).\n• Express Delivery: 2–5 business days\n• Store Pickup: 24–72 hours\nNote: Remote areas may need 1–3 additional days. Customers will be notified of any changes."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Section: Shipping Fees -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Shipping Fees"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="From January 28, 2025, EvoCasa offers free nationwide shipping for website orders (excluding express delivery).\n\nShipping fees depend on distance and product weight. Fees will be shown at checkout after entering the delivery address."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Section: Contact -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Contact Information"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Hotline: 1900 8386 or 0961 961 961\nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)"
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="24dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

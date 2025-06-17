@@ -61,7 +61,7 @@
 
             <!-- Title FAQ -->
             <TextView
-                android:id="@+id/txtFAQTitle"
+                android:id="@+id/txtFaqTittle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_faq"
@@ -120,7 +120,7 @@
 
                 <!-- Purchase Policy Group -->
                 <LinearLayout
-                    android:id="@+id/policyPurchaseGroup"
+                    android:id="@+id/policyReturnGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -128,7 +128,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_purchase_policy"
+                        android:text="@string/title_return_policy"
                         android:textColor="#3F2305"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -137,7 +137,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_purchase_policy_description"
+                        android:text="@string/title_return_policy_description"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="13sp"
                         android:fontFamily="@font/inter_tight_italic" />
@@ -164,7 +164,7 @@
 
                 <!-- Return Policy Group -->
                 <LinearLayout
-                    android:id="@+id/policyReturnExchangeGroup"
+                    android:id="@+id/policyWarrantyGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -172,7 +172,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_return_policy"
+                        android:text="@string/title_warranty_policy"
                         android:textColor="#3F2305"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -181,7 +181,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_return_policy_description"
+                        android:text="@string/title_warranty_policy_description"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="13sp"
                         android:fontFamily="@font/inter_tight_italic" />
@@ -208,7 +208,7 @@
 
                 <!-- Privacy Policy Group -->
                 <LinearLayout
-                    android:id="@+id/policyPrivacyGroup"
+                    android:id="@+id/policyShippingGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -216,7 +216,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_privacy_policy"
+                        android:text="@string/title_shipping_policy"
                         android:textColor="#3F2305"
                         android:textSize="14sp"
                         android:textStyle="bold"
@@ -225,7 +225,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_privacy_policy_description"
+                        android:text="@string/title_shipping_policy_description"
                         android:textColor="@color/color_5E4C3E"
                         android:textSize="13sp"
                         android:fontFamily="@font/inter_tight_italic" />

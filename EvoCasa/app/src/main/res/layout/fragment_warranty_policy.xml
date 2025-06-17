@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollWarrantyPolicy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Top bar -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:id="@+id/btnWarrantyBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgWarrantyBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/txtWarrantyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Warranty Policy"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <!-- Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txtWarrantyIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa website."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Warranty Period"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="The warranty period is calculated from the purchase date (based on the purchase receipt).\n- Home decor items: 12 months\n- Furniture: 24 months"
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Warranty Conditions"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="• Product must still be within the warranty period.\n• A valid purchase receipt must be presented, containing complete information and undamaged."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Warranty Exclusions"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="• No valid purchase receipt.\n• Expired warranty period.\n• Discounted products per EvoCasa’s policy.\n• Scratches/damages caused during use.\n• Improper use against guidelines.\n• Repairs by unauthorized personnel.\n• Insect or animal damage.\n• Force majeure (natural disasters, fires, etc.).\n• Natural wear and tear."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Warranty Scope"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Applies only to manufacturing or material defects.\n- Home decor: visible issues like misaligned joints, discoloration, oxidation, or accessory detachment due to technical faults."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Warranty Process"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="1. Bring product + valid receipt to EvoCasa.\n2. Product inspection:\n- If under warranty: repair/replace/exchange.\n- If not repairable and out of stock: replace with equivalent value.\n- Out of warranty: repair service offered with consent.\n3. Inspection within 2 working days; customer will be notified."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Important Note"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="If conditions are not met, the warranty will be denied and the product returned at customer's expense. Please check the product’s condition before submitting."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="24dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

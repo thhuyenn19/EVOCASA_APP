@@ -12,10 +12,10 @@ import com.mobile.evocasa.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PurchasePolicyFragment#newInstance} factory method to
+ * Use the {@link WarrantyPolicyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PurchasePolicyFragment extends Fragment {
+public class WarrantyPolicyFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class PurchasePolicyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public PurchasePolicyFragment() {
+    public WarrantyPolicyFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class PurchasePolicyFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment PurchasePolicyFragment.
+     * @return A new instance of fragment WarrantyPolicyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static PurchasePolicyFragment newInstance(String param1, String param2) {
-        PurchasePolicyFragment fragment = new PurchasePolicyFragment();
+    public static WarrantyPolicyFragment newInstance(String param1, String param2) {
+        WarrantyPolicyFragment fragment = new WarrantyPolicyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,12 +61,12 @@ public class PurchasePolicyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_purchase_policy, container, false);
+        //return inflater.inflate(R.layout.fragment_warranty_policy, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_purchase_policy, container, false);
+        View view = inflater.inflate(R.layout.fragment_warranty_policy, container, false);
 
-        View btnBack = view.findViewById(R.id.btnPurchaseBack);
-        View imgBack = view.findViewById(R.id.imgPurchaseBack);
+        View btnBack = view.findViewById(R.id.btnWarrantyBack);
+        View imgBack = view.findViewById(R.id.imgWarrantyBack);
 
         View.OnClickListener backListener = v -> {
             requireActivity().getSupportFragmentManager().popBackStack(); // hoặc onBackPressed()
@@ -76,6 +76,5 @@ public class PurchasePolicyFragment extends Fragment {
         imgBack.setOnClickListener(backListener);
 
         return view;
-
     }
 }

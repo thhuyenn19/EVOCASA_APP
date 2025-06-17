@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollReturnPolicy"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:clipToPadding="false">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Top bar with back button and title -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:id="@+id/btnReturnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:background="@drawable/bg_rounded_button"
+                android:orientation="vertical"
+                android:clickable="true"
+                android:focusable="true">
+
+                <ImageView
+                    android:id="@+id/imgReturnBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_rounded_button"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <TextView
+                android:id="@+id/txtReturnTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:text="Return Policy"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/zen_old_mincho_black" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.7" />
+        </LinearLayout>
+
+        <!-- Main Content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/txtReturnIntro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The return policy applies to customers who shop and make payments on the EvoCasa website. For store purchases, contact the original store. For website orders, email support@evocasa.com or call 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays and Tet)."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter_tight_italic"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:text="Conditions for Return"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Products sold are non-returnable unless a defect is identified at the time of purchase."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Return Time Frame"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="• In-store orders: 1-time return for full-priced items within 7 days from receipt date.\n\n• Website orders:\n- Full-priced and ≤30% discounted: within 14 days of receipt.\n- >30% discounted: within 5 days. Only size changes allowed.\n\nNote: Return window is based on courier system. Request must be made within the time frame."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Receipt Requirement"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Original receipt (or copy for partial return) must be provided."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Product Condition"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Returned items must be unused and include original packaging, tags, inserts, boxes, bags, and gifts (if any)."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Value Adjustment"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Returns allowed only for items of equal or higher value. Customers pay the difference if higher. No refund if lower.\n\nCustom-made orders are non-returnable."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Important Note"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Non-eligible returns will be refused and returned at customer's cost. Please check the condition before submitting a request."
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Contact"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3F2305"
+                android:fontFamily="@font/inter_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Hotline: 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays)\nEmail: support@evocasa.com"
+                android:textSize="14sp"
+                android:textColor="@color/color_5E4C3E"
+                android:fontFamily="@font/inter"
+                android:layout_marginBottom="24dp" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -114,35 +114,33 @@ public class HelpCenterFragment extends Fragment {
         });
 
         //Mở policy
-        LinearLayout policyPurchaseGroup = view.findViewById(R.id.policyPurchaseGroup);
-        policyPurchaseGroup.setOnClickListener(v -> {
-            // Chuyển sang EditPersonalFragment
+        LinearLayout policyReturnGroup = view.findViewById(R.id.policyReturnGroup);
+        policyReturnGroup.setOnClickListener(v -> {
             requireActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new PurchasePolicyFragment()) // ID của container chứa fragment
+                    .replace(R.id.fragment_container, new ReturnPolicyFragment()) // ID của container chứa fragment
                     .addToBackStack(null) // Cho phép quay lại bằng nút back
                     .commit();
         });
 
-        LinearLayout policyReturnExchangeGroup = view.findViewById(R.id.policyReturnExchangeGroup);
-        policyReturnExchangeGroup.setOnClickListener(v -> {
-            // Chuyển sang EditPersonalFragment
+        LinearLayout policyWarrantyGroup = view.findViewById(R.id.policyWarrantyGroup);
+        policyWarrantyGroup.setOnClickListener(v -> {
             requireActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new ReturnExchangePolicyFragment()) // ID của container chứa fragment
+                    .replace(R.id.fragment_container, new WarrantyPolicyFragment()) // ID của container chứa fragment
                     .addToBackStack(null) // Cho phép quay lại bằng nút back
                     .commit();
         });
 
-        LinearLayout policyPrivacyGroup = view.findViewById(R.id.policyPrivacyGroup);
-        policyPrivacyGroup.setOnClickListener(v -> {
+        LinearLayout policyShippingGroup = view.findViewById(R.id.policyShippingGroup);
+        policyShippingGroup.setOnClickListener(v -> {
             // Chuyển sang EditPersonalFragment
             requireActivity()
                     .getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new PrivacyFragment()) // ID của container chứa fragment
+                    .replace(R.id.fragment_container, new ShippingPolicyFragment()) // ID của container chứa fragment
                     .addToBackStack(null) // Cho phép quay lại bằng nút back
                     .commit();
         });

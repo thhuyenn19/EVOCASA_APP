@@ -12,10 +12,10 @@ import com.mobile.evocasa.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ReturnExchangePolicyFragment#newInstance} factory method to
+ * Use the {@link ReturnPolicyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReturnExchangePolicyFragment extends Fragment {
+public class ReturnPolicyFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class ReturnExchangePolicyFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ReturnExchangePolicyFragment() {
+    public ReturnPolicyFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class ReturnExchangePolicyFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ReturnExchangePolicyFragment.
+     * @return A new instance of fragment ReturnPolicyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ReturnExchangePolicyFragment newInstance(String param1, String param2) {
-        ReturnExchangePolicyFragment fragment = new ReturnExchangePolicyFragment();
+    public static ReturnPolicyFragment newInstance(String param1, String param2) {
+        ReturnPolicyFragment fragment = new ReturnPolicyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,19 +61,19 @@ public class ReturnExchangePolicyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_return_exchange_policy, container, false);
+        //return inflater.inflate(R.layout.fragment_return_policy, container, false);
 
-        View view = inflater.inflate(R.layout.fragment_return_exchange_policy, container, false);
+        View view = inflater.inflate(R.layout.fragment_return_policy, container, false);
 
-        View btnReturnBack = view.findViewById(R.id.btnReturnBack);
-        View imgReturnBack = view.findViewById(R.id.imgReturnBack);
+        View btnBack = view.findViewById(R.id.btnReturnBack);
+        View imgBack = view.findViewById(R.id.imgReturnBack);
 
         View.OnClickListener backListener = v -> {
             requireActivity().getSupportFragmentManager().popBackStack(); // hoặc onBackPressed()
         };
 
-        btnReturnBack.setOnClickListener(backListener);
-        imgReturnBack.setOnClickListener(backListener);
+        btnBack.setOnClickListener(backListener);
+        imgBack.setOnClickListener(backListener);
 
         return view;
     }
