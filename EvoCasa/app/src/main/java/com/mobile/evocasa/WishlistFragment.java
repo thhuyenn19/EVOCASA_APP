@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.adapters.WishProductAdapter;
@@ -21,11 +22,13 @@ import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.UserSessionManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 public class WishlistFragment extends Fragment {
@@ -56,7 +59,39 @@ public class WishlistFragment extends Fragment {
         recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         wishProductList = new ArrayList<>();
-        wishProductAdapter = new WishProductAdapter(wishProductList);
+        wishProductAdapter = new WishProductAdapter(wishProductList, position -> {
+            // Khi click vào sản phẩm (hoặc icon yêu thích), xóa sản phẩm khỏi RecyclerView
+            wishProductList.remove(position);
+            wishProductAdapter.notifyItemRemoved(position);
+
+            // Cập nhật Firestore nếu cần (xóa sản phẩm khỏi wishlist)
+            // Đây là nơi bạn có thể xử lý Firestore nếu bạn lưu sản phẩm theo cách khác
+            String customerId = new UserSessionManager(getContext()).getUid(); // Lấy customerId từ session
+            db.collection("wishlist").document(customerId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            // Giả sử bạn lưu trữ các sản phẩm trực tiếp, không phải product_id
+                            List<Map<String, Object>> products = (List<Map<String, Object>>) documentSnapshot.get("products");
+                            // Tìm sản phẩm và xóa khỏi danh sách
+                            if (products != null) {
+                                products.remove(position); // Xóa sản phẩm từ danh sách
+                                db.collection("wishlist").document(customerId)
+                                        .update("products", products) // Cập nhật lại danh sách sản phẩm trong Firestore
+                                        .addOnSuccessListener(aVoid -> {
+                                            Log.d("Wishlist", "Product removed from wishlist in Firestore");
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Log.e("Wishlist", "Error removing product from wishlist in Firestore", e);
+                                        });
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("Wishlist", "Error fetching wishlist data", e);
+                    });
+        });
+
         recyclerViewWishProduct.setAdapter(wishProductAdapter);
 
         // Gọi hàm load từ Firestore

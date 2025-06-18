@@ -1,6 +1,5 @@
 package com.mobile.adapters;
 
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mobile.evocasa.R;
-import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
 
@@ -23,9 +21,16 @@ import java.util.Random;
 public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.WishProductViewHolder> {
 
     private List<WishProduct> wishProductList;
+    private OnItemClickListener onItemClickListener;
 
-    public WishProductAdapter(List<WishProduct> wishProductList) {
+    // Interface để xử lý sự kiện click
+    public interface OnItemClickListener {
+        void onItemClick(int position); // Định nghĩa sự kiện click vào bất kỳ item nào
+    }
+
+    public WishProductAdapter(List<WishProduct> wishProductList,  OnItemClickListener listener) {
         this.wishProductList = wishProductList;
+        this.onItemClickListener = listener;
     }
 
 
@@ -70,6 +75,23 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         float fakeRating = (float) (4 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
         holder.txtRating.setText(String.format("%.1f", fakeRating));
 
+        // Thêm sự kiện click vào icon yêu thích (cập nhật tất cả)
+        holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);  // Set default icon (ic_wish_heart)
+
+        holder.imgFavorite.setOnClickListener(v -> {
+            // Chuyển icon thành "favourite" khi click
+            for (WishProduct p : wishProductList) {
+                // Không cần set trạng thái "yêu thích" trong đối tượng WishProduct
+                // Cập nhật lại giao diện với ic_favourite
+            }
+            // Thông báo cho RecyclerView cập nhật lại UI (cập nhật tất cả các icon)
+            notifyDataSetChanged();  // Cập nhật lại tất cả các item
+
+            // Gọi listener để xử lý thêm hành động khác (xóa sản phẩm khỏi wishlist hoặc lưu vào favourites)
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(position);
+            }
+        });
     }
 
     @Override
