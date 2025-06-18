@@ -1,67 +1,125 @@
 package com.mobile.models;
 
+import com.google.firebase.firestore.PropertyName;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class WishProduct {
-    private int imageResId;
+    private String image;
+
+    @PropertyName("Name")
     private String name;
-    private String oldPrice;
-    private String newPrice;
-    private String discount;
+
+    @PropertyName("Price")
+    private double price;
+
+    // Vì không có rating trong Firestore → sẽ random trong Adapter
     private float rating;
 
-    public WishProduct(int imageResId, String name, String oldPrice, String newPrice, String discount, float rating) {
-        this.imageResId = imageResId;
-        this.name = name;
-        this.oldPrice = oldPrice;
-        this.newPrice = newPrice;
-        this.discount = discount;
-        this.rating = rating;
+    public WishProduct() {}
+
+    // Getter
+    @PropertyName("Name")
+    public String getName() { return name; }
+
+    @PropertyName("Price")
+    public double getPrice() { return price; }
+
+    public float getRating() { return rating; }
+
+    public void setRating(float rating) { this.rating = rating; }
+
+    public void setImage(String image) { this.image = image; }
+
+    public List<String> getImageList() {
+        try {
+            return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
     }
 
-    public int getImageResId() {
-        return imageResId;
-    }
-
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getOldPrice() {
-        return oldPrice;
-    }
-
-    public void setOldPrice(String oldPrice) {
-        this.oldPrice = oldPrice;
-    }
-
-    public String getNewPrice() {
-        return newPrice;
-    }
-
-    public void setNewPrice(String newPrice) {
-        this.newPrice = newPrice;
-    }
-
-    public String getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
+    public String getFirstImage() {
+        List<String> imgs = getImageList();
+        return (imgs != null && !imgs.isEmpty()) ? imgs.get(0) : null;
     }
 }
+
+
+
+
+
+
+
+
+//BÀI CŨ
+//package com.mobile.models;
+//
+//public class WishProduct {
+//    private int imageResId;
+//    private String name;
+//    private String oldPrice;
+//    private String newPrice;
+//    private String discount;
+//    private float rating;
+//
+//    public WishProduct(int imageResId, String name, String oldPrice, String newPrice, String discount, float rating) {
+//        this.imageResId = imageResId;
+//        this.name = name;
+//        this.oldPrice = oldPrice;
+//        this.newPrice = newPrice;
+//        this.discount = discount;
+//        this.rating = rating;
+//    }
+//
+//    public int getImageResId() {
+//        return imageResId;
+//    }
+//
+//    public void setImageResId(int imageResId) {
+//        this.imageResId = imageResId;
+//    }
+//
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+//
+//    public String getOldPrice() {
+//        return oldPrice;
+//    }
+//
+//    public void setOldPrice(String oldPrice) {
+//        this.oldPrice = oldPrice;
+//    }
+//
+//    public String getNewPrice() {
+//        return newPrice;
+//    }
+//
+//    public void setNewPrice(String newPrice) {
+//        this.newPrice = newPrice;
+//    }
+//
+//    public String getDiscount() {
+//        return discount;
+//    }
+//
+//    public void setDiscount(String discount) {
+//        this.discount = discount;
+//    }
+//
+//    public float getRating() {
+//        return rating;
+//    }
+//
+//    public void setRating(float rating) {
+//        this.rating = rating;
+//    }
+//}

@@ -4,17 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
-    app:cardBackgroundColor="#FFFCF3">
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp"
+    android:layout_margin="6dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        >
+        android:background="#FFFCF3">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,26 +25,9 @@
                 android:layout_height="match_parent"
                 android:clipToOutline="true"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_furniture_tevechairs"
-                />
+                android:src="@mipmap/ic_lighting_brasslamp"
+                app:cornerRadius="8dp" />
             <!--tag-->
-            <TextView
-                android:id="@+id/tvTagDiscountTop"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:text="-37%"
-                android:textColor="#E24747"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                android:drawableLeft="@drawable/ic_flash"
-                android:paddingStart="2dp"
-                android:paddingEnd="2dp"
-                android:paddingTop="1dp"
-                android:paddingBottom="1dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bg_discount_top_tag" />
-
 
             <!-- Icon yêu thích -->
             <ImageView
@@ -58,26 +40,17 @@
                 android:src="@drawable/ic_wishlist_heart"/>
         </RelativeLayout>
 
-
         <!-- Product Name -->
         <TextView
-            android:id="@+id/tvProductName"
+            android:id="@+id/txtProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Teve Chairs"
+            android:text="MCM Brass Lamp"
             android:textColor="@color/color_5E4C3E"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginTop="2dp" />
 
-        <!-- Old Price -->
-        <TextView
-            android:id="@+id/tvOldPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$109"
-            android:textColor="#9C9999"
-            android:textSize="12sp" />
 
         <!-- Sale Price + Discount + Rating -->
         <LinearLayout
@@ -88,29 +61,13 @@
 
             <!-- Sale Price -->
             <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/txtPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$69"
-                android:textColor="#E24747"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:text="$109"
+                android:textColor="#9C9999"
+                android:textSize="12sp"  />
 
-            <!-- Discount Tag -->
-            <TextView
-                android:id="@+id/tvDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-37%"
-                android:textStyle="bold"
-                android:textColor="#FF6600"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/bg_discount_tag"
-                android:paddingLeft="3dp"
-                android:paddingRight="3dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:textSize="10sp" />
 
             <!-- Spacer + Rating -->
             <LinearLayout
@@ -127,10 +84,10 @@
                     android:src="@drawable/ic_star_yellow" />
 
                 <TextView
-                    android:id="@+id/tvRating"
+                    android:id="@+id/txtRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="4.8"
+                    android:text="5.0"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="10sp"
                     android:layout_marginStart="4dp" />
@@ -138,3 +95,149 @@
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_margin="6dp"-->
+<!--    app:cardCornerRadius="8dp"-->
+<!--    app:cardElevation="4dp"-->
+<!--    app:cardBackgroundColor="#FFFCF3">-->
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:padding="12dp"-->
+<!--        >-->
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="130dp">-->
+
+<!--            <com.google.android.material.imageview.ShapeableImageView-->
+<!--                android:id="@+id/imgProduct"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:clipToOutline="true"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@mipmap/ic_furniture_tevechairs"-->
+<!--                />-->
+<!--            &lt;!&ndash;tag&ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/tvTagDiscountTop"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:text="-37%"-->
+<!--                android:textColor="#E24747"-->
+<!--                android:textSize="12sp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:drawableLeft="@drawable/ic_flash"-->
+<!--                android:paddingStart="2dp"-->
+<!--                android:paddingEnd="2dp"-->
+<!--                android:paddingTop="1dp"-->
+<!--                android:paddingBottom="1dp"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:background="@drawable/bg_discount_top_tag" />-->
+
+
+<!--            &lt;!&ndash; Icon yêu thích &ndash;&gt;-->
+<!--            <ImageView-->
+<!--                android:id="@+id/imgFavorite"-->
+<!--                android:layout_width="28dp"-->
+<!--                android:layout_height="28dp"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginRight="12dp"-->
+<!--                android:src="@drawable/ic_wishlist_heart"/>-->
+<!--        </RelativeLayout>-->
+
+
+<!--        &lt;!&ndash; Product Name &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/tvProductName"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Teve Chairs"-->
+<!--            android:textColor="@color/color_5E4C3E"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginTop="2dp" />-->
+
+<!--        &lt;!&ndash; Old Price &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/tvOldPrice"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="$109"-->
+<!--            android:textColor="#9C9999"-->
+<!--            android:textSize="12sp" />-->
+
+<!--        &lt;!&ndash; Sale Price + Discount + Rating &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical">-->
+
+<!--            &lt;!&ndash; Sale Price &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/tvPrice"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="$69"-->
+<!--                android:textColor="#E24747"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            &lt;!&ndash; Discount Tag &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/tvDiscount"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="-37%"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="#FF6600"-->
+<!--                android:layout_marginStart="12dp"-->
+<!--                android:background="@drawable/bg_discount_tag"-->
+<!--                android:paddingLeft="3dp"-->
+<!--                android:paddingRight="3dp"-->
+<!--                android:paddingTop="2dp"-->
+<!--                android:paddingBottom="2dp"-->
+<!--                android:textSize="10sp" />-->
+
+<!--            &lt;!&ndash; Spacer + Rating &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="end|center_vertical"-->
+<!--                android:layout_marginStart="8dp">-->
+
+<!--                <ImageView-->
+<!--                    android:layout_width="12dp"-->
+<!--                    android:layout_height="12dp"-->
+<!--                    android:src="@drawable/ic_star_yellow" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tvRating"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="4.8"-->
+<!--                    android:textColor="@color/color_5E4C3E"-->
+<!--                    android:textSize="10sp"-->
+<!--                    android:layout_marginStart="4dp" />-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
+<!--    </LinearLayout>-->
+<!--</androidx.cardview.widget.CardView>-->
