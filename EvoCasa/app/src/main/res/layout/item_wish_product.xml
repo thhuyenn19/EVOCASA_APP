@@ -51,14 +51,7 @@
             android:textStyle="bold"
             android:layout_marginTop="2dp" />
 
-        <!-- Old Price -->
-        <TextView
-            android:id="@+id/tvOldPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="$109"
-            android:textColor="#9C9999"
-            android:textSize="12sp" />
+
 
         <!-- Sale Price + Discount + Rating -->
         <LinearLayout
@@ -73,25 +66,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$69"
-                android:textColor="#E24747"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textColor="#9C9999"
+                android:textSize="14sp"/>
 
-            <!-- Discount Tag -->
-            <TextView
-                android:id="@+id/tvDiscount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="-37%"
-                android:textStyle="bold"
-                android:textColor="#FF6600"
-                android:layout_marginStart="12dp"
-                android:background="@drawable/bg_discount_tag"
-                android:paddingLeft="6dp"
-                android:paddingRight="6dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:textSize="10sp" />
+
 
             <!-- Spacer + Rating -->
             <LinearLayout
