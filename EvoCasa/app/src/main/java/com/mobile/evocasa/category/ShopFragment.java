@@ -44,7 +44,7 @@ public class ShopFragment extends Fragment {
         // 3. Setup RecyclerView
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
 
-        // Khởi tạo danh sách categories
+        /*// Khởi tạo danh sách categories
         categoryList = new ArrayList<>();
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
         categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
@@ -52,7 +52,7 @@ public class ShopFragment extends Fragment {
         categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
         categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
         categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
-        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
+        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));*/
 
         // GridLayoutManager với 2 cột
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);

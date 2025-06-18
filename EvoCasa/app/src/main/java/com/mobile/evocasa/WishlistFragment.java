@@ -44,41 +44,35 @@ public class WishlistFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_wishlist, container, false);
 
 
-        /* Favourite */
-        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
-        recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-        List<WishProduct> wishProductList = new ArrayList<>();
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-
-    // Gán adapter
-        WishProductAdapter wishProductAdapter = new WishProductAdapter(wishProductList);
-        recyclerViewWishProduct.setAdapter(wishProductAdapter);
+//        /* Favourite */
+//        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+//        recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        List<WishProduct> wishProductList = new ArrayList<>();
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+//        // Gán adapter
+//        WishProductAdapter wishProductAdapter = new WishProductAdapter(wishProductList);
+//        recyclerViewWishProduct.setAdapter(wishProductAdapter);
 
 
 
 
 
-        /* Suggest */
-        RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
-
-        recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
-
-
-        List<SuggestedProducts> suggestedProductsList = new ArrayList<>();
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-
-        // Gán adapter cho RecyclerView
-        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(suggestedProductsList);
-        recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
+//        /* Suggest */
+//        RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
+//        recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        List<SuggestedProducts> suggestedProductsList = new ArrayList<>();
+//        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+//        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+//        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+//        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
+//        // Gán adapter cho RecyclerView
+//        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(suggestedProductsList);
+//        recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
 
 
 

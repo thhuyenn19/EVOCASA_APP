@@ -58,7 +58,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
         }
 
         holder.txtCategoryName.setText(categoryName);
-        holder.imgCategory.setImageResource(category.getImageResId());
+
 
         int paddingLeft = 0;
         if ("Furniture".equals(category.getName()) || "Lighting".equals(category.getName())) {

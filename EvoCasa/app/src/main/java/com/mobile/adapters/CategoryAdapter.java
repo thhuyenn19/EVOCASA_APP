@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.models.Category;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
@@ -35,9 +36,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         Category item = categoryList.get(position);
         holder.txtCategoryName.setText(item.getName());
-        holder.imgCategory.setImageResource(item.getImageResId());
 
-        // ✅ Áp dụng font Zbold cho tên danh mục
+        Glide.with(holder.itemView.getContext())
+                .load(item.getImage())
+                .placeholder(R.mipmap.placeholder_image) // ảnh đang tải (nếu có)
+                .error(R.mipmap.error_image)
+                .into(holder.imgCategory);
+
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtCategoryName);
     }
 
