@@ -44,19 +44,19 @@ public class WishlistFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_wishlist, container, false);
 
 
-//        /* Favourite */
-//        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
-//        recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//        List<WishProduct> wishProductList = new ArrayList<>();
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-//        // Gán adapter
-//        WishProductAdapter wishProductAdapter = new WishProductAdapter(wishProductList);
-//        recyclerViewWishProduct.setAdapter(wishProductAdapter);
+        /* Favourite */
+        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+        recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        List<WishProduct> wishProductList = new ArrayList<>();
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        wishProductList.add(new WishProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        // Gán adapter
+        WishProductAdapter wishProductAdapter = new WishProductAdapter(wishProductList);
+        recyclerViewWishProduct.setAdapter(wishProductAdapter);
 
 
 
