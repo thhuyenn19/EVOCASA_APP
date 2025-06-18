@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         // Font đậm cho tên sản phẩm
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
         // Nếu rating không có trong Firestore, thì tạo tạm số ngẫu nhiên
-        float fakeRating = (float) (3 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
+        float fakeRating = (float) (4 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
         holder.txtRating.setText(String.format("%.1f", fakeRating));
 
     }
