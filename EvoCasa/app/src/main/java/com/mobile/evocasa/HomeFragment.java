@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -122,21 +123,33 @@ public class HomeFragment extends Fragment {
 
         loadCategories(); // gọi hàm để lấy dữ liệu từ Firestore
 
-        /*FlashSale*/
+        /* FlashSale */
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
-        recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2)); // ✅ Chỉ dùng Grid
 
-        List<FlashSaleProduct> flashSaleList = new ArrayList<>();
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Gán adapter
+        List<HotProducts> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
+
+        db.collection("Product").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
+                    Collections.shuffle(allDocs); // 🔀 Random
+
+                    flashSaleList.clear();
+                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
+                        HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        flashSaleList.add(product);
+                    }
+
+                    flashSaleAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
+                });
+
 
         /* Hot Products */
         RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
