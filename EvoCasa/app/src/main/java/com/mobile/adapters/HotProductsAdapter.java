@@ -1,12 +1,14 @@
 package com.mobile.adapters;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +39,13 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
     public void onBindViewHolder(@NonNull HotProductViewHolder holder, int position) {
         HotProducts product = hotProductList.get(position);
 
-        holder.imgProduct.setImageResource(product.getImageResId());
+        // ✅ Load ảnh từ URL bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(product.getFirstImage())
+                .placeholder(R.mipmap.placeholder_image) // ảnh đang tải (nếu có)
+                .error(R.mipmap.error_image)             // ảnh lỗi (nếu link sai)
+                .into(holder.imgProduct);
+
         holder.txtProductName.setText(product.getName());
         holder.txtOldPrice.setText(product.getOldPrice());
         holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -45,7 +53,7 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         holder.txtDiscount.setText(product.getDiscount());
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
-        // ✅ Áp dụng font Zbold cho tên sản phẩm
+        // ✅ Font Zbold cho tên sản phẩm
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
     }
 
@@ -68,6 +76,7 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
             txtDiscount = itemView.findViewById(R.id.txtDiscount);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
-        }
-    }
+        }}
+
+
 }

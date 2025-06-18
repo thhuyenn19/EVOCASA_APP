@@ -21,6 +21,9 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.os.Handler;
 import android.util.Log;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.mobile.adapters.CategoryAdapter;
 import com.mobile.utils.FontUtils;
 
@@ -34,12 +37,17 @@ import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private ArrayList<Object> categoryList;
-    private CategoryAdapter adapter;
+    private FirebaseFirestore db;
+    private RecyclerView recyclerViewCategories;
+    private List<Category> categoryList;
+    private CategoryAdapter categoryAdapter;
+    private List<HotProducts> hotProductList;
+    private HotProductsAdapter hotProductsAdapter;
+
     private View view;
     private List<Integer> imageList;
 
@@ -103,22 +111,16 @@ public class HomeFragment extends Fragment {
         // Áp dụng font cho các TextView
         applyCustomFonts();
 
-        // 2. Gán RecyclerView
-        recyclerView = view.findViewById(R.id.recyclerViewCategories);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        // 3. Danh sách dữ liệu
+        db = FirebaseFirestore.getInstance();
+        recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
+        recyclerViewCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        // 3. Khởi tạo danh sách dữ liệu
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
-        categoryList.add(new Category(R.mipmap.ic_category_furniture, "Furniture"));
-        categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
-        categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
-        categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
-        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
+        categoryList = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(categoryList);
+        recyclerViewCategories.setAdapter(categoryAdapter);
 
-        // 4. Gán adapter
-        adapter = new CategoryAdapter(categoryList);
-        recyclerView.setAdapter(adapter);
+        loadCategories(); // gọi hàm để lấy dữ liệu từ Firestore
 
         /*FlashSale*/
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
@@ -138,20 +140,15 @@ public class HomeFragment extends Fragment {
 
         /* Hot Products */
         RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
-
-        // Set GridLayoutManager để hiển thị 2 cột (2 item mỗi hàng)
         recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        // Tạo danh sách Hot Products
-        List<HotProducts> hotProductList = new ArrayList<>();
-        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        hotProductList.add(new HotProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-
-        // Gán adapter cho RecyclerView
-        HotProductsAdapter hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        hotProductList = new ArrayList<>();
+        hotProductsAdapter = new HotProductsAdapter(hotProductList);
         recyclerViewHotProducts.setAdapter(hotProductsAdapter);
+
+        // Gọi hàm load từ Firestore
+        loadHotProducts();
+
 
         /*Collection*/
         RecyclerView recyclerViewCollections = view.findViewById(R.id.recyclerViewCollections);
@@ -287,4 +284,42 @@ public class HomeFragment extends Fragment {
             }
         }
     }
+    private void loadCategories() {
+        db.collection("Category")
+                .get()
+                .addOnSuccessListener(querySnapshots -> {
+                    categoryList.clear();
+                    for (DocumentSnapshot doc : querySnapshots) {
+                        Category category = doc.toObject(Category.class);
+                        categoryList.add(category);
+                    }
+                    categoryAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Lỗi khi load danh mục", e);
+                });
+    }
+    private void loadHotProducts() {
+        db.collection("Product")
+                .get()
+                .addOnSuccessListener(querySnapshots -> {
+                    hotProductList.clear();
+
+                    List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
+                    Collections.shuffle(allDocs); // 🔀 random
+
+                    int limit = Math.min(6, allDocs.size()); // lấy 6 sản phẩm
+                    for (int i = 0; i < limit; i++) {
+                        HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        hotProductList.add(product);
+                    }
+
+                    hotProductsAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Lỗi khi load Hot Products", e);
+                });
+    }
+
+
 }
