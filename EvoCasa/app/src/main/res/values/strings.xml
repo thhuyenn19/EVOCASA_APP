@@ -196,4 +196,11 @@
     <string name="title_shipping_policy">Shipping Policy</string>
     <string name="title_shipping_policy_description">Shipping policy applies to customers who shop and make payments on the EvoCasa app.</string>
     <string name="title_readmore">Read more</string>
+    <string name="facebook_app_id">30814704168116794</string>
+    <string name="fb_login_protocol_scheme">fb30814704168116794</string>
+    <string name="default_web_client_id">408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com</string>
+    <string name="facebook_client_token">cd117f107da97476f0e5a323eaaa1e44</string>
+
+
+
 </resources>

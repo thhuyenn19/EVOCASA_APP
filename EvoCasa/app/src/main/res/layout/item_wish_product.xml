@@ -4,16 +4,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="4dp"
-    android:layout_margin="6dp">
+    android:layout_margin="6dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#FFFCF3">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        android:background="#FFFCF3">
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -27,6 +28,24 @@
                 android:scaleType="centerCrop"
                 android:src="@mipmap/ic_furniture_tevechairs"
                 />
+            <!--tag-->
+            <TextView
+                android:id="@+id/tvTagDiscountTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="-37%"
+                android:textColor="#E24747"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/ic_flash"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                android:paddingTop="1dp"
+                android:paddingBottom="1dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_discount_top_tag" />
+
 
             <!-- Icon yêu thích -->
             <ImageView
@@ -51,7 +70,14 @@
             android:textStyle="bold"
             android:layout_marginTop="2dp" />
 
-
+        <!-- Old Price -->
+        <TextView
+            android:id="@+id/tvOldPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$109"
+            android:textColor="#9C9999"
+            android:textSize="12sp" />
 
         <!-- Sale Price + Discount + Rating -->
         <LinearLayout
@@ -66,10 +92,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="$69"
-                android:textColor="#9C9999"
-                android:textSize="14sp"/>
+                android:textColor="#E24747"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-
+            <!-- Discount Tag -->
+            <TextView
+                android:id="@+id/tvDiscount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-37%"
+                android:textStyle="bold"
+                android:textColor="#FF6600"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_discount_tag"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textSize="10sp" />
 
             <!-- Spacer + Rating -->
             <LinearLayout
@@ -91,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:text="4.8"
                     android:textColor="@color/color_5E4C3E"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     android:layout_marginStart="4dp" />
             </LinearLayout>
         </LinearLayout>

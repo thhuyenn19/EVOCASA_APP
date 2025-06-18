@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
 
 import java.util.List;
+import java.util.Random;
 
 public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.HotProductViewHolder> {
 
@@ -39,22 +41,39 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
     public void onBindViewHolder(@NonNull HotProductViewHolder holder, int position) {
         HotProducts product = hotProductList.get(position);
 
-        // ✅ Load ảnh từ URL bằng Glide
-        Glide.with(holder.itemView.getContext())
-                .load(product.getFirstImage())
-                .placeholder(R.mipmap.placeholder_image) // ảnh đang tải (nếu có)
-                .error(R.mipmap.error_image)             // ảnh lỗi (nếu link sai)
-                .into(holder.imgProduct);
+        // Lấy giá gốc từ Firebase
+        double oldPrice = product.getPrice();
 
+        // Random giảm giá từ 10% đến 50%
+        int discount = new Random().nextInt(41) + 10;
+
+        // Tính giá mới sau khi giảm
+        double newPrice = oldPrice * (1 - discount / 100.0);
+
+        // Format và hiển thị
         holder.txtProductName.setText(product.getName());
-        holder.txtOldPrice.setText(product.getOldPrice());
+        holder.txtOldPrice.setText("$" + String.format("%.2f", oldPrice));
         holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        holder.txtPrice.setText(product.getNewPrice());
-        holder.txtDiscount.setText(product.getDiscount());
+        holder.txtDiscount.setText("-" + discount + "%");
+        holder.txtPrice.setText("$" + String.format("%.2f", newPrice));
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
-        // ✅ Font Zbold cho tên sản phẩm
+        // Load ảnh đầu tiên từ danh sách ảnh
+        List<String> images = product.getImageList();
+        if (images != null && !images.isEmpty()) {
+            Glide.with(holder.itemView.getContext())
+                    .load(images.get(0))
+                    .placeholder(R.mipmap.placeholder_image)
+                    .error(R.mipmap.error_image)
+                    .into(holder.imgProduct);
+        }
+
+        // Font đậm cho tên sản phẩm
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
+        // Nếu rating không có trong Firestore, thì tạo tạm số ngẫu nhiên
+        float fakeRating = (float) (4 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
+        holder.txtRating.setText(String.format("%.1f", fakeRating));
+
     }
 
     @Override
@@ -76,7 +95,6 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
             txtDiscount = itemView.findViewById(R.id.txtDiscount);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
-        }}
-
-
+        }
+    }
 }

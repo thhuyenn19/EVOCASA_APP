@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,6 +38,7 @@ import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -122,21 +124,74 @@ public class HomeFragment extends Fragment {
 
         loadCategories(); // gọi hàm để lấy dữ liệu từ Firestore
 
-        /*FlashSale*/
+        // Lấy giờ hiện tại
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+
+// Thiết lập khung giờ Flash Sale (ví dụ 9h – 21h)
+        boolean isFlashSaleTime = (hour >= 9 && hour < 2);
+
+        /* FlashSale */
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
         recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        List<FlashSaleProduct> flashSaleList = new ArrayList<>();
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-        flashSaleList.add(new FlashSaleProduct(R.mipmap.ic_furniture_tevechairs, "Teve Chairs", "$109", "$69", "-37%", 4.8f));
-
-        // Gán adapter
+        List<HotProducts> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
+
+// Firestore instance
+        db = FirebaseFirestore.getInstance();
+
+/*
+// Kiểm tra khung giờ
+        if (isFlashSaleTime) {
+            db.collection("Product").get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
+                        Collections.shuffle(allDocs); // 🔀 Random
+
+                        flashSaleList.clear();
+                        for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
+                            HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                            flashSaleList.add(product);
+                        }
+
+                        flashSaleAdapter.notifyDataSetChanged();
+                        recyclerViewFlashSale.setVisibility(View.VISIBLE); // hiện nếu có dữ liệu
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
+                        recyclerViewFlashSale.setVisibility(View.GONE); // ẩn nếu lỗi
+                    });
+        } else {
+            // Ẩn RecyclerView nếu chưa đến giờ
+            recyclerViewFlashSale.setVisibility(View.GONE);
+        }
+*/
+        db.collection("Product").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
+                    Collections.shuffle(allDocs);
+                    Log.d("FLASH_SALE", "Tổng số documents từ Firestore: " + allDocs.size());
+
+
+                    flashSaleList.clear();
+                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
+                        HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        flashSaleList.add(product);
+                        Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
+
+                    }
+
+                    flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
+                    recyclerViewFlashSale.setVisibility(View.VISIBLE);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
+                    recyclerViewFlashSale.setVisibility(View.GONE);
+                });
+
+
 
         /* Hot Products */
         RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);

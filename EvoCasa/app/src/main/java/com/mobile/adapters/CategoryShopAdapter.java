@@ -65,6 +65,7 @@ public class CategoryShopAdapter extends RecyclerView.Adapter<CategoryShopAdapte
             paddingLeft = (int) (9 * context.getResources().getDisplayMetrics().density);
         }
         holder.txtCategoryName.setPadding(paddingLeft, 0, 0, 0);
+        holder.imgCategory.setImageResource(category.getImageResId());
 
         // Click event
         holder.itemView.setOnClickListener(v -> {
