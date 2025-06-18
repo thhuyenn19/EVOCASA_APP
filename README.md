@@ -20,11 +20,11 @@
 ## 📚 COURSE INTRODUCTION
 
 - **Course Name:** Web Business Development
-- **Academic Year:** Semester 2 (2024 - 2025)
+- **Academic Year:** Semester 3 (2024 - 2025)
 
 ---
 
-## 👥 GROUP 3 MEMBERS
+## 👥 GROUP 4 MEMBERS
 
 <table>
   <tr>
@@ -35,16 +35,17 @@
   </tr>
   <tr>
     <td align="center">1</td>
-    <td align="center">Phạm Tuyết Nhung<br/><i>(Group Leader)</i></td>
-    <td align="center"><a href="https://github.com/nhungnehehe">nhungnehehe</a></td>
-    <td align="center">nhungpt22411c@st.uel.edu.vn</td>
-  </tr>
-  <tr>
-    <td align="center">2</td>
-    <td align="center">Nguyễn Trần Thanh Huyền</td>
+    <td align="center">Nguyễn Trần Thanh Huyền<br/<i>(Group Leader)</i>r</td>
     <td align="center"><a href="https://github.com/thhuyenn19">thhuyenn19</a></td>
     <td align="center">huyennntt22411c@st.uel.edu.vn</td>
   </tr>
+  <tr>
+    <td align="center">1</td>
+    <td align="center">Phạm Tuyết Nhung></td>
+    <td align="center"><a href="https://github.com/nhungnehehe">nhungnehehe</a></td>
+    <td align="center">nhungpt22411c@st.uel.edu.vn</td>
+  </tr>
+  
   <tr>
     <td align="center">3</td>
     <td align="center">Vũ Quỳnh Như</td>
