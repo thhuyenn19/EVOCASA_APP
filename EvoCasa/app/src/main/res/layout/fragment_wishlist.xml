@@ -16,7 +16,6 @@
 
         <!-- Thanh trên -->
         <LinearLayout
-            android:id="@+id/filterProduct"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
@@ -116,6 +115,7 @@
             android:paddingEnd="15dp">
 
             <LinearLayout
+                android:id="@+id/filterProduct"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
