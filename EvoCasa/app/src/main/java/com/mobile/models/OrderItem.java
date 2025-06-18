@@ -3,13 +3,13 @@ package com.mobile.models;
 public class OrderItem {
     private int imageResId;
     private String title;
-    private int price;
+    private long price;
     private int quantity;
 
     public OrderItem() {
     }
 
-    public OrderItem(int imageResId, String title, int price, int quantity) {
+    public OrderItem(int imageResId, String title, long price, int quantity) {
         this.imageResId = imageResId;
         this.title = title;
         this.price = price;
@@ -32,11 +32,11 @@ public class OrderItem {
         this.title = title;
     }
 
-    public int getPrice() {
+    public long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(long price) {
         this.price = price;
     }
 

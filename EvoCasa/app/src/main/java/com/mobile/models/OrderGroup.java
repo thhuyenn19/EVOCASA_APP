@@ -6,6 +6,9 @@ public class OrderGroup {
     private String status;
     private List<OrderItem> items;
     private boolean expanded;
+    private long total;
+
+
 
     public OrderGroup() {
     }
@@ -40,4 +43,6 @@ public class OrderGroup {
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
     }
+    public long getTotal() { return total; }
+    public void setTotal(long total) { this.total = total; }
 }

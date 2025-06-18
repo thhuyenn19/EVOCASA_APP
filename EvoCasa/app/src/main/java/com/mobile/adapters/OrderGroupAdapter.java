@@ -22,6 +22,7 @@ import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
 import java.util.List;
+import java.util.Locale;
 
 public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.ViewHolder> {
 
@@ -74,11 +75,6 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.itemContainer.removeAllViews();
 
         List<OrderItem> items = group.getItems();
-        // 1. Tính tổng full trước (không phụ thuộc expand)
-        int totalPrice = 0;
-        for (OrderItem item : items) {
-            totalPrice += item.getPrice() * item.getQuantity();
-        }
 
 // 2. Chỉ hiển thị 1 hoặc toàn bộ sản phẩm
         int showCount = group.isExpanded() ? items.size() : Math.min(1, items.size());
@@ -95,7 +91,7 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
 
             img.setImageResource(item.getImageResId());
             title.setText(item.getTitle());
-            price.setText("$" + item.getPrice());
+            price.setText("$" + formatPrice(item.getPrice()));
             qty.setText("Quantity: " + item.getQuantity());
 
             FontUtils.setZboldFont(context, title);
@@ -109,6 +105,7 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.itemContainer.invalidate();
 // 3. Gán total dựa trên toàn bộ items
         String boldPart = "Total";
+        long totalPrice = group.getTotal();
         String normalPart = " (" + items.size() + " items): $" + totalPrice;
         String fullText = boldPart + normalPart;
 
@@ -184,6 +181,10 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
                 break;
         }
 
+    }
+
+    private String formatPrice(long price) {
+        return String.format(Locale.US, "%,d", price);
     }
 
     @Override
