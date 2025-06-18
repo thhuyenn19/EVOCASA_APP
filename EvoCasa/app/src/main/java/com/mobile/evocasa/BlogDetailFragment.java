@@ -34,8 +34,8 @@ public class BlogDetailFragment extends Fragment {
 
         blogList = new ArrayList<>();
         blogList.add(new Blog("5 Interior Design Trends Of 2024 | Sofa Trend", "16/05/2025", R.mipmap.ic_blog1));
-        blogList.add(new Blog("Minimalist Living Room Ideas", "14/05/2025", R.mipmap.ic_blog1));
-        blogList.add(new Blog("Top Colors To Refresh Your Space", "13/05/2025", R.mipmap.ic_blog1));
+        blogList.add(new Blog("Minimalist Living Room Ideas", "14/05/2025", R.mipmap.ic_blog6));
+        blogList.add(new Blog("Top Colors To Refresh Your Space", "13/05/2025", R.mipmap.ic_blog4));
 
         blogAdapter = new BlogAdapter(blogList);
         recyclerView.setAdapter(blogAdapter);
