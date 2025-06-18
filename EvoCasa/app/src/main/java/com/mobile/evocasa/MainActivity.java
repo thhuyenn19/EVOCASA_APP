@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.mobile.utils.UserSessionManager;
 import com.mobile.evocasa.auth.SignInFragment;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,5 +46,6 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             }
         }
+
     }
 }

@@ -105,10 +105,9 @@ public class SignUp1Fragment extends Fragment {
             });
         });
 
-
         // Facebook signup
         btnContinueFacebook.setOnClickListener(v -> {
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
             LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override public void onSuccess(LoginResult loginResult) {
                     AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
@@ -135,58 +134,91 @@ public class SignUp1Fragment extends Fragment {
 
     private void handlePostAuth(FirebaseUser user) {
         String uid = user.getUid();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        // Check if account already exists
+        // ✅ KIỂM TRA USER ĐÃ TỒN TẠI CHƯA
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Account").document(uid).get()
-                .addOnSuccessListener(doc -> {
-                    if (doc.exists()) {
-                        // Đã có → xử lý như đăng nhập
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        // ✅ User đã tồn tại - Đăng nhập thành công
+                        Toast.makeText(getContext(), "Welcome back! Logged in successfully.", Toast.LENGTH_SHORT).show();
+
+                        // Lưu UID và chuyển về màn hình chính
+                        new com.mobile.utils.UserSessionManager(requireContext()).saveUid(uid);
                         startActivity(new Intent(getActivity(), NarBarActivity.class));
                         requireActivity().finish();
                     } else {
-                        // Mới → tạo dữ liệu
-                        String name = user.getDisplayName() != null ? user.getDisplayName() : "User_" + UUID.randomUUID().toString().substring(0, 5);
-                        String email = user.getEmail() != null ? user.getEmail() : "";
-                        String phone = user.getPhoneNumber() != null ? user.getPhoneNumber() : "";
-
-                        Map<String, Object> account = new HashMap<>();
-                        account.put("Contact", email.isEmpty() ? phone : email);
-                        account.put("ContactType", email.isEmpty() ? "Phone" : "Email");
-                        account.put("Name", name);
-                        account.put("Password", ""); // no password for social sign in
-
-                        Map<String, Object> customer = new HashMap<>();
-                        customer.put("Name", name);
-                        customer.put("Phone", phone);
-                        customer.put("Mail", email);
-                        customer.put("DOB", null);
-                        customer.put("Address", null);
-                        customer.put("Gender", "");
-                        customer.put("Image", user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
-                        customer.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
-                        customer.put("Cart", new ArrayList<>());
-                        customer.put("Notification", new ArrayList<>());
-                        customer.put("Voucher", new ArrayList<>());
-
-                        db.collection("Account").document(uid).set(account)
-                                .addOnSuccessListener(aVoid -> {
-                                    db.collection("Customers").document(uid).set(customer)
-                                            .addOnSuccessListener(doc2 -> {
-                                                Toast.makeText(getContext(), "Signed Up Successfully!", Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(getActivity(), NarBarActivity.class));
-                                                requireActivity().finish();
-                                            })
-                                            .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed saving customer", Toast.LENGTH_SHORT).show());
-                                })
-                                .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed saving account", Toast.LENGTH_SHORT).show());
+                        // ✅ User chưa tồn tại - Tạo tài khoản mới
+                        createNewUser(user, uid, db);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Error checking user", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error checking user: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
+    private void createNewUser(FirebaseUser user, String uid, FirebaseFirestore db) {
+        String name = user.getDisplayName() != null ? user.getDisplayName() : "User_" + UUID.randomUUID().toString().substring(0, 5);
+        String email = user.getEmail() != null ? user.getEmail() : "";
+        String phone = user.getPhoneNumber() != null ? user.getPhoneNumber() : "";
+
+        // Xác định loại đăng ký dựa trên provider
+        String contactType = "Email"; // Mặc định là Email cho social login
+        String contact = email;
+
+        // Kiểm tra provider để xác định ContactType chính xác
+        for (UserInfo userInfo : user.getProviderData()) {
+            String providerId = userInfo.getProviderId();
+            if (providerId.equals("facebook.com") || providerId.equals("google.com")) {
+                contactType = "Email";
+                contact = email.isEmpty() ? "social_user_" + uid.substring(0, 8) : email;
+                break;
+            } else if (providerId.equals("phone")) {
+                contactType = "Phone";
+                contact = phone;
+                break;
+            }
+        }
+
+        // Nếu không có email từ social login, dùng tên user làm contact
+        if (contact.isEmpty()) {
+            contact = name;
+        }
+
+        Map<String, Object> account = new HashMap<>();
+        account.put("Contact", contact);
+        account.put("ContactType", contactType);
+        account.put("Name", name);
+        account.put("Password", ""); // Social login không có password
+
+        Map<String, Object> customer = new HashMap<>();
+        customer.put("Name", name);
+        customer.put("Phone", phone);
+        customer.put("Mail", email);
+        customer.put("DOB", null);
+        customer.put("Address", null);
+        customer.put("Gender", "");
+        customer.put("Image", user.getPhotoUrl() != null ? user.getPhotoUrl().toString() : "");
+        customer.put("CreatedAt", com.google.firebase.firestore.FieldValue.serverTimestamp());
+        customer.put("Cart", new ArrayList<>());
+        customer.put("Notification", new ArrayList<>());
+        customer.put("Voucher", new ArrayList<>());
+
+        // Tạo tài khoản mới
+        db.collection("Account").document(uid).set(account)
+                .addOnSuccessListener(aVoid -> {
+                    db.collection("Customers").document(uid).set(customer)
+                            .addOnSuccessListener(doc -> {
+                                new com.mobile.utils.UserSessionManager(requireContext()).saveUid(uid);
+
+                                Toast.makeText(getContext(), "Account created successfully!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(getActivity(), NarBarActivity.class));
+                                requireActivity().finish();
+                            })
+                            .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed saving customer", Toast.LENGTH_SHORT).show());
+                })
+                .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed saving account", Toast.LENGTH_SHORT).show());
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
