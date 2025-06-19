@@ -16,8 +16,10 @@ import android.widget.TextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.adapters.WishProductAdapter;
 import com.mobile.evocasa.profile.ProfileFragment;
+import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
@@ -41,6 +43,9 @@ public class WishlistFragment extends Fragment {
     private WishProductAdapter wishProductAdapter;
     private FirebaseFirestore db;
     private List<WishProduct> wishProductList;
+
+    private List<HotProducts> hotProductList;
+    private HotProductsAdapter hotProductsAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,8 +98,8 @@ public class WishlistFragment extends Fragment {
         loadWishProduct("all"); // Mặc định hiển thị tất cả sản phẩm
 
         // Set font cho các textView
-//        TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
-//        FontUtils.setZboldFont(requireContext(), txtViewRcm);
+        TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
+        FontUtils.setZboldFont(requireContext(), txtViewRcm);
         TextView txtTitle = view.findViewById(R.id.txtTitle);
         FontUtils.setZboldFont(requireContext(), txtTitle);
         TextView tvSortBy = view.findViewById(R.id.tvSortBy);
@@ -144,7 +149,42 @@ public class WishlistFragment extends Fragment {
                     .commit();
         });
 
+
+        /* Hot Products */
+        RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
+        recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+
+        hotProductList = new ArrayList<>();
+        hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        recyclerViewHotProducts.setAdapter(hotProductsAdapter);
+
+        // Gọi hàm load từ Firestore
+        loadHotProducts();
+
+
         return view;
+    }
+
+    private void loadHotProducts() {
+        db.collection("Product")
+                .get()
+                .addOnSuccessListener(querySnapshots -> {
+                    hotProductList.clear();
+
+                    List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
+                    Collections.shuffle(allDocs); // 🔀 random
+
+                    int limit = Math.min(6, allDocs.size()); // lấy 6 sản phẩm
+                    for (int i = 0; i < limit; i++) {
+                        HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        hotProductList.add(product);
+                    }
+
+                    hotProductsAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Lỗi khi load Hot Products", e);
+                });
     }
 
     // Giả lập load sản phẩm cho các tab
