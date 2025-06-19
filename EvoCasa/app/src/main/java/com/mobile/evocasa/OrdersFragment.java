@@ -183,12 +183,12 @@ public class OrdersFragment extends Fragment {
                             imageList = (List<String>) rawImageData;
                         } else if (rawImageData instanceof String) {
                             try {
-                                imageList = new com.google.gson.Gson().fromJson((String) rawImageData, new com.google.gson.reflect.TypeToken<List<String>>(){}.getType());
+                                imageList = new com.google.gson.Gson().fromJson((String) rawImageData,
+                                        new com.google.gson.reflect.TypeToken<List<String>>() {}.getType());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-
 
                         if (id != null && name != null && price != null) {
                             productNameMap.put(id, name);
@@ -217,44 +217,57 @@ public class OrdersFragment extends Fragment {
 
                                 for (QueryDocumentSnapshot orderDoc : orderSnapshots) {
                                     try {
-                                    Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
-                                    if (customerIdMap == null) continue;
+                                        Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
+                                        if (customerIdMap == null) continue;
 
-                                    String orderUid = (String) customerIdMap.get("$oid");
-                                    if (!uid.equals(orderUid)) continue;
-                                    
+                                        String orderUid = (String) customerIdMap.get("$oid");
+                                        if (!uid.equals(orderUid)) continue;
+
                                         String status = orderDoc.getString("Status");
-                                        Long totalPrice = orderDoc.getLong("TotalPrice");
-                                        Map<String, Object> orderProduct = (Map<String, Object>) orderDoc.get("OrderProduct");
-
-                                        if (orderProduct == null || orderProduct.get("id") == null) continue;
-
-                                        Map<String, Object> productIdMap = (Map<String, Object>) orderProduct.get("id");
-                                        String productId = (String) productIdMap.get("$oid");
-
-                                        if (productId == null || !productNameMap.containsKey(productId)) continue;
-
-                                        String productName = productNameMap.get(productId);
-                                        Long priceEach = productPriceMap.get(productId);
-                                        Long quantity = (Long) orderProduct.get("Quantity");
-                                        String imageUrl = productImageMap.get(productId);
-
-
-                                        int qty = quantity != null ? quantity.intValue() : 1;
-                                        int unitPrice = priceEach != null ? priceEach.intValue() : 0;
-
-                                        OrderItem item = new OrderItem(
-                                                imageUrl,
-                                                productName,
-                                                unitPrice,
-                                                qty
-                                        );
+                                        List<Map<String, Object>> orderProducts =
+                                                (List<Map<String, Object>>) orderDoc.get("OrderProduct");
+                                        if (orderProducts == null || orderProducts.isEmpty()) continue;
 
                                         List<OrderItem> itemList = new ArrayList<>();
-                                        itemList.add(item);
+                                        int total = 0;
+
+                                        for (Map<String, Object> product : orderProducts) {
+                                            Map<String, Object> productIdMap = (Map<String, Object>) product.get("id");
+                                            if (productIdMap == null) continue;
+
+                                            String productId = (String) productIdMap.get("$oid");
+                                            if (productId == null || !productNameMap.containsKey(productId)) continue;
+
+                                            String productName = productNameMap.get(productId);
+                                            Long priceEach = productPriceMap.get(productId);
+                                            String imageUrl = productImageMap.get(productId);
+                                            Long quantity = (Long) product.get("Quantity");
+
+                                            int qty = quantity != null ? quantity.intValue() : 1;
+                                            int unitPrice = priceEach != null ? priceEach.intValue() : 0;
+
+                                            total += unitPrice * qty;
+
+                                            itemList.add(new OrderItem(imageUrl, productName, unitPrice, qty));
+                                        }
+
+                                        // ✅ Add delivery fee
+                                        Long deliveryFee = orderDoc.getLong("DeliveryFee");
+                                        if (deliveryFee != null) {
+                                            total += deliveryFee.intValue();
+                                        }
+
+                                        // ✅ Apply discount percent
+                                        Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
+                                        if (voucher != null) {
+                                            Long discountPercent = (Long) voucher.get("DiscountPercent");
+                                            if (discountPercent != null) {
+                                                total -= (total * discountPercent.intValue()) / 100;
+                                            }
+                                        }
 
                                         OrderGroup group = new OrderGroup(status, itemList);
-                                        group.setTotal(totalPrice != null ? totalPrice : 0);
+                                        group.setTotal(total);
                                         group.setOrderId(orderDoc.getId());
 
                                         allOrderGroups.add(group);
@@ -265,13 +278,13 @@ public class OrdersFragment extends Fragment {
                                 }
 
                                 Log.d("OrdersFragment", "Tổng số OrderGroup sau xử lý: " + allOrderGroups.size());
-
                                 filterOrdersByStatus(selectedStatus);
                             })
                             .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Order", e));
                 })
                 .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Product", e));
     }
+
 
 
     private void filterOrdersByStatus(String status) {

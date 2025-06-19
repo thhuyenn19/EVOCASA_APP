@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.SpannableString;
@@ -43,6 +44,9 @@ public class OrderDetailFragment extends Fragment {
     private boolean isExpanded = false;
 
     private Button btnTrackOrder;
+    private TextView txtShippingMethodValue;
+    private TextView txtPaymentMethodValue;
+    private TextView txtMessageForShopValue;
 
 
     public OrderDetailFragment() {
@@ -68,12 +72,18 @@ public class OrderDetailFragment extends Fragment {
         View orderGroupView = view.findViewById(R.id.orderGroupRoot);
         // Trong fragment_order_detail.xml, phần Order Details group chính là một LinearLayout,
         // bạn có thể wrap nó với id="orderGroupRoot" hoặc bind trực tiếp:
-        itemContainer         = view.findViewById(R.id.itemContainer);
-        txtTotalSummary       = view.findViewById(R.id.txtTotalSummary);
+        itemContainer = view.findViewById(R.id.itemContainer);
+        txtTotalSummary = view.findViewById(R.id.txtTotalSummary);
         btnViewMoreContainer  = view.findViewById(R.id.btnViewMoreContainer);
-        btnViewMore           = view.findViewById(R.id.btnViewMore);
-        iconArrow             = view.findViewById(R.id.iconArrow);
+        btnViewMore = view.findViewById(R.id.btnViewMore);
+        iconArrow = view.findViewById(R.id.iconArrow);
         btnTrackOrder = view.findViewById(R.id.btnTrackOrders);
+
+        txtShippingMethodValue = view.findViewById(R.id.txtShippingMethodValue);
+        txtPaymentMethodValue = view.findViewById(R.id.txtPaymentMethodValue);
+        txtMessageForShopValue = view.findViewById(R.id.txtMessageForShopValue);
+
+
 
         String orderId = getArguments() != null ? getArguments().getString("orderId") : null;
         if (orderId != null) {
@@ -84,7 +94,12 @@ public class OrderDetailFragment extends Fragment {
             it.putExtra("orderId", orderId);
             startActivity(it);
         });
-
+        LinearLayout btnBack = view.findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(v -> {
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .popBackStack();
+        });
         int[] boldTextIds = {
                 R.id.txtShippingInfoLabel,
                 R.id.txtOrderDetailsLabel,
@@ -176,31 +191,60 @@ public class OrderDetailFragment extends Fragment {
 
             db.collection("Order").document(orderId).get().addOnSuccessListener(orderDoc -> {
                 if (!orderDoc.exists()) return;
+// NEW: Get shippingMethod, paymentMethod, and note from Firestore
+                String shippingMethod = orderDoc.getString("ShippingMethod");
+                String paymentMethod = orderDoc.getString("PaymentMethod");
+                String note = orderDoc.getString("Note");
+
+// Shipping Method
+                if (shippingMethod != null && !shippingMethod.trim().isEmpty()) {
+                    txtShippingMethodValue.setText(shippingMethod);
+                } else {
+                    txtShippingMethodValue.setText("N/A");
+                }
+
+// Payment Method
+                if (paymentMethod != null && !paymentMethod.trim().isEmpty()) {
+                    txtPaymentMethodValue.setText(paymentMethod);
+                } else {
+                    txtPaymentMethodValue.setText("N/A");
+                }
+
+// Note
+                if (note != null && !note.trim().isEmpty()) {
+                    txtMessageForShopValue.setText(note);
+                } else {
+                    txtMessageForShopValue.setText("No message");
+                    txtMessageForShopValue.setTypeface(null, Typeface.ITALIC);
+                    txtMessageForShopValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_5E4C3E));
+                }
 
                 try {
                     String status = orderDoc.getString("Status");
                     Long totalPrice = orderDoc.getLong("TotalPrice");
-                    Map<String, Object> orderProduct = (Map<String, Object>) orderDoc.get("OrderProduct");
 
-                    if (orderProduct == null || orderProduct.get("id") == null) return;
-
-                    Map<String, Object> productIdMap = (Map<String, Object>) orderProduct.get("id");
-                    String productId = (String) productIdMap.get("$oid");
-
-                    if (productId == null || !productNameMap.containsKey(productId)) return;
-
-                    String productName = productNameMap.get(productId);
-                    Long priceEach = productPriceMap.get(productId);
-                    String imageUrl = productImageMap.get(productId);
-                    Long quantity = (Long) orderProduct.get("Quantity");
-
-                    int qty = quantity != null ? quantity.intValue() : 1;
-                    int unitPrice = priceEach != null ? priceEach.intValue() : 0;
-
-                    OrderItem item = new OrderItem(imageUrl, productName, unitPrice, qty);
+                    List<Map<String, Object>> orderProducts = (List<Map<String, Object>>) orderDoc.get("OrderProduct");
+                    if (orderProducts == null || orderProducts.isEmpty()) return;
                     List<OrderItem> items = new ArrayList<>();
-                    items.add(item);
+                    for (Map<String, Object> orderProduct : orderProducts) {
+                        Map<String, Object> productIdMap = (Map<String, Object>) orderProduct.get("id");
+                        if (productIdMap == null) continue;
 
+                        String productId = (String) productIdMap.get("$oid");
+                        if (productId == null || !productNameMap.containsKey(productId)) continue;
+
+                        String productName = productNameMap.get(productId);
+                        Long priceEach = productPriceMap.get(productId);
+                        String imageUrl = productImageMap.get(productId);
+                        Long quantity = (Long) orderProduct.get("Quantity");
+
+                        int qty = quantity != null ? quantity.intValue() : 1;
+                        int unitPrice = priceEach != null ? priceEach.intValue() : 0;
+
+                        items.add(new OrderItem(imageUrl, productName, unitPrice, qty));
+                    }
+
+                    // ✅ Tạo nhóm đơn hàng
                     OrderGroup group = new OrderGroup(status, items);
                     group.setOrderId(orderId);
                     group.setTotal(totalPrice != null ? totalPrice : 0);
