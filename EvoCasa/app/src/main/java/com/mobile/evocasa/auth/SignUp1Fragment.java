@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,10 @@ import java.util.*;
 public class SignUp1Fragment extends Fragment {
 
     private AppCompatButton btnContinueEmailPhone, btnContinueFacebook, btnContinueGoogle, btnSignIn;
+    private TextView txtDontHave;
     private CallbackManager callbackManager;
     private FirebaseAuth firebaseAuth;
+    private ImageView btnBack;
     private ActivityResultLauncher<Intent> googleLauncher;
 
     @Override
@@ -47,6 +50,7 @@ public class SignUp1Fragment extends Fragment {
 
         // Font
         Typeface medium = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Medium.otf");
+        Typeface black = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-Black.otf");
         Typeface semiBold = Typeface.createFromAsset(requireContext().getAssets(), "fonts/Inter-SemiBold.otf");
 
         // Views
@@ -54,11 +58,14 @@ public class SignUp1Fragment extends Fragment {
         btnContinueFacebook = view.findViewById(R.id.btnContinueFacebook);
         btnContinueGoogle = view.findViewById(R.id.btnContinueGoogle);
         btnSignIn = view.findViewById(R.id.btnSignIn);
+        btnBack = view.findViewById(R.id.btnBack);
+        txtDontHave=view.findViewById(R.id.txtDontHave);
 
         btnContinueEmailPhone.setTypeface(medium);
         btnContinueFacebook.setTypeface(medium);
         btnContinueGoogle.setTypeface(medium);
-        btnSignIn.setTypeface(semiBold);
+        btnSignIn.setTypeface(black);
+        txtDontHave.setTypeface(semiBold);
 
         // Phone signup
         btnContinueEmailPhone.setOnClickListener(v -> {
@@ -74,6 +81,9 @@ public class SignUp1Fragment extends Fragment {
             transaction.replace(R.id.fragment_container, new SignInFragment());
             transaction.addToBackStack(null);
             transaction.commit();
+        });
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) getActivity().onBackPressed();
         });
 
         // Google launcher
@@ -135,20 +145,16 @@ public class SignUp1Fragment extends Fragment {
     private void handlePostAuth(FirebaseUser user) {
         String uid = user.getUid();
 
-        // ✅ KIỂM TRA USER ĐÃ TỒN TẠI CHƯA
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("Account").document(uid).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        // ✅ User đã tồn tại - Đăng nhập thành công
                         Toast.makeText(getContext(), "Welcome back! Logged in successfully.", Toast.LENGTH_SHORT).show();
 
-                        // Lưu UID và chuyển về màn hình chính
                         new com.mobile.utils.UserSessionManager(requireContext()).saveUid(uid);
                         startActivity(new Intent(getActivity(), NarBarActivity.class));
                         requireActivity().finish();
                     } else {
-                        // ✅ User chưa tồn tại - Tạo tài khoản mới
                         createNewUser(user, uid, db);
                     }
                 })
@@ -163,7 +169,7 @@ public class SignUp1Fragment extends Fragment {
         String phone = user.getPhoneNumber() != null ? user.getPhoneNumber() : "";
 
         // Xác định loại đăng ký dựa trên provider
-        String contactType = "Email"; // Mặc định là Email cho social login
+        String contactType = "Email";
         String contact = email;
 
         // Kiểm tra provider để xác định ContactType chính xác
@@ -180,7 +186,7 @@ public class SignUp1Fragment extends Fragment {
             }
         }
 
-        // Nếu không có email từ social login, dùng tên user làm contact
+
         if (contact.isEmpty()) {
             contact = name;
         }
@@ -189,7 +195,7 @@ public class SignUp1Fragment extends Fragment {
         account.put("Contact", contact);
         account.put("ContactType", contactType);
         account.put("Name", name);
-        account.put("Password", ""); // Social login không có password
+        account.put("Password", "");
 
         Map<String, Object> customer = new HashMap<>();
         customer.put("Name", name);
