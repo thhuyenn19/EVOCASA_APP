@@ -20,6 +20,7 @@ public class WishProduct {
     // Vì không có rating trong Firestore → sẽ random trong Adapter
     private float rating;
 
+
     public WishProduct() {}
 
     // Getter

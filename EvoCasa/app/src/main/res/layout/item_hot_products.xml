@@ -65,6 +65,8 @@
             android:textColor="@color/color_5E4C3E"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:maxLines="2"
+            android:minLines="2"
             android:layout_marginTop="2dp" />
 
         <!-- Old Price -->
