@@ -46,17 +46,11 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         WishProduct product = wishProductList.get(position);
 
         // Lấy giá gốc từ Firebase
-        double oldPrice = product.getPrice();
-
-        // Random giảm giá từ 10% đến 50%
-        int discount = new Random().nextInt(41) + 10;
-
-        // Tính giá mới sau khi giảm
-        double newPrice = oldPrice * (1 - discount / 100.0);
+        double Price = product.getPrice();
 
         // Format và hiển thị
         holder.txtProductName.setText(product.getName());
-        holder.txtPrice.setText("$" + String.format("%.2f", newPrice));
+        holder.txtPrice.setText("$" + String.format("%.2f", Price));
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
         // Load ảnh đầu tiên từ danh sách ảnh
@@ -102,7 +96,7 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
     public class WishProductViewHolder extends RecyclerView.ViewHolder {
 
         ShapeableImageView imgProduct;
-        TextView txtProductName, txtOldPrice, txtPrice, txtDiscount, txtRating;
+        TextView txtProductName, txtPrice, txtRating;
         ImageView imgFavorite;
 
 
@@ -110,9 +104,7 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtProductName = itemView.findViewById(R.id.txtProductName);
-            txtOldPrice = itemView.findViewById(R.id.txtOldPrice);
             txtPrice = itemView.findViewById(R.id.txtPrice);
-            txtDiscount = itemView.findViewById(R.id.txtDiscount);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
         }

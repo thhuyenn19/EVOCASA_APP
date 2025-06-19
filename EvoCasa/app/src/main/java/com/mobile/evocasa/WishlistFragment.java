@@ -93,8 +93,8 @@ public class WishlistFragment extends Fragment {
         loadWishProduct("all"); // Mặc định hiển thị tất cả sản phẩm
 
         // Set font cho các textView
-        TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
-        FontUtils.setZboldFont(requireContext(), txtViewRcm);
+//        TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
+//        FontUtils.setZboldFont(requireContext(), txtViewRcm);
         TextView txtTitle = view.findViewById(R.id.txtTitle);
         FontUtils.setZboldFont(requireContext(), txtTitle);
         TextView tvSortBy = view.findViewById(R.id.tvSortBy);
