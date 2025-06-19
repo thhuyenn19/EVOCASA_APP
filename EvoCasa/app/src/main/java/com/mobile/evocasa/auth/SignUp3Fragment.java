@@ -1,18 +1,21 @@
 package com.mobile.evocasa.auth;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.*;
 import android.view.*;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.*;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.*;
 import com.mobile.evocasa.R;
+
+import java.util.concurrent.TimeUnit;
 
 public class SignUp3Fragment extends Fragment {
 
@@ -23,6 +26,8 @@ public class SignUp3Fragment extends Fragment {
     private String phoneNumber;
 
     private EditText[] codeInputs;
+    private Button btnSendAgain;
+    private ImageView btnBack;
     private AppCompatButton btnVerify;
     private FirebaseAuth mAuth;
 
@@ -61,6 +66,9 @@ public class SignUp3Fragment extends Fragment {
         };
 
         btnVerify = view.findViewById(R.id.btnVerifyEmail);
+        btnSendAgain = view.findViewById(R.id.btnSendAgain);
+        btnBack = view.findViewById(R.id.btnBack);
+
         setupInputBehaviour();
 
         btnVerify.setOnClickListener(v -> {
@@ -72,12 +80,17 @@ public class SignUp3Fragment extends Fragment {
             verifyCode(code);
         });
 
+        btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+
+        btnSendAgain.setOnClickListener(v -> resendOTP());
+
         return view;
     }
 
     private void setupInputBehaviour() {
         for (int i = 0; i < codeInputs.length; i++) {
             final int index = i;
+
             codeInputs[i].addTextChangedListener(new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
                 @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -85,10 +98,19 @@ public class SignUp3Fragment extends Fragment {
                 public void afterTextChanged(Editable s) {
                     if (s.length() == 1 && index < codeInputs.length - 1) {
                         codeInputs[index + 1].requestFocus();
-                    } else if (s.length() == 0 && index > 0) {
-                        codeInputs[index - 1].requestFocus();
                     }
                 }
+            });
+
+            codeInputs[i].setOnKeyListener((v, keyCode, event) -> {
+                if (event.getAction() == KeyEvent.ACTION_DOWN &&
+                        keyCode == KeyEvent.KEYCODE_DEL &&
+                        codeInputs[index].getText().toString().isEmpty() &&
+                        index > 0) {
+                    codeInputs[index - 1].requestFocus();
+                    return true;
+                }
+                return false;
             });
         }
     }
@@ -119,6 +141,34 @@ public class SignUp3Fragment extends Fragment {
         transaction.replace(R.id.fragment_container, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    private void resendOTP() {
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber)
+                .setTimeout(60L, TimeUnit.SECONDS)
+                .setActivity(requireActivity())
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
+                        // Auto verification if available
+                    }
+
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e) {
+                        Toast.makeText(getContext(), "Không thể gửi lại mã: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String newVerificationId,
+                                           @NonNull PhoneAuthProvider.ForceResendingToken token) {
+                        verificationId = newVerificationId;
+                        Toast.makeText(getContext(), "Đã gửi lại mã OTP", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
+
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
     private void showError(String message) {

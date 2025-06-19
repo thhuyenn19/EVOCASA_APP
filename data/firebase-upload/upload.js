@@ -1,24 +1,24 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
-const fs = require('fs');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('./serviceAccountKey.json');
+// const fs = require('fs');
 
-console.log("Initializing Firebase...");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://evocasa-da7f2.firebaseio.com" });
+// console.log("Initializing Firebase...");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://evocasa-da7f2.firebaseio.com" });
 
-console.log("Firebase initialized, reading file...");
-const db = admin.firestore();
-const data = JSON.parse(fs.readFileSync('EvoCasa.Customers.json', 'utf8'));
+// console.log("Firebase initialized, reading file...");
+// const db = admin.firestore();
+// const data = JSON.parse(fs.readFileSync('EvoCasa.Customers.json', 'utf8'));
 
-console.log("Data loaded:", data);
-for (const item of data) {
-  const id = item._id['$oid']; // Lấy ObjectId làm document ID
-  console.log(`Adding document ${id}...`);
-  db.collection('Customers').doc(id).set(item)
-    .then(() => console.log(`Added document ${id} successfully`))
-    .catch(error => console.error(`Error adding ${id}:`, error));
-}
+// console.log("Data loaded:", data);
+// for (const item of data) {
+//   const id = item._id['$oid']; // Lấy ObjectId làm document ID
+//   console.log(`Adding document ${id}...`);
+//   db.collection('Customers').doc(id).set(item)
+//     .then(() => console.log(`Added document ${id} successfully`))
+//     .catch(error => console.error(`Error adding ${id}:`, error));
+// }
 // const admin = require('firebase-admin');
 // const serviceAccount = require('./serviceAccountKey.json');
 // const fs = require('fs');
@@ -132,3 +132,53 @@ for (const item of data) {
 
 // uploadFolder(baseDir);
 // console.log("Upload process started for Furniture...");
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json');
+const fs = require('fs');
+
+console.log("Initializing Firebase...");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://evocasa-da7f2.firebaseio.com"
+});
+
+console.log("Firebase initialized, downloading collection...");
+const db = admin.firestore();
+
+async function downloadCustomers() {
+  try {
+    console.log("Getting Customers collection...");
+    const snapshot = await db.collection('Customers').get();
+    
+    if (snapshot.empty) {
+      console.log('No documents found in Customers collection');
+      return;
+    }
+
+    const customers = [];
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      // Thêm document ID vào dữ liệu
+      customers.push({
+        id: doc.id,
+        ...data
+      });
+      console.log(`Downloaded document: ${doc.id}`);
+    });
+
+    // Lưu dữ liệu vào file JSON
+    const jsonData = JSON.stringify(customers, null, 2);
+    fs.writeFileSync('Downloaded_Customers.json', jsonData, 'utf8');
+    
+    console.log(`Successfully downloaded ${customers.length} documents to Downloaded_Customers.json`);
+    
+  } catch (error) {
+    console.error('Error downloading data:', error);
+  }
+}
+
+// Gọi hàm download
+downloadCustomers().then(() => {
+  console.log("Download completed");
+  process.exit(0);
+});

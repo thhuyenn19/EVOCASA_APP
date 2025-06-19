@@ -1,49 +1,39 @@
 package com.mobile.evocasa.auth;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.text.*;
+import android.view.*;
+import android.widget.*;
+
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.*;
 import com.mobile.evocasa.R;
 
 public class Forgot2Fragment extends Fragment {
 
-    private static final String TAG = "Forgot2Fragment";
+    private static final String ARG_VERIFICATION_ID = "verificationId";
+    private static final String ARG_PHONE = "phone";
 
-    // UI Components
-    private ImageView btnBack, btnHelp;
-    private TextView txtTitle, txtDescription, txtCodeLabel, btnSendAgain, txtTerm, txtPrivacy, txtDidReceive, txtBy;
-    private EditText edtCode1, edtCode2, edtCode3, edtCode4, edtCode5;
-    private AppCompatButton btnVerifyEmail;
+    private String verificationId;
+    private String phoneNumber;
+
     private EditText[] codeInputs;
+    private AppCompatButton btnVerify;
+    private Button btnSendAgain;
+    private ImageView btnBack;
+    private FirebaseAuth mAuth;
 
-    private Typeface regularFont;
-    private Typeface boldFont;
-    private Typeface mediumFont;
-    private Typeface mediumitalicFont;
-    private Typeface semiBoldFont;
+    public Forgot2Fragment() {}
 
-    public Forgot2Fragment() {
-        // Required empty public constructor
-    }
-
-    public static Forgot2Fragment newInstance(String param1, String param2) {
+    public static Forgot2Fragment newInstance(String verificationId, String phoneNumber) {
         Forgot2Fragment fragment = new Forgot2Fragment();
         Bundle args = new Bundle();
-        args.putString("param1", param1);
-        args.putString("param2", param2);
+        args.putString(ARG_VERIFICATION_ID, verificationId);
+        args.putString(ARG_PHONE, phoneNumber);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,222 +41,140 @@ public class Forgot2Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadCustomFonts();
+        mAuth = FirebaseAuth.getInstance();
+        if (getArguments() != null) {
+            verificationId = getArguments().getString(ARG_VERIFICATION_ID);
+            phoneNumber = getArguments().getString(ARG_PHONE);
+        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_forgot2, container, false);
 
-        initViews(view);
-        setCustomFonts();
-        setClickListeners();
-        setupCodeInputs();
+        codeInputs = new EditText[] {
+                view.findViewById(R.id.edtCode1),
+                view.findViewById(R.id.edtCode2),
+                view.findViewById(R.id.edtCode3),
+                view.findViewById(R.id.edtCode4),
+                view.findViewById(R.id.edtCode5),
+                view.findViewById(R.id.edtCode6)
+        };
+
+        btnVerify = view.findViewById(R.id.btnVerifyEmail);
+        btnSendAgain = view.findViewById(R.id.btnSendAgain);
+        btnBack = view.findViewById(R.id.btnBack);
+
+        setupInputBehaviour();
+
+        btnVerify.setOnClickListener(v -> {
+            String code = getCodeFromInputs();
+            if (code.length() != 6) {
+                showError("Vui lòng nhập đủ 6 số");
+                return;
+            }
+            verifyCode(code);
+        });
+
+        btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+
+        btnSendAgain.setOnClickListener(v -> resendVerificationCode());
 
         return view;
     }
 
-    private void loadCustomFonts() {
-        try {
-            if (getContext() != null) {
-                regularFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Regular.otf");
-                boldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Bold.otf");
-                mediumFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-Medium.otf");
-                mediumitalicFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-MediumItalic.otf");
-                semiBoldFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/Inter-SemiBold.otf");
-            }
-        } catch (Exception e) {
-            setDefaultTypefaceFallback();
-        }
-    }
-
-    private void setDefaultTypefaceFallback() {
-        regularFont = Typeface.DEFAULT;
-        boldFont = Typeface.DEFAULT_BOLD;
-        mediumFont = Typeface.DEFAULT;
-        semiBoldFont = Typeface.DEFAULT_BOLD;
-    }
-
-    private void initViews(View view) {
-        btnBack = view.findViewById(R.id.btnBack);
-        btnHelp = view.findViewById(R.id.btnHelp);
-        txtTitle = view.findViewById(R.id.txtTitle);
-        txtDescription = view.findViewById(R.id.txtDescription);
-        txtCodeLabel = view.findViewById(R.id.txtCodeLabel);
-        edtCode1 = view.findViewById(R.id.edtCode1);
-        edtCode2 = view.findViewById(R.id.edtCode2);
-        edtCode3 = view.findViewById(R.id.edtCode3);
-        edtCode4 = view.findViewById(R.id.edtCode4);
-        edtCode5 = view.findViewById(R.id.edtCode5);
-        btnSendAgain = view.findViewById(R.id.btnSendAgain);
-        btnVerifyEmail = view.findViewById(R.id.btnVerifyEmail);
-        txtTerm = view.findViewById(R.id.txtTerm);
-        txtPrivacy = view.findViewById(R.id.txtPrivacy);
-        txtDidReceive = view.findViewById(R.id.txtDidReceive);
-        txtBy = view.findViewById(R.id.txtBy);
-
-        codeInputs = new EditText[]{edtCode1, edtCode2, edtCode3, edtCode4, edtCode5};
-    }
-
-    private void setCustomFonts() {
-        txtTitle.setTypeface(boldFont);
-        txtDescription.setTypeface(mediumitalicFont);
-        txtCodeLabel.setTypeface(mediumFont);
-        btnSendAgain.setTypeface(semiBoldFont);
-        txtTerm.setTypeface(semiBoldFont);
-        txtPrivacy.setTypeface(semiBoldFont);
-        txtDidReceive.setTypeface(regularFont);
-        txtBy.setTypeface(regularFont);
-        btnVerifyEmail.setTypeface(semiBoldFont);
-
-        for (EditText input : codeInputs) {
-            input.setTypeface(boldFont);
-        }
-    }
-
-    private void setClickListeners() {
-        btnBack.setOnClickListener(v -> getActivity().onBackPressed());
-
-        btnHelp.setOnClickListener(v -> openHelp());
-
-        btnSendAgain.setOnClickListener(v -> resendVerificationCode());
-
-        btnVerifyEmail.setOnClickListener(v -> {
-            String code = getEnteredCode();
-            if (validateCode(code)) {
-                verifyCode(code);
-                // After verification, navigate to Forgot3Fragment
-                navigateToForgot3Fragment();
-            }
-        });
-
-        txtTerm.setOnClickListener(v -> openTerms());
-
-        txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
-    }
-
-    private void setupCodeInputs() {
+    private void setupInputBehaviour() {
         for (int i = 0; i < codeInputs.length; i++) {
             final int index = i;
-            if (codeInputs[i] != null) {
-                codeInputs[i].addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        if (s.length() == 1 && index < codeInputs.length - 1) {
-                            if (codeInputs[index + 1] != null) {
-                                codeInputs[index + 1].requestFocus();
-                            }
-                        }
-                        if (index == codeInputs.length - 1 && s.length() == 1) {
-                            String code = getEnteredCode();
-                            if (code.length() == 5) {
-                                // Optional: Auto verify
-                                // verifyCode(code);
-                            }
-                        }
+            codeInputs[i].addTextChangedListener(new TextWatcher() {
+                @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (s.length() == 1 && index < codeInputs.length - 1) {
+                        codeInputs[index + 1].requestFocus();
                     }
+                }
+            });
 
-                    @Override
-                    public void afterTextChanged(Editable s) {}
-                });
-
-                codeInputs[i].setOnKeyListener((v, keyCode, event) -> {
-                    if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_DOWN) {
-                        if (codeInputs[index].getText().toString().isEmpty() && index > 0) {
-                            if (codeInputs[index - 1] != null) {
-                                codeInputs[index - 1].requestFocus();
-                                codeInputs[index - 1].getText().clear();
-                            }
-                        }
+            codeInputs[i].setOnKeyListener((v, keyCode, event) -> {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+                    if (codeInputs[index].getText().toString().isEmpty() && index > 0) {
+                        codeInputs[index - 1].requestFocus();
+                        codeInputs[index - 1].setText("");
+                        return true;
                     }
-                    return false;
-                });
-            }
+                }
+                return false;
+            });
         }
     }
 
-    private String getEnteredCode() {
-        StringBuilder code = new StringBuilder();
-        for (EditText input : codeInputs) {
-            if (input != null) {
-                code.append(input.getText().toString());
-            }
+    private String getCodeFromInputs() {
+        StringBuilder codeBuilder = new StringBuilder();
+        for (EditText edt : codeInputs) {
+            codeBuilder.append(edt.getText().toString().trim());
         }
-        return code.toString();
+        return codeBuilder.toString();
     }
 
-    private boolean validateCode(String code) {
-        if (code.length() != 5) {
-            showError("Please enter a valid 5-digit code");
-            return false;
-        }
-        if (!code.matches("\\d{5}")) {
-            showError("Code must be numeric");
-            return false;
-        }
-        return true;
+    private void verifyCode(String code) {
+        PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                clearError();
+                goToNextStep();
+            } else {
+                showError("Mã OTP không hợp lệ");
+            }
+        });
+    }
+
+    private void goToNextStep() {
+        Forgot3Fragment fragment = new Forgot3Fragment();
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     private void showError(String message) {
-        Log.w(TAG, "Validation error: " + message);
-        if (codeInputs != null) {
-            for (EditText input : codeInputs) {
-                if (input != null && input.getText().toString().isEmpty()) {
-                    input.requestFocus();
-                    break;
-                }
-            }
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        for (EditText edt : codeInputs) {
+            edt.setBackgroundResource(R.drawable.code_input_error_background);
+        }
+    }
+
+    private void clearError() {
+        for (EditText edt : codeInputs) {
+            edt.setBackgroundResource(R.drawable.code_input_background);
         }
     }
 
     private void resendVerificationCode() {
-        Log.d(TAG, "Resending verification code");
-        for (EditText input : codeInputs) {
-            if (input != null) {
-                input.getText().clear();
-            }
-        }
-        if (edtCode1 != null) {
-            edtCode1.requestFocus();
-        }
-    }
+        PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
+                .setPhoneNumber(phoneNumber)
+                .setTimeout(60L, java.util.concurrent.TimeUnit.SECONDS)
+                .setActivity(requireActivity())
+                .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    @Override
+                    public void onVerificationCompleted(PhoneAuthCredential credential) {}
 
-    private void verifyCode(String code) {
-        Log.d(TAG, "Verifying code: " + code);
-        // Implement the logic to verify the code here
-    }
+                    @Override
+                    public void onVerificationFailed(FirebaseException e) {
+                        Toast.makeText(getContext(), "Không thể gửi lại mã: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
 
-    private void navigateToForgot3Fragment() {
-        // Create new instance of Forgot3Fragment
-        Forgot3Fragment forgot3Fragment = new Forgot3Fragment();
-
-        // Begin Fragment transaction
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, forgot3Fragment); // Make sure you have the correct container ID
-        transaction.addToBackStack(null); // Optionally add to back stack
-        transaction.commit();
-    }
-
-    private void openHelp() {
-        Log.d(TAG, "Opening help");
-    }
-
-    private void openTerms() {
-        Log.d(TAG, "Opening terms");
-    }
-
-    private void openPrivacyPolicy() {
-        Log.d(TAG, "Opening privacy policy");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        codeInputs = null;
+                    @Override
+                    public void onCodeSent(String newVerificationId, PhoneAuthProvider.ForceResendingToken token) {
+                        verificationId = newVerificationId;
+                        Toast.makeText(getContext(), "Đã gửi lại mã OTP", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
     }
 }

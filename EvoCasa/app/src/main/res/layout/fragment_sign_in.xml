@@ -134,6 +134,7 @@
             android:contentDescription="@string/title_continue_fb" />
 
         <TextView
+            android:id="@+id/txtfacebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -165,6 +166,7 @@
             android:contentDescription="@string/title_continue_gg" />
 
         <TextView
+            android:id="@+id/txtgoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"

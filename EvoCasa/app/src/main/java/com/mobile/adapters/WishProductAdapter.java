@@ -24,6 +24,9 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
     private List<WishProduct> wishProductList;
     private OnItemClickListener onItemClickListener;
 
+    private String currentTab = "all";
+
+
     // Interface để xử lý sự kiện click
     public interface OnItemClickListener {
         void onItemClick(int position); // Định nghĩa sự kiện click vào bất kỳ item nào
@@ -32,6 +35,11 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
     public WishProductAdapter(List<WishProduct> wishProductList,  OnItemClickListener listener) {
         this.wishProductList = wishProductList;
         this.onItemClickListener = listener;
+        this.currentTab = currentTab;
+    }
+
+    public void setCurrentTab(String currentTab) {
+        this.currentTab = currentTab;
     }
 
 
@@ -90,12 +98,20 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         });
 
 
-        // Hiển thị lớp phủ nếu là hàng hết
-        if (product.isOutOfStock()) {
+        // ✅ Xử lý Flash Sale badge theo tab
+        if ("sale".equalsIgnoreCase(currentTab)) {
+            holder.tvFlashSale.setVisibility(View.VISIBLE);
+        } else {
+            holder.tvFlashSale.setVisibility(View.GONE);
+        }
+
+        // ✅ Xử lý lớp phủ "Out of Stock" theo tab
+        if ("outOfStock".equalsIgnoreCase(currentTab)) {
             holder.overlayOutOfStock.setVisibility(View.VISIBLE);
         } else {
             holder.overlayOutOfStock.setVisibility(View.GONE);
         }
+
     }
 
     @Override
@@ -110,6 +126,8 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         ImageView imgFavorite;
 
         View overlayOutOfStock;
+        TextView tvFlashSale;
+
 
 
         public WishProductViewHolder(View itemView) {
@@ -120,6 +138,8 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
             overlayOutOfStock = itemView.findViewById(R.id.overlayOutOfStock);
+            tvFlashSale = itemView.findViewById(R.id.tvFlashSale);
+
         }
     }
 }

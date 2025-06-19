@@ -44,6 +44,24 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="12dp"
                     android:src="@drawable/ic_wishlist_heart" />
+
+                <!--tag-->
+                <TextView
+                    android:id="@+id/tvFlashSale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="Flash Sale"
+                    android:textColor="#E24747"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:drawableLeft="@drawable/ic_flash"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="1dp"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_discount_top_tag" />
             </RelativeLayout>
 
             <TextView
@@ -73,6 +91,8 @@
                     android:textColor="#9C9999"
                     android:textSize="12sp" />
 
+
+
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -80,6 +100,8 @@
                     android:orientation="horizontal"
                     android:gravity="end|center_vertical"
                     android:layout_marginStart="8dp">
+
+
 
                     <ImageView
                         android:layout_width="12dp"

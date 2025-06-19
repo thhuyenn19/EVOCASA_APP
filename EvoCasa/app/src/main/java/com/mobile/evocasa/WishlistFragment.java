@@ -1,32 +1,26 @@
 package com.mobile.evocasa;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.adapters.WishProductAdapter;
 import com.mobile.evocasa.profile.ProfileFragment;
-import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,130 +31,82 @@ public class WishlistFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private View view;
-
     private TextView btnAll, btnSale, btnLowStock, btnOutOfStock;
     private List<TextView> allTabs;
-
     private ImageView imgWishlistBack;
-
     private WishProductAdapter wishProductAdapter;
     private FirebaseFirestore db;
     private List<WishProduct> wishProductList;
-
     private List<HotProducts> hotProductList;
     private HotProductsAdapter hotProductsAdapter;
-    private List<FlashSaleProduct> flashSaleList;
-    private FlashSaleAdapter flashSaleAdapter;
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_wishlist, container, false);
 
         db = FirebaseFirestore.getInstance();
-
-        // Khởi tạo RecyclerView và Adapter
         RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
         recyclerViewWishProduct.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         wishProductList = new ArrayList<>();
         wishProductAdapter = new WishProductAdapter(wishProductList, position -> {
-            // Khi click vào sản phẩm (hoặc icon yêu thích), xóa sản phẩm khỏi RecyclerView
             wishProductList.remove(position);
             wishProductAdapter.notifyItemRemoved(position);
-
-            // Cập nhật Firestore nếu cần (xóa sản phẩm khỏi wishlist)
-            String customerId = new UserSessionManager(getContext()).getUid(); // Lấy customerId từ session
+            String customerId = new UserSessionManager(getContext()).getUid();
             db.collection("wishlist").document(customerId)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            // Giả sử bạn lưu trữ các sản phẩm trực tiếp, không phải product_id
                             List<Map<String, Object>> products = (List<Map<String, Object>>) documentSnapshot.get("products");
-                            // Tìm sản phẩm và xóa khỏi danh sách
                             if (products != null) {
-                                products.remove(position); // Xóa sản phẩm từ danh sách
+                                products.remove(position);
                                 db.collection("wishlist").document(customerId)
-                                        .update("products", products) // Cập nhật lại danh sách sản phẩm trong Firestore
-                                        .addOnSuccessListener(aVoid -> {
-                                            Log.d("Wishlist", "Product removed from wishlist in Firestore");
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Log.e("Wishlist", "Error removing product from wishlist in Firestore", e);
-                                        });
+                                        .update("products", products);
                             }
                         }
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("Wishlist", "Error fetching wishlist data", e);
                     });
         });
 
         recyclerViewWishProduct.setAdapter(wishProductAdapter);
+        loadWishProduct("all");
 
-        // Gọi hàm load từ Firestore, mặc định sẽ lấy tất cả sản phẩm
-        loadWishProduct("all"); // Mặc định hiển thị tất cả sản phẩm
-
-
-        flashSaleList = new ArrayList<>();
-        flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
-
-
-
-        // Set font cho các textView
         TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
         FontUtils.setZboldFont(requireContext(), txtViewRcm);
         TextView txtTitle = view.findViewById(R.id.txtTitle);
         FontUtils.setZboldFont(requireContext(), txtTitle);
-//        TextView tvSortBy = view.findViewById(R.id.tvSortBy);
-//        FontUtils.setMediumFont(requireContext(), tvSortBy);
 
-        // Các button lọc
         btnAll = view.findViewById(R.id.btnAll);
-        FontUtils.setMediumFont(requireContext(), btnAll);
         btnSale = view.findViewById(R.id.btnSale);
-        FontUtils.setMediumFont(requireContext(), btnSale);
         btnLowStock = view.findViewById(R.id.btnLowStock);
-        FontUtils.setMediumFont(requireContext(), btnLowStock);
         btnOutOfStock = view.findViewById(R.id.btnOutOfStock);
+
+        FontUtils.setMediumFont(requireContext(), btnAll);
+        FontUtils.setMediumFont(requireContext(), btnSale);
+        FontUtils.setMediumFont(requireContext(), btnLowStock);
         FontUtils.setMediumFont(requireContext(), btnOutOfStock);
 
-        // Danh sách tất cả tab
         allTabs = Arrays.asList(btnAll, btnSale, btnLowStock, btnOutOfStock);
-
-        // Chọn mặc định tab All
         setActiveTab(btnAll);
 
-        // Gán sự kiện cho các tab
         for (TextView tab : allTabs) {
             tab.setOnClickListener(v -> {
                 setActiveTab(tab);
-                // Lọc theo từng loại sản phẩm
-                if (tab == btnAll) {
-                    loadWishProduct("all");
-                } else if (tab == btnSale) {
-                    loadFlashSaleProducts(); // gọi adapter mới
-                } else if (tab == btnLowStock) {
-                    loadWishProduct("lowStock");
-                } else if (tab == btnOutOfStock) {
-                    loadWishProduct("outOfStock");
-                }
+                String filter = "all";
+                if (tab == btnSale) filter = "sale";
+                else if (tab == btnLowStock) filter = "lowStock";
+                else if (tab == btnOutOfStock) filter = "outOfStock";
+                loadWishProduct(filter);
             });
         }
 
-        // Gán sự kiện quay lại ProfileFragment
         imgWishlistBack = view.findViewById(R.id.imgWishlistBack);
         imgWishlistBack.setOnClickListener(v -> {
-            requireActivity()
-                    .getSupportFragmentManager()
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, new ProfileFragment())
                     .addToBackStack(null)
                     .commit();
         });
-
 
         /* Hot Products */
         RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
@@ -173,39 +119,82 @@ public class WishlistFragment extends Fragment {
         // Gọi hàm load từ Firestore
         loadHotProducts();
 
-
         return view;
     }
 
-    private void loadFlashSaleProducts() {
-        // Lấy lại RecyclerView cục bộ đúng với cấu trúc fragment
+    private void loadWishProduct(String filter) {
         RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+        recyclerViewWishProduct.setAdapter(wishProductAdapter);
+        wishProductList.clear();
+        wishProductAdapter.setCurrentTab(filter);
 
-        // Gán adapter flash sale
-        recyclerViewWishProduct.setAdapter(flashSaleAdapter);
-        recyclerViewWishProduct.setVisibility(View.VISIBLE);
+        String customerId = new UserSessionManager(getContext()).getUid();
+        db.collection("Wishlist")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    boolean found = false;
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String firestoreCustomerId = doc.getString("Customer_id");
+                        if (firestoreCustomerId != null && firestoreCustomerId.equals(customerId)) {
+                            found = true;
+                            List<String> productIds = (List<String>) doc.get("Productid");
+                            if (productIds == null || productIds.isEmpty()) {
+                                wishProductAdapter.notifyDataSetChanged();
+                                return;
+                            }
+                            Collections.shuffle(productIds);
 
-        flashSaleList.clear();
-        db.collection("Product").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
-                    Collections.shuffle(allDocs);
+                            int maxItems;
+                            switch (filter) {
+                                case "lowStock":
+                                    maxItems = 3;
+                                    break;
+                                case "outOfStock":
+                                    maxItems = 2;
+                                    break;
+                                case "sale":
+                                    maxItems = 4;
+                                    break;
+                                default:
+                                    maxItems = productIds.size(); // load tất cả
+                                    break;
+                            }
 
-                    flashSaleList.clear();
-                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
-                        FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
-                        flashSaleList.add(product);
-                        Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
+                            List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+                            for (String productId : productIds) {
+                                tasks.add(db.collection("Product").document(productId).get());
+                            }
+
+                            int finalMaxItems = maxItems;
+                            Tasks.whenAllSuccess(tasks)
+                                    .addOnSuccessListener(results -> {
+                                        List<WishProduct> allProducts = new ArrayList<>();
+                                        for (Object obj : results) {
+                                            DocumentSnapshot productDoc = (DocumentSnapshot) obj;
+                                            if (productDoc.exists()) {
+                                                WishProduct product = productDoc.toObject(WishProduct.class);
+                                                allProducts.add(product);
+                                            }
+                                        }
+                                        List<WishProduct> limitedList = new ArrayList<>();
+                                        for (int i = 0; i < Math.min(finalMaxItems, allProducts.size()); i++) {
+                                            limitedList.add(allProducts.get(i));
+                                        }
+                                        wishProductList.clear();
+                                        wishProductList.addAll(limitedList);
+                                        wishProductAdapter.notifyDataSetChanged();
+                                    });
+                            break;
+                        }
                     }
-
-
-                    flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
-                    recyclerViewWishProduct.setVisibility(View.VISIBLE);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
-                    recyclerViewWishProduct.setVisibility(View.GONE);
+                    if (!found) wishProductAdapter.notifyDataSetChanged();
                 });
+    }
+
+    private void setActiveTab(TextView selectedTab) {
+        for (TextView tab : allTabs) {
+            tab.setBackgroundResource(tab == selectedTab ? R.drawable.filter_button_selector_choose : R.drawable.filter_button_selector);
+        }
     }
 
     private void loadHotProducts() {
@@ -228,70 +217,6 @@ public class WishlistFragment extends Fragment {
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Lỗi khi load Hot Products", e);
                 });
-    }
-
-    // Giả lập load sản phẩm cho các tab
-    private void loadWishProduct(String filter) {
-        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
-
-        // 👉 Gắn lại đúng adapter khi quay về tab khác
-        recyclerViewWishProduct.setAdapter(wishProductAdapter);
-
-        wishProductList.clear(); // Xóa sản phẩm cũ
-
-        db.collection("Product")
-                .get()
-                .addOnSuccessListener(querySnapshots -> {
-                    List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
-                    Collections.shuffle(allDocs); // 🔀 random
-
-                    List<WishProduct> filteredProducts = new ArrayList<>();
-                    int limit = Math.min(6, allDocs.size()); // Hiển thị tối đa 6 sản phẩm
-
-                    // Lọc sản phẩm theo từng tab
-                    switch (filter) {
-                        case "lowStock":
-                            for (int i = 0; i < 3 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                filteredProducts.add(product);
-                            }
-                            break;
-
-                        case "outOfStock":
-                            for (int i = 0; i < 2 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                product.setOutOfStock(true); // Đánh dấu là hết hàng
-                                filteredProducts.add(product);
-                            }
-                            break;
-
-
-                        case "all":
-                        default:
-                            for (int i = 0; i < 6 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                filteredProducts.add(product);
-                            }
-                            break;
-                    }
-
-                    wishProductList.addAll(filteredProducts);
-                    wishProductAdapter.notifyDataSetChanged();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Lỗi khi load sản phẩm", e);
-                });
-    }
-
-    // Thay đổi background cho các tab được chọn
-    private void setActiveTab(TextView selectedTab) {
-        for (TextView tab : allTabs) {
-            if (tab == selectedTab) {
-                tab.setBackgroundResource(R.drawable.filter_button_selector_choose);
-            } else {
-                tab.setBackgroundResource(R.drawable.filter_button_selector);
-            }
-        }
     }
 }
 
