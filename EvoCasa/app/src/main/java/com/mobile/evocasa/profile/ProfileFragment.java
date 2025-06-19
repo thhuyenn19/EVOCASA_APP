@@ -1,5 +1,6 @@
 package com.mobile.evocasa.profile;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -43,7 +44,8 @@ import java.util.Map;
 
 public class ProfileFragment extends Fragment {
     private TextView txtName, txtLogOut, txtCartBadge;
-    private ImageView imgLogOut, imgCart;
+    private ImageView imgAvatar, imgCart;
+    ImageButton btnEditAvatar;
     private RecyclerView recyclerView;
     private View view;
 
@@ -66,8 +68,12 @@ public class ProfileFragment extends Fragment {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         sessionManager = new UserSessionManager(requireContext());
+        imgAvatar = view.findViewById(R.id.img_avatar);
+        btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+        txtName = view.findViewById(R.id.txtName);
+
         //
-        loadCustomerName();
+        loadCustomerInformation();
         setupSuggestedProducts();
         setupClickListeners();
         startCartBadgeListener();
@@ -256,7 +262,7 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void loadCustomerName() {
+    private void loadCustomerInformation() {
         if (!isAdded() || getContext() == null) return;
 
         String uid = sessionManager.getUid();
@@ -267,22 +273,36 @@ public class ProfileFragment extends Fragment {
                     .document(uid)
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
-                        if (!isAdded() || getContext() == null || txtName == null) return;
+                        if (!isAdded() || getContext() == null) return;
 
                         if (documentSnapshot.exists()) {
+                            // Gán tên người dùng
                             String name = documentSnapshot.getString("Name");
-                            if (name != null && !name.isEmpty()) {
-                                txtName.setText(name);
-                            } else {
-                                txtName.setText("No Name");
+                            if (txtName != null) {
+                                if (name != null && !name.isEmpty()) {
+                                    txtName.setText(name);
+                                } else {
+                                    txtName.setText("No Name");
+                                }
                             }
+
+                            // Gán ảnh avatar
+                            String avatarUrl = documentSnapshot.getString("Image");
+                            if (imgAvatar != null && avatarUrl != null && !avatarUrl.isEmpty()) {
+                                Glide.with(requireContext())
+                                        .load(avatarUrl)
+                                        .placeholder(R.mipmap.sample_avt)
+                                        .circleCrop()
+                                        .into(imgAvatar);
+                            }
+
                         } else {
-                            txtName.setText("No Profile Found");
+                            if (txtName != null) txtName.setText("No Profile Found");
                         }
                     })
                     .addOnFailureListener(e -> {
-                        if (!isAdded() || getContext() == null || txtName == null) return;
-                        txtName.setText("Error");
+                        if (!isAdded() || getContext() == null) return;
+                        if (txtName != null) txtName.setText("Error");
                     });
         } else {
             if (txtName != null) {
@@ -290,6 +310,7 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
+
 
     private void applyCustomFonts(View view) {
         TextView txtName = view.findViewById(R.id.txtName);

@@ -35,7 +35,7 @@ public class ProfileInfoAdapter extends RecyclerView.Adapter<ProfileInfoAdapter.
         holder.label.setText(item.getLabel());
         holder.value.setText(item.getValue());
         holder.icon.setImageResource(item.getIconRes());
-        // ✅ Set font tại đây
+        // Set font tại đây
         FontUtils.setRegularFont(holder.itemView.getContext(), holder.label);
         FontUtils.setRegularFont(holder.itemView.getContext(), holder.value);
     }
@@ -56,4 +56,12 @@ public class ProfileInfoAdapter extends RecyclerView.Adapter<ProfileInfoAdapter.
             value = itemView.findViewById(R.id.value);
         }
     }
+
+    // Hàm này để cập nhật dữ liệu từ bên ngoài
+    public void setData(List<ProfileInfo> newData) {
+        infoList.clear();
+        infoList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
 }

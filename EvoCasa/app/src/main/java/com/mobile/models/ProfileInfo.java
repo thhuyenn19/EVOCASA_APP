@@ -11,6 +11,9 @@ public class ProfileInfo {
         this.iconRes = iconRes;
     }
 
+    public ProfileInfo(String phone, String phone1) {
+    }
+
     public String getLabel() {
         return label;
     }
