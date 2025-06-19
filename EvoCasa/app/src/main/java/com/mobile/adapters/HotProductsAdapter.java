@@ -59,6 +59,8 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
         // Load ảnh đầu tiên từ danh sách ảnh
+        Log.d("HOT_PRODUCT", "Ảnh đầu tiên: " + product.getFirstImage());
+
         List<String> images = product.getImageList();
         if (images != null && !images.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -70,8 +72,7 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
 
         // Font đậm cho tên sản phẩm
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
-        // Nếu rating không có trong Firestore, thì tạo tạm số ngẫu nhiên
-        float fakeRating = (float) (4 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
+        float fakeRating = (float) (4 + new Random().nextFloat() * 1); // từ 4.0 đến 5.0
         holder.txtRating.setText(String.format("%.1f", fakeRating));
 
     }

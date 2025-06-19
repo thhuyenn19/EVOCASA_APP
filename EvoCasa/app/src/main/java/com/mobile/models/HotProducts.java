@@ -1,14 +1,13 @@
 package com.mobile.models;
 
+import com.google.firebase.firestore.PropertyName;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.firebase.firestore.PropertyName;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HotProducts {
-    private String image;
 
     @PropertyName("Name")
     private String name;
@@ -16,24 +15,45 @@ public class HotProducts {
     @PropertyName("Price")
     private double price;
 
-    // Vì không có rating trong Firestore → sẽ random trong Adapter
-    private float rating;
+    @PropertyName("Image")
+    private String image;
 
+    private float rating; // không cần @PropertyName nếu không lấy từ Firestore
+
+    // Constructor rỗng cho Firebase
     public HotProducts() {}
 
-    // Getter
+    // Getters & Setters
+
     @PropertyName("Name")
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     @PropertyName("Price")
-    public double getPrice() { return price; }
+    public double getPrice() {
+        return price;
+    }
 
-    public float getRating() { return rating; }
+    @PropertyName("Image")
+    public String getImage() {
+        return image;
+    }
 
-    public void setRating(float rating) { this.rating = rating; }
+    @PropertyName("Image")
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-    public void setImage(String image) { this.image = image; }
+    public float getRating() {
+        return rating;
+    }
 
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    // Convert chuỗi JSON thành danh sách ảnh
     public List<String> getImageList() {
         try {
             return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
@@ -41,9 +61,8 @@ public class HotProducts {
             return new ArrayList<>();
         }
     }
-
     public String getFirstImage() {
-        List<String> imgs = getImageList();
-        return (imgs != null && !imgs.isEmpty()) ? imgs.get(0) : null;
+        List<String> list = getImageList();
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 }
