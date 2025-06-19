@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,10 +23,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
+import com.mobile.models.CartProduct;
 import com.mobile.utils.FontUtils;
 
 public class MainPaymentFragment extends Fragment {
-
     private View currentSelectedOption = null;
 
     @Nullable
@@ -29,6 +34,16 @@ public class MainPaymentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_payment, container, false);
+
+        // Lấy dữ liệu cartPayment từ Intent (của Activity chứa fragment này)
+        Intent intent = requireActivity().getIntent();
+        String jsonCart = intent.getStringExtra("cartPayment");
+
+        Type type = new TypeToken<List<CartProduct>>() {}.getType();
+        List<CartProduct> cartPayment = new Gson().fromJson(jsonCart, type);
+
+        // In ra console để kiểm tra
+        Log.d("PaymentActivity", "Received cartPayment: " + new Gson().toJson(cartPayment));
 
         // Set font và underline cho các TextView cần thiết
         FontUtils.applyFont(view.findViewById(R.id.txtShippingAddress), requireContext(), R.font.inter);
@@ -59,7 +74,7 @@ public class MainPaymentFragment extends Fragment {
         // Nút Checkout
         Button btnCheckout = view.findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), NarBarActivity.class);
+            Intent checkoutIntent = new Intent(requireContext(), NarBarActivity.class);
             intent.putExtra("tab_pos", 4);
             startActivity(intent);
             requireActivity().finish();

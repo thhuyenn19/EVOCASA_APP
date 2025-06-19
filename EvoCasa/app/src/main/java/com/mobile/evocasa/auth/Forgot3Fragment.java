@@ -2,20 +2,11 @@ package com.mobile.evocasa.auth;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.*;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -23,7 +14,14 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.R;
+
+import java.util.*;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
 public class Forgot3Fragment extends Fragment {
 
@@ -59,8 +57,7 @@ public class Forgot3Fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_forgot3, container, false);
     }
 
@@ -110,42 +107,26 @@ public class Forgot3Fragment extends Fragment {
     }
 
     private void setupFonts() {
-        if (fontRegular != null && fontBold != null && fontMedium != null && fontSemiBold != null) {
-            txtTitle.setTypeface(fontBold);
-            edtPassword.setTypeface(fontRegular);
-            edtConfirmPassword.setTypeface(fontRegular);
-            btnResetPassword.setTypeface(fontSemiBold);
-            txtTerm.setTypeface(fontSemiBold);
-            txtPrivacy.setTypeface(fontSemiBold);
-            txtBy.setTypeface(fontRegular);
-            txtPassword.setTypeface(fontMedium);
-            txtTypePassword.setTypeface(fontMedium);
-        }
+        txtTitle.setTypeface(fontBold);
+        edtPassword.setTypeface(fontRegular);
+        edtConfirmPassword.setTypeface(fontRegular);
+        btnResetPassword.setTypeface(fontSemiBold);
+        txtTerm.setTypeface(fontSemiBold);
+        txtPrivacy.setTypeface(fontSemiBold);
+        txtBy.setTypeface(fontRegular);
+        txtPassword.setTypeface(fontMedium);
+        txtTypePassword.setTypeface(fontMedium);
     }
 
     private void setupListeners() {
-        btnBack.setOnClickListener(v -> {
-            if (getActivity() != null) {
-                getActivity().onBackPressed();
-            }
-        });
-
+        btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
         btnHelp.setOnClickListener(v -> Toast.makeText(getContext(), "Help clicked", Toast.LENGTH_SHORT).show());
-
         btnTogglePassword.setOnClickListener(v -> togglePasswordVisibility());
         btnToggleConfirmPassword.setOnClickListener(v -> toggleConfirmPasswordVisibility());
 
-        // Add OnFocusChangeListener to show/hide password criteria
         edtPassword.setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                // Show progress bar and password criteria when focused
-                progressBar.setVisibility(View.VISIBLE);
-                passwordCriteriaLayout.setVisibility(View.VISIBLE);
-            } else {
-                // Hide progress bar and password criteria when focus is lost
-                progressBar.setVisibility(View.GONE);
-                passwordCriteriaLayout.setVisibility(View.GONE);
-            }
+            progressBar.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
+            passwordCriteriaLayout.setVisibility(hasFocus ? View.VISIBLE : View.GONE);
         });
 
         edtPassword.addTextChangedListener(new TextWatcher() {
@@ -166,54 +147,40 @@ public class Forgot3Fragment extends Fragment {
         });
 
         btnResetPassword.setOnClickListener(v -> handleResetPassword());
-
         txtTerm.setOnClickListener(v -> openTerms());
         txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
     }
 
     private void togglePasswordVisibility() {
-        if (isPasswordVisible) {
-            edtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            btnTogglePassword.setImageResource(R.drawable.ic_eye_off);
-        } else {
-            edtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            btnTogglePassword.setImageResource(R.drawable.ic_eye_on);
-        }
+        edtPassword.setTransformationMethod(isPasswordVisible ? PasswordTransformationMethod.getInstance() : HideReturnsTransformationMethod.getInstance());
+        btnTogglePassword.setImageResource(isPasswordVisible ? R.drawable.ic_eye_off : R.drawable.ic_eye_on);
         isPasswordVisible = !isPasswordVisible;
         edtPassword.setSelection(edtPassword.getText().length());
     }
 
     private void toggleConfirmPasswordVisibility() {
-        if (isConfirmPasswordVisible) {
-            edtConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_off);
-        } else {
-            edtConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            btnToggleConfirmPassword.setImageResource(R.drawable.ic_eye_on);
-        }
+        edtConfirmPassword.setTransformationMethod(isConfirmPasswordVisible ? PasswordTransformationMethod.getInstance() : HideReturnsTransformationMethod.getInstance());
+        btnToggleConfirmPassword.setImageResource(isConfirmPasswordVisible ? R.drawable.ic_eye_off : R.drawable.ic_eye_on);
         isConfirmPasswordVisible = !isConfirmPasswordVisible;
         edtConfirmPassword.setSelection(edtConfirmPassword.getText().length());
     }
 
     private void validatePassword(String password) {
         hasLength = password.length() >= 8;
-        updateCheckIndicator(checkLength, hasLength);
-
         hasNumber = password.matches(".*\\d.*");
-        updateCheckIndicator(checkNumber, hasNumber);
-
         hasSpecialChar = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
-        updateCheckIndicator(checkSpecialChar, hasSpecialChar);
-
         hasUpperCase = password.matches(".*[A-Z].*");
-        updateCheckIndicator(checkUpperCase, hasUpperCase);
 
+        updateCheckIndicator(checkLength, hasLength);
+        updateCheckIndicator(checkNumber, hasNumber);
+        updateCheckIndicator(checkSpecialChar, hasSpecialChar);
+        updateCheckIndicator(checkUpperCase, hasUpperCase);
         updateProgressBar();
         updateResetPasswordButton();
     }
 
-    private void updateCheckIndicator(View indicator, boolean isValid) {
-        indicator.setSelected(isValid);
+    private void updateCheckIndicator(View view, boolean isValid) {
+        view.setSelected(isValid);
     }
 
     private void updateProgressBar() {
@@ -222,91 +189,57 @@ public class Forgot3Fragment extends Fragment {
         if (hasNumber) progress++;
         if (hasSpecialChar) progress++;
         if (hasUpperCase) progress++;
-
         progressBar.setProgress(progress);
     }
 
     private void checkPasswordsMatch() {
         String password = edtPassword.getText().toString();
-        String confirmPassword = edtConfirmPassword.getText().toString();
-        passwordsMatch = !password.isEmpty() && password.equals(confirmPassword);
+        String confirm = edtConfirmPassword.getText().toString();
+        passwordsMatch = !password.isEmpty() && password.equals(confirm);
         updateResetPasswordButton();
     }
 
     private void updateResetPasswordButton() {
-        boolean allValid = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
-        btnResetPassword.setEnabled(allValid);
-
-        if (allValid) {
-            btnResetPassword.setAlpha(1.0f);
-            btnResetPassword.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.green, null));
-        } else {
-            btnResetPassword.setAlpha(0.5f);
-            btnResetPassword.setBackgroundTintList(ResourcesCompat.getColorStateList(getResources(), R.color.gray_light, null));
-        }
+        boolean enabled = hasLength && hasNumber && hasSpecialChar && hasUpperCase && passwordsMatch;
+        btnResetPassword.setEnabled(enabled);
+        btnResetPassword.setAlpha(enabled ? 1f : 0.5f);
     }
 
     private void handleResetPassword() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) {
+            Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String password = edtPassword.getText().toString();
-        String confirmPassword = edtConfirmPassword.getText().toString();
+        String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 
-        if (password.isEmpty()) {
-            Toast.makeText(getContext(), "Please enter a password", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!password.equals(confirmPassword)) {
-            Toast.makeText(getContext(), "Passwords do not match", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!(hasLength && hasNumber && hasSpecialChar && hasUpperCase)) {
-            Toast.makeText(getContext(), "Password does not meet all requirements", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-//        navigateToSignUp5Fragment();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Account").document(currentUser.getUid())
+                .update("Password", hashedPassword)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(getContext(), "Password reset successfully", Toast.LENGTH_SHORT).show();
+                    navigateToForgot4Fragment();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Failed to update password: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                });
     }
 
-//    private void navigateToSignUp5Fragment() {
-//        // Navigate to the next fragment (Forgot5Fragment)
-//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        transaction.replace(R.id.fragment_container, new Forgot5Fragment());
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-//    }
+    private void navigateToForgot4Fragment() {
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, new Forgot4Fragment());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
 
     private void openTerms() {
-        // TODO: Implement opening the Terms and Conditions page
         Toast.makeText(getContext(), "Opening Terms", Toast.LENGTH_SHORT).show();
     }
 
     private void openPrivacyPolicy() {
-        // TODO: Implement opening the Privacy Policy page
         Toast.makeText(getContext(), "Opening Privacy Policy", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        edtPassword = null;
-        edtConfirmPassword = null;
-        btnBack = null;
-        btnHelp = null;
-        btnTogglePassword = null;
-        btnToggleConfirmPassword = null;
-        progressBar = null;
-        passwordCriteriaLayout = null;
-        checkLength = null;
-        checkNumber = null;
-        checkSpecialChar = null;
-        checkUpperCase = null;
-        btnResetPassword = null;
-        txtTitle = null;
-        txtTerm = null;
-        txtPrivacy = null;
-        txtBy = null;
-        txtPassword = null;
-        txtTypePassword = null;
     }
 }

@@ -31,6 +31,7 @@ public class SignUp4Fragment extends Fragment {
     private LinearLayout passwordCriteriaLayout;
     private View checkLength, checkNumber, checkSpecialChar, checkUpperCase;
     private AppCompatButton btnCreateAccount;
+
     private TextView txtTitle, txtTerm, txtPrivacy, txtBy, txtPassword, txtTypePassword;
 
     private boolean hasLength = false, hasNumber = false, hasSpecialChar = false, hasUpperCase = false, passwordsMatch = false;
@@ -135,6 +136,7 @@ public class SignUp4Fragment extends Fragment {
         txtTerm.setOnClickListener(v -> openTerms());
         txtPrivacy.setOnClickListener(v -> openPrivacyPolicy());
     }
+
 
     private void toggleVisibility(EditText editText, ImageView toggleBtn) {
         if (editText.getTransformationMethod() instanceof PasswordTransformationMethod) {

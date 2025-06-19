@@ -30,7 +30,7 @@ public class SignIn1Fragment extends Fragment {
 
     private TextView txtTitle, txtEmailPhoneLabel, txtPassword, txtTerm, txtPrivacy, txtForgotPassword, txtBy;
     private EditText edtEmailPhone, edtPassword;
-    private ImageView btnTogglePassword;
+    private ImageView btnTogglePassword, btnBack;
     private AppCompatButton btnContinue;
     private boolean isPasswordVisible = false;
 
@@ -45,6 +45,7 @@ public class SignIn1Fragment extends Fragment {
         txtPrivacy = rootView.findViewById(R.id.txtPrivacy);
         txtForgotPassword = rootView.findViewById(R.id.btnForgotPassword);
         txtBy = rootView.findViewById(R.id.txtBy);
+        btnBack = rootView.findViewById(R.id.btnBack);
 
         edtEmailPhone = rootView.findViewById(R.id.edtEmailPhone);
         edtPassword = rootView.findViewById(R.id.edtPassword);
@@ -76,6 +77,9 @@ public class SignIn1Fragment extends Fragment {
             transaction.replace(R.id.fragment_container, new Forgot1Fragment());
             transaction.addToBackStack(null);
             transaction.commit();
+        });
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) getActivity().onBackPressed();
         });
 
         btnTogglePassword.setOnClickListener(v -> {

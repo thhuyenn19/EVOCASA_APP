@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ public class SignUp2Fragment extends Fragment {
     private EditText edtPhone;
     private AppCompatButton btnContinue;
     private FirebaseAuth mAuth;
+    private ImageView btnBack;
 
     public SignUp2Fragment() {}
 
@@ -33,13 +35,16 @@ public class SignUp2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sign_up2, container, false);
 
-        edtPhone = view.findViewById(R.id.edtEmailPhone); // giữ nguyên ID nếu bạn không muốn đổi layout
+        edtPhone = view.findViewById(R.id.edtEmailPhone);
         btnContinue = view.findViewById(R.id.btnContinue);
+        btnBack = view.findViewById(R.id.btnBack);
         mAuth = FirebaseAuth.getInstance();
 
         // Cài đặt input type để hiện bàn phím số
         edtPhone.setInputType(InputType.TYPE_CLASS_PHONE);
-
+        btnBack.setOnClickListener(v -> {
+            if (getActivity() != null) getActivity().onBackPressed();
+        });
         btnContinue.setOnClickListener(v -> {
             btnContinue.setEnabled(false);
 
