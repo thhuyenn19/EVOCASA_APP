@@ -105,10 +105,6 @@ public class WishlistFragment extends Fragment {
         loadWishProduct("all"); // Mặc định hiển thị tất cả sản phẩm
 
 
-        flashSaleList = new ArrayList<>();
-        flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
-
-
 
         // Set font cho các textView
         TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
@@ -142,7 +138,7 @@ public class WishlistFragment extends Fragment {
                 if (tab == btnAll) {
                     loadWishProduct("all");
                 } else if (tab == btnSale) {
-                    loadFlashSaleProducts(); // gọi adapter mới
+                    loadWishProduct("sale");
                 } else if (tab == btnLowStock) {
                     loadWishProduct("lowStock");
                 } else if (tab == btnOutOfStock) {
@@ -176,37 +172,6 @@ public class WishlistFragment extends Fragment {
 
 
         return view;
-    }
-
-    private void loadFlashSaleProducts() {
-        // Lấy lại RecyclerView cục bộ đúng với cấu trúc fragment
-        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
-
-        // Gán adapter flash sale
-        recyclerViewWishProduct.setAdapter(flashSaleAdapter);
-        recyclerViewWishProduct.setVisibility(View.VISIBLE);
-
-        flashSaleList.clear();
-        db.collection("Product").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
-                    Collections.shuffle(allDocs);
-
-                    flashSaleList.clear();
-                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
-                        FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
-                        flashSaleList.add(product);
-                        Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
-                    }
-
-
-                    flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
-                    recyclerViewWishProduct.setVisibility(View.VISIBLE);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
-                    recyclerViewWishProduct.setVisibility(View.GONE);
-                });
     }
 
     private void loadHotProducts() {
@@ -258,7 +223,8 @@ public class WishlistFragment extends Fragment {
                                 return;
                             }
 
-                            Collections.shuffle(productIds); // shuffle nếu muốn
+                            // Shuffle để random hiển thị nếu muốn
+                            Collections.shuffle(productIds);
 
                             int maxItems;
                             switch (filter) {
@@ -268,34 +234,43 @@ public class WishlistFragment extends Fragment {
                                 case "outOfStock":
                                     maxItems = 2;
                                     break;
+                                case "sale":
+                                    maxItems = 4;
+                                    break;
                                 default:
-                                    maxItems = productIds.size(); // load tất cả
+                                    maxItems = productIds.size(); // all
                                     break;
                             }
 
+                            // Lấy tất cả productId trong wishlist
                             List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
-                            for (int i = 0; i < Math.min(maxItems, productIds.size()); i++) {
-                                Task<DocumentSnapshot> task = db.collection("Product").document(productIds.get(i)).get();
-                                tasks.add(task);
+                            for (String productId : productIds) {
+                                tasks.add(db.collection("Product").document(productId).get());
                             }
 
                             Tasks.whenAllSuccess(tasks)
                                     .addOnSuccessListener(results -> {
-                                        wishProductList.clear();
+                                        List<WishProduct> allProducts = new ArrayList<>();
 
                                         for (Object obj : results) {
                                             DocumentSnapshot productDoc = (DocumentSnapshot) obj;
                                             if (productDoc.exists()) {
                                                 WishProduct product = productDoc.toObject(WishProduct.class);
-                                                if ("outOfStock".equals(filter)) {
-                                                    product.setOutOfStock(true);
-                                                }
-                                                wishProductList.add(product);
+                                                allProducts.add(product);
                                             }
                                         }
 
+                                        // Cắt danh sách theo tab filter
+                                        List<WishProduct> limitedList = new ArrayList<>();
+                                        for (int i = 0; i < Math.min(maxItems, allProducts.size()); i++) {
+                                            limitedList.add(allProducts.get(i));
+                                        }
+
+                                        wishProductList.clear();
+                                        wishProductList.addAll(limitedList);
                                         wishProductAdapter.notifyDataSetChanged();
-                                        Log.d("WISHLIST_DEBUG", "Đã load " + wishProductList.size() + " sản phẩm cho tab " + filter);
+
+                                        Log.d("WISHLIST_DEBUG", "Hiển thị " + wishProductList.size() + " sản phẩm cho tab " + filter);
                                     })
                                     .addOnFailureListener(e -> {
                                         Log.e("WISHLIST_DEBUG", "Lỗi khi load sản phẩm từ Product", e);
