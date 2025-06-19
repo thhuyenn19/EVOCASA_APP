@@ -255,17 +255,21 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+    // Thay thế phần setupSubCategories() trong CategoryFragment với code này:
+
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
         subCategoryList.add(new SubCategory("All products", true));
-        subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::filterProductsBySubCategory);
+
+        // ✅ SỬA: Truyền callback xử lý cả filter products VÀ scroll
+        subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::onSubCategorySelected);
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
         if (selectedCategory.equals("Shop All")) {
             Log.d(TAG, "Shop All selected, showing only 'All products'");
             subCategoryAdapter.notifyDataSetChanged();
-            fetchAllProductsForShopAll(); 
+            fetchAllProductsForShopAll();
             return;
         }
 
@@ -289,7 +293,6 @@ public class CategoryFragment extends Fragment {
                             }
                         }
                         subCategoryAdapter.notifyDataSetChanged();
-
                     })
                     .addOnFailureListener(e -> {
                         Log.e(TAG, "Failed to fetch subcategories for ID: " + categoryId, e);
@@ -297,51 +300,68 @@ public class CategoryFragment extends Fragment {
                     });
         }
 
-        subCategoryAdapter.setOnSubCategoryClickListener(position -> {
-            if (isFetchingProducts) {
-                Log.d(TAG, "Fetch in progress, ignoring subcategory click");
-                return;
-            }
-
-            recyclerViewSubCategory.post(() -> {
-                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSubCategory.getLayoutManager();
-                if (layoutManager != null) {
-                    RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
-                        @Override
-                        protected int getHorizontalSnapPreference() {
-                            return SNAP_TO_START;
-                        }
-
-                        @Override
-                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                            return 100f / displayMetrics.densityDpi;
-                        }
-
-                        @Override
-                        public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
-                            int viewCenter = (viewStart + viewEnd) / 2;
-                            int boxCenter = (boxStart + boxEnd) / 2;
-                            return boxCenter - viewCenter;
-                        }
-                    };
-                    smoothScroller.setTargetPosition(position);
-                    layoutManager.startSmoothScroll(smoothScroller);
-                }
-            });
-
-            if (position < subCategoryList.size()) {
-                String subCategoryName = subCategoryList.get(position).getName();
-                if (selectedCategory.equals("Shop All")) {
-                    fetchAllProductsForShopAll();
-                } else {
-                    filterProductsBySubCategory(subCategoryName);
-                }
-            }
-        });
+        // ❌ BỎ ĐOẠN CODE CŨ setOnSubCategoryClickListener VÌ KHÔNG CẦN THIẾT NỮA
 
         if (!selectedCategory.equals("Shop All") && !subCategoryList.isEmpty()) {
             filterProductsBySubCategory("All products");
         }
+    }
+
+    // ✅ THÊM METHOD MỚI ĐỂ XỬ LÝ CẢ FILTER VÀ SCROLL
+    private void onSubCategorySelected(String selectedSubCategory) {
+        if (isFetchingProducts) {
+            Log.d(TAG, "Fetch in progress, ignoring subcategory click");
+            return;
+        }
+
+        // Tìm vị trí của subcategory được chọn
+        int selectedPosition = -1;
+        for (int i = 0; i < subCategoryList.size(); i++) {
+            if (subCategoryList.get(i).getName().equals(selectedSubCategory)) {
+                selectedPosition = i;
+                break;
+            }
+        }
+
+        if (selectedPosition != -1) {
+            final int position = selectedPosition;
+            recyclerViewSubCategory.postDelayed(() -> smoothScrollToSubCategoryPosition(position), 100);
+        }
+
+        // Filter products
+        if (selectedCategory.equals("Shop All")) {
+            fetchAllProductsForShopAll();
+        } else {
+            filterProductsBySubCategory(selectedSubCategory);
+        }
+    }
+
+    private void smoothScrollToSubCategoryPosition(int position) {
+        recyclerViewSubCategory.post(() -> {
+            LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSubCategory.getLayoutManager();
+            if (layoutManager != null) {
+                RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
+                    @Override
+                    protected int getHorizontalSnapPreference() {
+                        return SNAP_TO_START;
+                    }
+
+                    @Override
+                    protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                        return 100f / displayMetrics.densityDpi; // Tốc độ scroll
+                    }
+
+                    @Override
+                    public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
+                        int viewCenter = (viewStart + viewEnd) / 2;
+                        int boxCenter = (boxStart + boxEnd) / 2;
+                        return boxCenter - viewCenter;
+                    }
+                };
+                smoothScroller.setTargetPosition(position);
+                layoutManager.startSmoothScroll(smoothScroller);
+            }
+        });
     }
 
 
