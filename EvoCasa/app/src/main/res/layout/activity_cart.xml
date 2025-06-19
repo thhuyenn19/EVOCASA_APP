@@ -1,350 +1,419 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/color_bg"
     android:fitsSystemWindows="true"
     tools:context=".CartActivity">
 
-    <!-- Header -->
+    <!-- Main Content -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@color/color_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="15dp"
-        android:paddingEnd="15dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- btnCartBack -->
-        <LinearLayout
-            android:id="@+id/btnCartBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_rounded_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/imgCartBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_back" />
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="0.4" />
-
-        <TextView
-            android:id="@+id/txtTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title_cart_product_title"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="0.4" />
-
-        <LinearLayout
-            android:id="@+id/btnCartEdit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_rounded_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:gravity="center">
-            <ImageView
-                android:id="@+id/imgCartEdit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_edit_wishlist" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Checkbox All Products -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:orientation="horizontal"
-        android:paddingStart="2dp"
-        android:paddingEnd="15dp">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/checkboxAllProducts"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="9dp"
-            android:button="@drawable/custom_checkbox_cart"
-            android:clickable="true"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
-
-        <TextView
-            android:id="@+id/txtAllProducts"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/title_all_products_cart"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <!-- RecyclerView scrollable part -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCartProduct"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:nestedScrollingEnabled="true" />
-
-    <!-- Footer -->
-    <LinearLayout
-        android:id="@+id/bg_total_cart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:elevation="4dp"
-        android:background="@color/color_50F2EAD3">
-
-        <!-- Sub total -->
+        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_height="56dp"
+            android:background="@color/color_bg"
             android:gravity="center_vertical"
-            android:paddingBottom="8dp">
+            android:orientation="horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp">
 
-            <TextView
-                android:id="@+id/txtSubtotal"
+            <!-- btnCartBack -->
+            <LinearLayout
+                android:id="@+id/btnCartBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_rounded_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imgCartBack"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
+            </LinearLayout>
+
+            <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/title_sub_total"
-                android:textSize="15sp"
-                android:textColor="@color/color_3F2305" />
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
 
             <TextView
-                android:id="@+id/txtSubtotalAmount"
+                android:id="@+id/txtTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_sub_total_amount"
-                android:textSize="15sp"
-                android:textColor="@color/color_3F2305" />
+                android:gravity="center"
+                android:text="@string/title_cart_product_title"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="0.4" />
+
+            <LinearLayout
+                android:id="@+id/btnCartEdit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_rounded_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center">
+                <ImageView
+                    android:id="@+id/imgCartEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_edit_wishlist" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Voucher -->
+        <!-- Checkbox All Products -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/voucher_box_bg"
-            android:gravity="center_vertical"
+            android:layout_height="39dp"
             android:orientation="horizontal"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:paddingStart="2dp"
+            android:paddingEnd="15dp">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkboxAllProducts"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="9dp"
+                android:button="@drawable/custom_checkbox_cart"
+                android:clickable="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+
+            <TextView
+                android:id="@+id/txtAllProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/title_all_products_cart"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- RecyclerView scrollable part -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCartProduct"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            android:nestedScrollingEnabled="true" />
+
+        <!-- Footer -->
+        <LinearLayout
+            android:id="@+id/bg_total_cart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:elevation="4dp"
+            android:background="@color/color_50F2EAD3">
+
+            <!-- Sub total -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/txtSubtotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_sub_total"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_3F2305" />
+
+                <TextView
+                    android:id="@+id/txtSubtotalAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_sub_total_amount"
+                    android:textSize="15sp"
+                    android:textColor="@color/color_3F2305" />
+            </LinearLayout>
+
+            <!-- Voucher -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/layoutUseVoucher"
+                android:layout_height="48dp"
+                android:background="@drawable/voucher_box_bg"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_voucher_cart" />
+
+                <TextView
+                    android:id="@+id/txtUseVoucher"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/title_use_voucher"
+                    android:textColor="@color/color_3F2305"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_right_cart" />
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_line_total_cart" />
+
+            <!-- Total -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/txtTotalCart"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/title_total_cart"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_3F2305"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtTotalCartAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_total_cart_amount"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_FF6600"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Checkout button -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCheckOut"
+                android:layout_width="179dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/button_pressed_effect"
+                android:elevation="2dp"
+                android:text="@string/title_check_out"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- Layout GIỎ HÀNG TRỐNG (hiện khi không còn sp) -->
+        <LinearLayout
+            android:id="@+id/emptyCartLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <!-- ẢNH -->
+            <ImageView
+                android:id="@+id/imgCartEmpty"
+                android:layout_width="264dp"
+                android:layout_height="260dp"
+                android:layout_gravity="center_horizontal"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:src="@mipmap/ic_cart_empty" />
+
+            <!-- TIÊU ĐỀ -->
+            <TextView
+                android:id="@+id/txtCartEmptyTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/title_cart_empty_title"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"/>
+
+            <!-- MÔ TẢ -->
+            <TextView
+                android:id="@+id/txtCartDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/title_cart_empty_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"/>
+
+            <!-- KHOẢNG CÁCH -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
+
+            <!-- NÚT QUAY LẠI -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnBackShop"
+                android:layout_width="179dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/button_pressed_effect"
+                android:elevation="2dp"
+                android:text="@string/title_back_shop"
+                android:textAllCaps="true"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <!-- Edit Options Layout (Hidden by default) -->
+        <LinearLayout
+            android:id="@+id/editOptionsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_50F2EAD3"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/txtDeleteSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="@string/title_delete"
+                android:textColor="#D72525"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/txtAddToWishlist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="12dp"
+                android:text="@string/title_add_to_wishlist"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/txtCancelEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/title_close"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Overlay background (Semi-transparent, positioned BEFORE voucher layout) -->
+    <View
+        android:id="@+id/overlayBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <!-- Voucher Options Layout (Positioned at bottom, above overlay) -->
+    <LinearLayout
+        android:id="@+id/voucherOptionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/color_F2EAD3"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="12dp">
+
+        <!-- Header with title and close button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
             android:layout_marginBottom="8dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_voucher_cart" />
-
             <TextView
-                android:id="@+id/txtUseVoucher"
+                android:id="@+id/txtTitleSelectVoucher"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:text="Voucher"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/btnCloseVoucherLayout"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close"
+                android:contentDescription="Close"
                 android:layout_marginStart="8dp"
-                android:text="@string/title_use_voucher"
-                android:textColor="@color/color_3F2305"
-                android:textSize="15sp" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:src="@drawable/ic_arrow_right_cart" />
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 
-        <ImageView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerVoucher"
             android:layout_width="match_parent"
-            android:layout_height="16dp"
-            android:src="@drawable/ic_line_total_cart" />
-
-        <!-- Total -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="12dp">
-
-            <TextView
-                android:id="@+id/txtTotalCart"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/title_total_cart"
-                android:textSize="16sp"
-                android:textColor="@color/color_3F2305"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtTotalCartAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_total_cart_amount"
-                android:textSize="16sp"
-                android:textColor="@color/color_FF6600"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- Checkout button -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCheckOut"
-            android:layout_width="179dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/button_pressed_effect"
-            android:elevation="2dp"
-            android:text="@string/title_check_out"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <!-- Layout GIỎ HÀNG TRỐNG (hiện khi không còn sp) -->
-    <LinearLayout
-        android:id="@+id/emptyCartLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="16dp"
-        android:visibility="gone">
-
-        <!-- ẢNH -->
-        <ImageView
-            android:id="@+id/imgCartEmpty"
-            android:layout_width="264dp"
-            android:layout_height="260dp"
-            android:layout_gravity="center_horizontal"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:src="@mipmap/ic_cart_empty" />
-
-        <!-- TIÊU ĐỀ -->
-        <TextView
-            android:id="@+id/txtCartEmptyTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title_cart_empty_title"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"/>
-
-        <!-- MÔ TẢ -->
-        <TextView
-            android:id="@+id/txtCartDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/title_cart_empty_description"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"/>
-
-        <!-- KHOẢNG CÁCH -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="37dp" />
-
-        <!-- NÚT QUAY LẠI -->
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnBackShop"
-            android:layout_width="179dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="24dp"
-            android:background="@drawable/button_pressed_effect"
-            android:elevation="2dp"
-            android:text="@string/title_back_shop"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"/>
     </LinearLayout>
 
-    <!-- Edit Options Layout (Hidden by default) -->
-    <LinearLayout
-        android:id="@+id/editOptionsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/color_50F2EAD3"
-        android:elevation="4dp"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/txtDeleteSelected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/title_delete"
-            android:textColor="#D72525"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/txtAddToWishlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/title_add_to_wishlist"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:clickable="true"
-            android:focusable="true" />
-
-        <TextView
-            android:id="@+id/txtCancelEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/title_close"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="14sp"
-            android:textStyle="italic"
-            android:clickable="true"
-            android:focusable="true" />
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>
