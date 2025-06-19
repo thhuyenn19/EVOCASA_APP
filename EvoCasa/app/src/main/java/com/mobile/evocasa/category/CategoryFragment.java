@@ -5,12 +5,14 @@ import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -20,31 +22,49 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.adapters.SubCategoryAdapter;
 import com.mobile.adapters.SubCategoryProductAdapter;
+import com.mobile.models.ProductItem;
 import com.mobile.models.SubCategory;
-import com.mobile.models.SuggestedProducts;
 import com.mobile.utils.FontUtils;
-import java.util.ArrayList;
-import java.util.List;
 import com.mobile.evocasa.R;
 
-public class CategoryFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+public class CategoryFragment extends Fragment {
+    private static final String TAG = "CategoryFragment";
+
+    private boolean isFetchingProducts = false;
     private RecyclerView recyclerViewSubCategory;
     private RecyclerView recyclerViewProducts;
     private SubCategoryAdapter subCategoryAdapter;
     private SubCategoryProductAdapter productAdapter;
-    private List<SubCategory> subCategoryList;
-    private List<SuggestedProducts> allProducts;
     private AppBarLayout appBarLayout;
-    private TextView txtCollapsedTitle, tvShortBy;
+    private TextView txtCollapsedTitle, tvSortBy;
     private TextView txtSubCategoryShop;
     private FrameLayout topBarContainer;
     private View heroSection;
     private View sortFilterSection;
     private Toolbar toolbar;
+    private LinearLayout btnBack;
+
+
+    private List<SubCategory> subCategoryList;
+    private List<ProductItem> currentProductList;
+    private FirebaseFirestore db;
+    private String selectedCategory;
+    private String categoryId;
+    private Map<String, String> subCategoryIds = new HashMap<>();
+
+
     private ValueAnimator backgroundAnimator;
     private ValueAnimator titleAnimator;
     private boolean isAnimating = false;
@@ -57,11 +77,7 @@ public class CategoryFragment extends Fragment {
     private float[] alphaLookupTable;
     private boolean isLookupTableInitialized = false;
 
-    // Thêm biến cho back button
-    private LinearLayout btnBack;
-
-    public CategoryFragment() {
-    }
+    public CategoryFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,91 +88,233 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        db = FirebaseFirestore.getInstance();
         mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+
 
         recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
         appBarLayout = view.findViewById(R.id.appBarLayout);
         toolbar = view.findViewById(R.id.toolbar);
-        tvShortBy = view.findViewById(R.id.tvSortBy);
+        tvSortBy = view.findViewById(R.id.tvSortBy);
         txtCollapsedTitle = view.findViewById(R.id.txtCollapsedTitle);
         txtSubCategoryShop = view.findViewById(R.id.txtSubCategoryShop);
         topBarContainer = view.findViewById(R.id.topBarContainer);
         heroSection = view.findViewById(R.id.heroSection);
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
-
-        // Tìm back button từ included layout
         btnBack = view.findViewById(R.id.btnBack);
 
-        FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtSubCategoryShop));
-        FontUtils.setZboldFont(requireContext(), view.findViewById(R.id.txtCollapsedTitle));
-        FontUtils.setMediumFont(requireContext(), view.findViewById(R.id.tvSortBy));
 
-        // Set custom behavior for AppBarLayout
+        Bundle args = getArguments();
+        if (args != null) {
+            selectedCategory = args.getString("selectedCategory", "");
+            categoryId = args.getString("categoryId", null);
+            Log.d(TAG, "Received category: " + selectedCategory + ", ID: " + categoryId);
+            if (txtSubCategoryShop != null) {
+                txtSubCategoryShop.setText(selectedCategory);
+            }
+            if (txtCollapsedTitle != null) {
+                txtCollapsedTitle.setText(selectedCategory);
+            }
+        }
+
+
+        FontUtils.setZboldFont(requireContext(), txtSubCategoryShop);
+        FontUtils.setZboldFont(requireContext(), txtCollapsedTitle);
+        FontUtils.setMediumFont(requireContext(), tvSortBy);
+
+
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
         params.setBehavior(new FlingBehavior(getContext(), null));
         appBarLayout.setLayoutParams(params);
 
-        setupSubCategories();
+        // Setup methods
         setupProducts();
+        setupSubCategories();
         setupCollapsingEffect();
         optimizeScrolling();
         initializeLookupTable();
-        setupBackButton(); // Thêm setup cho back button
+        setupBackButton();
     }
 
-    // Thêm method setup back button
-    private void setupBackButton() {
-        if (btnBack != null) {
-            btnBack.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // Trở về ShopFragment
-                    if (getParentFragmentManager() != null) {
-                        getParentFragmentManager().popBackStack();
+    private void setupProducts() {
+        currentProductList = new ArrayList<>();
+        productAdapter = new SubCategoryProductAdapter(currentProductList);
+        recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerViewProducts.setAdapter(productAdapter);
+    }
+
+
+    private void fetchAllProductsForShopAll() {
+        if (isFetchingProducts) {
+            Log.d(TAG, "Fetch already in progress, skipping");
+            return;
+        }
+        isFetchingProducts = true;
+        currentProductList.clear();
+        Log.d(TAG, "Fetching all products for Shop All");
+        db.collection("Product")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        try {
+                            ProductItem product = new ProductItem();
+                            product.setId(doc.getId());
+                            product.setName(doc.getString("Name"));
+                            product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                            product.setImage(doc.getString("Image"));
+                            product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+                            currentProductList.add(product);
+                            Log.d(TAG, "Added product: " + product.getName());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing product: " + doc.getId(), e);
+                        }
                     }
-                }
-            });
-        }
+                    productAdapter.notifyDataSetChanged();
+                    isFetchingProducts = false;
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch all products for Shop All", e);
+                    productAdapter.notifyDataSetChanged();
+                    isFetchingProducts = false;
+                });
     }
 
-    private void initializeLookupTable() {
-        alphaLookupTable = new float[101];
-        for (int i = 0; i <= 100; i++) {
-            float percentage = i / 100f;
-            alphaLookupTable[i] = smoothInterpolate(percentage);
+    private void filterProductsBySubCategory(String selectedSubCategory) {
+        if (isFetchingProducts) {
+            Log.d(TAG, "Fetch already in progress, skipping");
+            return;
         }
-        if (getContext() != null) {
-            backgroundColor = getResources().getColor(R.color.color_bg);
+        isFetchingProducts = true;
+        currentProductList.clear();
+        Log.d(TAG, "Filtering products for: " + selectedSubCategory);
+
+        if (selectedSubCategory.equals("All products") && categoryId != null) {
+            Log.d(TAG, "Fetching all products for category: " + selectedCategory + " with ID: " + categoryId);
+            db.collection("Product")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
+                            String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
+                            if (productCategoryId != null && subCategoryIds.containsValue(productCategoryId)) {
+                                ProductItem product = new ProductItem();
+                                product.setId(doc.getId());
+                                product.setName(doc.getString("Name"));
+                                product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                                product.setImage(doc.getString("Image"));
+                                product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+                                currentProductList.add(product);
+                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + productCategoryId);
+                            }
+                        }
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch all products for category: " + selectedCategory, e);
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    });
+        } else if (subCategoryIds.containsKey(selectedSubCategory)) {
+            Log.d(TAG, "Filtering products for subcategory: " + selectedSubCategory);
+            String subCategoryId = subCategoryIds.get(selectedSubCategory);
+            db.collection("Product")
+                    .get()
+                    .addOnSuccessListener(productSnapshots -> {
+                        Log.d(TAG, "Subcategory product query returned " + productSnapshots.size() + " documents");
+                        for (QueryDocumentSnapshot doc : productSnapshots) {
+                            Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
+                            String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
+                            if (productCategoryId != null && productCategoryId.equals(subCategoryId)) {
+                                ProductItem product = new ProductItem();
+                                product.setId(doc.getId());
+                                product.setName(doc.getString("Name"));
+                                product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                                product.setImage(doc.getString("Image"));
+                                product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+                                currentProductList.add(product);
+                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + subCategoryId);
+                            }
+                        }
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch products for subcategory: " + selectedSubCategory, e);
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    });
+        } else {
+            Log.w(TAG, "No valid subcategory or category found for: " + selectedSubCategory);
+            productAdapter.notifyDataSetChanged();
+            isFetchingProducts = false;
         }
-        isLookupTableInitialized = true;
     }
 
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
-        String[] subCategoryNames = {"All products", "Seating", "Tables", "Casegoods"};
-        for (int i = 0; i < subCategoryNames.length; i++) {
-            subCategoryList.add(new SubCategory(subCategoryNames[i], i == 0));
-        }
-
-        subCategoryAdapter = new SubCategoryAdapter(subCategoryList, selected -> filterProductsBySubCategory(selected));
+        subCategoryList.add(new SubCategory("All products", true));
+        subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::filterProductsBySubCategory);
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
-        // ✅ Thêm auto scroll functionality cho subcategory
+        if (selectedCategory.equals("Shop All")) {
+            Log.d(TAG, "Shop All selected, showing only 'All products'");
+            subCategoryAdapter.notifyDataSetChanged();
+            fetchAllProductsForShopAll(); 
+            return;
+        }
+
+        if (categoryId != null) {
+            Log.d(TAG, "Fetching subcategories for category ID: " + categoryId);
+            db.collection("Category")
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d(TAG, "Subcategory query returned " + queryDocumentSnapshots.size() + " documents");
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            Map<String, Object> parentCategory = (Map<String, Object>) doc.get("ParentCategory");
+                            String parentCategoryId = parentCategory != null ? (String) parentCategory.get("$oid") : null;
+                            if (parentCategoryId != null && parentCategoryId.equals(categoryId)) {
+                                String name = doc.getString("Name");
+                                String id = doc.getId();
+                                if (name != null) {
+                                    subCategoryList.add(new SubCategory(name, false));
+                                    subCategoryIds.put(name, id);
+                                    Log.d(TAG, "Added subcategory: " + name + " with ID: " + id);
+                                }
+                            }
+                        }
+                        subCategoryAdapter.notifyDataSetChanged();
+
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch subcategories for ID: " + categoryId, e);
+                        subCategoryAdapter.notifyDataSetChanged();
+                    });
+        }
+
         subCategoryAdapter.setOnSubCategoryClickListener(position -> {
+            if (isFetchingProducts) {
+                Log.d(TAG, "Fetch in progress, ignoring subcategory click");
+                return;
+            }
+
             recyclerViewSubCategory.post(() -> {
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSubCategory.getLayoutManager();
                 if (layoutManager != null) {
                     RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
                         @Override
                         protected int getHorizontalSnapPreference() {
-                            return SNAP_TO_START; // hoặc SNAP_TO_CENTER
+                            return SNAP_TO_START;
                         }
 
                         @Override
                         protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
-                            return 100f / displayMetrics.densityDpi; // ✅ điều chỉnh tốc độ scroll
+                            return 100f / displayMetrics.densityDpi;
                         }
 
                         @Override
@@ -170,18 +328,49 @@ public class CategoryFragment extends Fragment {
                     layoutManager.startSmoothScroll(smoothScroller);
                 }
             });
+
+            if (position < subCategoryList.size()) {
+                String subCategoryName = subCategoryList.get(position).getName();
+                if (selectedCategory.equals("Shop All")) {
+                    fetchAllProductsForShopAll();
+                } else {
+                    filterProductsBySubCategory(subCategoryName);
+                }
+            }
         });
+
+        if (!selectedCategory.equals("Shop All") && !subCategoryList.isEmpty()) {
+            filterProductsBySubCategory("All products");
+        }
     }
 
-    private void setupProducts() {
-        allProducts = new ArrayList<>();
-        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        allProducts.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        productAdapter = new SubCategoryProductAdapter(allProducts);
-        recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recyclerViewProducts.setAdapter(productAdapter);
+
+    private void setupBackButton() {
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> {
+                if (getParentFragmentManager() != null) {
+                    getParentFragmentManager().popBackStack();
+                }
+            });
+        }
+    }
+
+
+    private void initializeLookupTable() {
+        alphaLookupTable = new float[101];
+        for (int i = 0; i <= 100; i++) {
+            float percentage = i / 100f;
+            alphaLookupTable[i] = smoothInterpolate(percentage);
+        }
+        if (getContext() != null) {
+            backgroundColor = getResources().getColor(R.color.color_bg);
+        }
+        isLookupTableInitialized = true;
+    }
+
+
+    private float smoothInterpolate(float input) {
+        return input * input * (3.0f - 2.0f * input);
     }
 
     private void optimizeScrolling() {
@@ -235,9 +424,6 @@ public class CategoryFragment extends Fragment {
         updateElementsVisibilityFast(smoothPercentage);
     }
 
-    private float smoothInterpolate(float input) {
-        return input * input * (3.0f - 2.0f * input);
-    }
 
     private void updateToolbarBackgroundFast(float percentage) {
         if (toolbar == null) return;
@@ -250,6 +436,7 @@ public class CategoryFragment extends Fragment {
             toolbar.setBackgroundColor(0x00000000);
         }
     }
+
 
     private void updateCollapsedTitleFast(float percentage) {
         if (txtCollapsedTitle == null) return;
@@ -296,20 +483,6 @@ public class CategoryFragment extends Fragment {
         }
     }
 
-    private void filterProductsBySubCategory(String selectedCategory) {
-        List<SuggestedProducts> filteredList = new ArrayList<>();
-        if (selectedCategory.equals("All products")) {
-            filteredList.addAll(allProducts);
-        } else {
-            for (SuggestedProducts product : allProducts) {
-                if (product.getName().toLowerCase().contains(selectedCategory.toLowerCase())) {
-                    filteredList.add(product);
-                }
-            }
-        }
-        productAdapter = new SubCategoryProductAdapter(filteredList);
-        recyclerViewProducts.setAdapter(productAdapter);
-    }
 
     @Override
     public void onDestroyView() {

@@ -9,18 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mobile.evocasa.R;
-import com.mobile.models.SuggestedProducts;
+import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 
 import java.util.List;
 
 public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryProductAdapter.SubCategoryProductViewHolder> {
 
-    private final List<SuggestedProducts> productList;
+    private final List<ProductItem> productList;
 
-    public SubCategoryProductAdapter(List<SuggestedProducts> productList) {
+    public SubCategoryProductAdapter(List<ProductItem> productList) {
         this.productList = productList;
     }
 
@@ -34,17 +35,22 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
 
     @Override
     public void onBindViewHolder(@NonNull SubCategoryProductViewHolder holder, int position) {
-        SuggestedProducts product = productList.get(position);
+        ProductItem product = productList.get(position);
 
-        holder.imgProduct.setImageResource(product.getImageResId());
+        // Load first image from Image array using Glide
+        if (product.getImage() != null && !product.getImage().isEmpty()) {
+            String[] images = product.getImage().replaceAll("[\\[\\]\"]", "").split(",");
+            if (images.length > 0) {
+                Glide.with(holder.itemView.getContext())
+                        .load(images[0].trim())
+                        .placeholder(R.mipmap.ic_lighting_brasslamp)
+                        .into(holder.imgProduct);
+            }
+        }
+
         holder.txtProductName.setText(product.getName());
-        holder.txtOldPrice.setText(product.getOldPrice());
-        holder.txtOldPrice.setPaintFlags(
-                holder.txtOldPrice.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG
-        );
-        holder.txtPrice.setText(product.getNewPrice());
-        holder.txtDiscount.setText(product.getDiscount());
-        holder.txtRating.setText(String.valueOf(product.getRating()));
+        holder.txtPrice.setText("$" + product.getPrice());
+        holder.txtRating.setText(String.valueOf(product.getRating() != 0.0 ? product.getRating() : 0.0));
 
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
     }
@@ -56,18 +62,17 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
 
     public static class SubCategoryProductViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView imgProduct;
-        TextView txtProductName, txtOldPrice, txtPrice, txtDiscount, txtRating;
+        TextView txtProductName, txtPrice, txtRating;
         ImageView imgFavorite;
 
         public SubCategoryProductViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtProductName = itemView.findViewById(R.id.txtProductName);
-            txtOldPrice = itemView.findViewById(R.id.txtOldPrice);
             txtPrice = itemView.findViewById(R.id.txtPrice);
-            txtDiscount = itemView.findViewById(R.id.txtDiscount);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
         }
+
     }
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,8 +24,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.CartProductAdapter;
+import com.mobile.adapters.VoucherAdapter;
 import com.mobile.evocasa.payment.PaymentActivity;
 import com.mobile.models.CartProduct;
+import com.mobile.models.Voucher;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -46,7 +49,54 @@ public class CartActivity extends AppCompatActivity {
     private TextView txtTotalCartAmount;
     private TextView txtSubtotalAmount;
     private TextView txtAllProducts;
-    private CartProductAdapter cartProductAdapter;
+    private View overlayBackground;
+
+    private CartProductAdapter cartProductAdapter = new CartProductAdapter(cartProductList, new CartProductAdapter.OnProductCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(List<CartProduct> selected) {
+            selectedProducts = new ArrayList<>(selected);
+            updateCheckboxAllProducts();
+            updateCheckoutLayout();
+            updateEditButtonVisibility();
+        }
+
+        @Override
+        public void onCartUpdated() {
+            Log.d(TAG, "Cart updated. Current size: " + cartProductList.size());
+
+            // Cập nhật Firebase
+            updateCartOnFirebase();
+
+            if (cartProductList.isEmpty()) {
+                showEmptyCart();
+            } else {
+                // Cập nhật lại danh sách selected products
+                selectedProducts.clear();
+                for (CartProduct p : cartProductList) {
+                    if (p.isSelected()) {
+                        selectedProducts.add(p);
+                    }
+                }
+                updateCheckboxAllProducts();
+                updateCheckoutLayout();
+                updateEditButtonVisibility();
+            }
+        }
+
+        @Override
+        public void onQuantityChanged(CartProduct product, int newQuantity) {
+            Log.d(TAG, "Quantity changed for product: " + product.getId() + ", new quantity: " + newQuantity);
+            // Cập nhật Firebase ngay lập tức khi quantity thay đổi
+            updateSingleProductQuantityOnFirebase(product.getId(), newQuantity);
+        }
+
+        @Override
+        public void onProductRemoved(String productId) {
+            Log.d(TAG, "Product removed: " + productId);
+            // Xóa sản phẩm khỏi Firebase
+            removeProductFromFirebase(productId);
+        }
+    });
     private CheckBox checkboxAllProducts;
 
     private LinearLayout emptyCartLayout;
@@ -57,8 +107,13 @@ public class CartActivity extends AppCompatActivity {
 
     private LinearLayout btnCartEdit;
     private LinearLayout editOptionsLayout;
+    private LinearLayout layoutUseVoucher, voucherOptionsLayout;
+    private RecyclerView recyclerVoucher;
+    private Voucher selectedVoucher = null;
+    private List<Voucher> allVouchers = new ArrayList<>();
     private TextView txtDeleteSelected;
     private TextView txtAddToWishlist, txtCancelEdit;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -93,6 +148,11 @@ public class CartActivity extends AppCompatActivity {
         checkboxAllProducts = findViewById(R.id.checkboxAllProducts);
         txtAllProducts = findViewById(R.id.txtAllProducts);
 
+        layoutUseVoucher = findViewById(R.id.layoutUseVoucher);
+        voucherOptionsLayout = findViewById(R.id.voucherOptionsLayout);
+        recyclerVoucher = findViewById(R.id.recyclerVoucher); // trong voucherOptionsLayout
+        overlayBackground = findViewById(R.id.overlayBackground);
+
         // Edit button and options layout
         btnCartEdit = findViewById(R.id.btnCartEdit);
         editOptionsLayout = findViewById(R.id.editOptionsLayout);
@@ -117,53 +177,6 @@ public class CartActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
-
-        cartProductAdapter = new CartProductAdapter(cartProductList, new CartProductAdapter.OnProductCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(List<CartProduct> selected) {
-                selectedProducts = new ArrayList<>(selected);
-                updateCheckboxAllProducts();
-                updateCheckoutLayout();
-                updateEditButtonVisibility();
-            }
-
-            @Override
-            public void onCartUpdated() {
-                Log.d(TAG, "Cart updated. Current size: " + cartProductList.size());
-
-                // Cập nhật Firebase
-                updateCartOnFirebase();
-
-                if (cartProductList.isEmpty()) {
-                    showEmptyCart();
-                } else {
-                    // Cập nhật lại danh sách selected products
-                    selectedProducts.clear();
-                    for (CartProduct p : cartProductList) {
-                        if (p.isSelected()) {
-                            selectedProducts.add(p);
-                        }
-                    }
-                    updateCheckboxAllProducts();
-                    updateCheckoutLayout();
-                    updateEditButtonVisibility();
-                }
-            }
-
-            @Override
-            public void onQuantityChanged(CartProduct product, int newQuantity) {
-                Log.d(TAG, "Quantity changed for product: " + product.getId() + ", new quantity: " + newQuantity);
-                // Cập nhật Firebase ngay lập tức khi quantity thay đổi
-                updateSingleProductQuantityOnFirebase(product.getId(), newQuantity);
-            }
-
-            @Override
-            public void onProductRemoved(String productId) {
-                Log.d(TAG, "Product removed: " + productId);
-                // Xóa sản phẩm khỏi Firebase
-                removeProductFromFirebase(productId);
-            }
-        });
 
         recyclerViewCartProducts.setAdapter(cartProductAdapter);
     }
@@ -226,6 +239,278 @@ public class CartActivity extends AppCompatActivity {
             editOptionsLayout.setVisibility(View.GONE);
             updateCheckoutLayout();
         });
+
+
+        // Chặn click bên trong layout voucher lan ra ngoài
+        voucherOptionsLayout.setOnClickListener(v -> {});
+
+        ImageView btnCloseVoucherLayout = findViewById(R.id.btnCloseVoucherLayout);
+        btnCloseVoucherLayout.setOnClickListener(v -> {
+            voucherOptionsLayout.setVisibility(View.GONE);
+            overlayBackground.setVisibility(View.GONE);
+            updateCheckoutLayout();
+        });
+
+        layoutUseVoucher.setOnClickListener(v -> {
+            if (voucherOptionsLayout.getVisibility() == View.VISIBLE) {
+                voucherOptionsLayout.setVisibility(View.GONE);
+                overlayBackground.setVisibility(View.GONE);
+                updateCheckoutLayout();
+            } else {
+                overlayBackground.setVisibility(View.VISIBLE);
+                voucherOptionsLayout.setVisibility(View.VISIBLE);
+                checkoutLayout.setVisibility(View.GONE);
+                loadAndDisplayVouchers();
+            }
+        });
+
+        overlayBackground.setOnClickListener(v -> {
+            voucherOptionsLayout.setVisibility(View.GONE);
+            overlayBackground.setVisibility(View.GONE);
+            updateCheckoutLayout();
+        });
+
+
+
+    }
+
+    // Add this method to reset voucher when conditions change
+    private void resetVoucherIfInvalid() {
+        if (selectedVoucher != null) {
+            double currentSubtotal = calculateSubtotal();
+            if (!selectedVoucher.isValid(currentSubtotal)) {
+                selectedVoucher = null;
+                Log.d(TAG, "Voucher reset because it's no longer valid");
+            }
+        }
+    }
+
+    // Update the loadAndDisplayVouchers method
+    private void loadAndDisplayVouchers() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        UserSessionManager sessionManager = new UserSessionManager(this);
+        String uid = sessionManager.getUid();
+
+        if (uid == null || uid.isEmpty()) {
+            Log.e(TAG, "Cannot load vouchers: UID is null or empty");
+            Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Đầu tiên, lấy danh sách VoucherId của khách hàng
+        db.collection("Customers").document(uid)
+                .get()
+                .addOnSuccessListener(customerDoc -> {
+                    if (!customerDoc.exists()) {
+                        Log.d(TAG, "Customer document not found");
+                        // Hiển thị empty voucher list
+                        VoucherAdapter adapter = new VoucherAdapter(new ArrayList<>(), calculateSubtotal(), voucher -> {
+                            selectedVoucher = voucher;
+                            updateCheckoutLayout();
+                            voucherOptionsLayout.setVisibility(View.GONE);
+                            overlayBackground.setVisibility(View.GONE);
+                        });
+                        runOnUiThread(() -> {
+                            recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerVoucher.setAdapter(adapter);
+                        });
+                        return;
+                    }
+
+                    // Lấy danh sách VoucherId từ field "Voucher"
+                    List<Map<String, Object>> customerVouchers = (List<Map<String, Object>>) customerDoc.get("Voucher");
+
+                    if (customerVouchers == null || customerVouchers.isEmpty()) {
+                        Log.d(TAG, "Customer has no vouchers");
+                        // Hiển thị empty voucher list
+                        VoucherAdapter adapter = new VoucherAdapter(new ArrayList<>(), calculateSubtotal(), voucher -> {
+                            selectedVoucher = voucher;
+                            updateCheckoutLayout();
+                            voucherOptionsLayout.setVisibility(View.GONE);
+                            overlayBackground.setVisibility(View.GONE);
+                        });
+                        runOnUiThread(() -> {
+                            recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerVoucher.setAdapter(adapter);
+                        });
+                        return;
+                    }
+
+                    // Extract VoucherId list
+                    List<String> voucherIds = new ArrayList<>();
+                    for (Map<String, Object> voucherItem : customerVouchers) {
+                        String voucherId = (String) voucherItem.get("VoucherId");
+                        if (voucherId != null && !voucherId.isEmpty()) {
+                            voucherIds.add(voucherId);
+                        }
+                    }
+
+                    if (voucherIds.isEmpty()) {
+                        Log.d(TAG, "No valid voucher IDs found");
+                        VoucherAdapter adapter = new VoucherAdapter(new ArrayList<>(), calculateSubtotal(), voucher -> {
+                            selectedVoucher = voucher;
+                            updateCheckoutLayout();
+                            voucherOptionsLayout.setVisibility(View.GONE);
+                            overlayBackground.setVisibility(View.GONE);
+                        });
+                        runOnUiThread(() -> {
+                            recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
+                            recyclerVoucher.setAdapter(adapter);
+                        });
+                        return;
+                    }
+
+                    // Load chi tiết voucher từ Voucher collection
+                    loadVoucherDetails(voucherIds);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to load customer vouchers", e);
+                    Toast.makeText(this, "Failed to load vouchers", Toast.LENGTH_SHORT).show();
+
+                    // Hiển thị empty voucher list trong trường hợp lỗi
+                    VoucherAdapter adapter = new VoucherAdapter(new ArrayList<>(), calculateSubtotal(), voucher -> {
+                        selectedVoucher = voucher;
+                        updateCheckoutLayout();
+                        voucherOptionsLayout.setVisibility(View.GONE);
+                        overlayBackground.setVisibility(View.GONE);
+                    });
+                    recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
+                    recyclerVoucher.setAdapter(adapter);
+                });
+    }
+
+    private void loadVoucherDetails(List<String> voucherIds) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<Voucher> customerVouchers = new ArrayList<>();
+
+        // Sử dụng AtomicInteger để track số lượng voucher đã load
+        AtomicInteger loadedCount = new AtomicInteger(0);
+        int totalVouchers = voucherIds.size();
+
+        for (String voucherId : voucherIds) {
+            db.collection("Voucher").document(voucherId)
+                    .get()
+                    .addOnSuccessListener(voucherDoc -> {
+                        if (voucherDoc.exists()) {
+                            Voucher voucher = voucherDoc.toObject(Voucher.class);
+                            if (voucher != null) {
+                                voucher.setId(voucherDoc.getId());
+                                customerVouchers.add(voucher);
+                                Log.d(TAG, "Loaded voucher: " + voucher.getName());
+                            }
+                        } else {
+                            Log.w(TAG, "Voucher not found: " + voucherId);
+                        }
+
+                        // Kiểm tra xem đã load xong tất cả voucher chưa
+                        if (loadedCount.incrementAndGet() == totalVouchers) {
+                            displayVouchers(customerVouchers);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to load voucher: " + voucherId, e);
+
+                        // Vẫn tăng counter để tránh bị treo
+                        if (loadedCount.incrementAndGet() == totalVouchers) {
+                            displayVouchers(customerVouchers);
+                        }
+                    });
+        }
+    }
+
+    private void displayVouchers(List<Voucher> vouchers) {
+        runOnUiThread(() -> {
+            double subtotal = calculateSubtotal();
+
+            // Filter vouchers that are still valid (not expired)
+            List<Voucher> validVouchers = new ArrayList<>();
+            long currentTime = System.currentTimeMillis();
+
+            for (Voucher voucher : vouchers) {
+                if (voucher.getExpireDate() != null &&
+                        voucher.getExpireDate().toDate().getTime() > currentTime) {
+                    validVouchers.add(voucher);
+                } else {
+                    Log.d(TAG, "Filtered out expired voucher: " + voucher.getName());
+                }
+            }
+
+            Log.d(TAG, "Displaying " + validVouchers.size() + " valid vouchers out of " + vouchers.size() + " total");
+
+            // Create adapter with currently selected voucher (if any)
+            VoucherAdapter adapter = new VoucherAdapter(validVouchers, subtotal, voucher -> {
+                selectedVoucher = voucher;
+                updateCheckoutLayout(); // cập nhật total sau khi chọn voucher
+                Log.d(TAG, "Voucher selected: " + voucher.getName());
+            }, selectedVoucher); // Pass the currently selected voucher here
+
+            runOnUiThread(() -> {
+                recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
+                recyclerVoucher.setAdapter(adapter);
+            });
+
+            // Show message if no valid vouchers
+            if (validVouchers.isEmpty()) {
+                Toast.makeText(this, "No available vouchers", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // Update the updateCheckoutLayout method to include voucher validation
+    private void updateCheckoutLayout() {
+        if (isEditing) {
+            checkoutLayout.setVisibility(View.GONE);
+            return;
+        }
+
+        if (selectedProducts.isEmpty()) {
+            checkoutLayout.setVisibility(View.GONE);
+            // Reset voucher when no products selected
+            selectedVoucher = null;
+        } else {
+            checkoutLayout.setVisibility(View.VISIBLE);
+
+            double subtotal = calculateSubtotal();
+
+            // Reset voucher if it's no longer valid for current subtotal
+            resetVoucherIfInvalid();
+
+            double discount = 0.0;
+
+            if (selectedVoucher != null && selectedVoucher.isValid(subtotal)) {
+                discount = subtotal * (selectedVoucher.getDiscountPercent() / 100.0);
+                if (discount > selectedVoucher.getMaxDiscount()) {
+                    discount = selectedVoucher.getMaxDiscount();
+                }
+            }
+            double total = subtotal - discount;
+
+            txtSubtotalAmount.setText("$" + String.format("%.2f", subtotal));
+            txtTotalCartAmount.setText("$" + String.format("%.2f", total));
+
+            // Update voucher display text if needed
+            updateVoucherDisplayText();
+        }
+    }
+
+    // Add method to update voucher display text
+    private void updateVoucherDisplayText() {
+        TextView txtUseVoucher = findViewById(R.id.txtUseVoucher);
+        if (selectedVoucher != null) {
+            txtUseVoucher.setText("Voucher: " + selectedVoucher.getName());
+            txtUseVoucher.setTextColor(getResources().getColor(R.color.color_FF6600)); // Orange color to show it's active
+        } else {
+            txtUseVoucher.setText(getString(R.string.title_use_voucher));
+            txtUseVoucher.setTextColor(getResources().getColor(R.color.color_3F2305)); // Default color
+        }
+    }
+
+    private double calculateSubtotal() {
+        double subtotal = 0;
+        for (CartProduct p : selectedProducts) {
+            subtotal += p.getPrice() * p.getQuantity();
+        }
+        return subtotal;
     }
 
     // Update edit button visibility based on selected products
@@ -444,29 +729,6 @@ public class CartActivity extends AppCompatActivity {
             updateCheckoutLayout();
             updateEditButtonVisibility(); // Thêm dòng này
         });
-    }
-
-    private void updateCheckoutLayout() {
-        if (isEditing) {
-            checkoutLayout.setVisibility(View.GONE);
-            return;
-        }
-        if (selectedProducts.isEmpty()) {
-            checkoutLayout.setVisibility(View.GONE);
-        } else {
-            checkoutLayout.setVisibility(View.VISIBLE);
-
-            double subtotal = 0;
-            for (CartProduct p : selectedProducts) {
-                subtotal += p.getPrice() * p.getQuantity();
-            }
-
-            double discount = 0.0; // Tạm thời chưa có giảm giá
-            double total = subtotal - discount;
-
-            txtSubtotalAmount.setText("$" + String.format("%.2f", subtotal));
-            txtTotalCartAmount.setText("$" + String.format("%.2f", total));
-        }
     }
 
 
