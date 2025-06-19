@@ -44,8 +44,8 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         // Lấy giá gốc từ Firebase
         double oldPrice = product.getPrice();
 
-        // Random giảm giá từ 10% đến 50%
-        int discount = new Random().nextInt(41) + 10;
+        // Random giảm giá từ 5% đến 10%
+        int discount = new Random().nextInt(6) + 5;  // giảm giá từ 5-10%
 
         // Tính giá mới sau khi giảm
         double newPrice = oldPrice * (1 - discount / 100.0);

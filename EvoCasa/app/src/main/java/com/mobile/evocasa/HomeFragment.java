@@ -1,6 +1,8 @@
 package com.mobile.evocasa;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +44,9 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
     private RecyclerView recyclerViewCategories;
@@ -70,14 +75,30 @@ public class HomeFragment extends Fragment {
     private TextView timerHour, timerMinute, timerSecond;
     private Handler countdownHandler = new Handler();
     private Runnable countdownRunnable;
+    private long saleEndTimeMillis = 0L; // thời điểm kết thúc đợt Flash Sale hiện tại
+
+    // SharedPreferences keys for Flash Sale caching
+    private static final String PREFS_NAME = "flash_sale_prefs";
+    private static final String KEY_FS_LIST = "fs_list";
+    private static final String KEY_FS_EXPIRES = "fs_expires";
+    private SharedPreferences flashPrefs;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
         /*Category*/
         // 1. Gán layout cho view
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Khởi tạo SharedPreferences sớm để sử dụng ngay phía dưới
+        flashPrefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+        // Bind countdown timer views (cần trước khi chạy startCountdownTimer)
+        timerHour = view.findViewById(R.id.timerHour);
+        timerMinute = view.findViewById(R.id.timerMinute);
+        timerSecond = view.findViewById(R.id.timerSecond);
 
         // Áp dụng font cho các TextView
         applyCustomFonts();
@@ -86,7 +107,7 @@ public class HomeFragment extends Fragment {
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
         recyclerViewCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        List<Category> categoryList = new ArrayList<>();
+        categoryList = new ArrayList<>();
 
         categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
         categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
@@ -96,7 +117,7 @@ public class HomeFragment extends Fragment {
         categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
 
 
-        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryList);
+        categoryAdapter = new CategoryAdapter(categoryList);
         recyclerViewCategories.setAdapter(categoryAdapter);
 
 
@@ -104,8 +125,7 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-        // Khung giờ Flash Sale hằng ngày: 13h – 21h
-        boolean isFlashSaleTime = hour >= 9 && hour < 24;
+        // Không giới hạn theo khung giờ; mỗi đợt Flash Sale kéo dài 6 tiếng kể từ khi được tạo
 
         /* FlashSale */
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
@@ -113,13 +133,26 @@ public class HomeFragment extends Fragment {
 
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
-
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
-        if (isFlashSaleTime) {
-            // Firestore instance
-            db = FirebaseFirestore.getInstance();
+        long now = System.currentTimeMillis();
+        long expiresAt = flashPrefs.getLong(KEY_FS_EXPIRES, 0L);
+        String cachedJson = flashPrefs.getString(KEY_FS_LIST, null);
 
+        if (cachedJson != null && now < expiresAt) {
+            // Dùng danh sách đã cache
+            List<FlashSaleProduct> cachedList = new Gson().fromJson(cachedJson,
+                    new TypeToken<List<FlashSaleProduct>>(){}.getType());
+            if (cachedList != null) {
+                flashSaleList.addAll(cachedList);
+            }
+            flashSaleAdapter.notifyDataSetChanged();
+            recyclerViewFlashSale.setVisibility(View.VISIBLE);
+            saleEndTimeMillis = expiresAt;
+            startCountdownTimer();
+        } else {
+            // Hết hiệu lực hoặc chưa có – random mới
+            db = FirebaseFirestore.getInstance();
             db.collection("Product").get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
@@ -129,22 +162,26 @@ public class HomeFragment extends Fragment {
                         for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
                             FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
                             flashSaleList.add(product);
-                            Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
                         }
 
                         flashSaleAdapter.notifyDataSetChanged();
                         recyclerViewFlashSale.setVisibility(View.VISIBLE);
 
-                        // Bắt đầu đếm ngược
+                        // Đặt thời gian kết thúc 6 tiếng kể từ bây giờ
+                        saleEndTimeMillis = System.currentTimeMillis() + 6 * 60 * 60 * 1000;
+
+                        String json = new Gson().toJson(flashSaleList);
+                        flashPrefs.edit()
+                                .putString(KEY_FS_LIST, json)
+                                .putLong(KEY_FS_EXPIRES, saleEndTimeMillis)
+                                .apply();
+
                         startCountdownTimer();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
                         recyclerViewFlashSale.setVisibility(View.GONE);
                     });
-        } else {
-            // Ẩn phần Flash Sale ngoài khung giờ
-            recyclerViewFlashSale.setVisibility(View.GONE);
         }
 
         /* Hot Products */
@@ -207,7 +244,7 @@ public class HomeFragment extends Fragment {
         timerSecond = view.findViewById(R.id.timerSecond);
 
         // Bắt sự kiện click giỏ hàng (imgCart) => Mở Cart Product
-        ImageView imgCart = view.findViewById(R.id.imgCart);
+        imgCart = view.findViewById(R.id.imgCart);
         if (imgCart != null) {
             imgCart.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -234,10 +271,9 @@ public class HomeFragment extends Fragment {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 4000);
 
-        // Khởi động lại đồng hồ đếm nếu đang trong khung giờ Flash Sale
-        Calendar cal = Calendar.getInstance();
-        int hr = cal.get(Calendar.HOUR_OF_DAY);
-        if (hr >= 13 && hr < 21) {
+        // Khởi động lại đồng hồ đếm nếu còn thời gian sale
+        long nowResume = System.currentTimeMillis();
+        if (saleEndTimeMillis > nowResume) {
             startCountdownTimer();
         }
     }
@@ -344,17 +380,12 @@ public class HomeFragment extends Fragment {
 
     // ================== Flash Sale Countdown ==================
     private void startCountdownTimer() {
-        // Xác định thời điểm kết thúc Flash Sale (21:00 hôm nay)
-        Calendar endTime = Calendar.getInstance();
-        endTime.set(Calendar.HOUR_OF_DAY, 21);
-        endTime.set(Calendar.MINUTE, 0);
-        endTime.set(Calendar.SECOND, 0);
-        endTime.set(Calendar.MILLISECOND, 0);
+        if (saleEndTimeMillis == 0L) return;
 
         countdownRunnable = new Runnable() {
             @Override
             public void run() {
-                long remaining = endTime.getTimeInMillis() - System.currentTimeMillis();
+                long remaining = saleEndTimeMillis - System.currentTimeMillis();
 
                 if (remaining > 0) {
                     updateTimerViews(remaining);
@@ -370,7 +401,7 @@ public class HomeFragment extends Fragment {
         };
 
         // Cập nhật lần đầu và bắt đầu lặp
-        long initial = endTime.getTimeInMillis() - System.currentTimeMillis();
+        long initial = saleEndTimeMillis - System.currentTimeMillis();
         updateTimerViews(initial);
         countdownHandler.postDelayed(countdownRunnable, 1000);
     }
