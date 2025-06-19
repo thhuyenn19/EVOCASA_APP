@@ -6,19 +6,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
 import com.mobile.models.Category;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private List<Category> categoryList;
+    private int imageResId;
 
     public CategoryAdapter(List<Category> categoryList) {
         this.categoryList = categoryList;
@@ -34,15 +34,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
-        Category item = categoryList.get(position);
-        holder.txtCategoryName.setText(item.getName());
+        Category category = categoryList.get(position);
+        holder.txtCategoryName.setText(category.getName());
+        holder.imgCategory.setImageResource(category.getImageResId());
 
-        Glide.with(holder.itemView.getContext())
-                .load(item.getImage())
-                .placeholder(R.mipmap.placeholder_image) // ảnh đang tải (nếu có)
-                .error(R.mipmap.error_image)
-                .into(holder.imgCategory);
-
+        // Gán font Zbold cho tên category
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtCategoryName);
     }
 

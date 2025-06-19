@@ -83,22 +83,29 @@ public class HomeFragment extends Fragment {
         applyCustomFonts();
 
         // 3. Danh sách dữ liệu
-        db = FirebaseFirestore.getInstance();
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
         recyclerViewCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        categoryList = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(categoryList);
+        List<Category> categoryList = new ArrayList<>();
+
+        categoryList.add(new Category(R.mipmap.ic_category_decor, "Decor"));
+        categoryList.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
+        categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
+        categoryList.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
+        categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
+        categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
+
+
+        CategoryAdapter categoryAdapter = new CategoryAdapter(categoryList);
         recyclerViewCategories.setAdapter(categoryAdapter);
 
-        loadCategories(); // gọi hàm để lấy dữ liệu từ Firestore
 
         // Lấy giờ hiện tại
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
         // Khung giờ Flash Sale hằng ngày: 13h – 21h
-        boolean isFlashSaleTime = hour >= 09 && hour < 24;
+        boolean isFlashSaleTime = hour >= 9 && hour < 24;
 
         /* FlashSale */
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
