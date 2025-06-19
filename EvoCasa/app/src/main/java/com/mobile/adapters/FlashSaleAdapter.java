@@ -53,6 +53,10 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         holder.tvTagDiscountTop.setText("-" + discount + "%");
         holder.tvRating.setText(String.format("%.1f", rating));
 
+        //Đây là dòng bạn cần: gán icon wishlist chuẩn như mong muốn
+        holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+
+
         Log.d("IMAGE_TEST", "Ảnh đầu tiên: " + product.getFirstImage());
 
         List<String> images = product.getImageList();

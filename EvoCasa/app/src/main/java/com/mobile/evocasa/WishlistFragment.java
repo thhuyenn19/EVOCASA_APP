@@ -12,13 +12,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.adapters.WishProductAdapter;
 import com.mobile.evocasa.profile.ProfileFragment;
+import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
@@ -46,6 +49,9 @@ public class WishlistFragment extends Fragment {
 
     private List<HotProducts> hotProductList;
     private HotProductsAdapter hotProductsAdapter;
+    private List<FlashSaleProduct> flashSaleList;
+    private FlashSaleAdapter flashSaleAdapter;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +103,12 @@ public class WishlistFragment extends Fragment {
         // Gọi hàm load từ Firestore, mặc định sẽ lấy tất cả sản phẩm
         loadWishProduct("all"); // Mặc định hiển thị tất cả sản phẩm
 
+
+        flashSaleList = new ArrayList<>();
+        flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
+
+
+
         // Set font cho các textView
         TextView txtViewRcm = view.findViewById(R.id.txtViewRcm);
         FontUtils.setZboldFont(requireContext(), txtViewRcm);
@@ -129,7 +141,7 @@ public class WishlistFragment extends Fragment {
                 if (tab == btnAll) {
                     loadWishProduct("all");
                 } else if (tab == btnSale) {
-                    loadWishProduct("sale");
+                    loadFlashSaleProducts(); // gọi adapter mới
                 } else if (tab == btnLowStock) {
                     loadWishProduct("lowStock");
                 } else if (tab == btnOutOfStock) {
@@ -165,6 +177,37 @@ public class WishlistFragment extends Fragment {
         return view;
     }
 
+    private void loadFlashSaleProducts() {
+        // Lấy lại RecyclerView cục bộ đúng với cấu trúc fragment
+        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+
+        // Gán adapter flash sale
+        recyclerViewWishProduct.setAdapter(flashSaleAdapter);
+        recyclerViewWishProduct.setVisibility(View.VISIBLE);
+
+        flashSaleList.clear();
+        db.collection("Product").get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
+                    Collections.shuffle(allDocs);
+
+                    flashSaleList.clear();
+                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
+                        FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
+                        flashSaleList.add(product);
+                        Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
+                    }
+
+
+                    flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
+                    recyclerViewWishProduct.setVisibility(View.VISIBLE);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
+                    recyclerViewWishProduct.setVisibility(View.GONE);
+                });
+    }
+
     private void loadHotProducts() {
         db.collection("Product")
                 .get()
@@ -189,6 +232,11 @@ public class WishlistFragment extends Fragment {
 
     // Giả lập load sản phẩm cho các tab
     private void loadWishProduct(String filter) {
+        RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
+
+        // 👉 Gắn lại đúng adapter khi quay về tab khác
+        recyclerViewWishProduct.setAdapter(wishProductAdapter);
+
         wishProductList.clear(); // Xóa sản phẩm cũ
 
         db.collection("Product")
@@ -202,41 +250,31 @@ public class WishlistFragment extends Fragment {
 
                     // Lọc sản phẩm theo từng tab
                     switch (filter) {
-                        case "sale":
-                            // Giả lập sản phẩm sale (giảm giá)
-                            for (int i = 0; i < 4; i++) { // Hiển thị 4 sản phẩm giả lập giảm giá
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                filteredProducts.add(product);
-                            }
-                            break;
-
                         case "lowStock":
-                            // Giả lập sản phẩm còn ít trong kho
-                            for (int i = 0; i < 3; i++) { // Hiển thị 3 sản phẩm giả lập còn ít trong kho
+                            for (int i = 0; i < 3 && i < allDocs.size(); i++) {
                                 WishProduct product = allDocs.get(i).toObject(WishProduct.class);
                                 filteredProducts.add(product);
                             }
                             break;
 
                         case "outOfStock":
-                            // Giả lập sản phẩm hết hàng
-                            for (int i = 0; i < 2; i++) { // Hiển thị 2 sản phẩm giả lập hết hàng
+                            for (int i = 0; i < 2 && i < allDocs.size(); i++) {
                                 WishProduct product = allDocs.get(i).toObject(WishProduct.class);
+                                product.setOutOfStock(true); // Đánh dấu là hết hàng
                                 filteredProducts.add(product);
                             }
                             break;
 
+
                         case "all":
                         default:
-                            // Hiển thị tất cả sản phẩm
-                            for (int i = 0; i < 6; i++) { // Hiển thị 6 sản phẩm giả lập
+                            for (int i = 0; i < 6 && i < allDocs.size(); i++) {
                                 WishProduct product = allDocs.get(i).toObject(WishProduct.class);
                                 filteredProducts.add(product);
                             }
                             break;
                     }
 
-                    // Cập nhật dữ liệu vào RecyclerView
                     wishProductList.addAll(filteredProducts);
                     wishProductAdapter.notifyDataSetChanged();
                 })
