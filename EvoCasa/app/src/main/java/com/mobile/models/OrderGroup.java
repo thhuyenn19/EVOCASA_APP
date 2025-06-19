@@ -7,8 +7,7 @@ public class OrderGroup {
     private List<OrderItem> items;
     private boolean expanded;
     private long total;
-
-
+    private String orderId;
 
     public OrderGroup() {
     }
@@ -45,4 +44,12 @@ public class OrderGroup {
     }
     public long getTotal() { return total; }
     public void setTotal(long total) { this.total = total; }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
 }

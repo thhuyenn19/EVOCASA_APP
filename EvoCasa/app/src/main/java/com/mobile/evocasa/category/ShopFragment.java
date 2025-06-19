@@ -1,6 +1,9 @@
 package com.mobile.evocasa.category;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,38 +16,45 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.CategoryShopAdapter;
-import com.mobile.evocasa.category.CategoryFragment;
 import com.mobile.evocasa.R;
 import com.mobile.models.Category;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShopFragment extends Fragment {
+    private static final String TAG = "ShopFragment";
     private RecyclerView recyclerViewCategories;
     private CategoryShopAdapter adapter;
     private View view;
     private List<Category> categoryList;
-
+    private FirebaseFirestore db;
+    private Map<String, String> categoryNameToIdMap;
+    private Handler handler;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        // 1. Inflate layout
         view = inflater.inflate(R.layout.fragment_shop, container, false);
+        db = FirebaseFirestore.getInstance();
+        categoryNameToIdMap = new HashMap<>();
+        handler = new Handler(Looper.getMainLooper());
 
-        // 2. Apply fonts
         applyCustomFonts();
+        fetchCategoryIds();
 
-        // 3. Setup RecyclerView
+        return view;
+    }
+
+    private void setupRecyclerView() {
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
-
-        // Khởi tạo danh sách categories
         categoryList = new ArrayList<>();
         categoryList.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
         categoryList.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
@@ -54,10 +64,7 @@ public class ShopFragment extends Fragment {
         categoryList.add(new Category(R.mipmap.ic_category_art, "Art"));
         categoryList.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
 
-        // GridLayoutManager với 2 cột
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-
-        // Item cuối chiếm 2 cột
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -66,19 +73,27 @@ public class ShopFragment extends Fragment {
         });
         recyclerViewCategories.setLayoutManager(layoutManager);
 
-        // Thêm khoảng cách
         int spacingInPixels = (int) (17 * getResources().getDisplayMetrics().density);
         recyclerViewCategories.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
-
 
         recyclerViewCategories.setClipToPadding(false);
         recyclerViewCategories.setHasFixedSize(true);
 
-        // 4. Gán adapter
         adapter = new CategoryShopAdapter(getContext(), categoryList, category -> {
             CategoryFragment categoryFragment = new CategoryFragment();
             Bundle bundle = new Bundle();
             bundle.putString("selectedCategory", category.getName());
+            if (!category.getName().equals("Shop All")) {
+                String categoryId = categoryNameToIdMap.get(category.getName().toLowerCase());
+                if (categoryId != null) {
+                    bundle.putString("categoryId", categoryId);
+                    Log.d(TAG, "Navigating to CategoryFragment with category: " + category.getName() + ", ID: " + categoryId);
+                } else {
+                    Log.w(TAG, "No category ID found for: " + category.getName());
+                }
+            } else {
+                Log.d(TAG, "Navigating to CategoryFragment for Shop All");
+            }
             categoryFragment.setArguments(bundle);
 
             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -86,10 +101,31 @@ public class ShopFragment extends Fragment {
             transaction.addToBackStack(null);
             transaction.commit();
         });
+        recyclerViewCategories.setAdapter(adapter);
+    }
 
-        recyclerViewCategories.setAdapter(adapter); // ⚠️ Quan trọng: Gắn adapter vào RecyclerView
-
-        return view; // ⚠️ Phải return view để Fragment hoạt động đúng
+    private void fetchCategoryIds() {
+        db.collection("Category")
+                .whereEqualTo("ParentCategory", null)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (var doc : queryDocumentSnapshots) {
+                        String name = doc.getString("Name");
+                        String id = doc.getId();
+                        if (name != null) {
+                            categoryNameToIdMap.put(name.toLowerCase(), id);
+                            Log.d(TAG, "Mapped category: " + name + " to ID: " + id);
+                        }
+                    }
+                    Log.d(TAG, "Category ID mapping: " + categoryNameToIdMap.toString());
+                    // Setup RecyclerView after IDs are fetched
+                    handler.post(this::setupRecyclerView);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch category IDs: ", e);
+                    // Setup RecyclerView even if query fails to ensure UI loads
+                    handler.post(this::setupRecyclerView);
+                });
     }
 
     private void applyCustomFonts() {

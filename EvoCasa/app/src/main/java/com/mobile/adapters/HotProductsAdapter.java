@@ -25,9 +25,22 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
 
     private List<HotProducts> hotProductList;
 
+    private OnFavoriteClickListener favoriteClickListener;
+
+    public HotProductsAdapter(List<HotProducts> hotProductList, OnFavoriteClickListener listener) {
+        this.hotProductList = hotProductList;
+        this.favoriteClickListener = listener;
+    }
+
     public HotProductsAdapter(List<HotProducts> hotProductList) {
         this.hotProductList = hotProductList;
     }
+
+
+    public interface OnFavoriteClickListener {
+        void onFavoriteClick(HotProducts product, int position);
+    }
+
 
     @NonNull
     @Override
@@ -75,12 +88,29 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
         float fakeRating = (float) (4 + new Random().nextFloat() * 1); // từ 4.0 đến 5.0
         holder.txtRating.setText(String.format("%.1f", fakeRating));
 
+
+        holder.imgFavorite.setImageResource(R.drawable.ic_favourite); // mặc định
+        holder.imgFavorite.setOnClickListener(v -> {
+            if (favoriteClickListener != null) {
+                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart); // chuyển icon
+                favoriteClickListener.onFavoriteClick(product, position);
+            }
+        });
+
+
+
     }
 
     @Override
     public int getItemCount() {
         return hotProductList.size();
     }
+
+    public void removeAt(int position) {
+        hotProductList.remove(position);
+        notifyItemRemoved(position);
+    }
+
 
     public static class HotProductViewHolder extends RecyclerView.ViewHolder {
         ShapeableImageView imgProduct;
