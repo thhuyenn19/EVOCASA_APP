@@ -1,104 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_margin="6dp"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="4dp"
-    android:layout_margin="6dp"
     android:background="#FFFCF3">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
-        android:background="#FFFCF3"
-        android:layout_gravity="center_vertical">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="130dp">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgProduct"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/ic_lighting_brasslamp"
-                app:cornerRadius="8dp" />
-            <!--tag-->
-
-            <!-- Icon yêu thích -->
-            <ImageView
-                android:id="@+id/imgFavorite"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginRight="12dp"
-                android:src="@drawable/ic_wishlist_heart"/>
-        </RelativeLayout>
-
-        <!-- Product Name -->
-        <TextView
-            android:id="@+id/txtProductName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:minLines="2"
-            android:ellipsize="end"
-            android:text="MCM Brass Lamp"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginTop="2dp" />
-
-
-        <!-- Sale Price + Discount + Rating -->
+        <!-- Nội dung chính -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:background="#FFFCF3"
+            android:layout_gravity="center_vertical">
 
-            <!-- Sale Price -->
-            <TextView
-                android:id="@+id/txtPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$109"
-                android:textColor="#9C9999"
-                android:textSize="12sp"  />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
 
-
-            <!-- Spacer + Rating -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="end|center_vertical"
-                android:layout_marginStart="8dp">
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToOutline="true"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_lighting_brasslamp"
+                    app:cornerRadius="8dp" />
 
                 <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/ic_star_yellow" />
+                    android:id="@+id/imgFavorite"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="12dp"
+                    android:src="@drawable/ic_wishlist_heart"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/txtProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:minLines="2"
+                android:ellipsize="end"
+                android:text="MCM Brass Lamp"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="2dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
                 <TextView
-                    android:id="@+id/txtRating"
+                    android:id="@+id/txtPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5.0"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="10sp"
-                    android:layout_marginStart="4dp" />
+                    android:text="$109"
+                    android:textColor="#9C9999"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:gravity="end|center_vertical"
+                    android:layout_marginStart="8dp">
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:src="@drawable/ic_star_yellow" />
+
+                    <TextView
+                        android:id="@+id/txtRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="5.0"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="10sp"
+                        android:layout_marginStart="4dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+
+        <!-- Lớp phủ xám nằm sau cùng để đè toàn bộ -->
+        <View
+            android:id="@+id/overlayOutOfStock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#AA888888"
+            android:visibility="gone"/>
+    </FrameLayout>
 </androidx.cardview.widget.CardView>
 
 
@@ -106,7 +112,8 @@
 
 
 
-<!--<?xml version="1.0" encoding="utf-8"?>-->
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
 <!--<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:card_view="http://schemas.android.com/apk/res-auto"-->
 <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->

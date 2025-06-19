@@ -260,9 +260,11 @@ public class WishlistFragment extends Fragment {
                         case "outOfStock":
                             for (int i = 0; i < 2 && i < allDocs.size(); i++) {
                                 WishProduct product = allDocs.get(i).toObject(WishProduct.class);
+                                product.setOutOfStock(true); // Đánh dấu là hết hàng
                                 filteredProducts.add(product);
                             }
                             break;
+
 
                         case "all":
                         default:

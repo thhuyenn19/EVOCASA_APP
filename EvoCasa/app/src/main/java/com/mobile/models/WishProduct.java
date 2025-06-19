@@ -20,6 +20,15 @@ public class WishProduct {
     // Vì không có rating trong Firestore → sẽ random trong Adapter
     private float rating;
 
+    private boolean outOfStock;
+
+    public boolean isOutOfStock() {
+        return outOfStock;
+    }
+
+    public void setOutOfStock(boolean outOfStock) {
+        this.outOfStock = outOfStock;
+    }
 
     public WishProduct() {}
 

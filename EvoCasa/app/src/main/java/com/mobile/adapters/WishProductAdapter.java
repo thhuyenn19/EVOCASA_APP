@@ -88,6 +88,14 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
                 onItemClickListener.onItemClick(position);
             }
         });
+
+
+        // Hiển thị lớp phủ nếu là hàng hết
+        if (product.isOutOfStock()) {
+            holder.overlayOutOfStock.setVisibility(View.VISIBLE);
+        } else {
+            holder.overlayOutOfStock.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -101,6 +109,8 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         TextView txtProductName, txtPrice, txtRating;
         ImageView imgFavorite;
 
+        View overlayOutOfStock;
+
 
         public WishProductViewHolder(View itemView) {
             super(itemView);
@@ -109,6 +119,7 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
+            overlayOutOfStock = itemView.findViewById(R.id.overlayOutOfStock);
         }
     }
 }
