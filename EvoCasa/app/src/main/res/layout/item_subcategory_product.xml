@@ -72,12 +72,13 @@
 
             <!-- Spacer + Rating -->
             <LinearLayout
+                android:id="@+id/ratingLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:orientation="horizontal"
                 android:gravity="end|center_vertical"
-                android:layout_marginStart="8dp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="13dp"

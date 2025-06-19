@@ -19,10 +19,12 @@ import java.util.List;
 
 public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.ViewHolder> {
 
+    // Giao diện callback để fragment biết sub category được chọn
     public interface OnSubCategoryClickListener {
         void onSubCategorySelected(String subCategoryName);
     }
 
+    // Giao diện callback để fragment biết và scroll tới vị trí
     public interface OnSubCategoryPositionClickListener {
         void onSubCategoryClick(int position);
     }
@@ -31,7 +33,7 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
     private final OnSubCategoryClickListener listener;
     private OnSubCategoryPositionClickListener positionClickListener;
 
-
+    // Setter để fragment truyền vào callback xử lý scroll
     public void setOnSubCategoryClickListener(OnSubCategoryPositionClickListener positionClickListener) {
         this.positionClickListener = positionClickListener;
     }
@@ -76,16 +78,16 @@ public class SubCategoryAdapter extends RecyclerView.Adapter<SubCategoryAdapter.
         }
 
         holder.container.setOnClickListener(v -> {
+
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).setSelected(i == position);
             }
             notifyDataSetChanged();
+
             if (listener != null) {
                 listener.onSubCategorySelected(subCategory.getName());
             }
-            if (positionClickListener != null) {
-                positionClickListener.onSubCategoryClick(position);
-            }
+
         });
     }
 
