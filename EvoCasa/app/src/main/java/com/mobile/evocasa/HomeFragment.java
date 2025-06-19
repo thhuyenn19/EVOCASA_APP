@@ -66,41 +66,10 @@ public class HomeFragment extends Fragment {
             }
         };
 
-
-        //       Khi làm phần này nhớ đổi font chử cho logo với search, tham khảo bài cũ hoặc duwosi đâu
-//    private void addViews() {
-//        txtEvocasa = findViewById(R.id.txtEvocasa);
-//        txtHome = findViewById(R.id.txtHome);
-//        txtShop = findViewById(R.id.txtShop);
-//        txtNotification = findViewById(R.id.txtNotification);
-//        txtProfile = findViewById(R.id.txtProfile);
-//        edtSearch = findViewById(R.id.edtSearch);
-//        imgChat = findViewById(R.id.imgChat);
-//        imgCart = findViewById(R.id.imgCart);
-//        imgHome = findViewById(R.id.imgHome);
-//        imgShop = findViewById(R.id.imgShop);
-//        imgNotification = findViewById(R.id.imgNotification);
-//        imgProfile = findViewById(R.id.imgProfile);
-//        imgMic = findViewById(R.id.imgMic);
-//        imgCamera = findViewById(R.id.imgCamera);
-//        imgSearch = findViewById(R.id.imgSearch);
-//        tabHome = findViewById(R.id.tabHome);
-//        tabShop = findViewById(R.id.tabShop);
-//        tabNotification = findViewById(R.id.tabNotification);
-//        tabProfile = findViewById(R.id.tabProfile);
-//
-//        // Load custom font từ assets
-//
-//        Typeface fontTitle = Typeface.createFromAsset(getAssets(), "fonts/ZenOldMincho-Bold.ttf");
-//        Typeface fontRegular = Typeface.createFromAsset(getAssets(), "fonts/Inter-Regular.otf");
-//
-//        // Áp dụng font
-//        txtEvocasa.setTypeface(fontTitle);
-//        txtHome.setTypeface(fontRegular);
-//        txtShop.setTypeface(fontRegular);
-//        txtNotification.setTypeface(fontRegular);
-//        txtProfile.setTypeface(fontRegular);
-//        edtSearch.setTypeface(fontRegular);
+    // Countdown timer for Flash Sale
+    private TextView timerHour, timerMinute, timerSecond;
+    private Handler countdownHandler = new Handler();
+    private Runnable countdownRunnable;
 
     @Nullable
     @Override
@@ -128,8 +97,8 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
-// Thiết lập khung giờ Flash Sale (ví dụ 9h – 21h)
-        boolean isFlashSaleTime = (hour >= 9 && hour < 2);
+        // Khung giờ Flash Sale hằng ngày: 13h – 21h
+        boolean isFlashSaleTime = hour >= 09 && hour < 24;
 
         /* FlashSale */
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
@@ -140,58 +109,36 @@ public class HomeFragment extends Fragment {
 
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
-// Firestore instance
-        db = FirebaseFirestore.getInstance();
-
-/*
-// Kiểm tra khung giờ
         if (isFlashSaleTime) {
+            // Firestore instance
+            db = FirebaseFirestore.getInstance();
+
             db.collection("Product").get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
-                        Collections.shuffle(allDocs); // 🔀 Random
+                        Collections.shuffle(allDocs);
 
                         flashSaleList.clear();
                         for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
                             FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
                             flashSaleList.add(product);
-
+                            Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
                         }
 
                         flashSaleAdapter.notifyDataSetChanged();
-                        recyclerViewFlashSale.setVisibility(View.VISIBLE); // hiện nếu có dữ liệu
+                        recyclerViewFlashSale.setVisibility(View.VISIBLE);
+
+                        // Bắt đầu đếm ngược
+                        startCountdownTimer();
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
-                        recyclerViewFlashSale.setVisibility(View.GONE); // ẩn nếu lỗi
+                        recyclerViewFlashSale.setVisibility(View.GONE);
                     });
         } else {
-            // Ẩn RecyclerView nếu chưa đến giờ
+            // Ẩn phần Flash Sale ngoài khung giờ
             recyclerViewFlashSale.setVisibility(View.GONE);
         }
-*/
-        db.collection("Product").get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
-                    Collections.shuffle(allDocs);
-
-                    flashSaleList.clear();
-                    for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
-                        FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
-                        flashSaleList.add(product);
-                        Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
-                    }
-
-
-                    flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
-                    recyclerViewFlashSale.setVisibility(View.VISIBLE);
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi khi tải Flash Sale", Toast.LENGTH_SHORT).show();
-                    recyclerViewFlashSale.setVisibility(View.GONE);
-                });
-
-
 
         /* Hot Products */
         RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
@@ -247,6 +194,10 @@ public class HomeFragment extends Fragment {
 // Bắt đầu tự động trượt
         sliderHandler.postDelayed(sliderRunnable, 4000);
 
+        // Bind countdown timer views
+        timerHour = view.findViewById(R.id.timerHour);
+        timerMinute = view.findViewById(R.id.timerMinute);
+        timerSecond = view.findViewById(R.id.timerSecond);
 
         // Bắt sự kiện click giỏ hàng (imgCart) => Mở Cart Product
         ImageView imgCart = view.findViewById(R.id.imgCart);
@@ -268,12 +219,20 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
         sliderHandler.removeCallbacks(sliderRunnable);
+        countdownHandler.removeCallbacks(countdownRunnable);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         sliderHandler.postDelayed(sliderRunnable, 4000);
+
+        // Khởi động lại đồng hồ đếm nếu đang trong khung giờ Flash Sale
+        Calendar cal = Calendar.getInstance();
+        int hr = cal.get(Calendar.HOUR_OF_DAY);
+        if (hr >= 13 && hr < 21) {
+            startCountdownTimer();
+        }
     }
 
     private void applyCustomFonts() {
@@ -376,5 +335,47 @@ public class HomeFragment extends Fragment {
                 });
     }
 
+    // ================== Flash Sale Countdown ==================
+    private void startCountdownTimer() {
+        // Xác định thời điểm kết thúc Flash Sale (21:00 hôm nay)
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(Calendar.HOUR_OF_DAY, 21);
+        endTime.set(Calendar.MINUTE, 0);
+        endTime.set(Calendar.SECOND, 0);
+        endTime.set(Calendar.MILLISECOND, 0);
 
+        countdownRunnable = new Runnable() {
+            @Override
+            public void run() {
+                long remaining = endTime.getTimeInMillis() - System.currentTimeMillis();
+
+                if (remaining > 0) {
+                    updateTimerViews(remaining);
+                    countdownHandler.postDelayed(this, 1000);
+                } else {
+                    // Hết giờ Flash Sale – đặt về 00:00:00
+                    timerHour.setText("00");
+                    timerMinute.setText("00");
+                    timerSecond.setText("00");
+                    countdownHandler.removeCallbacks(this);
+                }
+            }
+        };
+
+        // Cập nhật lần đầu và bắt đầu lặp
+        long initial = endTime.getTimeInMillis() - System.currentTimeMillis();
+        updateTimerViews(initial);
+        countdownHandler.postDelayed(countdownRunnable, 1000);
+    }
+
+    private void updateTimerViews(long millis) {
+        int totalSeconds = (int) (millis / 1000);
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        if (timerHour != null) timerHour.setText(String.format("%02d", hours));
+        if (timerMinute != null) timerMinute.setText(String.format("%02d", minutes));
+        if (timerSecond != null) timerSecond.setText(String.format("%02d", seconds));
+    }
 }
