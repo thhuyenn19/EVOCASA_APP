@@ -183,6 +183,9 @@
     <string name="popup_title">NEW COLLECTION</string>
     <string name="popup_cta">SHOP NOW</string>
     <string name="title_order_detail">Order Details</string>
+    <string name="title_close">Close</string>
+    <string name="title_delete">Delete</string>
+    <string name="title_add_to_wishlist">Add to Wishlist</string>
 
     <string name="title_help_center">Help Center</string>
     <string name="title_faq">FAQ</string>
@@ -200,6 +203,7 @@
     <string name="fb_login_protocol_scheme">fb30814704168116794</string>
     <string name="default_web_client_id">408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com</string>
     <string name="facebook_client_token">cd117f107da97476f0e5a323eaaa1e44</string>
+
 
 
 

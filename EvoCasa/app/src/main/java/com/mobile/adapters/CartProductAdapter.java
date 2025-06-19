@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,10 +52,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         CartProduct product = productList.get(position);
 
         holder.tvTitle.setText(product.getName());
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        holder.tvPrice.setText("$" + formatter.format(product.getPrice()));
+        holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
         holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
-
         String imageUrl = product.getFirstImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -69,6 +68,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         // Set checkbox state without triggering listener
         holder.checkboxSelect.setOnCheckedChangeListener(null);
         holder.checkboxSelect.setChecked(product.isSelected());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            holder.checkboxSelect.setButtonTintList(null);
+        }
 
         // Set checkbox listener
         holder.checkboxSelect.setOnCheckedChangeListener((buttonView, isChecked) -> {

@@ -11,11 +11,14 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -41,13 +45,20 @@ public class CartActivity extends AppCompatActivity {
     private LinearLayout checkoutLayout;
     private TextView txtTotalCartAmount;
     private TextView txtSubtotalAmount;
+    private TextView txtAllProducts;
     private CartProductAdapter cartProductAdapter;
     private CheckBox checkboxAllProducts;
 
     private LinearLayout emptyCartLayout;
+    private boolean isEditing = false;
     private ImageView imgEmpty;
     private TextView txtEmpty, txtEmptyDesc;
     private Button btnBackShop, btnCheckOut;
+
+    private LinearLayout btnCartEdit;
+    private LinearLayout editOptionsLayout;
+    private TextView txtDeleteSelected;
+    private TextView txtAddToWishlist, txtCancelEdit;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -80,6 +91,14 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCartProducts = findViewById(R.id.recyclerViewCartProduct);
         checkoutLayout = findViewById(R.id.bg_total_cart);
         checkboxAllProducts = findViewById(R.id.checkboxAllProducts);
+        txtAllProducts = findViewById(R.id.txtAllProducts);
+
+        // Edit button and options layout
+        btnCartEdit = findViewById(R.id.btnCartEdit);
+        editOptionsLayout = findViewById(R.id.editOptionsLayout);
+        txtDeleteSelected = findViewById(R.id.txtDeleteSelected);
+        txtAddToWishlist = findViewById(R.id.txtAddToWishlist);
+        txtCancelEdit = findViewById(R.id.txtCancelEdit);
 
 
         // Empty cart views
@@ -92,6 +111,8 @@ public class CartActivity extends AppCompatActivity {
 
         // Initially hide checkout layout
         checkoutLayout.setVisibility(View.GONE);
+        btnCartEdit.setVisibility(View.GONE);
+        editOptionsLayout.setVisibility(View.GONE);
     }
 
     private void setupRecyclerView() {
@@ -103,6 +124,7 @@ public class CartActivity extends AppCompatActivity {
                 selectedProducts = new ArrayList<>(selected);
                 updateCheckboxAllProducts();
                 updateCheckoutLayout();
+                updateEditButtonVisibility();
             }
 
             @Override
@@ -124,6 +146,7 @@ public class CartActivity extends AppCompatActivity {
                     }
                     updateCheckboxAllProducts();
                     updateCheckoutLayout();
+                    updateEditButtonVisibility();
                 }
             }
 
@@ -147,8 +170,7 @@ public class CartActivity extends AppCompatActivity {
 
     private void setupListeners() {
         checkboxAllProducts.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Log.d(TAG, "Select all checkbox changed: " + isChecked);
-
+            isEditing = false;
             for (CartProduct product : cartProductList) {
                 product.setSelected(isChecked);
             }
@@ -160,6 +182,7 @@ public class CartActivity extends AppCompatActivity {
                 selectedProducts.addAll(cartProductList);
             }
             updateCheckoutLayout();
+            updateEditButtonVisibility(); // Thêm dòng này
         });
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -177,6 +200,204 @@ public class CartActivity extends AppCompatActivity {
         });
 
         btnBackShop.setOnClickListener(v -> finish());
+        // Edit button listeners
+        btnCartEdit.setOnClickListener(v -> {
+            isEditing = true;
+            editOptionsLayout.setVisibility(View.VISIBLE);
+            checkoutLayout.setVisibility(View.GONE);
+        });
+
+        txtDeleteSelected.setOnClickListener(v -> {
+            deleteSelectedProducts();
+            editOptionsLayout.setVisibility(View.GONE);
+            isEditing = false;
+            updateCheckoutLayout();
+        });
+
+        txtAddToWishlist.setOnClickListener(v -> {
+            addSelectedToWishlist();
+            editOptionsLayout.setVisibility(View.GONE);
+            isEditing = false;
+            updateCheckoutLayout();
+        });
+
+        txtCancelEdit.setOnClickListener(v -> {
+            isEditing = false;
+            editOptionsLayout.setVisibility(View.GONE);
+            updateCheckoutLayout();
+        });
+    }
+
+    // Update edit button visibility based on selected products
+    private void updateEditButtonVisibility() {
+        Log.d("CartActivity", "selectedProducts size: " + selectedProducts.size());
+        if (selectedProducts.isEmpty()) {
+            btnCartEdit.setVisibility(View.GONE);
+            editOptionsLayout.setVisibility(View.GONE);
+            isEditing = false; // <-- Thêm dòng này!
+            updateCheckoutLayout(); // <-- Thêm dòng này! (để đồng bộ UI)
+        } else {
+            btnCartEdit.setVisibility(View.VISIBLE);
+        }
+    }
+
+    // NEW: Delete selected products
+    private void deleteSelectedProducts() {
+        if (selectedProducts.isEmpty()) return;
+
+        List<String> productIdsToRemove = new ArrayList<>();
+        for (CartProduct product : selectedProducts) {
+            productIdsToRemove.add(product.getId());
+        }
+
+        // Remove from local list
+        cartProductList.removeAll(selectedProducts);
+        selectedProducts.clear();
+
+        // Update adapter
+        cartProductAdapter.notifyDataSetChanged();
+
+        // Remove from Firebase
+        for (String productId : productIdsToRemove) {
+            removeProductFromFirebase(productId);
+        }
+
+        // Update UI
+        updateCheckboxAllProducts();
+        updateCheckoutLayout();
+        updateEditButtonVisibility();
+
+        // Check if cart is empty
+        if (cartProductList.isEmpty()) {
+            showEmptyCart();
+        }
+
+        if (productIdsToRemove.size() > 0) {
+            android.widget.Toast.makeText(this,
+                    "Deleted " + productIdsToRemove.size() + " selected product(s)!",
+                    android.widget.Toast.LENGTH_SHORT
+            ).show();
+        }
+
+        Log.d(TAG, "Deleted " + productIdsToRemove.size() + " selected products");
+    }
+
+    // NEW: Add selected products to wishlist (Updated version)
+    private void addSelectedToWishlist() {
+        if (selectedProducts.isEmpty()) {
+            android.widget.Toast.makeText(this, "No products selected", android.widget.Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        UserSessionManager sessionManager = new UserSessionManager(this);
+        String uid = sessionManager.getUid();
+
+        if (uid == null || uid.isEmpty()) {
+            Log.e(TAG, "Cannot add to wishlist: UID is null or empty");
+            android.widget.Toast.makeText(this, "User not found", android.widget.Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Lấy document wishlist hiện tại của user
+        db.collection("Wishlist")
+                .whereEqualTo("Customer_id", uid)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<String> currentWishlist = new ArrayList<>();
+                    String wishlistDocId = null;
+
+                    // Nếu đã có wishlist document
+                    if (!querySnapshot.isEmpty()) {
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            wishlistDocId = doc.getId();
+                            List<String> existingProductIds = (List<String>) doc.get("Productid");
+                            if (existingProductIds != null) {
+                                currentWishlist.addAll(existingProductIds);
+                            }
+                            break; // Chỉ lấy document đầu tiên
+                        }
+                    }
+
+                    // Thêm selected products vào wishlist (tránh trùng lặp)
+                    List<String> productsToAdd = new ArrayList<>();
+                    int duplicateCount = 0;
+
+                    for (CartProduct product : selectedProducts) {
+                        if (!currentWishlist.contains(product.getId())) {
+                            currentWishlist.add(product.getId());
+                            productsToAdd.add(product.getId());
+                        } else {
+                            duplicateCount++;
+                        }
+                    }
+
+                    if (productsToAdd.isEmpty()) {
+                        Log.d(TAG, "All selected products are already in wishlist");
+                        Toast.makeText(CartActivity.this,
+                                "All selected products are already in wishlist",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // Update hoặc tạo mới wishlist document
+                    if (wishlistDocId != null) {
+                        // Update existing document
+                        int finalDuplicateCount = duplicateCount;
+                        db.collection("Wishlist").document(wishlistDocId)
+                                .update("Productid", currentWishlist)
+                                .addOnSuccessListener(aVoid -> {
+                                    Log.d(TAG, "Added " + productsToAdd.size() + " product(s) to existing wishlist");
+                                    Toast.makeText(this, "Added " + productsToAdd.size() + " product(s) to existing wishlist", Toast.LENGTH_SHORT).show();
+
+                                    // Hiển thị toast thông báo
+                                    String message = productsToAdd.size() + " product(s) added to wishlist";
+                                    if (finalDuplicateCount > 0) {
+                                        message += " (" + finalDuplicateCount + " already existed)";
+                                    }
+                                    Toast.makeText(CartActivity.this, message, Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e(TAG, "Failed to update wishlist", e);
+                                    Toast.makeText(CartActivity.this,
+                                            "Failed to add to wishlist",
+                                            Toast.LENGTH_SHORT).show();
+                                });
+                    } else {
+                        // Tạo mới wishlist document
+                        Map<String, Object> newWishlist = new HashMap<>();
+                        newWishlist.put("Customer_id", uid);
+                        newWishlist.put("Productid", currentWishlist);
+                        newWishlist.put("CreatedAt", Timestamp.now());
+
+                        int finalDuplicateCount1 = duplicateCount;
+                        db.collection("Wishlist")
+                                .add(newWishlist)
+                                .addOnSuccessListener(documentReference -> {
+                                    Log.d(TAG, "Created new wishlist with " + productsToAdd.size() + " products");
+
+                                    // Hiển thị toast thông báo
+                                    String message = productsToAdd.size() + " product(s) added to wishlist";
+                                    if (finalDuplicateCount1 > 0) {
+                                        message += " (" + finalDuplicateCount1 + " already existed)";
+                                    }
+                                    Toast.makeText(CartActivity.this, message, Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e(TAG, "Failed to create wishlist", e);
+                                    Toast.makeText(CartActivity.this,
+                                            "Failed to add to wishlist",
+                                            Toast.LENGTH_SHORT).show();
+                                });
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to get wishlist", e);
+                    android.widget.Toast.makeText(CartActivity.this,
+                            "Failed to connect to server",
+                            android.widget.Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void updateCheckboxAllProducts() {
@@ -193,6 +414,7 @@ public class CartActivity extends AppCompatActivity {
                     selectedProducts.addAll(cartProductList);
                 }
                 updateCheckoutLayout();
+                updateEditButtonVisibility(); // Thêm dòng này
             });
             return;
         }
@@ -220,10 +442,15 @@ public class CartActivity extends AppCompatActivity {
                 selectedProducts.addAll(cartProductList);
             }
             updateCheckoutLayout();
+            updateEditButtonVisibility(); // Thêm dòng này
         });
     }
 
     private void updateCheckoutLayout() {
+        if (isEditing) {
+            checkoutLayout.setVisibility(View.GONE);
+            return;
+        }
         if (selectedProducts.isEmpty()) {
             checkoutLayout.setVisibility(View.GONE);
         } else {
@@ -237,11 +464,8 @@ public class CartActivity extends AppCompatActivity {
             double discount = 0.0; // Tạm thời chưa có giảm giá
             double total = subtotal - discount;
 
-            // Format số: ví dụ 3,500
-            DecimalFormat formatter = new DecimalFormat("#,###");
-
-            txtSubtotalAmount.setText("$" + formatter.format(subtotal));
-            txtTotalCartAmount.setText("$" + formatter.format(total));
+            txtSubtotalAmount.setText("$" + String.format("%.2f", subtotal));
+            txtTotalCartAmount.setText("$" + String.format("%.2f", total));
         }
     }
 
@@ -250,6 +474,7 @@ public class CartActivity extends AppCompatActivity {
         Log.d(TAG, "Showing empty cart");
 
         emptyCartLayout.setVisibility(View.VISIBLE);
+        txtAllProducts.setVisibility(View.GONE);
         checkboxAllProducts.setVisibility(View.GONE);
         recyclerViewCartProducts.setVisibility(View.GONE);
         checkoutLayout.setVisibility(View.GONE);
@@ -260,6 +485,7 @@ public class CartActivity extends AppCompatActivity {
 
         emptyCartLayout.setVisibility(View.GONE);
         checkboxAllProducts.setVisibility(View.VISIBLE);
+        txtAllProducts.setVisibility(View.VISIBLE);
         recyclerViewCartProducts.setVisibility(View.VISIBLE);
 
         // Notify adapter about data change
