@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class OrderDetailFragment extends Fragment {
@@ -67,24 +73,18 @@ public class OrderDetailFragment extends Fragment {
         btnViewMoreContainer  = view.findViewById(R.id.btnViewMoreContainer);
         btnViewMore           = view.findViewById(R.id.btnViewMore);
         iconArrow             = view.findViewById(R.id.iconArrow);
-
-        // 2. Load mock data và render lần đầu
-        OrderGroup mock = createMockOrderGroup();
-        renderOrderGroup(mock);
-
-        // 3. Toggle View More / View Less
-        btnViewMoreContainer.setOnClickListener(v -> {
-            isExpanded = !isExpanded;
-            mock.setExpanded(isExpanded);
-            renderOrderGroup(mock);
-        });
-
-        // 4. Bind nút Track Order
         btnTrackOrder = view.findViewById(R.id.btnTrackOrders);
+
+        String orderId = getArguments() != null ? getArguments().getString("orderId") : null;
+        if (orderId != null) {
+            loadOrderDetailFromFirestore(orderId);
+        }
         btnTrackOrder.setOnClickListener(v -> {
             Intent it = new Intent(getActivity(), TrackOrderActivity.class);
+            it.putExtra("orderId", orderId);
             startActivity(it);
         });
+
         int[] boldTextIds = {
                 R.id.txtShippingInfoLabel,
                 R.id.txtOrderDetailsLabel,
@@ -139,77 +139,138 @@ public class OrderDetailFragment extends Fragment {
             }
         }
     }
+    private void loadOrderDetailFromFirestore(String orderId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    private void renderOrderGroup(OrderGroup orderGroup) {
+        db.collection("Product").get().addOnSuccessListener(productSnapshots -> {
+            Map<String, String> productNameMap = new HashMap<>();
+            Map<String, Long> productPriceMap = new HashMap<>();
+            Map<String, String> productImageMap = new HashMap<>();
+
+            for (QueryDocumentSnapshot doc : productSnapshots) {
+                String id = doc.getId();
+                String name = doc.getString("Name");
+                Long price = doc.getLong("Price");
+
+                Object rawImageData = doc.get("Image");
+                List<String> imageList = new ArrayList<>();
+
+                if (rawImageData instanceof List) {
+                    imageList = (List<String>) rawImageData;
+                } else if (rawImageData instanceof String) {
+                    try {
+                        imageList = new com.google.gson.Gson().fromJson((String) rawImageData, new com.google.gson.reflect.TypeToken<List<String>>(){}.getType());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (id != null && name != null && price != null) {
+                    productNameMap.put(id, name);
+                    productPriceMap.put(id, price);
+                    if (!imageList.isEmpty()) {
+                        productImageMap.put(id, imageList.get(0));
+                    }
+                }
+            }
+
+            db.collection("Order").document(orderId).get().addOnSuccessListener(orderDoc -> {
+                if (!orderDoc.exists()) return;
+
+                try {
+                    String status = orderDoc.getString("Status");
+                    Long totalPrice = orderDoc.getLong("TotalPrice");
+                    Map<String, Object> orderProduct = (Map<String, Object>) orderDoc.get("OrderProduct");
+
+                    if (orderProduct == null || orderProduct.get("id") == null) return;
+
+                    Map<String, Object> productIdMap = (Map<String, Object>) orderProduct.get("id");
+                    String productId = (String) productIdMap.get("$oid");
+
+                    if (productId == null || !productNameMap.containsKey(productId)) return;
+
+                    String productName = productNameMap.get(productId);
+                    Long priceEach = productPriceMap.get(productId);
+                    String imageUrl = productImageMap.get(productId);
+                    Long quantity = (Long) orderProduct.get("Quantity");
+
+                    int qty = quantity != null ? quantity.intValue() : 1;
+                    int unitPrice = priceEach != null ? priceEach.intValue() : 0;
+
+                    OrderItem item = new OrderItem(imageUrl, productName, unitPrice, qty);
+                    List<OrderItem> items = new ArrayList<>();
+                    items.add(item);
+
+                    OrderGroup group = new OrderGroup(status, items);
+                    group.setOrderId(orderId);
+                    group.setTotal(totalPrice != null ? totalPrice : 0);
+
+                    renderOrderGroup(group);
+
+                } catch (Exception e) {
+                    Log.e("OrderDetailFragment", "Lỗi khi parse đơn hàng: " + e.getMessage());
+                }
+            });
+        });
+    }
+
+    private void renderOrderGroup(OrderGroup group) {
         itemContainer.removeAllViews();
-
-        List<OrderItem> items = orderGroup.getItems();
-        // Tính tổng full price
-        int totalPrice = 0;
-        for (OrderItem it : items) {
-            totalPrice += it.getPrice() * it.getQuantity();
-        }
-
-        // Chọn số item hiển thị
-        int showCount = orderGroup.isExpanded()
-                ? items.size()
-                : Math.min(1, items.size());
+        List<OrderItem> items = group.getItems();
+        int showCount = group.isExpanded() ? items.size() : Math.min(1, items.size());
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
+
         for (int i = 0; i < showCount; i++) {
             OrderItem item = items.get(i);
-            View productView = inflater.inflate(
-                    R.layout.item_order_product, itemContainer, false);
+            View productView = inflater.inflate(R.layout.item_order_product, itemContainer, false);
 
-            ImageView img   = productView.findViewById(R.id.imgProduct);
-            TextView title  = productView.findViewById(R.id.txtTitle);
-            TextView price  = productView.findViewById(R.id.txtPrice);
-            TextView qty    = productView.findViewById(R.id.txtQuantity);
+            ImageView img = productView.findViewById(R.id.imgProduct);
+            TextView title = productView.findViewById(R.id.txtTitle);
+            TextView price = productView.findViewById(R.id.txtPrice);
+            TextView qty = productView.findViewById(R.id.txtQuantity);
 
-            img.setImageResource(item.getImageResId());
+            if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+                Glide.with(requireContext())
+                        .load(item.getImageUrl())
+                        .placeholder(R.mipmap.ic_cart_product)
+                        .error(R.mipmap.ic_cart_product)
+                        .into(img);
+            } else {
+                img.setImageResource(R.mipmap.ic_cart_product);
+            }
+
+
             title.setText(item.getTitle());
             price.setText("$" + item.getPrice());
             qty.setText("Quantity: " + item.getQuantity());
 
-            // Giữ font nhất quán với app
             FontUtils.setZboldFont(getContext(), title);
             FontUtils.setZboldFont(getContext(), price);
             FontUtils.setRegularFont(getContext(), qty);
 
             itemContainer.addView(productView);
         }
-        itemContainer.requestLayout();
-        itemContainer.invalidate();
 
-        // Render total với Spannable (in đậm "Total")
         String boldPart = "Total";
-        String normalPart = " (" + items.size() + " items): $" + totalPrice;
+        String normalPart = " (" + items.size() + " items): $" + group.getTotal();
         String fullText = boldPart + normalPart;
         SpannableString span = new SpannableString(fullText);
-        Typeface boldFont    = FontUtils.getSemiBold(getContext());
-        Typeface regularFont = FontUtils.getRegular(getContext());
-        span.setSpan(new CustomTypefaceSpan(boldFont),
-                0, boldPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        span.setSpan(new CustomTypefaceSpan(regularFont),
-                boldPart.length(), fullText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        span.setSpan(new CustomTypefaceSpan(FontUtils.getSemiBold(getContext())), 0, boldPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        span.setSpan(new CustomTypefaceSpan(FontUtils.getRegular(getContext())), boldPart.length(), fullText.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         txtTotalSummary.setText(span);
 
-        // Show / hide View More
         if (items.size() > 1) {
             btnViewMoreContainer.setVisibility(View.VISIBLE);
-            FontUtils.setMediumFont(getContext(), btnViewMore);
-            btnViewMore.setText(orderGroup.isExpanded() ? "View Less" : "View More");
-            iconArrow.setRotation(orderGroup.isExpanded() ? 270 : 90);
+            btnViewMore.setText(group.isExpanded() ? "View Less" : "View More");
+            iconArrow.setRotation(group.isExpanded() ? 270 : 90);
+            btnViewMoreContainer.setOnClickListener(v -> {
+                isExpanded = !isExpanded;
+                group.setExpanded(isExpanded);
+                renderOrderGroup(group);
+            });
         } else {
             btnViewMoreContainer.setVisibility(View.GONE);
         }
-    }
-
-    private OrderGroup createMockOrderGroup() {
-        List<OrderItem> list = new ArrayList<>();
-        list.add(new OrderItem(R.mipmap.ic_cart_product, "Product A", 1000, 1));
-        list.add(new OrderItem(R.mipmap.ic_cart_product, "Product B", 1500, 2));
-        OrderGroup g = new OrderGroup("Pending", list);
-        return g;
     }
 }

@@ -1,7 +1,8 @@
 package com.mobile.models;
 
 public class OrderItem {
-    private int imageResId;
+    private String imageUrl;
+
     private String title;
     private long price;
     private int quantity;
@@ -9,20 +10,21 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(int imageResId, String title, long price, int quantity) {
-        this.imageResId = imageResId;
+    public OrderItem(String imageUrl, String title, long price, int quantity) {
+        this.imageUrl = imageUrl;
         this.title = title;
         this.price = price;
         this.quantity = quantity;
     }
 
-    public int getImageResId() {
-        return imageResId;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageResId(int imageResId) {
-        this.imageResId = imageResId;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
+
 
     public String getTitle() {
         return title;

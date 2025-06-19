@@ -27,6 +27,7 @@ import com.mobile.adapters.OrderStatusAdapter;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.models.OrderStatus;
+import com.mobile.utils.UserSessionManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -87,39 +88,40 @@ public class OrdersFragment extends Fragment {
         });
         // 3) Khởi tạo danh sách đơn hàng
         allOrderGroups = new ArrayList<>();
-//        allOrderGroups.add(new OrderGroup("Pending", mockItems("Pending")));
-//        allOrderGroups.add(new OrderGroup("Pick Up", mockItems("Pick Up")));
-//        allOrderGroups.add(new OrderGroup("In Transit", mockItems("In Transit")));
-//        allOrderGroups.add(new OrderGroup("Review", mockItems("Review")));
-//        allOrderGroups.add(new OrderGroup("Completed", mockItems("Completed")));
-//        allOrderGroups.add(new OrderGroup("Cancelled", mockItems("Cancelled")));
         
 
 // 4) Thiết lập RecyclerView hiển thị đơn hàng
         RecyclerView rvOrders = view.findViewById(R.id.rvOrders);
         rvOrders.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>(),  group -> {
-            OrderDetailFragment detail = new OrderDetailFragment();
+        orderGroupAdapter = new OrderGroupAdapter(new ArrayList<>(), group -> {
             String status = group.getStatus();
+            String orderId = group.getOrderId();
             switch (status) {
                 case "Pending":
                 case "Pick Up":
                 case "In Transit":
+                    OrderDetailFragment detail = new OrderDetailFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("orderId", orderId);
+                    detail.setArguments(bundle);
                     FragmentActivity activity = (FragmentActivity) getContext();
                     activity.getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, detail)
-                            .addToBackStack(null)    // để back về list được
+                            .addToBackStack(null)
                             .commit();
                     break;
                 case "Review":
-                    startActivity(new Intent(getContext(), LeaveReviewActivity.class));
+                    Intent reviewIntent = new Intent(getContext(), LeaveReviewActivity.class);
+                    reviewIntent.putExtra("orderId", orderId);
+                    startActivity(reviewIntent);
                     break;
                 case "Completed":
                     startActivity(new Intent(getContext(), BuyAgainActivity.class));
                     break;
             }
+
         });
 
 
@@ -167,15 +169,43 @@ public class OrdersFragment extends Fragment {
                 .addOnSuccessListener(productSnapshots -> {
                     Map<String, String> productNameMap = new HashMap<>();
                     Map<String, Long> productPriceMap = new HashMap<>();
+                    Map<String, String> productImageMap = new HashMap<>();
 
                     for (QueryDocumentSnapshot doc : productSnapshots) {
                         String id = doc.getId();
                         String name = doc.getString("Name");
                         Long price = doc.getLong("Price");
+
+                        Object rawImageData = doc.get("Image");
+                        List<String> imageList = new ArrayList<>();
+
+                        if (rawImageData instanceof List) {
+                            imageList = (List<String>) rawImageData;
+                        } else if (rawImageData instanceof String) {
+                            try {
+                                imageList = new com.google.gson.Gson().fromJson((String) rawImageData, new com.google.gson.reflect.TypeToken<List<String>>(){}.getType());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
                         if (id != null && name != null && price != null) {
                             productNameMap.put(id, name);
                             productPriceMap.put(id, price);
+                            if (!imageList.isEmpty()) {
+                                productImageMap.put(id, imageList.get(0));
+                            }
                         }
+                    }
+
+                    UserSessionManager sessionManager = new UserSessionManager(getContext());
+                    String uid = sessionManager.getUid();
+                    Log.d("OrdersFragment", "UID hiện tại: " + uid);
+
+                    if (uid == null || uid.isEmpty()) {
+                        Log.e("OrdersFragment", "UID is null or empty");
+                        return;
                     }
 
                     db.collection("Order")
@@ -183,11 +213,16 @@ public class OrdersFragment extends Fragment {
                             .addOnSuccessListener(orderSnapshots -> {
                                 Log.d("OrdersFragment", "Tổng số order: " + orderSnapshots.size());
 
-                                Map<String, List<OrderItem>> groupedItems = new HashMap<>();
-                                Map<String, Long> groupTotalMap = new HashMap<>();
+                                allOrderGroups.clear();
 
                                 for (QueryDocumentSnapshot orderDoc : orderSnapshots) {
                                     try {
+                                    Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
+                                    if (customerIdMap == null) continue;
+
+                                    String orderUid = (String) customerIdMap.get("$oid");
+                                    if (!uid.equals(orderUid)) continue;
+                                    
                                         String status = orderDoc.getString("Status");
                                         Long totalPrice = orderDoc.getLong("TotalPrice");
                                         Map<String, Object> orderProduct = (Map<String, Object>) orderDoc.get("OrderProduct");
@@ -202,55 +237,40 @@ public class OrdersFragment extends Fragment {
                                         String productName = productNameMap.get(productId);
                                         Long priceEach = productPriceMap.get(productId);
                                         Long quantity = (Long) orderProduct.get("Quantity");
+                                        String imageUrl = productImageMap.get(productId);
+
 
                                         int qty = quantity != null ? quantity.intValue() : 1;
                                         int unitPrice = priceEach != null ? priceEach.intValue() : 0;
 
                                         OrderItem item = new OrderItem(
-                                                R.mipmap.ic_cart_product,
+                                                imageUrl,
                                                 productName,
-                                                unitPrice, // ✅ hiển thị đúng giá đơn vị
+                                                unitPrice,
                                                 qty
                                         );
 
-                                        groupedItems.computeIfAbsent(status, k -> new ArrayList<>()).add(item);
+                                        List<OrderItem> itemList = new ArrayList<>();
+                                        itemList.add(item);
 
-                                        // ✅ tổng từ TotalPrice, không tính lại bằng giá * số lượng
-                                        groupTotalMap.putIfAbsent(status, 0L);
-                                        groupTotalMap.put(status, groupTotalMap.get(status) + (totalPrice != null ? totalPrice : 0L));
+                                        OrderGroup group = new OrderGroup(status, itemList);
+                                        group.setTotal(totalPrice != null ? totalPrice : 0);
+                                        group.setOrderId(orderDoc.getId());
+
+                                        allOrderGroups.add(group);
+
                                     } catch (Exception e) {
                                         Log.e("OrdersFragment", "Parse order error: " + e.getMessage());
                                     }
                                 }
 
-                                allOrderGroups.clear();
-                                for (Map.Entry<String, List<OrderItem>> entry : groupedItems.entrySet()) {
-                                    String status = entry.getKey();
-                                    List<OrderItem> items = entry.getValue();
-                                    long totalGroup = groupTotalMap.getOrDefault(status, 0L);
+                                Log.d("OrdersFragment", "Tổng số OrderGroup sau xử lý: " + allOrderGroups.size());
 
-                                    OrderGroup group = new OrderGroup(status, items);
-                                    group.setTotal(totalGroup); // ✅ gán đúng total real từ đơn
-                                    allOrderGroups.add(group);
-                                }
-
-                                Log.d("OrdersFragment", "Tổng group sau khi gộp: " + allOrderGroups.size());
                                 filterOrdersByStatus(selectedStatus);
                             })
                             .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Order", e));
                 })
                 .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Product", e));
-    }
-
-
-
-
-
-    private List<OrderItem> mockItems(String status) {
-        List<OrderItem> items = new ArrayList<>();
-        items.add(new OrderItem(R.mipmap.ic_cart_product,  "Product A", 1000, 1));
-        items.add(new OrderItem(R.mipmap.ic_cart_product, "Product B", 1200, 2));
-        return items;
     }
 
 

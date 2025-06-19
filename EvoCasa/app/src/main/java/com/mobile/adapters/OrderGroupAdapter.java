@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.evocasa.R;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
@@ -89,7 +90,16 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
             TextView price = productView.findViewById(R.id.txtPrice);
             TextView qty = productView.findViewById(R.id.txtQuantity);
 
-            img.setImageResource(item.getImageResId());
+            if (item.getImageUrl() != null && !item.getImageUrl().isEmpty()) {
+                Glide.with(context)
+                        .load(item.getImageUrl())
+                        .placeholder(R.mipmap.ic_cart_product)
+                        .error(R.mipmap.ic_cart_product)
+                        .into(img);
+            } else {
+                img.setImageResource(R.mipmap.ic_cart_product);
+            }
+
             title.setText(item.getTitle());
             price.setText("$" + formatPrice(item.getPrice()));
             qty.setText("Quantity: " + item.getQuantity());
