@@ -166,8 +166,8 @@ public class HomeFragment extends Fragment {
                         flashSaleAdapter.notifyDataSetChanged();
                         recyclerViewFlashSale.setVisibility(View.VISIBLE);
 
-                        // Đặt thời gian kết thúc 6 tiếng kể từ bây giờ
-                        saleEndTimeMillis = System.currentTimeMillis() + 6 * 60 * 60 * 1000;
+                        // Đặt thời gian kết thúc 3 tiếng kể từ bây giờ
+                        saleEndTimeMillis = System.currentTimeMillis() + 3 * 60 * 60 * 1000;
 
                         String json = new Gson().toJson(flashSaleList);
                         flashPrefs.edit()
