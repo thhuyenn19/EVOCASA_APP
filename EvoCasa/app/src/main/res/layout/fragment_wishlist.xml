@@ -179,51 +179,51 @@
             </LinearLayout>
         </HorizontalScrollView>
 
-        <!-- Sort by -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:baselineAligned="false">
+<!--        &lt;!&ndash; Sort by &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:baselineAligned="false">-->
 
-            <TextView
-                android:id="@+id/tvSortBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/title_wishlist_sort"
-                android:textColor="#5E4C3E"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tvSortBy"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/title_wishlist_sort"-->
+<!--                android:textColor="#5E4C3E"-->
+<!--                android:textSize="16sp" />-->
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="0.01" />
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_weight="0.01" />-->
 
-            <ImageView
-                android:id="@+id/ivArrowDown"
-                android:layout_marginTop="2dp"
-                android:layout_width="15dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_arrow_down" />
+<!--            <ImageView-->
+<!--                android:id="@+id/ivArrowDown"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:layout_width="15dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:src="@drawable/ic_arrow_down" />-->
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="0.99" />
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_weight="0.99" />-->
 
-            <ImageView
-                android:id="@+id/ivFilter"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_gravity="end"
-                android:src="@drawable/ic_filter" />
-        </LinearLayout>
+<!--            <ImageView-->
+<!--                android:id="@+id/ivFilter"-->
+<!--                android:layout_width="18dp"-->
+<!--                android:layout_height="18dp"-->
+<!--                android:layout_gravity="end"-->
+<!--                android:src="@drawable/ic_filter" />-->
+<!--        </LinearLayout>-->
 
         <!-- Wishlist product RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView

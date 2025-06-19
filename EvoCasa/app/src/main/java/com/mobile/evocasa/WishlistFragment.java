@@ -102,8 +102,8 @@ public class WishlistFragment extends Fragment {
         FontUtils.setZboldFont(requireContext(), txtViewRcm);
         TextView txtTitle = view.findViewById(R.id.txtTitle);
         FontUtils.setZboldFont(requireContext(), txtTitle);
-        TextView tvSortBy = view.findViewById(R.id.tvSortBy);
-        FontUtils.setMediumFont(requireContext(), tvSortBy);
+//        TextView tvSortBy = view.findViewById(R.id.tvSortBy);
+//        FontUtils.setMediumFont(requireContext(), tvSortBy);
 
         // Các button lọc
         btnAll = view.findViewById(R.id.btnAll);

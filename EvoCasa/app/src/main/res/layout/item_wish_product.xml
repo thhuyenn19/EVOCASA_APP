@@ -6,14 +6,16 @@
     android:layout_height="wrap_content"
     card_view:cardCornerRadius="8dp"
     card_view:cardElevation="4dp"
-    android:layout_margin="6dp">
+    android:layout_margin="6dp"
+    android:background="#FFFCF3">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp"
-        android:background="#FFFCF3">
+        android:background="#FFFCF3"
+        android:layout_gravity="center_vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -43,8 +45,11 @@
         <!-- Product Name -->
         <TextView
             android:id="@+id/txtProductName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:minLines="2"
+            android:ellipsize="end"
             android:text="MCM Brass Lamp"
             android:textColor="@color/color_5E4C3E"
             android:textSize="16sp"

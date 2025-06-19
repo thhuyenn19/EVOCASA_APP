@@ -1,5 +1,6 @@
 package com.mobile.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
         // Load ảnh đầu tiên từ danh sách ảnh
+        Log.d("IMAGE_TEST", "Ảnh đầu tiên: " + product.getFirstImage());
         List<String> images = product.getImageList();
         if (images != null && !images.isEmpty()) {
             Glide.with(holder.itemView.getContext())
@@ -66,7 +68,7 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         // Font đậm cho tên sản phẩm
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
         // Nếu rating không có trong Firestore, thì tạo tạm số ngẫu nhiên
-        float fakeRating = (float) (4 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
+        float fakeRating = (float) (3 + new Random().nextFloat() * 2); // từ 3.0 đến 5.0
         holder.txtRating.setText(String.format("%.1f", fakeRating));
 
         // Thêm sự kiện click vào icon yêu thích (cập nhật tất cả)

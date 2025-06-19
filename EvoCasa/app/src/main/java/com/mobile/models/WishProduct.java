@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WishProduct {
-    private String image;
+    @PropertyName("Image")
+    private String image;  // là JSON String từ Firebase
 
     @PropertyName("Name")
     private String name;
@@ -32,7 +33,15 @@ public class WishProduct {
 
     public void setRating(float rating) { this.rating = rating; }
 
-    public void setImage(String image) { this.image = image; }
+    @PropertyName("Image")
+    public String getImage() {
+        return image;
+    }
+
+    @PropertyName("Image")
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public List<String> getImageList() {
         try {
@@ -43,8 +52,8 @@ public class WishProduct {
     }
 
     public String getFirstImage() {
-        List<String> imgs = getImageList();
-        return (imgs != null && !imgs.isEmpty()) ? imgs.get(0) : null;
+        List<String> list = getImageList();
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 }
 
