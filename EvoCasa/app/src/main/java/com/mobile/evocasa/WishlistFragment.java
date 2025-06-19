@@ -39,6 +39,8 @@ public class WishlistFragment extends Fragment {
     private List<WishProduct> wishProductList;
     private List<HotProducts> hotProductList;
     private HotProductsAdapter hotProductsAdapter;
+    private RecyclerView recyclerViewHotProducts;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,11 +111,31 @@ public class WishlistFragment extends Fragment {
         });
 
         /* Hot Products */
-        RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
+        recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
         recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         hotProductList = new ArrayList<>();
-        hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        hotProductsAdapter = new HotProductsAdapter(hotProductList, (product, position) -> {
+            // Tạo và thêm vào Wishlist
+            WishProduct wish = new WishProduct();
+            wish.setImage(product.getImage());
+            wish.setRating(product.getRating());
+            wish.setName(product.getName());
+            wish.setPrice(product.getPrice());
+
+            wishProductList.add(0, wish);
+            wishProductAdapter.notifyItemInserted(0);
+
+            // ❗ Sửa ở đây
+            hotProductList.remove(product); // thay vì remove(position)
+            hotProductsAdapter.notifyDataSetChanged();
+
+            if (hotProductList.isEmpty()) {
+                recyclerViewHotProducts.setVisibility(View.GONE);
+            }
+        });
+
+
         recyclerViewHotProducts.setAdapter(hotProductsAdapter);
 
         // Gọi hàm load từ Firestore
@@ -206,13 +228,17 @@ public class WishlistFragment extends Fragment {
                     List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
                     Collections.shuffle(allDocs); // 🔀 random
 
-                    int limit = Math.min(6, allDocs.size()); // lấy 6 sản phẩm
+                    int limit = Math.min(4, allDocs.size()); // lấy 6 sản phẩm
                     for (int i = 0; i < limit; i++) {
                         HotProducts product = allDocs.get(i).toObject(HotProducts.class);
                         hotProductList.add(product);
                     }
 
                     hotProductsAdapter.notifyDataSetChanged();
+
+                    // ✅ Hiện lại nếu nó từng bị ẩn
+                    RecyclerView recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
+                    recyclerViewHotProducts.setVisibility(View.VISIBLE);
                 })
                 .addOnFailureListener(e -> {
                     Log.e("Firestore", "Lỗi khi load Hot Products", e);

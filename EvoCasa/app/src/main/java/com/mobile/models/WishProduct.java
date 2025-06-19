@@ -32,6 +32,16 @@ public class WishProduct {
 
     public WishProduct() {}
 
+    @PropertyName("Name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @PropertyName("Price")
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
     // Getter
     @PropertyName("Name")
     public String getName() { return name; }
