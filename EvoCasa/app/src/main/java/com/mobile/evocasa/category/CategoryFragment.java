@@ -1,4 +1,3 @@
-// Updated CategoryFragment.java with full implementation
 package com.mobile.evocasa.category;
 
 import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
@@ -42,12 +41,12 @@ import java.util.Map;
 
 public class CategoryFragment extends Fragment {
     private static final String TAG = "CategoryFragment";
+
+    private boolean isFetchingProducts = false;
     private RecyclerView recyclerViewSubCategory;
     private RecyclerView recyclerViewProducts;
     private SubCategoryAdapter subCategoryAdapter;
     private SubCategoryProductAdapter productAdapter;
-    private List<SubCategory> subCategoryList;
-    private List<ProductItem> currentProductList;
     private AppBarLayout appBarLayout;
     private TextView txtCollapsedTitle, tvSortBy;
     private TextView txtSubCategoryShop;
@@ -55,20 +54,28 @@ public class CategoryFragment extends Fragment {
     private View heroSection;
     private View sortFilterSection;
     private Toolbar toolbar;
+    private LinearLayout btnBack;
+
+
+    private List<SubCategory> subCategoryList;
+    private List<ProductItem> currentProductList;
+    private FirebaseFirestore db;
+    private String selectedCategory;
+    private String categoryId;
+    private Map<String, String> subCategoryIds = new HashMap<>();
+
+
     private ValueAnimator backgroundAnimator;
     private ValueAnimator titleAnimator;
     private boolean isAnimating = false;
     private float lastPercentage = -1f;
+    private long lastUpdateTime = 0;
+    private static final long UPDATE_INTERVAL = 8;
     private Runnable pendingUpdate;
     private android.os.Handler mainHandler;
     private int backgroundColor;
     private float[] alphaLookupTable;
     private boolean isLookupTableInitialized = false;
-    private LinearLayout btnBack;
-    private FirebaseFirestore db;
-    private String selectedCategory;
-    private String categoryId;
-    private Map<String, String> subCategoryIds = new HashMap<>();
 
     public CategoryFragment() {}
 
@@ -80,8 +87,11 @@ public class CategoryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
         db = FirebaseFirestore.getInstance();
         mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
+
 
         recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
@@ -95,22 +105,31 @@ public class CategoryFragment extends Fragment {
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
         btnBack = view.findViewById(R.id.btnBack);
 
+
         Bundle args = getArguments();
         if (args != null) {
             selectedCategory = args.getString("selectedCategory", "");
             categoryId = args.getString("categoryId", null);
-            if (txtSubCategoryShop != null) txtSubCategoryShop.setText(selectedCategory);
-            if (txtCollapsedTitle != null) txtCollapsedTitle.setText(selectedCategory);
+            Log.d(TAG, "Received category: " + selectedCategory + ", ID: " + categoryId);
+            if (txtSubCategoryShop != null) {
+                txtSubCategoryShop.setText(selectedCategory);
+            }
+            if (txtCollapsedTitle != null) {
+                txtCollapsedTitle.setText(selectedCategory);
+            }
         }
+
 
         FontUtils.setZboldFont(requireContext(), txtSubCategoryShop);
         FontUtils.setZboldFont(requireContext(), txtCollapsedTitle);
         FontUtils.setMediumFont(requireContext(), tvSortBy);
 
+
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
         params.setBehavior(new FlingBehavior(getContext(), null));
         appBarLayout.setLayoutParams(params);
 
+        // Setup methods
         setupProducts();
         setupSubCategories();
         setupCollapsingEffect();
@@ -126,34 +145,62 @@ public class CategoryFragment extends Fragment {
         recyclerViewProducts.setAdapter(productAdapter);
     }
 
+
     private void fetchAllProductsForShopAll() {
+        if (isFetchingProducts) {
+            Log.d(TAG, "Fetch already in progress, skipping");
+            return;
+        }
+        isFetchingProducts = true;
         currentProductList.clear();
+        Log.d(TAG, "Fetching all products for Shop All");
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
+                    Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ProductItem product = new ProductItem();
-                        product.setId(doc.getId());
-                        product.setName(doc.getString("Name"));
-                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                        product.setImage(doc.getString("Image"));
-                        product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
-                        currentProductList.add(product);
+                        try {
+                            ProductItem product = new ProductItem();
+                            product.setId(doc.getId());
+                            product.setName(doc.getString("Name"));
+                            product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                            product.setImage(doc.getString("Image"));
+                            product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+                            currentProductList.add(product);
+                            Log.d(TAG, "Added product: " + product.getName());
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error parsing product: " + doc.getId(), e);
+                        }
                     }
                     productAdapter.notifyDataSetChanged();
+                    isFetchingProducts = false;
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to fetch all products for Shop All", e);
+                    productAdapter.notifyDataSetChanged();
+                    isFetchingProducts = false;
                 });
     }
 
     private void filterProductsBySubCategory(String selectedSubCategory) {
+        if (isFetchingProducts) {
+            Log.d(TAG, "Fetch already in progress, skipping");
+            return;
+        }
+        isFetchingProducts = true;
         currentProductList.clear();
+        Log.d(TAG, "Filtering products for: " + selectedSubCategory);
+
         if (selectedSubCategory.equals("All products") && categoryId != null) {
+            Log.d(TAG, "Fetching all products for category: " + selectedCategory + " with ID: " + categoryId);
             db.collection("Product")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            Map<String, Object> catObj = (Map<String, Object>) doc.get("category_id");
-                            String productCatId = catObj != null ? (String) catObj.get("$oid") : null;
-                            if (productCatId != null && subCategoryIds.containsValue(productCatId)) {
+                            Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
+                            String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
+                            if (productCategoryId != null && subCategoryIds.containsValue(productCategoryId)) {
                                 ProductItem product = new ProductItem();
                                 product.setId(doc.getId());
                                 product.setName(doc.getString("Name"));
@@ -161,19 +208,28 @@ public class CategoryFragment extends Fragment {
                                 product.setImage(doc.getString("Image"));
                                 product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
                                 currentProductList.add(product);
+                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + productCategoryId);
                             }
                         }
                         productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch all products for category: " + selectedCategory, e);
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
                     });
         } else if (subCategoryIds.containsKey(selectedSubCategory)) {
-            String subCatId = subCategoryIds.get(selectedSubCategory);
+            Log.d(TAG, "Filtering products for subcategory: " + selectedSubCategory);
+            String subCategoryId = subCategoryIds.get(selectedSubCategory);
             db.collection("Product")
                     .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            Map<String, Object> catObj = (Map<String, Object>) doc.get("category_id");
-                            String productCatId = catObj != null ? (String) catObj.get("$oid") : null;
-                            if (subCatId.equals(productCatId)) {
+                    .addOnSuccessListener(productSnapshots -> {
+                        Log.d(TAG, "Subcategory product query returned " + productSnapshots.size() + " documents");
+                        for (QueryDocumentSnapshot doc : productSnapshots) {
+                            Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
+                            String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
+                            if (productCategoryId != null && productCategoryId.equals(subCategoryId)) {
                                 ProductItem product = new ProductItem();
                                 product.setId(doc.getId());
                                 product.setName(doc.getString("Name"));
@@ -181,12 +237,21 @@ public class CategoryFragment extends Fragment {
                                 product.setImage(doc.getString("Image"));
                                 product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
                                 currentProductList.add(product);
+                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + subCategoryId);
                             }
                         }
                         productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch products for subcategory: " + selectedSubCategory, e);
+                        productAdapter.notifyDataSetChanged();
+                        isFetchingProducts = false;
                     });
         } else {
+            Log.w(TAG, "No valid subcategory or category found for: " + selectedSubCategory);
             productAdapter.notifyDataSetChanged();
+            isFetchingProducts = false;
         }
     }
 
@@ -197,37 +262,88 @@ public class CategoryFragment extends Fragment {
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
 
-        if ("Shop All".equals(selectedCategory)) {
-            fetchAllProductsForShopAll();
-        } else if (categoryId != null) {
+        if (selectedCategory.equals("Shop All")) {
+            Log.d(TAG, "Shop All selected, showing only 'All products'");
+            subCategoryAdapter.notifyDataSetChanged();
+            fetchAllProductsForShopAll(); 
+            return;
+        }
+
+        if (categoryId != null) {
+            Log.d(TAG, "Fetching subcategories for category ID: " + categoryId);
             db.collection("Category")
                     .get()
-                    .addOnSuccessListener(docs -> {
-                        for (QueryDocumentSnapshot doc : docs) {
-                            Map<String, Object> parent = (Map<String, Object>) doc.get("ParentCategory");
-                            String parentId = parent != null ? (String) parent.get("$oid") : null;
-                            if (categoryId.equals(parentId)) {
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d(TAG, "Subcategory query returned " + queryDocumentSnapshots.size() + " documents");
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            Map<String, Object> parentCategory = (Map<String, Object>) doc.get("ParentCategory");
+                            String parentCategoryId = parentCategory != null ? (String) parentCategory.get("$oid") : null;
+                            if (parentCategoryId != null && parentCategoryId.equals(categoryId)) {
                                 String name = doc.getString("Name");
-                                subCategoryList.add(new SubCategory(name, false));
-                                subCategoryIds.put(name, doc.getId());
+                                String id = doc.getId();
+                                if (name != null) {
+                                    subCategoryList.add(new SubCategory(name, false));
+                                    subCategoryIds.put(name, id);
+                                    Log.d(TAG, "Added subcategory: " + name + " with ID: " + id);
+                                }
                             }
                         }
                         subCategoryAdapter.notifyDataSetChanged();
-                        filterProductsBySubCategory("All products");
+
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Failed to fetch subcategories for ID: " + categoryId, e);
+                        subCategoryAdapter.notifyDataSetChanged();
                     });
         }
 
         subCategoryAdapter.setOnSubCategoryClickListener(position -> {
+            if (isFetchingProducts) {
+                Log.d(TAG, "Fetch in progress, ignoring subcategory click");
+                return;
+            }
+
+            recyclerViewSubCategory.post(() -> {
+                LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerViewSubCategory.getLayoutManager();
+                if (layoutManager != null) {
+                    RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(getContext()) {
+                        @Override
+                        protected int getHorizontalSnapPreference() {
+                            return SNAP_TO_START;
+                        }
+
+                        @Override
+                        protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+                            return 100f / displayMetrics.densityDpi;
+                        }
+
+                        @Override
+                        public int calculateDtToFit(int viewStart, int viewEnd, int boxStart, int boxEnd, int snapPreference) {
+                            int viewCenter = (viewStart + viewEnd) / 2;
+                            int boxCenter = (boxStart + boxEnd) / 2;
+                            return boxCenter - viewCenter;
+                        }
+                    };
+                    smoothScroller.setTargetPosition(position);
+                    layoutManager.startSmoothScroll(smoothScroller);
+                }
+            });
+
             if (position < subCategoryList.size()) {
                 String subCategoryName = subCategoryList.get(position).getName();
-                if ("Shop All".equals(selectedCategory)) {
+                if (selectedCategory.equals("Shop All")) {
                     fetchAllProductsForShopAll();
                 } else {
                     filterProductsBySubCategory(subCategoryName);
                 }
             }
         });
+
+        if (!selectedCategory.equals("Shop All") && !subCategoryList.isEmpty()) {
+            filterProductsBySubCategory("All products");
+        }
     }
+
 
     private void setupBackButton() {
         if (btnBack != null) {
@@ -239,11 +355,12 @@ public class CategoryFragment extends Fragment {
         }
     }
 
+
     private void initializeLookupTable() {
         alphaLookupTable = new float[101];
         for (int i = 0; i <= 100; i++) {
             float percentage = i / 100f;
-            alphaLookupTable[i] = percentage * percentage * (3.0f - 2.0f * percentage);
+            alphaLookupTable[i] = smoothInterpolate(percentage);
         }
         if (getContext() != null) {
             backgroundColor = getResources().getColor(R.color.color_bg);
@@ -252,6 +369,9 @@ public class CategoryFragment extends Fragment {
     }
 
 
+    private float smoothInterpolate(float input) {
+        return input * input * (3.0f - 2.0f * input);
+    }
 
     private void optimizeScrolling() {
         if (recyclerViewProducts != null) {
@@ -304,9 +424,6 @@ public class CategoryFragment extends Fragment {
         updateElementsVisibilityFast(smoothPercentage);
     }
 
-    private float smoothInterpolate(float input) {
-        return input * input * (3.0f - 2.0f * input);
-    }
 
     private void updateToolbarBackgroundFast(float percentage) {
         if (toolbar == null) return;
@@ -319,6 +436,7 @@ public class CategoryFragment extends Fragment {
             toolbar.setBackgroundColor(0x00000000);
         }
     }
+
 
     private void updateCollapsedTitleFast(float percentage) {
         if (txtCollapsedTitle == null) return;
@@ -364,6 +482,7 @@ public class CategoryFragment extends Fragment {
             txtSubCategoryShop.setAlpha(Math.max(0f, 1f - (percentage * 1.3f)));
         }
     }
+
 
     @Override
     public void onDestroyView() {
