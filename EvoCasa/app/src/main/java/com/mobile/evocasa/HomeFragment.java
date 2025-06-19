@@ -120,7 +120,6 @@ public class HomeFragment extends Fragment {
         categoryAdapter = new CategoryAdapter(categoryList);
         recyclerViewCategories.setAdapter(categoryAdapter);
 
-
         // Lấy giờ hiện tại
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
