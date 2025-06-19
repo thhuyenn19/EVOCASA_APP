@@ -14,8 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
@@ -233,53 +234,85 @@ public class WishlistFragment extends Fragment {
     // Giả lập load sản phẩm cho các tab
     private void loadWishProduct(String filter) {
         RecyclerView recyclerViewWishProduct = view.findViewById(R.id.recyclerViewWishProduct);
-
-        // 👉 Gắn lại đúng adapter khi quay về tab khác
         recyclerViewWishProduct.setAdapter(wishProductAdapter);
+        wishProductList.clear();
 
-        wishProductList.clear(); // Xóa sản phẩm cũ
+        String customerId = new UserSessionManager(getContext()).getUid();
+        Log.d("WISHLIST_DEBUG", "Customer ID from session: " + customerId);
 
-        db.collection("Product")
+        db.collection("Wishlist")
                 .get()
-                .addOnSuccessListener(querySnapshots -> {
-                    List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
-                    Collections.shuffle(allDocs); // 🔀 random
+                .addOnSuccessListener(querySnapshot -> {
+                    boolean found = false;
 
-                    List<WishProduct> filteredProducts = new ArrayList<>();
-                    int limit = Math.min(6, allDocs.size()); // Hiển thị tối đa 6 sản phẩm
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        String firestoreCustomerId = doc.getString("Customer_id");
+                        if (firestoreCustomerId != null && firestoreCustomerId.equals(customerId)) {
+                            found = true;
 
-                    // Lọc sản phẩm theo từng tab
-                    switch (filter) {
-                        case "lowStock":
-                            for (int i = 0; i < 3 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                filteredProducts.add(product);
+                            List<String> productIds = (List<String>) doc.get("Productid");
+                            Log.d("WISHLIST_DEBUG", "Product IDs in wishlist: " + productIds);
+
+                            if (productIds == null || productIds.isEmpty()) {
+                                wishProductAdapter.notifyDataSetChanged();
+                                return;
                             }
-                            break;
 
-                        case "outOfStock":
-                            for (int i = 0; i < 2 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                product.setOutOfStock(true); // Đánh dấu là hết hàng
-                                filteredProducts.add(product);
+                            Collections.shuffle(productIds); // shuffle nếu muốn
+
+                            int maxItems;
+                            switch (filter) {
+                                case "lowStock":
+                                    maxItems = 3;
+                                    break;
+                                case "outOfStock":
+                                    maxItems = 2;
+                                    break;
+                                default:
+                                    maxItems = productIds.size(); // load tất cả
+                                    break;
                             }
-                            break;
 
-
-                        case "all":
-                        default:
-                            for (int i = 0; i < 6 && i < allDocs.size(); i++) {
-                                WishProduct product = allDocs.get(i).toObject(WishProduct.class);
-                                filteredProducts.add(product);
+                            List<Task<DocumentSnapshot>> tasks = new ArrayList<>();
+                            for (int i = 0; i < Math.min(maxItems, productIds.size()); i++) {
+                                Task<DocumentSnapshot> task = db.collection("Product").document(productIds.get(i)).get();
+                                tasks.add(task);
                             }
+
+                            Tasks.whenAllSuccess(tasks)
+                                    .addOnSuccessListener(results -> {
+                                        wishProductList.clear();
+
+                                        for (Object obj : results) {
+                                            DocumentSnapshot productDoc = (DocumentSnapshot) obj;
+                                            if (productDoc.exists()) {
+                                                WishProduct product = productDoc.toObject(WishProduct.class);
+                                                if ("outOfStock".equals(filter)) {
+                                                    product.setOutOfStock(true);
+                                                }
+                                                wishProductList.add(product);
+                                            }
+                                        }
+
+                                        wishProductAdapter.notifyDataSetChanged();
+                                        Log.d("WISHLIST_DEBUG", "Đã load " + wishProductList.size() + " sản phẩm cho tab " + filter);
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("WISHLIST_DEBUG", "Lỗi khi load sản phẩm từ Product", e);
+                                    });
+
                             break;
+                        }
                     }
 
-                    wishProductList.addAll(filteredProducts);
-                    wishProductAdapter.notifyDataSetChanged();
+                    if (!found) {
+                        Log.d("WISHLIST_DEBUG", "Không tìm thấy Wishlist cho Customer_id: " + customerId);
+                        wishProductAdapter.notifyDataSetChanged();
+                    }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Lỗi khi load sản phẩm", e);
+                    Log.e("WISHLIST_DEBUG", "Lỗi khi truy vấn Wishlist", e);
+                    wishProductAdapter.notifyDataSetChanged();
                 });
     }
 
