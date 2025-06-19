@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.mobile.adapters.CategoryAdapter;
 import com.mobile.utils.FontUtils;
@@ -43,9 +45,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mobile.utils.UserSessionManager;
 
 public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
@@ -255,6 +259,10 @@ public class HomeFragment extends Fragment {
             });
         }
 
+        txtCartBadge = view.findViewById(R.id.txtCartBadge);
+        sessionManager = new UserSessionManager(requireContext());
+        startCartBadgeListener();
+
         return view;
     }
 
@@ -275,6 +283,7 @@ public class HomeFragment extends Fragment {
         if (saleEndTimeMillis > nowResume) {
             startCountdownTimer();
         }
+        startCartBadgeListener();
     }
 
     private void applyCustomFonts() {
@@ -414,5 +423,158 @@ public class HomeFragment extends Fragment {
         if (timerHour != null) timerHour.setText(String.format("%02d", hours));
         if (timerMinute != null) timerMinute.setText(String.format("%02d", minutes));
         if (timerSecond != null) timerSecond.setText(String.format("%02d", seconds));
+    }
+
+    private TextView txtCartBadge;
+    private ListenerRegistration cartListener;
+    private UserSessionManager sessionManager;
+    /**
+     * Bắt đầu lắng nghe thay đổi trong giỏ hàng và cập nhật badge
+     */
+    private void startCartBadgeListener() {
+        String uid = sessionManager.getUid();
+
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "User not logged in, hiding badge");
+            if (txtCartBadge != null) {
+                txtCartBadge.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        cartListener = FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (e != null) {
+                        Log.w("CartBadge", "Listen failed.", e);
+                        if (txtCartBadge != null) txtCartBadge.setVisibility(View.GONE);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        int totalQuantity = 0;
+
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+
+                        updateCartBadge(totalQuantity);
+                    } else {
+                        Log.d("CartBadge", "No customer document found");
+                        updateCartBadge(0);
+                    }
+                });
+    }
+
+
+    /**
+     * Cập nhật hiển thị cart badge
+     */
+    private void updateCartBadge(int totalQuantity) {
+        // First check: Fragment lifecycle state
+        if (!isAdded() || getContext() == null || getActivity() == null) {
+            Log.w("CartBadge", "Fragment not attached, cannot update badge");
+            return;
+        }
+
+        // Second check: View availability
+        if (txtCartBadge == null) {
+            Log.e("CartBadge", "txtCartBadge is null!");
+            return;
+        }
+
+        // Get activity reference safely
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.w("CartBadge", "Activity is null, cannot update badge");
+            return;
+        }
+
+        // Use activity reference instead of requireActivity()
+        activity.runOnUiThread(() -> {
+            // Double-check fragment state in UI thread
+            if (!isAdded() || getContext() == null || txtCartBadge == null) {
+                Log.w("CartBadge", "Fragment detached during UI update, skipping");
+                return;
+            }
+
+            try {
+                if (totalQuantity > 0) {
+                    txtCartBadge.setVisibility(View.VISIBLE);
+                    String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                    txtCartBadge.setText(displayText);
+                    Log.d("CartBadge", "Badge updated: " + displayText);
+                } else {
+                    txtCartBadge.setVisibility(View.GONE);
+                    Log.d("CartBadge", "Badge hidden (quantity = 0)");
+                }
+            } catch (Exception e) {
+                Log.e("CartBadge", "Error updating cart badge UI", e);
+            }
+        });
+    }
+
+    /**
+     * Public method để fragments có thể gọi refresh cart badge
+     */
+    public void refreshCartBadge() {
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "Cannot refresh badge - user not logged in");
+            return;
+        }
+
+        Log.d("CartBadge", "Manually refreshing cart badge");
+
+        FirebaseFirestore.getInstance()
+                .collection("carts")
+                .document(uid)
+                .collection("items")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int totalQuantity = 0;
+                    for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                        Long qty = doc.getLong("quantity");
+                        if (qty != null) {
+                            totalQuantity += qty;
+                        }
+                    }
+                    updateCartBadge(totalQuantity);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("CartBadge", "Error refreshing cart badge", e);
+                    if (txtCartBadge != null) {
+                        txtCartBadge.setVisibility(View.GONE);
+                    }
+                });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Listener đã được start trong onCreate
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // Không stop listener ở đây vì chúng ta muốn nghe trong suốt lifecycle của activity
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // Chỉ remove listener khi activity bị destroy
+        if (cartListener != null) {
+            cartListener.remove();
+            cartListener = null;
+        }
     }
 }
