@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
-import com.mobile.models.HotProducts;
+import com.mobile.models.FlashSaleProduct;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
 
@@ -21,9 +22,9 @@ import java.util.Random;
 
 public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.FlashSaleViewHolder> {
 
-    private List<HotProducts> flashSaleList;
+    private List<FlashSaleProduct> flashSaleList;
 
-    public FlashSaleAdapter(List<HotProducts> flashSaleList) {
+    public FlashSaleAdapter(List<FlashSaleProduct> flashSaleList) {
         this.flashSaleList = flashSaleList;
     }
 
@@ -37,7 +38,7 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
 
     @Override
     public void onBindViewHolder(@NonNull FlashSaleViewHolder holder, int position) {
-        HotProducts product = flashSaleList.get(position);
+        FlashSaleProduct product = flashSaleList.get(position);
 
         double oldPrice = product.getPrice();
         int discount = new Random().nextInt(41) + 10;
@@ -51,6 +52,8 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         holder.tvDiscount.setText("-" + discount + "%");
         holder.tvTagDiscountTop.setText("-" + discount + "%");
         holder.tvRating.setText(String.format("%.1f", rating));
+
+        Log.d("IMAGE_TEST", "Ảnh đầu tiên: " + product.getFirstImage());
 
         List<String> images = product.getImageList();
         if (images != null && !images.isEmpty()) {

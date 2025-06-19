@@ -1,43 +1,55 @@
 package com.mobile.models;
 
+import com.google.firebase.firestore.PropertyName;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class FlashSaleProduct {
-    private int imageResId;
+    @PropertyName("Name")
     private String name;
-    private String oldPrice;
-    private String newPrice;
-    private String discount;
-    private float rating;
 
-    public FlashSaleProduct(int imageResId, String name, String oldPrice, String newPrice, String discount, float rating) {
-        this.imageResId = imageResId;
-        this.name = name;
-        this.oldPrice = oldPrice;
-        this.newPrice = newPrice;
-        this.discount = discount;
-        this.rating = rating;
-    }
+    @PropertyName("Price")
+    private double price;
 
-    public int getImageResId() {
-        return imageResId;
-    }
+    @PropertyName("Image")
+    private String image;  // là JSON String từ Firebase
 
+    // constructor rỗng cần có cho Firebase
+    public FlashSaleProduct() {}
+
+    @PropertyName("Name")
     public String getName() {
         return name;
     }
 
-    public String getOldPrice() {
-        return oldPrice;
+    @PropertyName("Price")
+    public double getPrice() {
+        return price;
     }
 
-    public String getNewPrice() {
-        return newPrice;
+    @PropertyName("Image")
+    public String getImage() {
+        return image;
     }
 
-    public String getDiscount() {
-        return discount;
+    @PropertyName("Image")
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public float getRating() {
-        return rating;
+    public List<String> getImageList() {
+        try {
+            return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public String getFirstImage() {
+        List<String> list = getImageList();
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 }

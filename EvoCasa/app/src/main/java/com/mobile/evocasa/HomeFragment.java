@@ -135,8 +135,9 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerViewFlashSale = view.findViewById(R.id.recyclerViewFlashSale);
         recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        List<HotProducts> flashSaleList = new ArrayList<>();
+        List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
+
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
 // Firestore instance
@@ -152,8 +153,9 @@ public class HomeFragment extends Fragment {
 
                         flashSaleList.clear();
                         for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
-                            HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                            FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
                             flashSaleList.add(product);
+
                         }
 
                         flashSaleAdapter.notifyDataSetChanged();
@@ -172,16 +174,14 @@ public class HomeFragment extends Fragment {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<DocumentSnapshot> allDocs = queryDocumentSnapshots.getDocuments();
                     Collections.shuffle(allDocs);
-                    Log.d("FLASH_SALE", "Tổng số documents từ Firestore: " + allDocs.size());
-
 
                     flashSaleList.clear();
                     for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
-                        HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
                         flashSaleList.add(product);
                         Log.d("FLASH_SALE", "Đã add sản phẩm: " + product.getName());
-
                     }
+
 
                     flashSaleAdapter.notifyDataSetChanged(); // Phải có dòng này để hiển thị
                     recyclerViewFlashSale.setVisibility(View.VISIBLE);
