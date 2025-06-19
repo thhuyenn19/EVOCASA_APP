@@ -24,6 +24,7 @@
             android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="false"
+            android:buttonTint="@null"
             android:layout_marginStart="3dp" />
 
         <!-- Product Image -->

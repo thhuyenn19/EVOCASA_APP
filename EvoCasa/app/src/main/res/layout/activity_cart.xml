@@ -225,5 +225,74 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
+    <!-- Layout GIỎ HÀNG TRỐNG (hiện khi không còn sp) -->
+    <LinearLayout
+        android:id="@+id/emptyCartLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <!-- ẢNH -->
+        <ImageView
+            android:id="@+id/imgCartEmpty"
+            android:layout_width="264dp"
+            android:layout_height="260dp"
+            android:layout_gravity="center_horizontal"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:src="@mipmap/ic_cart_empty" />
+
+        <!-- TIÊU ĐỀ -->
+        <TextView
+            android:id="@+id/txtCartEmptyTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_cart_empty_title"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+
+        <!-- MÔ TẢ -->
+        <TextView
+            android:id="@+id/txtCartDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_cart_empty_description"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <!-- KHOẢNG CÁCH -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="37dp" />
+
+        <!-- NÚT QUAY LẠI -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBackShop"
+            android:layout_width="179dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/button_pressed_effect"
+            android:elevation="2dp"
+            android:text="@string/title_back_shop"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 
 </LinearLayout>
