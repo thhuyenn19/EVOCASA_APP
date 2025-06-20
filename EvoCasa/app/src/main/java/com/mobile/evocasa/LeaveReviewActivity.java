@@ -1,17 +1,22 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -20,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.models.OrderGroup;
@@ -44,6 +50,9 @@ public class LeaveReviewActivity extends AppCompatActivity {
 
     private OrderGroup orderGroup;
     private String orderId;
+    ImageView btnAddPhoto;
+    ImageView btnAddVideo;
+    LinearLayout previewContainer;
 
 
     @Override
@@ -66,6 +75,11 @@ public class LeaveReviewActivity extends AppCompatActivity {
         btnViewMore = orderGroupView.findViewById(R.id.btnViewMore);
         iconArrow = orderGroupView.findViewById(R.id.iconArrow);
 
+        btnAddPhoto = findViewById(R.id.btnAddPhoto);
+        btnAddVideo = findViewById(R.id.btnAddVideo);
+        previewContainer = findViewById(R.id.previewContainer);
+
+
         LinearLayout btnBack = findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v ->{
             finish();
@@ -74,7 +88,52 @@ public class LeaveReviewActivity extends AppCompatActivity {
         if (orderId != null) {
             loadOrderFromFirestore(orderId);
         }
+
+        btnAddPhoto.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            startActivityForResult(intent, 1001); // REQUEST_CODE_IMAGE
+        });
+
+        btnAddVideo.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("video/*");
+            startActivityForResult(intent, 1002); // REQUEST_CODE_VIDEO
+        });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri selectedUri = data.getData();
+
+            if (requestCode == 1001) {
+                // Hiển thị ảnh trong previewContainer
+                ImageView imageView = new ImageView(this);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                params.width = 200;
+                params.height = 200;
+                params.setMargins(8, 0, 8, 0);
+                imageView.setLayoutParams(params);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+                Glide.with(this)
+                        .load(selectedUri)
+                        .transform(new RoundedCorners(16)) // bo góc 16dp
+                        .into(imageView);
+
+                previewContainer.addView(imageView);
+            } else if (requestCode == 1002) {
+                // Xử lý video tại đây
+                Log.d("LeaveReview", "Video selected: " + selectedUri.toString());
+            }
+        }
+    }
+
 
     private void loadOrderFromFirestore(String orderId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -116,50 +175,73 @@ public class LeaveReviewActivity extends AppCompatActivity {
                     db.collection("Order").document(orderId)
                             .get()
                             .addOnSuccessListener(orderDoc -> {
-                                if (orderDoc.exists()) {
+                                if (!orderDoc.exists()) return;
+                                try {
                                     String status = orderDoc.getString("Status");
-                                    Long totalPrice = orderDoc.getLong("TotalPrice");
-                                    Map<String, Object> orderProduct = (Map<String, Object>) orderDoc.get("OrderProduct");
 
-                                    if (orderProduct != null && orderProduct.get("id") != null) {
+                                    List<Map<String, Object>> orderProducts = (List<Map<String, Object>>) orderDoc.get("OrderProduct");
+                                    if (orderProducts == null || orderProducts.isEmpty()) return;
+                                    List<OrderItem> items = new ArrayList<>();
+                                    for (Map<String, Object> orderProduct : orderProducts) {
                                         Map<String, Object> productIdMap = (Map<String, Object>) orderProduct.get("id");
+                                        if (productIdMap == null) continue;
+
                                         String productId = (String) productIdMap.get("$oid");
+                                        if (productId == null || !productNameMap.containsKey(productId)) continue;
 
-                                        if (productId != null && productNameMap.containsKey(productId)) {
-                                            String productName = productNameMap.get(productId);
-                                            Long priceEach = productPriceMap.get(productId);
-                                            Long quantity = (Long) orderProduct.get("Quantity");
-                                            String imageUrl = productImageMap.get(productId);
+                                        String productName = productNameMap.get(productId);
+                                        Long priceEach = productPriceMap.get(productId);
+                                        String imageUrl = productImageMap.get(productId);
+                                        Long quantity = (Long) orderProduct.get("Quantity");
 
-                                            int qty = quantity != null ? quantity.intValue() : 1;
-                                            int unitPrice = priceEach != null ? priceEach.intValue() : 0;
+                                        int qty = quantity != null ? quantity.intValue() : 1;
+                                        int unitPrice = priceEach != null ? priceEach.intValue() : 0;
 
-                                            OrderItem item = new OrderItem(
-                                                    imageUrl,
-                                                    productName,
-                                                    unitPrice,
-                                                    qty
-                                            );
-
-                                            List<OrderItem> itemList = new ArrayList<>();
-                                            itemList.add(item);
-
-                                            orderGroup = new OrderGroup(status, itemList);
-                                            orderGroup.setExpanded(isExpanded);
-                                            orderGroup.setTotal(totalPrice != null ? totalPrice : 0);
-
-                                            renderOrderGroup(orderGroup);
-                                        }
+                                        items.add(new OrderItem(imageUrl, productName, unitPrice, qty));
                                     }
+                                    // ✅ Tính tổng giá sản phẩm
+                                    int totalProductPrice = 0;
+                                    for (OrderItem item : items) {
+                                        totalProductPrice += item.getPrice() * item.getQuantity();
+                                    }
+
+// ✅ Delivery fee
+                                    int deliveryFee = 0;
+                                    Long rawDeliveryFee = orderDoc.getLong("DeliveryFee");
+                                    if (rawDeliveryFee != null) {
+                                        deliveryFee = rawDeliveryFee.intValue();
+                                    }
+
+// ✅ Discount từ phần trăm
+                                    int discountPercent = 0;
+                                    Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
+                                    if (voucher != null && voucher.get("DiscountPercent") != null) {
+                                        discountPercent = ((Long) voucher.get("DiscountPercent")).intValue();
+                                    }
+                                    int discountAmount = (totalProductPrice + deliveryFee) * discountPercent / 100;
+
+// ✅ Tổng thanh toán cuối cùng
+                                    int finalTotal = totalProductPrice + deliveryFee - discountAmount;
+
+                                    // ✅ Tạo nhóm đơn hàng
+                                    OrderGroup group = new OrderGroup(status, items);
+                                    group.setOrderId(orderId);
+                                    group.setTotal(finalTotal); // dùng tổng đã tính thủ công
+
+
+                                    renderOrderGroup(group);
+
+                                } catch (Exception e) {
+                                    Log.e("OrderDetailFragment", "Lỗi khi parse đơn hàng: " + e.getMessage());
                                 }
                             });
                 });
     }
 
+
     private void renderOrderGroup(OrderGroup group) {
         itemContainer.removeAllViews();
         List<OrderItem> items = group.getItems();
-
         int showCount = group.isExpanded() ? items.size() : Math.min(1, items.size());
 
         for (int i = 0; i < showCount; i++) {
@@ -186,9 +268,13 @@ public class LeaveReviewActivity extends AppCompatActivity {
 
             itemContainer.addView(productView);
         }
+        int totalQuantity = 0;
+        for (OrderItem item : items) {
+            totalQuantity += item.getQuantity();
+        }
 
         String boldPart = "Total";
-        String normalPart = " (" + items.size() + " items): $" + NumberFormat.getNumberInstance(Locale.US).format(group.getTotal());
+        String normalPart = " (" + totalQuantity + " items): $" + NumberFormat.getNumberInstance(Locale.US).format(group.getTotal());
         String fullText = boldPart + normalPart;
 
         SpannableString spannable = new SpannableString(fullText);

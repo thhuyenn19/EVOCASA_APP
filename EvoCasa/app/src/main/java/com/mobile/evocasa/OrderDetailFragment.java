@@ -29,9 +29,11 @@ import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -44,10 +46,8 @@ public class OrderDetailFragment extends Fragment {
     private boolean isExpanded = false;
 
     private Button btnTrackOrder;
-    private TextView txtShippingMethodValue;
-    private TextView txtPaymentMethodValue;
-    private TextView txtMessageForShopValue;
-
+    private TextView txtShippingMethodValue,txtPaymentMethodValue,  txtMessageForShopValue;
+    private TextView txtTotalPrice, txtShippingFee, txtDiscount, txtTotalPayment, txtYouSave;
 
     public OrderDetailFragment() {
         // Required empty public constructor
@@ -82,6 +82,13 @@ public class OrderDetailFragment extends Fragment {
         txtShippingMethodValue = view.findViewById(R.id.txtShippingMethodValue);
         txtPaymentMethodValue = view.findViewById(R.id.txtPaymentMethodValue);
         txtMessageForShopValue = view.findViewById(R.id.txtMessageForShopValue);
+
+        txtTotalPrice = view.findViewById(R.id.txtTotalPrice);
+        txtShippingFee = view.findViewById(R.id.txtShippingFee);
+        txtDiscount = view.findViewById(R.id.txtDiscount);
+        txtTotalPayment = view.findViewById(R.id.txtTotalPayment);
+        txtYouSave = view.findViewById(R.id.txtYouSave);
+
 
 
 
@@ -157,7 +164,9 @@ public class OrderDetailFragment extends Fragment {
     private void loadOrderDetailFromFirestore(String orderId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Product").get().addOnSuccessListener(productSnapshots -> {
+        db.collection("Product").
+                get().
+                addOnSuccessListener(productSnapshots -> {
             Map<String, String> productNameMap = new HashMap<>();
             Map<String, Long> productPriceMap = new HashMap<>();
             Map<String, String> productImageMap = new HashMap<>();
@@ -221,7 +230,6 @@ public class OrderDetailFragment extends Fragment {
 
                 try {
                     String status = orderDoc.getString("Status");
-                    Long totalPrice = orderDoc.getLong("TotalPrice");
 
                     List<Map<String, Object>> orderProducts = (List<Map<String, Object>>) orderDoc.get("OrderProduct");
                     if (orderProducts == null || orderProducts.isEmpty()) return;
@@ -243,11 +251,46 @@ public class OrderDetailFragment extends Fragment {
 
                         items.add(new OrderItem(imageUrl, productName, unitPrice, qty));
                     }
+                    // ✅ Tính tổng giá sản phẩm
+                    int totalProductPrice = 0;
+                    for (OrderItem item : items) {
+                        totalProductPrice += item.getPrice() * item.getQuantity();
+                    }
+
+// ✅ Delivery fee
+                    int deliveryFee = 0;
+                    Long rawDeliveryFee = orderDoc.getLong("DeliveryFee");
+                    if (rawDeliveryFee != null) {
+                        deliveryFee = rawDeliveryFee.intValue();
+                    }
+
+// ✅ Discount từ phần trăm
+                    int discountPercent = 0;
+                    Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
+                    if (voucher != null && voucher.get("DiscountPercent") != null) {
+                        discountPercent = ((Long) voucher.get("DiscountPercent")).intValue();
+                    }
+                    int discountAmount = (totalProductPrice + deliveryFee) * discountPercent / 100;
+
+// ✅ Tổng thanh toán cuối cùng
+                    int finalTotal = totalProductPrice + deliveryFee - discountAmount;
+
+// ✅ Set vào UI
+                    txtTotalPrice.setText("$" +  NumberFormat.getNumberInstance(Locale.US).format(totalProductPrice));
+                    txtShippingFee.setText("$" + deliveryFee);
+                    TextView txtDiscount = requireView().findViewById(R.id.txtDiscount); // nếu đã có id
+                    txtDiscount.setText("-$" +  NumberFormat.getNumberInstance(Locale.US).format(discountAmount));
+                    TextView txtTotalPayment = requireView().findViewById(R.id.txtTotalPayment); // nếu đã có id
+                    txtTotalPayment.setText("$" +  NumberFormat.getNumberInstance(Locale.US).format(finalTotal));
+                    TextView txtYouSave = requireView().findViewById(R.id.txtYouSave); // nếu có
+                    txtYouSave.setText("You save $" + discountAmount + " on this order");
+
 
                     // ✅ Tạo nhóm đơn hàng
                     OrderGroup group = new OrderGroup(status, items);
                     group.setOrderId(orderId);
-                    group.setTotal(totalPrice != null ? totalPrice : 0);
+                    group.setTotal(finalTotal); // dùng tổng đã tính thủ công
+
 
                     renderOrderGroup(group);
 
@@ -286,7 +329,7 @@ public class OrderDetailFragment extends Fragment {
 
 
             title.setText(item.getTitle());
-            price.setText("$" + item.getPrice());
+            price.setText("$" + NumberFormat.getNumberInstance(Locale.US).format(item.getPrice()));
             qty.setText("Quantity: " + item.getQuantity());
 
             FontUtils.setZboldFont(getContext(), title);
@@ -295,9 +338,12 @@ public class OrderDetailFragment extends Fragment {
 
             itemContainer.addView(productView);
         }
-
+        int totalQuantity = 0;
+        for (OrderItem item : items) {
+            totalQuantity += item.getQuantity();
+        }
         String boldPart = "Total";
-        String normalPart = " (" + items.size() + " items): $" + group.getTotal();
+        String normalPart = " (" + totalQuantity + " items): $" +NumberFormat.getNumberInstance(Locale.US).format(group.getTotal());
         String fullText = boldPart + normalPart;
         SpannableString span = new SpannableString(fullText);
         span.setSpan(new CustomTypefaceSpan(FontUtils.getSemiBold(getContext())), 0, boldPart.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -307,6 +353,7 @@ public class OrderDetailFragment extends Fragment {
         if (items.size() > 1) {
             btnViewMoreContainer.setVisibility(View.VISIBLE);
             btnViewMore.setText(group.isExpanded() ? "View Less" : "View More");
+            FontUtils.setMediumFont(getContext(), btnViewMore);
             iconArrow.setRotation(group.isExpanded() ? 270 : 90);
             btnViewMoreContainer.setOnClickListener(v -> {
                 isExpanded = !isExpanded;

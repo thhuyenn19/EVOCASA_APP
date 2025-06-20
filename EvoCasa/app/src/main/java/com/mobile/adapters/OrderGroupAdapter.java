@@ -22,6 +22,7 @@ import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
 
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -114,9 +115,13 @@ public class OrderGroupAdapter extends RecyclerView.Adapter<OrderGroupAdapter.Vi
         holder.itemContainer.requestLayout();
         holder.itemContainer.invalidate();
 // 3. Gán total dựa trên toàn bộ items
+        int totalQuantity = 0;
+        for (OrderItem item : items) {
+            totalQuantity += item.getQuantity();
+        }
         String boldPart = "Total";
         long totalPrice = group.getTotal();
-        String normalPart = " (" + items.size() + " items): $" + totalPrice;
+        String normalPart = " (" + totalQuantity + " items): $" +  NumberFormat.getNumberInstance(Locale.US).format(totalPrice);
         String fullText = boldPart + normalPart;
 
         SpannableString spannable = new SpannableString(fullText);

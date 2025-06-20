@@ -382,6 +382,7 @@
                         android:textColor="@color/color_5E4C3E" />
 
                     <TextView
+                        android:id="@+id/txtDiscount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="-$50"
@@ -412,6 +413,7 @@
                         android:textColor="@color/color_5E4C3E" />
 
                     <TextView
+                        android:id="@+id/txtTotalPayment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$3,500"
@@ -422,6 +424,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/txtYouSave"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="10dp"
