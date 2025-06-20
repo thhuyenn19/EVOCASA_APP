@@ -1,24 +1,44 @@
-// const admin = require('firebase-admin');
-// const serviceAccount = require('./serviceAccountKey.json');
-// const fs = require('fs');
+const admin = require('firebase-admin');
+const serviceAccount = require('./serviceAccountKey.json');
+const fs = require('fs');
 
-// console.log("Initializing Firebase...");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://evocasa-da7f2.firebaseio.com" });
+console.log("Initializing Firebase...");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://evocasa-da7f2.firebaseio.com"
+});
 
-// console.log("Firebase initialized, reading file...");
-// const db = admin.firestore();
-// const data = JSON.parse(fs.readFileSync('EvoCasa.Customers.json', 'utf8'));
+console.log("Firebase initialized, reading file...");
+const db = admin.firestore();
+const data = JSON.parse(fs.readFileSync('EvoCasa.Product.json', 'utf8'));
 
-// console.log("Data loaded:", data);
-// for (const item of data) {
-//   const id = item._id['$oid']; // Lấy ObjectId làm document ID
-//   console.log(`Adding document ${id}...`);
-//   db.collection('Customers').doc(id).set(item)
-//     .then(() => console.log(`Added document ${id} successfully`))
-//     .catch(error => console.error(`Error adding ${id}:`, error));
-// }
+console.log(`Data loaded: ${data.length} products found`);
+
+async function uploadProducts() {
+  try {
+    for (const item of data) {
+      const id = item.id; // Sử dụng trường id làm document ID
+      console.log(`Adding document ${id}...`);
+      
+      // Tạo một bản copy của item và xóa trường id để tránh trùng lặp
+      const productData = { ...item };
+      delete productData.id;
+      
+      await db.collection('Product').doc(id).set(productData);
+      console.log(`Added document ${id} successfully`);
+    }
+    
+    console.log("All products uploaded successfully!");
+    process.exit(0);
+    
+  } catch (error) {
+    console.error('Error uploading products:', error);
+    process.exit(1);
+  }
+}
+
+// Gọi hàm upload
+uploadProducts();
 // const admin = require('firebase-admin');
 // const serviceAccount = require('./serviceAccountKey.json');
 // const fs = require('fs');
@@ -132,53 +152,53 @@
 
 // uploadFolder(baseDir);
 // console.log("Upload process started for Furniture...");
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
-const fs = require('fs');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('./serviceAccountKey.json');
+// const fs = require('fs');
 
-console.log("Initializing Firebase...");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://evocasa-da7f2.firebaseio.com"
-});
+// console.log("Initializing Firebase...");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://evocasa-da7f2.firebaseio.com"
+// });
 
-console.log("Firebase initialized, downloading collection...");
-const db = admin.firestore();
+// console.log("Firebase initialized, downloading collection...");
+// const db = admin.firestore();
 
-async function downloadCustomers() {
-  try {
-    console.log("Getting Customers collection...");
-    const snapshot = await db.collection('Customers').get();
+// async function downloadCustomers() {
+//   try {
+//     console.log("Getting Customers collection...");
+//     const snapshot = await db.collection('Customers').get();
     
-    if (snapshot.empty) {
-      console.log('No documents found in Customers collection');
-      return;
-    }
+//     if (snapshot.empty) {
+//       console.log('No documents found in Customers collection');
+//       return;
+//     }
 
-    const customers = [];
-    snapshot.forEach(doc => {
-      const data = doc.data();
-      // Thêm document ID vào dữ liệu
-      customers.push({
-        id: doc.id,
-        ...data
-      });
-      console.log(`Downloaded document: ${doc.id}`);
-    });
+//     const customers = [];
+//     snapshot.forEach(doc => {
+//       const data = doc.data();
+//       // Thêm document ID vào dữ liệu
+//       customers.push({
+//         id: doc.id,
+//         ...data
+//       });
+//       console.log(`Downloaded document: ${doc.id}`);
+//     });
 
-    // Lưu dữ liệu vào file JSON
-    const jsonData = JSON.stringify(customers, null, 2);
-    fs.writeFileSync('Downloaded_Customers.json', jsonData, 'utf8');
+//     // Lưu dữ liệu vào file JSON
+//     const jsonData = JSON.stringify(customers, null, 2);
+//     fs.writeFileSync('Downloaded_Customers.json', jsonData, 'utf8');
     
-    console.log(`Successfully downloaded ${customers.length} documents to Downloaded_Customers.json`);
+//     console.log(`Successfully downloaded ${customers.length} documents to Downloaded_Customers.json`);
     
-  } catch (error) {
-    console.error('Error downloading data:', error);
-  }
-}
+//   } catch (error) {
+//     console.error('Error downloading data:', error);
+//   }
+// }
 
-// Gọi hàm download
-downloadCustomers().then(() => {
-  console.log("Download completed");
-  process.exit(0);
-});
+// // Gọi hàm download
+// downloadCustomers().then(() => {
+//   console.log("Download completed");
+//   process.exit(0);
+// });

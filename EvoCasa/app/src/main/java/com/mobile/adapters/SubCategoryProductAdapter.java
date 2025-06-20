@@ -1,28 +1,49 @@
 package com.mobile.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.R;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.UserSessionManager;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryProductAdapter.SubCategoryProductViewHolder> {
 
     private final List<ProductItem> productList;
+    private final DecimalFormat decimalFormat;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final UserSessionManager sessionManager;
 
-    public SubCategoryProductAdapter(List<ProductItem> productList) {
+    public SubCategoryProductAdapter(List<ProductItem> productList, Context context) {
         this.productList = productList;
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        this.decimalFormat = new DecimalFormat("0.0", symbols);
+        decimalFormat.setGroupingUsed(false);
+        this.sessionManager = new UserSessionManager(context);
     }
 
     @NonNull
@@ -50,9 +71,90 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
 
         holder.txtProductName.setText(product.getName());
         holder.txtPrice.setText("$" + product.getPrice());
-        holder.txtRating.setText(String.valueOf(product.getRating() != 0.0 ? product.getRating() : 0.0));
+
+        // Hiển thị rating nếu có, nếu null thì hiện 5.0
+        Double averageRating = product.getRatings().getAverage();
+        if (averageRating != null) {
+            holder.ratingLayout.setVisibility(View.VISIBLE);
+            holder.txtRating.setText(decimalFormat.format(averageRating));
+        } else {
+            holder.ratingLayout.setVisibility(View.VISIBLE);
+            holder.txtRating.setText("5.0");
+        }
 
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
+
+        // Xử lý sự kiện nhấn vào icon yêu thích
+        holder.imgFavorite.setOnClickListener(v -> {
+            String customerId = sessionManager.getUid();
+            if (customerId != null) {
+                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart); // Chuyển sang trái tim đỏ
+                Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+
+                // Tìm hoặc tạo Wishlist
+                db.collection("Wishlist")
+                        .whereEqualTo("Customer_id", customerId)
+                        .get()
+                        .addOnSuccessListener(querySnapshot -> {
+                            if (querySnapshot.isEmpty()) {
+                                // Tạo mới Wishlist
+                                Map<String, Object> wishlistData = new HashMap<>();
+                                wishlistData.put("Customer_id", customerId);
+                                wishlistData.put("CreatedAt", FieldValue.serverTimestamp());
+                                wishlistData.put("Productid", new ArrayList<>());
+                                db.collection("Wishlist")
+                                        .add(wishlistData)
+                                        .addOnSuccessListener(documentReference -> {
+                                            String wishlistId = documentReference.getId();
+                                            addProductToWishlist(wishlistId, product.getId(), holder);
+                                        })
+                                        .addOnFailureListener(e -> {
+                                            Toast.makeText(holder.itemView.getContext(), "Failed to create wishlist", Toast.LENGTH_SHORT).show();
+                                        });
+                            } else {
+                                // Sử dụng Wishlist hiện có
+                                String wishlistId = querySnapshot.getDocuments().get(0).getId();
+                                addProductToWishlist(wishlistId, product.getId(), holder);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Toast.makeText(holder.itemView.getContext(), "Failed to check wishlist", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(holder.itemView.getContext(), "Please sign in to add to wishlist", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addProductToWishlist(String wishlistId, String productId, SubCategoryProductViewHolder holder) {
+        db.collection("Wishlist").document(wishlistId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> productIds = (List<String>) documentSnapshot.get("Productid");
+                        if (productIds == null) {
+                            productIds = new ArrayList<>();
+                        }
+                        if (!productIds.contains(productId)) {
+                            productIds.add(productId);
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("Productid", productIds);
+                            db.collection("Wishlist").document(wishlistId)
+                                    .update(updates)
+                                    .addOnSuccessListener(aVoid -> {
+                                        // Cập nhật thành công
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(holder.itemView.getContext(), "Failed to add to wishlist", Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            Toast.makeText(holder.itemView.getContext(), "Product already in wishlist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(holder.itemView.getContext(), "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
+                });
     }
 
     @Override
@@ -64,6 +166,7 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         ShapeableImageView imgProduct;
         TextView txtProductName, txtPrice, txtRating;
         ImageView imgFavorite;
+        LinearLayout ratingLayout;
 
         public SubCategoryProductViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,7 +175,7 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtRating = itemView.findViewById(R.id.txtRating);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
+            ratingLayout = itemView.findViewById(R.id.ratingLayout);
         }
-
     }
 }
