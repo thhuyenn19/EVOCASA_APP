@@ -1,17 +1,13 @@
 package com.mobile.evocasa.profile;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,190 +16,159 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.mobile.evocasa.HomeFragment;
+import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.R;
-import com.mobile.utils.FontUtils;
+import com.mobile.models.Customer;
+import com.mobile.utils.UserSessionManager;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditPersonalFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditPersonalFragment extends Fragment {
 
-    private View view;
-
+    private EditText edtName, edtEmail, edtPhone, edtBirthday, edtLocation;
+    private AutoCompleteTextView genderDropdown;
     private ImageView imgProfileDetailsBack;
-
-    private Button btnProfileDetailsBack;
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public EditPersonalFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditPersonalFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditPersonalFragment newInstance(String param1, String param2) {
-        EditPersonalFragment fragment = new EditPersonalFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private Customer customer;
+    private View view;
+    private UserSessionManager sessionManager;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @SuppressLint("WrongViewCast")
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_edit_personal, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_edit_personal, container, false);
-
-        //set font
-        TextView txtTitle = view.findViewById(R.id.txtTitle);
-        FontUtils.setZboldFont(requireContext(), txtTitle);
-
-//        // Gán sự kiện quay lại ProfilDetailsFragment
-//        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
-//        imgProfileDetailsBack.setOnClickListener(v -> {
-//            requireActivity()
-//                    .getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.fragment_container, new ProfileDetailFragment())
-//                    .addToBackStack(null)
-//                    .commit();
-//        });
-
-        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
-        imgProfileDetailsBack.setOnClickListener(v -> {
-            // Tạo và hiển thị custom dialog
-            Dialog dialog = new Dialog(requireContext());
-            dialog.setContentView(R.layout.custom_exit_dialog);
-            dialog.setCancelable(true); // Hoặc false nếu bạn không muốn người dùng bấm ra ngoài để đóng
-
-            // Ánh xạ các nút trong custom_exit_dialog (ví dụ: Confirm và Cancel)
-            Button btnExit = dialog.findViewById(R.id.btn_exit);
-            Button btnSave = dialog.findViewById(R.id.btn_save);
-            ImageView btnExitIcon = dialog.findViewById(R.id.btn_close_icon);
-
-            btnExit.setOnClickListener(confirmView -> {
-                // Xử lý khi người dùng chọn xác nhận (ví dụ: thoát Fragment, hoặc thoát Activity)
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new ProfileDetailFragment())
-                        .addToBackStack(null)
-                        .commit();
-
-                dialog.dismiss();
-            });
-
-            btnExitIcon.setOnClickListener(view -> {
-                dialog.dismiss(); // chỉ đóng dialog
-            });
-
-
-            btnSave.setOnClickListener(cancelView -> {
-                // Đóng dialog nếu người dùng huỷ
-                dialog.dismiss();
-            });
-
-            dialog.show();
-
-            // Cài đặt lại kích thước và nền trong suốt cho dialog
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        });
-
-
         return view;
     }
 
-    //Set up cho Male/Female & Birthday
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Gender dropdown setup
-        AutoCompleteTextView genderDropdown = view.findViewById(R.id.autoGender);
+        sessionManager = new UserSessionManager(requireContext());
+
+        edtName = view.findViewById(R.id.edtName);
+        edtEmail = view.findViewById(R.id.edtEmail);
+        edtPhone = view.findViewById(R.id.edtPhone);
+        edtBirthday = view.findViewById(R.id.edtBirthday);
+        edtLocation = view.findViewById(R.id.edtLocation);
+        genderDropdown = view.findViewById(R.id.autoGender);
+        Button btnSave = view.findViewById(R.id.btnSave);
+
+        // Nhận dữ liệu Customer từ arguments
+        customer = (Customer) getArguments().getSerializable("customer");
+        if (customer != null) {
+            edtName.setText(customer.getName());
+            edtEmail.setText(customer.getMail());
+            edtPhone.setText(customer.getPhone());
+            edtBirthday.setText(customer.getDOBString());
+            genderDropdown.setText(customer.getGender(), false);
+            edtLocation.setText(customer.getAddress());
+        }
+
+        // Dropdown giới tính
         String[] genderOptions = {"Male", "Female"};
-
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(
-                requireContext(),
-                R.layout.item_dropdown_gender,
-                genderOptions
-        );
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<>(requireContext(), R.layout.item_dropdown_gender, genderOptions);
         genderDropdown.setAdapter(genderAdapter);
-
-
-
-        // Show dropdown when clicking the field
         genderDropdown.setOnClickListener(v -> genderDropdown.showDropDown());
 
-
-        // Birthday DatePicker setup
-        EditText edtBirthday = view.findViewById(R.id.edtBirthday);
+        // DatePicker cho ngày sinh
         edtBirthday.setOnClickListener(v -> {
             Calendar c = Calendar.getInstance();
             new DatePickerDialog(
                     requireContext(),
-                    R.style.DatePickerDialogTheme,  // 👈 Thêm dòng này để áp theme bo góc
+                    R.style.DatePickerDialogTheme,
                     (datePicker, year, month, day) -> {
                         String selected = String.format(Locale.getDefault(), "%02d/%02d/%04d", day, month + 1, year);
                         edtBirthday.setText(selected);
                     },
                     c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)
             ).show();
-
         });
 
-
-
-
-
-        //Address
-        EditText edtLocation = view.findViewById(R.id.edtLocation);
+        // Mở fragment chọn địa chỉ nếu cần
         edtLocation.setOnClickListener(v -> {
-            // Chuyển sang EditAddressFragment
-            requireActivity()
-                    .getSupportFragmentManager()
+            Bundle bundle = new Bundle();
+            bundle.putString("currentAddress", edtLocation.getText().toString());
+
+            EditAddressFragment fragment = new EditAddressFragment();
+            fragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new EditAddressFragment())
+                    .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
         });
 
+        // Sự kiện nút Save
+        btnSave.setOnClickListener(v -> saveUpdatedInfo());
+        imgProfileDetailsBack = view.findViewById(R.id.imgProfileDetailsBack);
+        imgProfileDetailsBack.setOnClickListener(v -> {
+            Dialog dialog = new Dialog(requireContext());
+            dialog.setContentView(R.layout.custom_exit_dialog);
+            dialog.setCancelable(true);
+
+            Button btnExit = dialog.findViewById(R.id.btn_exit);
+            Button btnSaveInDialog = dialog.findViewById(R.id.btn_save); // đổi tên tránh trùng với btnSave ở trên
+            ImageView btnExitIcon = dialog.findViewById(R.id.btn_close_icon);
+
+            // Nhấn EXIT: quay lại mà không cập nhật
+            btnExit.setOnClickListener(confirmView -> {
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileDetailFragment())
+                        .addToBackStack(null)
+                        .commit();
+                dialog.dismiss();
+            });
+
+            // Nhấn SAVE: cập nhật rồi quay lại
+            btnSaveInDialog.setOnClickListener(saveView -> {
+                saveUpdatedInfo(); // sẽ tự popBackStack sau khi cập nhật
+                dialog.dismiss();
+            });
+
+            // Nhấn icon X: chỉ đóng dialog
+            btnExitIcon.setOnClickListener(xView -> {
+                dialog.dismiss();
+            });
+
+            dialog.show();
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        });
+    }
+
+    private void saveUpdatedInfo() {
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            return;
+        }
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("Name", edtName.getText().toString().trim());
+        updates.put("Mail", edtEmail.getText().toString().trim());
+        updates.put("Phone", edtPhone.getText().toString().trim());
+        updates.put("Gender", genderDropdown.getText().toString().trim());
+        updates.put("Address", edtLocation.getText().toString().trim());
+        updates.put("DOB", edtBirthday.getText().toString().trim());
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .update(updates)
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(getContext(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(getContext(), "Failed to update profile", Toast.LENGTH_SHORT).show();
+                });
     }
 }
+

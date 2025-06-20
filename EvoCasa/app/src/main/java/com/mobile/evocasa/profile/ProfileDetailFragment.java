@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,9 +29,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -47,139 +43,67 @@ import com.mobile.models.ShippingAddress;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.TimeZone;
-
 
 public class ProfileDetailFragment extends Fragment {
     private static final int REQUEST_CODE_PICK_IMAGE = 1001;
-    private Uri selectedImageUri;
+
     private View view;
-    private TextView txtName, txtLogOut, txtCartBadge;
-    private ImageView imgAvatar, imgCart;
-    ImageButton btnEditAvatar;
+    private TextView txtName, txtCartBadge;
+    private ImageView imgAvatar, imgCart, iconEditName;
+    private LinearLayout layoutEditProfile, name_with_icon;
+    private ImageButton btnEditAvatar;
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
-
     private ProfileInfoAdapter adapter;
+    private ShippingAddressAdapter shippingAdapter;
+    private Uri selectedImageUri;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        sessionManager = new UserSessionManager(requireContext());
         view = inflater.inflate(R.layout.fragment_profile_detail, container, false);
+
+        initializeViews();
+        setupRecyclerViews();
+        setupClickListeners();
         applyCustomFonts(view);
+
+        loadCustomerInformation();
+
+        return view;
+    }
+
+    private void initializeViews() {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         txtName = view.findViewById(R.id.txtName);
-        sessionManager = new UserSessionManager(requireContext());
-
-        loadCustomerInformation();
-        return view;
+        layoutEditProfile = view.findViewById(R.id.layoutEditProfile);
+        name_with_icon = view.findViewById(R.id.name_with_icon);
     }
 
-    private void loadCustomerInformation() {
-        if (!isAdded() || getContext() == null) return;
-
-        String uid = sessionManager.getUid();
-
-        if (uid != null) {
-            FirebaseFirestore.getInstance()
-                    .collection("Customers")
-                    .document(uid)
-                    .get()
-                    .addOnSuccessListener(documentSnapshot -> {
-                        if (!isAdded() || getContext() == null) return;
-
-                        if (documentSnapshot.exists()) {
-                            // Gán tên người dùng
-                            String name = documentSnapshot.getString("Name");
-                            if (txtName != null) {
-                                if (name != null && !name.isEmpty()) {
-                                    txtName.setText(name);
-                                } else {
-                                    txtName.setText("No Name");
-                                }
-                            }
-
-                            // Gán ảnh avatar
-                            String avatarUrl = documentSnapshot.getString("Image");
-                            if (imgAvatar != null && avatarUrl != null && !avatarUrl.isEmpty()) {
-                                Glide.with(requireContext())
-                                        .load(avatarUrl)
-                                        .placeholder(R.mipmap.sample_avt)
-                                        .circleCrop()
-                                        .into(imgAvatar);
-                            }
-
-                        } else {
-                            if (txtName != null) txtName.setText("No Profile Found");
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        if (!isAdded() || getContext() == null) return;
-                        if (txtName != null) txtName.setText("Error");
-                    });
-        } else {
-            if (txtName != null) {
-                txtName.setText("Not logged in");
-            }
-        }
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    private void setupRecyclerViews() {
+        // Profile Info RecyclerView
         RecyclerView rvProfileInfo = view.findViewById(R.id.rv_profile_info);
         rvProfileInfo.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<ProfileInfo> data = new ArrayList<>();
-        ProfileInfoAdapter adapter = new ProfileInfoAdapter(data);
+        List<ProfileInfo> profileData = new ArrayList<>();
+        adapter = new ProfileInfoAdapter(profileData);
         rvProfileInfo.setAdapter(adapter);
 
-        loadCustomerData();
-        
+        // Shipping Address RecyclerView
         RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
         rvShipping.setLayoutManager(new LinearLayoutManager(getContext()));
 
-// Danh sách giả định
-        List<ShippingAddress> addresses = new ArrayList<>();
-        addresses.add(new ShippingAddress(
-                "John Anthony", "(+84) 123 456 789",
-                "669 Do Muoi, Linh Xuan, Thu Duc, HCMC, Vietnam", true));
-        addresses.add(new ShippingAddress(
-                "Jessica Nguyen", "(+84) 456 789 123",
-                "Thuan Giao, Thuan An, Binh Duong, Vietnam", false));
+        // Load shipping addresses from Firebase
+        loadShippingAddresses();
+    }
 
-//        ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses);
-//        rvShipping.setAdapter(shipadapter);
-
-        ShippingAddressAdapter shipadapter = new ShippingAddressAdapter(addresses, address -> {
-            // Mở EditShippingFragment và truyền dữ liệu qua Bundle
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("shippingAddress", address);
-
-            EditShippingFragment fragment = new EditShippingFragment();
-            fragment.setArguments(bundle);
-
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
-        });
-        rvShipping.setAdapter(shipadapter);
-
-
+    private void setupClickListeners() {
+        // Back button
         LinearLayout btnBack = view.findViewById(R.id.btnBack);
         btnBack.setOnClickListener(v -> {
             requireActivity()
@@ -190,84 +114,78 @@ public class ProfileDetailFragment extends Fragment {
                     .commit();
         });
 
-
-        //Mở edit infor
-        TextView txtEdit = view.findViewById(R.id.txtEdit);
-        txtEdit.setOnClickListener(v -> {
-            // Chuyển sang EditPersonalFragment
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
-                    .addToBackStack(null) // Cho phép quay lại bằng nút back
-                    .commit();
-        });
-
-        ImageView imgEditProfile = view.findViewById(R.id.imgEditProfile);
-        imgEditProfile.setOnClickListener(v -> {
-            // Chuyển sang EditPersonalFragment
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
-                    .addToBackStack(null) // Cho phép quay lại bằng nút back
-                    .commit();
-        });
+        // Edit profile buttons
 
         ImageView iconEditName = view.findViewById(R.id.iconEditName);
-        iconEditName.setOnClickListener(v -> {
-            // Chuyển sang EditPersonalFragment
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new EditPersonalFragment()) // ID của container chứa fragment
-                    .addToBackStack(null) // Cho phép quay lại bằng nút back
-                    .commit();
-        });
 
-
-
-        //Mở popup đổi avatar
-        ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+        // Avatar edit buttons
         btnEditAvatar.setOnClickListener(v -> showBottomSheetDialog());
-
-        ImageView btnEditAvatarImage = view.findViewById(R.id.img_avatar);
-        btnEditAvatarImage.setOnClickListener(v -> showBottomSheetDialog());
-
-
-
+        imgAvatar.setOnClickListener(v -> showBottomSheetDialog());
     }
 
-    private void loadCustomerData() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = currentUser.getUid();
+    private void openEditPersonalFragment(Customer customer) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("customer", customer);
+
+        EditPersonalFragment fragment = new EditPersonalFragment();
+        fragment.setArguments(bundle);
+
+        requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
+    private void loadCustomerInformation() {
+        if (!isAdded() || getContext() == null) return;
+
+        String userId = sessionManager.getUid();
+        if (userId == null || userId.isEmpty()) {
+            Log.d(TAG, "User not logged in");
+            initializeEmptyProfile();
+            return;
+        }
+
         DocumentReference documentReference = FirebaseFirestore.getInstance()
                 .collection("Customers")
                 .document(userId);
 
         documentReference.get().addOnSuccessListener(documentSnapshot -> {
+            if (!isAdded() || getContext() == null) return;
+
             if (documentSnapshot.exists()) {
                 try {
-                    // Use toObject() - this will now work with the updated Customer class
                     Customer customer = documentSnapshot.toObject(Customer.class);
                     if (customer != null) {
                         updateProfileInfo(customer);
+                        updateUserName(customer);
+                        updateAvatar(customer);
+                        layoutEditProfile.setOnClickListener(v -> {
+                            if (customer != null) openEditPersonalFragment(customer);
+                        });
+                        name_with_icon.setOnClickListener(v -> {
+                            if (customer != null) openEditPersonalFragment(customer);
+                        });
+                    } else {
+                        handleManualExtraction(documentSnapshot);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Error converting document to Customer object", e);
-                    // Fallback to manual extraction if needed
                     handleManualExtraction(documentSnapshot);
                 }
             } else {
                 Log.d(TAG, "No customer document found");
+                initializeEmptyProfile();
             }
         }).addOnFailureListener(e -> {
+            if (!isAdded() || getContext() == null) return;
             Log.e(TAG, "Error loading customer data", e);
+            initializeEmptyProfile();
         });
     }
 
     private void handleManualExtraction(com.google.firebase.firestore.DocumentSnapshot documentSnapshot) {
-        // Fallback method if toObject() still fails
         Customer customer = new Customer();
         customer.setName(documentSnapshot.getString("Name"));
         customer.setGender(documentSnapshot.getString("Gender"));
@@ -275,39 +193,153 @@ public class ProfileDetailFragment extends Fragment {
         customer.setPhone(documentSnapshot.getString("Phone"));
         customer.setAddress(documentSnapshot.getString("Address"));
         customer.setImage(documentSnapshot.getString("Image"));
-        customer.setDOB(documentSnapshot.get("DOB")); // This handles the map automatically
+        customer.setDOB(documentSnapshot.get("DOB"));
 
         updateProfileInfo(customer);
+        updateUserName(customer);
+        updateAvatar(customer);
     }
 
     private void updateProfileInfo(Customer customer) {
         List<ProfileInfo> profileInfoList = new ArrayList<>();
 
-        // Add profile information
-
-
-        if (customer.getMail() != null && !customer.getMail().isEmpty()) {
+        // Email - chỉ thêm nếu không null và không rỗng
+        if (customer.getMail() != null && !customer.getMail().trim().isEmpty()) {
             profileInfoList.add(new ProfileInfo("Email", customer.getMail(), R.drawable.ic_email));
         }
 
-        if (customer.getPhone() != null && !customer.getPhone().isEmpty()) {
+        // Phone - chỉ thêm nếu không null và không rỗng
+        if (customer.getPhone() != null && !customer.getPhone().trim().isEmpty()) {
             profileInfoList.add(new ProfileInfo("Phone", customer.getPhone(), R.drawable.ic_phone));
         }
 
-        // Use the new getDOBString() method
+        // Date of Birth - sử dụng method getDOBString() để xử lý
         String dobString = customer.getDOBString();
-        if (!dobString.isEmpty()) {
+        if (dobString != null && !dobString.trim().isEmpty()) {
             profileInfoList.add(new ProfileInfo("Date of Birth", dobString, R.drawable.ic_calendar));
         }
 
-        if (customer.getAddress() != null && !customer.getAddress().isEmpty()) {
+        // Address - chỉ thêm nếu không null và không rỗng
+        if (customer.getAddress() != null && !customer.getAddress().trim().isEmpty()) {
             profileInfoList.add(new ProfileInfo("Location", customer.getAddress(), R.drawable.ic_location));
         }
 
         // Update adapter
-        adapter.setData(profileInfoList);
+        if (adapter != null) {
+            adapter.setData(profileInfoList);
+        }
     }
 
+    private void updateUserName(Customer customer) {
+        if (txtName != null) {
+            if (customer.getName() != null && !customer.getName().trim().isEmpty()) {
+                txtName.setText(customer.getName());
+            } else {
+                txtName.setText(""); // Để trống nếu null
+            }
+        }
+    }
+
+    private void updateAvatar(Customer customer) {
+        if (imgAvatar != null && getContext() != null) {
+            if (customer.getImage() != null && !customer.getImage().trim().isEmpty()) {
+                Glide.with(requireContext())
+                        .load(customer.getImage())
+                        .placeholder(R.mipmap.sample_avt)
+                        .error(R.mipmap.sample_avt)
+                        .circleCrop()
+                        .into(imgAvatar);
+            } else {
+                // Sử dụng avatar mặc định nếu không có ảnh
+                imgAvatar.setImageResource(R.mipmap.sample_avt);
+            }
+        }
+    }
+
+    private void initializeEmptyProfile() {
+        if (adapter != null) {
+            adapter.setData(new ArrayList<>());
+        }
+        if (txtName != null) {
+            txtName.setText("");
+        }
+        if (imgAvatar != null) {
+            imgAvatar.setImageResource(R.mipmap.sample_avt);
+        }
+    }
+
+    private void loadShippingAddresses() {
+        String uid = sessionManager.getUid();
+        if (uid == null) {
+            Log.e("Shipping", "User ID is null");
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (!documentSnapshot.exists()) {
+                        Log.d("Shipping", "Customer document not found");
+                        return;
+                    }
+
+                    List<Map<String, Object>> rawList = (List<Map<String, Object>>) documentSnapshot.get("ShippingAddresses");
+                    if (rawList == null || rawList.isEmpty()) {
+                        Log.d("Shipping", "No shipping addresses found");
+                        return;
+                    }
+
+                    List<ShippingAddress> shippingAddresses = new ArrayList<>();
+                    for (Map<String, Object> item : rawList) {
+                        String name = item.get("Name") != null ? item.get("Name").toString() : "";
+                        String phone = item.get("Phone") != null ? item.get("Phone").toString() : "";
+                        String address = item.get("Address") != null ? item.get("Address").toString() : "";
+                        boolean isDefault = item.get("IsDefault") != null && (Boolean) item.get("IsDefault");
+
+                        shippingAddresses.add(new ShippingAddress(name, phone, address, isDefault));
+                    }
+
+                    RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
+                    ShippingAddressAdapter adapter = new ShippingAddressAdapter(shippingAddresses, address -> {
+                        // Xử lý click: mở EditShippingFragment
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("shippingAddress", address);
+
+                        EditShippingFragment fragment = new EditShippingFragment();
+                        fragment.setArguments(bundle);
+
+                        requireActivity()
+                                .getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .addToBackStack(null)
+                                .commit();
+                    });
+
+                    rvShipping.setAdapter(adapter);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Shipping", "Failed to load shipping addresses", e);
+                });
+    }
+
+
+    private void openEditShippingFragment(ShippingAddress address) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("shippingAddress", address);
+
+        EditShippingFragment fragment = new EditShippingFragment();
+        fragment.setArguments(bundle);
+
+        requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
+                .commit();
+    }
 
     private void showBottomSheetDialog() {
         View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.bottom_sheet_image_options, null);
@@ -346,11 +378,10 @@ public class ProfileDetailFragment extends Fragment {
         imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-        // Gán ảnh từ avatar hiện tại
         if (imgAvatar != null && imgAvatar.getDrawable() != null) {
             imageView.setImageDrawable(imgAvatar.getDrawable());
         } else {
-            imageView.setImageResource(R.mipmap.sample_avt); // fallback
+            imageView.setImageResource(R.mipmap.sample_avt);
         }
 
         builder.setView(imageView);
@@ -360,13 +391,12 @@ public class ProfileDetailFragment extends Fragment {
         dialog.setOnShowListener(dlg -> {
             Button closeButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
             if (closeButton != null) {
-                closeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_5E4C3E)); // màu nâu
+                closeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_5E4C3E));
             }
         });
 
         dialog.show();
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -385,25 +415,21 @@ public class ProfileDetailFragment extends Fragment {
         if (uid == null) return;
 
         String fileName = "avatars/" + uid + "_" + System.currentTimeMillis() + ".jpg";
-
         StorageReference storageRef = FirebaseStorage.getInstance().getReference().child(fileName);
 
         storageRef.putFile(imageUri)
                 .addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl()
                         .addOnSuccessListener(uri -> {
-                            if (!isAdded() || getContext() == null) return; // Additional safety check
+                            if (!isAdded() || getContext() == null) return;
 
                             String downloadUrl = uri.toString();
-
-                            // Update Firestore with the new image URL
                             FirebaseFirestore.getInstance()
                                     .collection("Customers")
                                     .document(uid)
                                     .update("Image", downloadUrl)
                                     .addOnSuccessListener(unused -> {
-                                        if (!isAdded() || getContext() == null) return; // Safety check
+                                        if (!isAdded() || getContext() == null) return;
 
-                                        // Update the UI with the new image
                                         Glide.with(requireContext())
                                                 .load(downloadUrl)
                                                 .placeholder(R.mipmap.sample_avt)
@@ -413,18 +439,13 @@ public class ProfileDetailFragment extends Fragment {
                                         Toast.makeText(getContext(), "Avatar updated successfully!", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
-                                        if (!isAdded() || getContext() == null) return; // Safety check
-                                        Toast.makeText(getContext(), "Failed to update Firestore.", Toast.LENGTH_SHORT).show();
+                                        if (!isAdded() || getContext() == null) return;
+                                        Toast.makeText(getContext(), "Failed to update avatar.", Toast.LENGTH_SHORT).show();
                                         Log.e("ProfileDetail", "Failed to update Firestore", e);
                                     });
-                        })
-                        .addOnFailureListener(e -> {
-                            if (!isAdded() || getContext() == null) return; // Safety check
-                            Toast.makeText(getContext(), "Failed to get download URL.", Toast.LENGTH_SHORT).show();
-                            Log.e("ProfileDetail", "Failed to get download URL", e);
                         }))
                 .addOnFailureListener(e -> {
-                    if (!isAdded() || getContext() == null) return; // Safety check
+                    if (!isAdded() || getContext() == null) return;
                     Toast.makeText(getContext(), "Failed to upload image.", Toast.LENGTH_SHORT).show();
                     Log.e("ProfileDetail", "Failed to upload image", e);
                 });
@@ -437,7 +458,7 @@ public class ProfileDetailFragment extends Fragment {
         }
         TextView txtPersonalInformation = view.findViewById(R.id.txtPersonalInformation);
         TextView txtShippingAddress = view.findViewById(R.id.txtShippingAddress);
-        TextView txtEdit= view.findViewById(R.id.txtEdit);
+        TextView txtEdit = view.findViewById(R.id.txtEdit);
         if (txtPersonalInformation != null) {
             FontUtils.setZblackFont(getContext(), txtPersonalInformation);
         }
@@ -449,13 +470,9 @@ public class ProfileDetailFragment extends Fragment {
         }
     }
 
-    // CartBadge
-    /**
-     * Start listening for cart changes and update badge
-     */
+    // Cart Badge Management
     private void startCartBadgeListener() {
         String uid = sessionManager.getUid();
-
         if (uid == null || uid.isEmpty()) {
             Log.d("CartBadge", "User not logged in, hiding badge");
             if (txtCartBadge != null) {
@@ -464,7 +481,6 @@ public class ProfileDetailFragment extends Fragment {
             return;
         }
 
-        // Remove existing listener before creating new one
         if (cartListener != null) {
             cartListener.remove();
             cartListener = null;
@@ -474,7 +490,6 @@ public class ProfileDetailFragment extends Fragment {
                 .collection("Customers")
                 .document(uid)
                 .addSnapshotListener((documentSnapshot, e) -> {
-                    // CRITICAL: Check if fragment is still attached AND context is not null
                     if (!isAdded() || getContext() == null || getActivity() == null) {
                         Log.d("CartBadge", "Fragment not attached, ignoring listener callback");
                         return;
@@ -482,7 +497,6 @@ public class ProfileDetailFragment extends Fragment {
 
                     if (e != null) {
                         Log.w("CartBadge", "Listen failed.", e);
-                        // Safe update with lifecycle check
                         safeUpdateCartBadge(0);
                         return;
                     }
@@ -509,22 +523,13 @@ public class ProfileDetailFragment extends Fragment {
     }
 
     private void safeUpdateCartBadge(int totalQuantity) {
-        // First check: Fragment lifecycle
-        if (!isAdded() || getContext() == null || getActivity() == null) {
+        if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
             Log.w("CartBadge", "Fragment not attached, cannot update badge");
             return;
         }
 
-        // Second check: View availability
-        if (txtCartBadge == null) {
-            Log.w("CartBadge", "Cart badge view is null, cannot update");
-            return;
-        }
-
-        // Use Handler with additional safety check
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            // Triple check: Ensure fragment is still attached when handler executes
             if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
                 Log.w("CartBadge", "Fragment detached during handler execution, skip update");
                 return;
@@ -546,40 +551,6 @@ public class ProfileDetailFragment extends Fragment {
         });
     }
 
-
-    /**
-     * Update cart badge display
-     */
-    private void updateCartBadge(int totalQuantity) {
-        // Add comprehensive lifecycle checks
-        if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
-            Log.w("CartBadge", "Fragment not attached or views null, skip update");
-            return;
-        }
-
-        // Post to main thread with additional safety check
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
-            // Double-check lifecycle state in the posted runnable
-            if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
-                Log.w("CartBadge", "Fragment detached during handler post, skip update");
-                return;
-            }
-
-            if (totalQuantity > 0) {
-                txtCartBadge.setVisibility(View.VISIBLE);
-                String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
-                txtCartBadge.setText(displayText);
-                Log.d("CartBadge", "Badge updated: " + displayText);
-            } else {
-                txtCartBadge.setVisibility(View.GONE);
-                Log.d("CartBadge", "Badge hidden (quantity = 0)");
-            }
-        });
-    }
-
-    /**
-     * Public method for fragments to refresh cart badge
-     */
     public void refreshCartBadge() {
         if (!isAdded() || getContext() == null || getActivity() == null) {
             Log.d("CartBadge", "Cannot refresh badge - fragment not properly attached");
@@ -600,7 +571,6 @@ public class ProfileDetailFragment extends Fragment {
                 .document(uid)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    // Check if fragment is still attached when callback returns
                     if (!isAdded() || getContext() == null || getActivity() == null) {
                         Log.d("CartBadge", "Fragment detached during refresh, ignoring result");
                         return;
@@ -643,17 +613,10 @@ public class ProfileDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("CartBadge", "Fragment onResume()");
-        // Only start listener if we don't already have one and fragment is properly attached
         if (cartListener == null && isAdded() && getContext() != null &&
                 sessionManager != null && txtCartBadge != null) {
             startCartBadgeListener();
         }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("CartBadge", "Fragment onPause()");
     }
 
     @Override
@@ -668,7 +631,7 @@ public class ProfileDetailFragment extends Fragment {
         super.onDestroyView();
         Log.d("CartBadge", "Fragment onDestroyView()");
         cleanupCartListener();
-        txtCartBadge = null; // Clear view reference
+        txtCartBadge = null;
     }
 
     @Override

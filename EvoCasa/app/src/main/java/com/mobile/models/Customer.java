@@ -1,6 +1,8 @@
 package com.mobile.models;
 
 import com.google.firebase.firestore.Exclude;
+
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class Customer {
+public class Customer implements Serializable {
     private String Name;
     private String Gender;
     private String Mail;
