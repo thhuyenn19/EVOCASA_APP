@@ -168,7 +168,7 @@
                         android:elevation="10dp"
                         android:text="Furniture"
                         android:textColor="#5E4C3E"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:visibility="invisible" />
                 </FrameLayout>

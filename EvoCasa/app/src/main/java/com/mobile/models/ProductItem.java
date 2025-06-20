@@ -1,11 +1,13 @@
 package com.mobile.models;
 
+import java.util.List;
+
 public class ProductItem {
     private String id;
     private String name;
     private double price;
     private String image; // JSON array as string
-    private double rating = 0.0; // Default rating
+    private Ratings ratings = new Ratings(); // Default ratings
 
     public ProductItem() {}
 
@@ -17,6 +19,35 @@ public class ProductItem {
     public void setPrice(double price) { this.price = price; }
     public String getImage() { return image; }
     public void setImage(String image) { this.image = image; }
-    public double getRating() { return rating; }
-    public void setRating(double rating) { this.rating = rating; }
+    public Ratings getRatings() { return ratings; }
+    public void setRatings(Ratings ratings) { this.ratings = ratings; }
+
+    public static class Ratings {
+        private Double average;
+        private List<Detail> details;
+
+        public Double getAverage() { return average; }
+        public void setAverage(Double average) { this.average = average; }
+        public List<Detail> getDetails() { return details; }
+        public void setDetails(List<Detail> details) { this.details = details; }
+
+        public static class Detail {
+            private String reviewId;
+            private int rating;
+            private String comment;
+            private String customerName;
+            private String createdAt;
+
+            public String getReviewId() { return reviewId; }
+            public void setReviewId(String reviewId) { this.reviewId = reviewId; }
+            public int getRating() { return rating; }
+            public void setRating(int rating) { this.rating = rating; }
+            public String getComment() { return comment; }
+            public void setComment(String comment) { this.comment = comment; }
+            public String getCustomerName() { return customerName; }
+            public void setCustomerName(String customerName) { this.customerName = customerName; }
+            public String getCreatedAt() { return createdAt; }
+            public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
+        }
+    }
 }

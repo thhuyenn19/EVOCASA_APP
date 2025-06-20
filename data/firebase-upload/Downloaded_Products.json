@@ -19,8 +19,7 @@
     "Price": 8500,
     "_id": {
       "$oid": "67c099e8ac22517ab6403a78"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a04a46527d4bf49e483c",
@@ -75,18 +74,6 @@
     "Price": 9450,
     "_id": {
       "$oid": "67c0a04a46527d4bf49e483c"
-    },
-    "Ratings": {
-      "Average": 4.0,
-      "Details": [
-        {
-          "ReviewId": "68347fbe7ed50b99aa537af6",
-          "Rating": 4,
-          "Comment": "Comfortable and aesthetically pleasing.",
-          "CustomerName": "Võ Thị F",
-          "CreatedAt": "2025-04-27"
-        }
-      ]
     }
   },
   {
@@ -109,18 +96,6 @@
     "Price": 14750,
     "_id": {
       "$oid": "67c0a14646527d4bf49e483d"
-    },
-    "Ratings": {
-      "Average": 5.0,
-      "Details": [
-        {
-          "ReviewId": "683481b77ed50b99aa537af7",
-          "Rating": 5,
-          "Comment": "Customer service was helpful and responsive.",
-          "CustomerName": "Hoàng Văn E",
-          "CreatedAt": "2025-03-12"
-        }
-      ]
     }
   },
   {
@@ -143,18 +118,6 @@
     "Price": 6000,
     "_id": {
       "$oid": "67c0a32346527d4bf49e483e"
-    },
-    "Ratings": {
-      "Average": 5.0,
-      "Details": [
-        {
-          "ReviewId": "683481bc7ed50b99aa537af8",
-          "Rating": 5,
-          "Comment": "A bit pricey but worth it for the quality.",
-          "CustomerName": "Lý Văn I",
-          "CreatedAt": "2025-01-02"
-        }
-      ]
     }
   },
   {
@@ -177,18 +140,6 @@
     "Price": 16500,
     "_id": {
       "$oid": "67c0a3a946527d4bf49e4840"
-    },
-    "Ratings": {
-      "Average": 4.0,
-      "Details": [
-        {
-          "ReviewId": "683482647ed50b99aa537af9",
-          "Rating": 4,
-          "Comment": "A beautiful addition to my home decor.",
-          "CustomerName": "Nguyễn Văn A",
-          "CreatedAt": "2025-04-05"
-        }
-      ]
     }
   },
   {
@@ -211,8 +162,7 @@
     "Price": 8500,
     "_id": {
       "$oid": "67c0a40d46527d4bf49e4841"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a47346527d4bf49e4842",
@@ -234,8 +184,7 @@
     "Price": 1700,
     "_id": {
       "$oid": "67c0a47346527d4bf49e4842"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a4b946527d4bf49e4843",
@@ -257,8 +206,7 @@
     "Price": 17500,
     "_id": {
       "$oid": "67c0a4b946527d4bf49e4843"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a53446527d4bf49e4844",
@@ -298,8 +246,7 @@
     "Price": 2075,
     "_id": {
       "$oid": "67c0a53446527d4bf49e4844"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a59446527d4bf49e4845",
@@ -321,8 +268,7 @@
     "Price": 1350,
     "_id": {
       "$oid": "67c0a59446527d4bf49e4845"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a5e246527d4bf49e4846",
@@ -344,8 +290,7 @@
     "Price": 5800,
     "_id": {
       "$oid": "67c0a5e246527d4bf49e4846"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a62f46527d4bf49e4847",
@@ -367,18 +312,6 @@
     "Price": 2450,
     "_id": {
       "$oid": "67c0a62f46527d4bf49e4847"
-    },
-    "Ratings": {
-      "Average": 5.0,
-      "Details": [
-        {
-          "ReviewId": "683482947ed50b99aa537afa",
-          "Rating": 5,
-          "Comment": "Exceeded my expectations. Highly recommended!",
-          "CustomerName": "Nguyễn Văn A",
-          "CreatedAt": "2025-04-20"
-        }
-      ]
     }
   },
   {
@@ -401,8 +334,7 @@
     "Price": 1250,
     "_id": {
       "$oid": "67c0a68146527d4bf49e4848"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a6c946527d4bf49e4849",
@@ -424,8 +356,7 @@
     "Price": 7000,
     "_id": {
       "$oid": "67c0a6c946527d4bf49e4849"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a8d046527d4bf49e484a",
@@ -447,8 +378,7 @@
     "Price": 6350,
     "_id": {
       "$oid": "67c0a8d046527d4bf49e484a"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a94246527d4bf49e484b",
@@ -470,8 +400,7 @@
     "Price": 14500,
     "_id": {
       "$oid": "67c0a94246527d4bf49e484b"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0a99746527d4bf49e484c",
@@ -493,8 +422,7 @@
     "Price": 5400,
     "_id": {
       "$oid": "67c0a99746527d4bf49e484c"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0aa2146527d4bf49e484d",
@@ -516,8 +444,7 @@
     "Price": 650,
     "_id": {
       "$oid": "67c0aa2146527d4bf49e484d"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ab3746527d4bf49e484e",
@@ -539,8 +466,7 @@
     "Price": 9200,
     "_id": {
       "$oid": "67c0ab3746527d4bf49e484e"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ab7446527d4bf49e484f",
@@ -562,8 +488,7 @@
     "Price": 1250,
     "_id": {
       "$oid": "67c0ab7446527d4bf49e484f"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0abb046527d4bf49e4850",
@@ -585,8 +510,7 @@
     "Price": 2400,
     "_id": {
       "$oid": "67c0abb046527d4bf49e4850"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0abe646527d4bf49e4851",
@@ -608,8 +532,7 @@
     "Price": 6450,
     "_id": {
       "$oid": "67c0abe646527d4bf49e4851"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ac1f46527d4bf49e4852",
@@ -631,8 +554,7 @@
     "Price": 8500,
     "_id": {
       "$oid": "67c0ac1f46527d4bf49e4852"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ac5846527d4bf49e4853",
@@ -654,8 +576,7 @@
     "Price": 4500,
     "_id": {
       "$oid": "67c0ac5846527d4bf49e4853"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ac9a46527d4bf49e4854",
@@ -677,8 +598,7 @@
     "Price": 2100,
     "_id": {
       "$oid": "67c0ac9a46527d4bf49e4854"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ace146527d4bf49e4855",
@@ -700,8 +620,7 @@
     "Price": 1195,
     "_id": {
       "$oid": "67c0ace146527d4bf49e4855"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ad1b46527d4bf49e4856",
@@ -723,8 +642,7 @@
     "Price": 3982,
     "_id": {
       "$oid": "67c0ad1b46527d4bf49e4856"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ad5046527d4bf49e4857",
@@ -746,8 +664,7 @@
     "Price": 1650,
     "_id": {
       "$oid": "67c0ad5046527d4bf49e4857"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0add446527d4bf49e4858",
@@ -782,8 +699,7 @@
     "Price": 6500,
     "_id": {
       "$oid": "67c0add446527d4bf49e4858"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ae0646527d4bf49e4859",
@@ -805,8 +721,7 @@
     "Price": 8950,
     "_id": {
       "$oid": "67c0ae0646527d4bf49e4859"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b01cc5fec55b70d0fc9b",
@@ -828,8 +743,7 @@
     "Price": 560,
     "_id": {
       "$oid": "67c0b01cc5fec55b70d0fc9b"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b18cc5fec55b70d0fc9c",
@@ -851,8 +765,7 @@
     "Price": 225,
     "_id": {
       "$oid": "67c0b18cc5fec55b70d0fc9c"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b19b46527d4bf49e485a",
@@ -874,8 +787,7 @@
     "Price": 875,
     "_id": {
       "$oid": "67c0b19b46527d4bf49e485a"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b1e9c5fec55b70d0fc9d",
@@ -897,8 +809,7 @@
     "Price": 495,
     "_id": {
       "$oid": "67c0b1e9c5fec55b70d0fc9d"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b20046527d4bf49e485b",
@@ -920,8 +831,7 @@
     "Price": 650,
     "_id": {
       "$oid": "67c0b20046527d4bf49e485b"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b25446527d4bf49e485c",
@@ -943,8 +853,7 @@
     "Price": 1160,
     "_id": {
       "$oid": "67c0b25446527d4bf49e485c"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b278c5fec55b70d0fc9e",
@@ -966,8 +875,7 @@
     "Price": 285,
     "_id": {
       "$oid": "67c0b278c5fec55b70d0fc9e"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b29d46527d4bf49e485d",
@@ -989,8 +897,7 @@
     "Price": 995,
     "_id": {
       "$oid": "67c0b29d46527d4bf49e485d"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b2bac5fec55b70d0fc9f",
@@ -1012,8 +919,7 @@
     "Price": 435,
     "_id": {
       "$oid": "67c0b2bac5fec55b70d0fc9f"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b2ff46527d4bf49e485e",
@@ -1035,8 +941,7 @@
     "Price": 169,
     "_id": {
       "$oid": "67c0b2ff46527d4bf49e485e"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b300c5fec55b70d0fca0",
@@ -1058,8 +963,7 @@
     "Price": 115,
     "_id": {
       "$oid": "67c0b300c5fec55b70d0fca0"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b33646527d4bf49e485f",
@@ -1081,8 +985,7 @@
     "Price": 385,
     "_id": {
       "$oid": "67c0b33646527d4bf49e485f"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b363c5fec55b70d0fca1",
@@ -1104,8 +1007,7 @@
     "Price": 90,
     "_id": {
       "$oid": "67c0b363c5fec55b70d0fca1"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b38c46527d4bf49e4860",
@@ -1127,8 +1029,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0b38c46527d4bf49e4860"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b3bbc5fec55b70d0fca2",
@@ -1150,8 +1051,7 @@
     "Price": 115,
     "_id": {
       "$oid": "67c0b3bbc5fec55b70d0fca2"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b3ca46527d4bf49e4861",
@@ -1173,8 +1073,7 @@
     "Price": 125,
     "_id": {
       "$oid": "67c0b3ca46527d4bf49e4861"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b418c5fec55b70d0fca3",
@@ -1196,8 +1095,7 @@
     "Price": 285,
     "_id": {
       "$oid": "67c0b418c5fec55b70d0fca3"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b43a46527d4bf49e4862",
@@ -1219,8 +1117,7 @@
     "Price": 475,
     "_id": {
       "$oid": "67c0b43a46527d4bf49e4862"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b46f46527d4bf49e4863",
@@ -1242,8 +1139,7 @@
     "Price": 395,
     "_id": {
       "$oid": "67c0b46f46527d4bf49e4863"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b495c5fec55b70d0fca4",
@@ -1265,8 +1161,7 @@
     "Price": 125,
     "_id": {
       "$oid": "67c0b495c5fec55b70d0fca4"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b4f1c5fec55b70d0fca5",
@@ -1288,8 +1183,7 @@
     "Price": 220,
     "_id": {
       "$oid": "67c0b4f1c5fec55b70d0fca5"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b53046527d4bf49e4864",
@@ -1311,8 +1205,7 @@
     "Price": 925,
     "_id": {
       "$oid": "67c0b53046527d4bf49e4864"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b56b46527d4bf49e4865",
@@ -1334,8 +1227,7 @@
     "Price": 825,
     "_id": {
       "$oid": "67c0b56b46527d4bf49e4865"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b5a446527d4bf49e4866",
@@ -1357,8 +1249,7 @@
     "Price": 695,
     "_id": {
       "$oid": "67c0b5a446527d4bf49e4866"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b5fa46527d4bf49e4867",
@@ -1380,8 +1271,7 @@
     "Price": 2150,
     "_id": {
       "$oid": "67c0b5fa46527d4bf49e4867"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b61ac5fec55b70d0fca6",
@@ -1403,8 +1293,7 @@
     "Price": 89,
     "_id": {
       "$oid": "67c0b61ac5fec55b70d0fca6"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b663c5fec55b70d0fca7",
@@ -1426,8 +1315,7 @@
     "Price": 279,
     "_id": {
       "$oid": "67c0b663c5fec55b70d0fca7"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b6c146527d4bf49e4868",
@@ -1449,8 +1337,7 @@
     "Price": 950,
     "_id": {
       "$oid": "67c0b6c146527d4bf49e4868"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b6fc46527d4bf49e4869",
@@ -1472,8 +1359,7 @@
     "Price": 2150,
     "_id": {
       "$oid": "67c0b6fc46527d4bf49e4869"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b73a46527d4bf49e486a",
@@ -1495,8 +1381,7 @@
     "Price": 1745,
     "_id": {
       "$oid": "67c0b73a46527d4bf49e486a"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b769c5fec55b70d0fca8",
@@ -1518,8 +1403,7 @@
     "Price": 145,
     "_id": {
       "$oid": "67c0b769c5fec55b70d0fca8"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b77246527d4bf49e486b",
@@ -1541,8 +1425,7 @@
     "Price": 2200,
     "_id": {
       "$oid": "67c0b77246527d4bf49e486b"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b7bb46527d4bf49e486c",
@@ -1564,8 +1447,7 @@
     "Price": 1650,
     "_id": {
       "$oid": "67c0b7bb46527d4bf49e486c"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b7d2c5fec55b70d0fca9",
@@ -1587,8 +1469,7 @@
     "Price": 250,
     "_id": {
       "$oid": "67c0b7d2c5fec55b70d0fca9"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b7fb46527d4bf49e486d",
@@ -1610,8 +1491,7 @@
     "Price": 350,
     "_id": {
       "$oid": "67c0b7fb46527d4bf49e486d"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b83c46527d4bf49e486e",
@@ -1633,8 +1513,7 @@
     "Price": 4250,
     "_id": {
       "$oid": "67c0b83c46527d4bf49e486e"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b87546527d4bf49e486f",
@@ -1656,8 +1535,7 @@
     "Price": 275,
     "_id": {
       "$oid": "67c0b87546527d4bf49e486f"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b882c5fec55b70d0fcaa",
@@ -1697,8 +1575,7 @@
     "Price": 225,
     "_id": {
       "$oid": "67c0b882c5fec55b70d0fcaa"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b8a846527d4bf49e4870",
@@ -1720,8 +1597,7 @@
     "Price": 395,
     "_id": {
       "$oid": "67c0b8a846527d4bf49e4870"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b8ddc5fec55b70d0fcab",
@@ -1743,8 +1619,7 @@
     "Price": 225,
     "_id": {
       "$oid": "67c0b8ddc5fec55b70d0fcab"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b8eb46527d4bf49e4871",
@@ -1766,8 +1641,7 @@
     "Price": 49,
     "_id": {
       "$oid": "67c0b8eb46527d4bf49e4871"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b91e46527d4bf49e4872",
@@ -1789,8 +1663,7 @@
     "Price": 8500,
     "_id": {
       "$oid": "67c0b91e46527d4bf49e4872"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b926c5fec55b70d0fcac",
@@ -1812,8 +1685,7 @@
     "Price": 250,
     "_id": {
       "$oid": "67c0b926c5fec55b70d0fcac"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b95446527d4bf49e4873",
@@ -1835,8 +1707,7 @@
     "Price": 275,
     "_id": {
       "$oid": "67c0b95446527d4bf49e4873"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b96dc5fec55b70d0fcad",
@@ -1858,8 +1729,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0b96dc5fec55b70d0fcad"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b97f46527d4bf49e4874",
@@ -1881,8 +1751,7 @@
     "Price": 125,
     "_id": {
       "$oid": "67c0b97f46527d4bf49e4874"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b9aac5fec55b70d0fcae",
@@ -1904,8 +1773,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0b9aac5fec55b70d0fcae"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b9b346527d4bf49e4875",
@@ -1927,8 +1795,7 @@
     "Price": 135,
     "_id": {
       "$oid": "67c0b9b346527d4bf49e4875"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0b9e846527d4bf49e4876",
@@ -1950,8 +1817,7 @@
     "Price": 155,
     "_id": {
       "$oid": "67c0b9e846527d4bf49e4876"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ba1846527d4bf49e4877",
@@ -1973,8 +1839,7 @@
     "Price": 45,
     "_id": {
       "$oid": "67c0ba1846527d4bf49e4877"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ba5946527d4bf49e4878",
@@ -1996,8 +1861,7 @@
     "Price": 100,
     "_id": {
       "$oid": "67c0ba5946527d4bf49e4878"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ba8846527d4bf49e4879",
@@ -2019,8 +1883,7 @@
     "Price": 145,
     "_id": {
       "$oid": "67c0ba8846527d4bf49e4879"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0babf46527d4bf49e487a",
@@ -2042,8 +1905,7 @@
     "Price": 285,
     "_id": {
       "$oid": "67c0babf46527d4bf49e487a"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0baf246527d4bf49e487b",
@@ -2065,8 +1927,7 @@
     "Price": 65,
     "_id": {
       "$oid": "67c0baf246527d4bf49e487b"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bb1e46527d4bf49e487c",
@@ -2088,8 +1949,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0bb1e46527d4bf49e487c"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bb6c46527d4bf49e487d",
@@ -2111,8 +1971,7 @@
     "Price": 260,
     "_id": {
       "$oid": "67c0bb6c46527d4bf49e487d"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bb9f46527d4bf49e487e",
@@ -2134,8 +1993,7 @@
     "Price": 189,
     "_id": {
       "$oid": "67c0bb9f46527d4bf49e487e"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bbd346527d4bf49e487f",
@@ -2157,8 +2015,7 @@
     "Price": 185,
     "_id": {
       "$oid": "67c0bbd346527d4bf49e487f"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bc0e46527d4bf49e4880",
@@ -2180,8 +2037,7 @@
     "Price": 109,
     "_id": {
       "$oid": "67c0bc0e46527d4bf49e4880"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bc4646527d4bf49e4881",
@@ -2203,8 +2059,7 @@
     "Price": 595,
     "_id": {
       "$oid": "67c0bc4646527d4bf49e4881"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bc7d46527d4bf49e4882",
@@ -2226,8 +2081,7 @@
     "Price": 495,
     "_id": {
       "$oid": "67c0bc7d46527d4bf49e4882"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bcb246527d4bf49e4883",
@@ -2249,8 +2103,7 @@
     "Price": 58,
     "_id": {
       "$oid": "67c0bcb246527d4bf49e4883"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bcf046527d4bf49e4884",
@@ -2272,8 +2125,7 @@
     "Price": 45,
     "_id": {
       "$oid": "67c0bcf046527d4bf49e4884"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bd2846527d4bf49e4885",
@@ -2295,8 +2147,7 @@
     "Price": 45,
     "_id": {
       "$oid": "67c0bd2846527d4bf49e4885"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bd5e46527d4bf49e4886",
@@ -2318,8 +2169,7 @@
     "Price": 45,
     "_id": {
       "$oid": "67c0bd5e46527d4bf49e4886"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bd8bc5fec55b70d0fcaf",
@@ -2341,8 +2191,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0bd8bc5fec55b70d0fcaf"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bdc5c5fec55b70d0fcb0",
@@ -2364,8 +2213,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0bdc5c5fec55b70d0fcb0"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0be0bc5fec55b70d0fcb1",
@@ -2400,8 +2248,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0be0bc5fec55b70d0fcb1"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0be49c5fec55b70d0fcb2",
@@ -2423,8 +2270,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0be49c5fec55b70d0fcb2"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0be8cc5fec55b70d0fcb3",
@@ -2446,8 +2292,7 @@
     "Price": 238,
     "_id": {
       "$oid": "67c0be8cc5fec55b70d0fcb3"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bed0c5fec55b70d0fcb4",
@@ -2469,8 +2314,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0bed0c5fec55b70d0fcb4"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bf1ac5fec55b70d0fcb5",
@@ -2492,8 +2336,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0bf1ac5fec55b70d0fcb5"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0bff7c5fec55b70d0fcb7",
@@ -2515,8 +2358,7 @@
     "Price": 225,
     "_id": {
       "$oid": "67c0bff7c5fec55b70d0fcb7"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c03dc5fec55b70d0fcb8",
@@ -2538,8 +2380,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0c03dc5fec55b70d0fcb8"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c07bc5fec55b70d0fcb9",
@@ -2561,8 +2402,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0c07bc5fec55b70d0fcb9"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c0c4c5fec55b70d0fcba",
@@ -2601,8 +2441,7 @@
       "$oid": "67c0c0c4c5fec55b70d0fcba"
     },
     "Image": "[\"https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FSoft%20Goods%2FPrimavera%20Pillow1.jpg?alt=media\",\"https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FSoft%20Goods%2FPrimavera%20Pillow2.jpg?alt=media\",\"https://firebasestorage.googleapis.com/v0/b/evocasa-da7f2.firebasestorage.app/o/images%2FSoft%20Goods%2FPrimavera%20Pillow3.jpg?alt=media\"]",
-    "Name": "Primavera Pillow",
-    "Ratings": null
+    "Name": "Primavera Pillow"
   },
   {
     "id": "67c0c156c5fec55b70d0fcbb",
@@ -2624,8 +2463,7 @@
     "Price": 4200,
     "_id": {
       "$oid": "67c0c156c5fec55b70d0fcbb"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c1e1c5fec55b70d0fcbc",
@@ -2647,8 +2485,7 @@
     "Price": 2800,
     "_id": {
       "$oid": "67c0c1e1c5fec55b70d0fcbc"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c237c5fec55b70d0fcbd",
@@ -2670,8 +2507,7 @@
     "Price": 795,
     "_id": {
       "$oid": "67c0c237c5fec55b70d0fcbd"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c2bdc5fec55b70d0fcbe",
@@ -2693,8 +2529,7 @@
     "Price": 4200,
     "_id": {
       "$oid": "67c0c2bdc5fec55b70d0fcbe"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c354c5fec55b70d0fcbf",
@@ -2716,8 +2551,7 @@
     "Price": 695,
     "_id": {
       "$oid": "67c0c354c5fec55b70d0fcbf"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c3c0c5fec55b70d0fcc0",
@@ -2739,8 +2573,7 @@
     "Price": 1500,
     "_id": {
       "$oid": "67c0c3c0c5fec55b70d0fcc0"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c445c5fec55b70d0fcc1",
@@ -2762,8 +2595,7 @@
     "Price": 4500,
     "_id": {
       "$oid": "67c0c445c5fec55b70d0fcc1"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c4abc5fec55b70d0fcc2",
@@ -2785,8 +2617,7 @@
     "Price": 1200,
     "_id": {
       "$oid": "67c0c4abc5fec55b70d0fcc2"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c4f2c5fec55b70d0fcc3",
@@ -2808,8 +2639,7 @@
     "Price": 1500,
     "_id": {
       "$oid": "67c0c4f2c5fec55b70d0fcc3"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c54dc5fec55b70d0fcc4",
@@ -2831,8 +2661,7 @@
     "Price": 725,
     "_id": {
       "$oid": "67c0c54dc5fec55b70d0fcc4"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c5b2c5fec55b70d0fcc5",
@@ -2854,8 +2683,7 @@
     "Price": 695,
     "_id": {
       "$oid": "67c0c5b2c5fec55b70d0fcc5"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c60cc5fec55b70d0fcc6",
@@ -2877,8 +2705,7 @@
     "Price": 680,
     "_id": {
       "$oid": "67c0c60cc5fec55b70d0fcc6"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c65dc5fec55b70d0fcc7",
@@ -2900,8 +2727,7 @@
     "Price": 1525,
     "_id": {
       "$oid": "67c0c65dc5fec55b70d0fcc7"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c6bbc5fec55b70d0fcc8",
@@ -2923,8 +2749,7 @@
     "Price": 3500,
     "_id": {
       "$oid": "67c0c6bbc5fec55b70d0fcc8"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c78ec5fec55b70d0fcc9",
@@ -2946,8 +2771,7 @@
     "Price": 1950,
     "_id": {
       "$oid": "67c0c78ec5fec55b70d0fcc9"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c878c5fec55b70d0fcca",
@@ -2969,8 +2793,7 @@
     "Price": 2850,
     "_id": {
       "$oid": "67c0c878c5fec55b70d0fcca"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c8f0c5fec55b70d0fccb",
@@ -2992,8 +2815,7 @@
     "Price": 3100,
     "_id": {
       "$oid": "67c0c8f0c5fec55b70d0fccb"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c946c5fec55b70d0fccc",
@@ -3015,8 +2837,7 @@
     "Price": 1800,
     "_id": {
       "$oid": "67c0c946c5fec55b70d0fccc"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0c99ac5fec55b70d0fccd",
@@ -3038,8 +2859,7 @@
     "Price": 2865,
     "_id": {
       "$oid": "67c0c99ac5fec55b70d0fccd"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ca12c5fec55b70d0fcce",
@@ -3061,8 +2881,7 @@
     "Price": 2215,
     "_id": {
       "$oid": "67c0ca12c5fec55b70d0fcce"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ca83c5fec55b70d0fccf",
@@ -3084,8 +2903,7 @@
     "Price": 1985,
     "_id": {
       "$oid": "67c0ca83c5fec55b70d0fccf"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0caebc5fec55b70d0fcd0",
@@ -3107,8 +2925,7 @@
     "Price": 1950,
     "_id": {
       "$oid": "67c0caebc5fec55b70d0fcd0"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cb3ac5fec55b70d0fcd1",
@@ -3130,8 +2947,7 @@
     "Price": 1850,
     "_id": {
       "$oid": "67c0cb3ac5fec55b70d0fcd1"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cb90c5fec55b70d0fcd2",
@@ -3153,8 +2969,7 @@
     "Price": 2975,
     "_id": {
       "$oid": "67c0cb90c5fec55b70d0fcd2"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cc00c5fec55b70d0fcd3",
@@ -3176,8 +2991,7 @@
     "Price": 1810,
     "_id": {
       "$oid": "67c0cc00c5fec55b70d0fcd3"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cc64c5fec55b70d0fcd4",
@@ -3199,8 +3013,7 @@
     "Price": 11420,
     "_id": {
       "$oid": "67c0cc64c5fec55b70d0fcd4"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cceac5fec55b70d0fcd5",
@@ -3222,8 +3035,7 @@
     "Price": 820,
     "_id": {
       "$oid": "67c0cceac5fec55b70d0fcd5"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cd30c5fec55b70d0fcd6",
@@ -3245,8 +3057,7 @@
     "Price": 820,
     "_id": {
       "$oid": "67c0cd30c5fec55b70d0fcd6"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cd80c5fec55b70d0fcd7",
@@ -3268,8 +3079,7 @@
     "Price": 4800,
     "_id": {
       "$oid": "67c0cd80c5fec55b70d0fcd7"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cdd0c5fec55b70d0fcd8",
@@ -3291,8 +3101,7 @@
     "Price": 595,
     "_id": {
       "$oid": "67c0cdd0c5fec55b70d0fcd8"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ce34c5fec55b70d0fcd9",
@@ -3314,8 +3123,7 @@
     "Price": 565,
     "_id": {
       "$oid": "67c0ce34c5fec55b70d0fcd9"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0ce89c5fec55b70d0fcda",
@@ -3337,8 +3145,7 @@
     "Price": 325,
     "_id": {
       "$oid": "67c0ce89c5fec55b70d0fcda"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cef1c5fec55b70d0fcdb",
@@ -3360,8 +3167,7 @@
     "Price": 875,
     "_id": {
       "$oid": "67c0cef1c5fec55b70d0fcdb"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cf25c5fec55b70d0fcdc",
@@ -3383,8 +3189,7 @@
     "Price": 1065,
     "_id": {
       "$oid": "67c0cf25c5fec55b70d0fcdc"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cf80c5fec55b70d0fcdd",
@@ -3406,8 +3211,7 @@
     "Price": 195,
     "_id": {
       "$oid": "67c0cf80c5fec55b70d0fcdd"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0cfe1c5fec55b70d0fcde",
@@ -3429,8 +3233,7 @@
     "Price": 898,
     "_id": {
       "$oid": "67c0cfe1c5fec55b70d0fcde"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d06fc5fec55b70d0fcdf",
@@ -3452,8 +3255,7 @@
     "Price": 688,
     "_id": {
       "$oid": "67c0d06fc5fec55b70d0fcdf"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d0b4c5fec55b70d0fce0",
@@ -3475,8 +3277,7 @@
     "Price": 4100,
     "_id": {
       "$oid": "67c0d0b4c5fec55b70d0fce0"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d103c5fec55b70d0fce1",
@@ -3498,8 +3299,7 @@
     "Price": 295,
     "_id": {
       "$oid": "67c0d103c5fec55b70d0fce1"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d13cc5fec55b70d0fce2",
@@ -3521,8 +3321,7 @@
     "Price": 2900,
     "_id": {
       "$oid": "67c0d13cc5fec55b70d0fce2"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d16fc5fec55b70d0fce3",
@@ -3544,8 +3343,7 @@
     "Price": 565,
     "_id": {
       "$oid": "67c0d16fc5fec55b70d0fce3"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d19bc5fec55b70d0fce4",
@@ -3567,8 +3365,7 @@
     "Price": 325,
     "_id": {
       "$oid": "67c0d19bc5fec55b70d0fce4"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d1d0c5fec55b70d0fce5",
@@ -3590,8 +3387,7 @@
     "Price": 550,
     "_id": {
       "$oid": "67c0d1d0c5fec55b70d0fce5"
-    },
-    "Ratings": null
+    }
   },
   {
     "id": "67c0d233c5fec55b70d0fce6",
@@ -3613,7 +3409,6 @@
     "Price": 1200,
     "_id": {
       "$oid": "67c0d233c5fec55b70d0fce6"
-    },
-    "Ratings": null
+    }
   }
 ]
