@@ -84,22 +84,44 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
 
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtProductName);
 
+        // Kiểm tra xem sản phẩm đã trong wishlist chưa
+        String customerId = sessionManager.getUid();
+        if (customerId != null) {
+            db.collection("Wishlist")
+                    .whereEqualTo("Customer_id", customerId)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            List<String> productIds = (List<String>) document.get("Productid");
+                            if (productIds != null && productIds.contains(product.getId())) {
+                                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                                break;
+                            } else {
+                                holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                    });
+        } else {
+            holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+        }
+
         // Xử lý sự kiện nhấn vào icon yêu thích
         holder.imgFavorite.setOnClickListener(v -> {
-            String customerId = sessionManager.getUid();
-            if (customerId != null) {
-                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart); // Chuyển sang trái tim đỏ
+            String customerIdClick = sessionManager.getUid();
+            if (customerIdClick != null) {
+                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
                 Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
 
-                // Tìm hoặc tạo Wishlist
                 db.collection("Wishlist")
-                        .whereEqualTo("Customer_id", customerId)
+                        .whereEqualTo("Customer_id", customerIdClick)
                         .get()
                         .addOnSuccessListener(querySnapshot -> {
                             if (querySnapshot.isEmpty()) {
-                                // Tạo mới Wishlist
                                 Map<String, Object> wishlistData = new HashMap<>();
-                                wishlistData.put("Customer_id", customerId);
+                                wishlistData.put("Customer_id", customerIdClick);
                                 wishlistData.put("CreatedAt", FieldValue.serverTimestamp());
                                 wishlistData.put("Productid", new ArrayList<>());
                                 db.collection("Wishlist")
@@ -112,7 +134,6 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
                                             Toast.makeText(holder.itemView.getContext(), "Failed to create wishlist", Toast.LENGTH_SHORT).show();
                                         });
                             } else {
-                                // Sử dụng Wishlist hiện có
                                 String wishlistId = querySnapshot.getDocuments().get(0).getId();
                                 addProductToWishlist(wishlistId, product.getId(), holder);
                             }
