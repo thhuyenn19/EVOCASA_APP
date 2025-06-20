@@ -153,6 +153,7 @@
     <string name="title_set_as_default">Set as default</string>
 
     <string name="title_edit_address_title">Edit Address</string>
+    <string name="title_edit_location_title">Edit Location</string>
     <string name="title_selected_area">Selected Area</string>
     <string name="title_ward_commune">Ward/Commune</string>
 
@@ -203,8 +204,6 @@
     <string name="fb_login_protocol_scheme">fb30814704168116794</string>
     <string name="default_web_client_id">408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com</string>
     <string name="facebook_client_token">cd117f107da97476f0e5a323eaaa1e44</string>
-
-
 
 
 </resources>

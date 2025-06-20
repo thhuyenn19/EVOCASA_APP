@@ -94,7 +94,7 @@ public class EditPersonalFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putString("currentAddress", edtLocation.getText().toString());
 
-            EditAddressFragment fragment = new EditAddressFragment();
+            EditLocationFragment fragment = new EditLocationFragment();
             fragment.setArguments(bundle);
 
             requireActivity().getSupportFragmentManager()
@@ -102,6 +102,11 @@ public class EditPersonalFragment extends Fragment {
                     .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
+        });
+
+        getParentFragmentManager().setFragmentResultListener("addressUpdated", this, (requestKey, bundle) -> {
+            String newAddress = bundle.getString("selectedAddress", "");
+            edtLocation.setText(newAddress);
         });
 
         // Sự kiện nút Save
@@ -142,6 +147,8 @@ public class EditPersonalFragment extends Fragment {
             dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         });
+
+
     }
 
     private void saveUpdatedInfo() {

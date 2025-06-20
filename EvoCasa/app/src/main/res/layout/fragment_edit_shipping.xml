@@ -208,12 +208,7 @@
                 android:layout_height="wrap_content"
                 app:thumbTint="@color/color_switch_thumb"
                 app:trackTint="@color/color_switch_track" />
-
-
-
         </LinearLayout>
-
-
 
         <!--BUTTON SAVE-->
         <androidx.appcompat.widget.AppCompatButton

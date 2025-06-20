@@ -72,12 +72,27 @@ public class EditShippingFragment extends Fragment {
 
         // Mở fragment chọn địa chỉ nếu cần
         edtAddress.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("currentShippingAddress", edtAddress.getText().toString());
+
+            EditAddressFragment fragment = new EditAddressFragment();
+            fragment.setArguments(bundle);
+
             requireActivity().getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, new EditAddressFragment())
+                    .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
         });
+        requireActivity().getSupportFragmentManager().setFragmentResultListener(
+                "shippingAddressUpdated",
+                this,
+                (requestKey, bundle) -> {
+                    if (bundle != null) {
+                        String newAddress = bundle.getString("selectedAddress", "");
+                        edtAddress.setText(newAddress); // bạn đã có edtAddress rồi, không cần gọi lại findViewById
+                    }
+                });
     }
 
     private void saveUpdatedShipping() {
