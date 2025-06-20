@@ -7,7 +7,6 @@
 }
 
 .title {
-    width: 383px;
     position: relative;
     color: #3F2305;
     font-size: 30px;
@@ -24,7 +23,7 @@
 }
 
 html, body {
-    height: 100vh;
+    height: 90vh; /*Ban đầu là 100vh */
     overflow: hidden; /* Loại bỏ scroll của body */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #FFFCF3;
@@ -36,10 +35,11 @@ html, body {
 .container {
     max-width: 100%;
     margin: 0 30px;
-    height: 100vh; /* này thì kéo lên mất thanh header */
-    /* height: 90vh; này thì vừa vào là fit màn hình nhưng vẫn có thành sroll */
+    height: 90vh; /* này thì vừa vào là fit màn hình nhưng vẫn có thành sroll + đi chung với heiight của html,body */
+    /* height: 100vh;  này là ban đầu*/
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 /* Header */
