@@ -36,7 +36,8 @@ html, body {
 .container {
     max-width: 100%;
     margin: 0 30px;
-    height: 100vh;
+    height: 100vh; /* này thì kéo lên mất thanh header */
+    /* height: 90vh; này thì vừa vào là fit màn hình nhưng vẫn có thành sroll */
     display: flex;
     flex-direction: column;
 }
@@ -65,7 +66,7 @@ html, body {
 
 /* Left Sidebar */
 .sidebar-left {
-    width: 300px;
+    width: 280px;
     background-color: #F6EFDD;
     display: flex;
     flex-direction: column;
@@ -387,7 +388,7 @@ html, body {
 
 /* Right Sidebar */
 .sidebar-right {
-    width: 320px;
+    width: 250px;
     background-color: #F6EFDD;
     padding: 20px;
     border-left: 1px solid rgba(94, 76, 62, 0.4);
