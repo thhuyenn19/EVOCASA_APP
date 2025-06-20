@@ -143,9 +143,25 @@ public class CategoryFragment extends Fragment {
         productAdapter.setOnItemClickListener(product -> {
             Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
-            startActivity(intent);
+            startActivityForResult(intent, 1001);
         });
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001 && resultCode == getActivity().RESULT_OK && data != null) {
+            boolean wishlistChanged = data.getBooleanExtra("wishlistChanged", false);
+            if (wishlistChanged) {
+                // Gọi lại API để cập nhật danh sách sản phẩm
+                if (selectedCategory.equals("Shop All")) {
+                    fetchAllProductsForShopAll();
+                } else {
+                    filterProductsBySubCategory("All products");
+                }
+            }
+        }
+    }
+
 
     private void fetchAllProductsForShopAll() {
         if (isFetchingProducts) {
