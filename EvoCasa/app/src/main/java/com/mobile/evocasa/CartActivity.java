@@ -125,7 +125,7 @@ public class CartActivity extends AppCompatActivity {
 
         // Initially hide checkout layout
         checkoutLayout.setVisibility(View.GONE);
-        btnCartEdit.setVisibility(View.GONE);
+        btnCartEdit.setVisibility(View.INVISIBLE);
         editOptionsLayout.setVisibility(View.GONE);
     }
 
@@ -513,7 +513,7 @@ public class CartActivity extends AppCompatActivity {
     private void updateEditButtonVisibility() {
         Log.d("CartActivity", "selectedProducts size: " + selectedProducts.size());
         if (selectedProducts.isEmpty()) {
-            btnCartEdit.setVisibility(View.GONE);
+            btnCartEdit.setVisibility(View.INVISIBLE);
             editOptionsLayout.setVisibility(View.GONE);
             isEditing = false;
             updateCheckoutLayout();
@@ -719,7 +719,7 @@ public class CartActivity extends AppCompatActivity {
             checkboxAllProducts.setVisibility(View.GONE);
             recyclerViewCartProducts.setVisibility(View.GONE);
             checkoutLayout.setVisibility(View.GONE);
-            btnCartEdit.setVisibility(View.GONE);
+            btnCartEdit.setVisibility(View.INVISIBLE);
             editOptionsLayout.setVisibility(View.GONE);
         });
     }
