@@ -319,42 +319,57 @@ h4 {
   gap: 10px;
 }
 
-/* Pagination */
+/* Pagination (updated to match Category styles) */
 .pagination {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  padding: 10px;
-  background-color: #5e4c3e;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-.pagination button:hover {
-  background-color: #a79786;
-}
-
-.page-number {
-  margin: 0 5px;
-  padding: 8.5px;
-  color: #e0e0e0;
-  background-color: #5e4c3e;
-  font-size: 15px;
-  cursor: pointer;
-  font-weight: 100;
+  display: flex;
   justify-content: center;
-}
-.page-number:hover {
-  background-color: #c5b6a7;
+  align-items: center;
+  gap: 4px;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
-.page-number.active {
-  font-weight: bold;
-  text-decoration: underline;
-  background-color: #86654b;
+/* Common styles for page buttons */
+.page-btn,
+.prev-btn,
+.next-btn {
+  background-color: transparent;
+  border: 1px solid #3f2305;
+  color: #3f2305;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  margin: 0 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+/* Hover effect (does not change background when not active) */
+.page-btn:hover:not(.active),
+.prev-btn:hover:not(.active),
+.next-btn:hover:not(.active) {
+  background-color: transparent;
+  opacity: 0.8;
+}
+
+/* Active page button */
+.page-btn.active {
+  background-color: #5e4c3e;
+  color: #f2ead3;
+  border: 1px solid #5e4c3e;
+  font-weight: 600;
+}
+
+/* Disabled state */
+.prev-btn[disabled],
+.next-btn[disabled] {
+  opacity: 0.4;
+  cursor: default;
 }
 
 .show {

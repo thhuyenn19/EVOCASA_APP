@@ -234,12 +234,37 @@ export class ProductComponent implements OnInit {
           product.Image = JSON.parse(product.Image);
         } catch (e) {
           console.error(`Error parsing image for product ${product.Name}:`, e);
-          product.Image = [];
+          const imgStr = product.Image as unknown as string;
+          product.Image = [imgStr]; // keep single string as array
         }
       } else if (!Array.isArray(product.Image)) {
         product.Image = [];
       }
     });
+  }
+
+  /**
+   * Helper: return first image path (or placeholder) for table display
+   */
+  getProductImageForTable(product: IProduct): string {
+    try {
+      let imgArray: string[] = [];
+      const rawImage: any = (product as any).Image;
+
+      if (typeof rawImage === 'string' && rawImage.trim().startsWith('[')) {
+        imgArray = JSON.parse(rawImage);
+      } else if (Array.isArray(rawImage)) {
+        imgArray = rawImage;
+      }
+
+      if (imgArray.length > 0) {
+        return imgArray[0];
+      }
+    } catch (e) {
+      console.error('Error getting image for product', product.Name, e);
+    }
+
+    return 'assets/images/product-placeholder.png';
   }
 
   // Cập nhật danh sách sản phẩm hiển thị theo trang
@@ -269,30 +294,41 @@ export class ProductComponent implements OnInit {
       )} of ${this.totalItems}`
     );
   }
-
-  // Cập nhật mảng số trang
   updatePageNumbers(): void {
     this.pageNumbers = [];
-    // Show only 2 pages at a time
-    if (this.totalPages <= 2) {
-      // If total pages is 2 or less, show all pages
+
+    if (this.totalPages <= 6) {
+      // Show all pages when total is 6 or fewer
       for (let i = 1; i <= this.totalPages; i++) {
         this.pageNumbers.push(i);
       }
     } else {
-      // If current page is 1, show pages 1 and 2
-      if (this.currentPage === 1) {
-        this.pageNumbers = [1, 2];
-      }
-      // If current page is the last page, show last two pages
-      else if (this.currentPage === this.totalPages) {
-        this.pageNumbers = [this.totalPages - 1, this.totalPages];
-      }
-      // Otherwise show current page and next page
-      else {
-        this.pageNumbers = [this.currentPage, this.currentPage + 1];
+      if (this.currentPage <= 3) {
+        // Beginning of list: show first 6 pages
+        this.pageNumbers = [1, 2, 3, 4, 5, 6];
+      } else if (this.currentPage >= this.totalPages - 2) {
+        // End of list: show last 6 pages
+        this.pageNumbers = [
+          this.totalPages - 5,
+          this.totalPages - 4,
+          this.totalPages - 3,
+          this.totalPages - 2,
+          this.totalPages - 1,
+          this.totalPages,
+        ];
+      } else {
+        // Middle: show current page in position 3 (index 2)
+        this.pageNumbers = [
+          this.currentPage - 2,
+          this.currentPage - 1,
+          this.currentPage,
+          this.currentPage + 1,
+          this.currentPage + 2,
+          this.currentPage + 3,
+        ];
       }
     }
+
     console.log('Page numbers updated:', this.pageNumbers);
   }
 
@@ -325,7 +361,22 @@ export class ProductComponent implements OnInit {
   }
 
   viewProduct(product: IProduct): void {
-    this.router.navigate([`/admin-product-view/${product._id}`]);
+    let identifier = '';
+    if (product._id) {
+      identifier =
+        typeof product._id === 'string'
+          ? product._id
+          : (product._id as any).$oid || String(product._id);
+    }
+
+    // Fallback to another identifier if _id is missing
+    if (!identifier && (product as any).id) {
+      identifier = (product as any).id;
+    }
+
+    this.router.navigate([
+      `/admin-product-view/${encodeURIComponent(identifier)}`,
+    ]);
   }
 
   editProduct(product: IProduct): void {
