@@ -294,12 +294,20 @@ h4 {
   text-align: center;
 }
 
-.pagination button {
+/* .pagination button {
   padding: 10px;
   background-color: #5e4c3e;
   color: #fff;
   border: none;
   cursor: pointer;
+} */
+.pagination {
+  display: flex;
+  justify-content: center;     /* căn giữa toàn bộ nút */
+  align-items: center;
+  gap: 4px;                    /* khoảng cách giữa các nút */
+  margin-top: 20px;
+  flex-wrap: wrap;            /* tự xuống dòng nếu không đủ chỗ */
 }
 
 .pagination button:hover {
@@ -321,4 +329,38 @@ h4 {
   font-weight: 300;
   margin-right: 34px;
   display: flex;
+}
+.page-btn,
+.prev-btn,
+.next-btn {
+  background-color: transparent;           /* Nền mặc định trong suốt */
+  border: 1px solid #3f2305;               /* Viền nâu */
+  color: #3f2305;                          /* Chữ nâu */
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  margin: 0 2px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;                /* Chữ căn giữa */
+  transition: all 0.2s ease-in-out;
+  font-weight: 500;
+}
+
+/* Không đổi nền khi hover nếu không active */
+.page-btn:hover:not(.active),
+.prev-btn:hover:not(.active),
+.next-btn:hover:not(.active) {
+  background-color: transparent;
+  opacity: 0.8;
+}
+
+/* Nút đang active */
+.page-btn.active {
+  background-color: #5e4c3e;              /* Nền nâu */
+  color: #f2ead3;                         /* Chữ sáng */
+  border: 1px solid #5e4c3e;
+  font-weight: 600;
 }
