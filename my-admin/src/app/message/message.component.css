@@ -23,12 +23,15 @@
     box-sizing: border-box;
 }
 
-body {
+html, body {
+    height: 100vh;
+    overflow: hidden; /* Loại bỏ scroll của body */
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #FFFCF3;
     color: #333333;
     line-height: 1.5;
 }
+
 
 .container {
     max-width: 100%;
