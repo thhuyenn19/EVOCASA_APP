@@ -18,7 +18,6 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;

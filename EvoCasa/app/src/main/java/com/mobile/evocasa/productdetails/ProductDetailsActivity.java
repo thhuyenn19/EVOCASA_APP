@@ -2,6 +2,7 @@ package com.mobile.evocasa.productdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -32,7 +32,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.ImagePagerAdapter;
@@ -78,6 +77,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private UserSessionManager sessionManager;
     private String productId;
     private DecimalFormat decimalFormat;
+    private String productDescription;
+    private String productDimensions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,11 +121,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
         btnBack.setOnClickListener(v -> {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("wishlistChanged", true); // bạn có thể tùy chỉnh cờ này nếu cần
+            resultIntent.putExtra("wishlistChanged", true);
             setResult(RESULT_OK, resultIntent);
-            finish(); // Đóng activity và quay lại màn trước
+            finish();
         });
-
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";
@@ -168,7 +168,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 400);
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 600);
             }
-
 
             @Override
             public void onTabUnselected(@NonNull TabLayout.Tab tab) {
@@ -234,12 +233,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            if (txtProductName != null) {
-                                txtProductName.setText(documentSnapshot.getString("Name"));
-                            }
-                            if (txtProductPrice != null && documentSnapshot.getDouble("Price") != null) {
-                                txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
-                            }
+                            txtProductName.setText(documentSnapshot.getString("Name"));
+                            txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
+                            productDescription = documentSnapshot.getString("Description");
+                            productDimensions = documentSnapshot.getString("Dimension");
+
+                            // Invalidate and re-set the adapter to force fragment recreation
+                            viewPager.getAdapter().notifyDataSetChanged();
+                            viewPager.setAdapter(pagerAdapter); // Re-set to ensure fresh instances
+                            viewPager.setCurrentItem(0, false); // Reset to first tab to trigger update
+
                             String imageJson = documentSnapshot.getString("Image");
                             if (imageJson != null) {
                                 try {
@@ -248,13 +251,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     imageUrls = gson.fromJson(imageJson, listType);
                                     setupImageViewPager();
                                 } catch (Exception e) {
+                                    Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
                                     Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
                                 }
                             }
+                            String ratingsJson = "";
                             Object ratingsObj = documentSnapshot.get("Ratings");
+                            if (ratingsObj instanceof Map) {
+                                Gson gson = new Gson();
+                                ratingsJson = gson.toJson(((Map<String, Object>) ratingsObj).get("Details"));
+                            }
+
                             if (ratingsObj instanceof Map) {
                                 Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
                                 Object averageObj = ratingsMap.get("Average");
+
                                 if (averageObj instanceof Number && txtRating != null) {
                                     ratingLayout.setVisibility(View.VISIBLE);
                                     txtRating.setText(decimalFormat.format(((Number) averageObj).doubleValue()));
@@ -266,12 +277,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                 ratingLayout.setVisibility(View.VISIBLE);
                                 txtRating.setText("5.0");
                             }
+                            pagerAdapter.setProductData(productDescription, productDimensions, ratingsJson, productId);
                             checkWishlistStatus();
                         } else {
+                            Log.w("ProductDetails", "Product not found for ID: " + productId);
                             Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> {
+                        Log.e("ProductDetails", "Failed to load product details: " + e.getMessage());
                         Toast.makeText(this, "Failed to load product details", Toast.LENGTH_SHORT).show();
                     });
         } else {
@@ -298,7 +312,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("wishlistChanged", true); // nếu có thay đổi
+        resultIntent.putExtra("wishlistChanged", true);
         setResult(RESULT_OK, resultIntent);
         super.onBackPressed();
     }
@@ -571,12 +585,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     if (querySnapshot.isEmpty()) {
-                        // Tạo wishlist mới và thêm sản phẩm
                         createWishlistAndAddProduct(customerId, productId);
                     } else {
-                        // Kiểm tra sản phẩm đã có trong wishlist chưa
                         DocumentSnapshot wishlistDoc = querySnapshot.getDocuments().get(0);
-
                         String wishlistId = wishlistDoc.getId();
                         List<String> productIds = (List<String>) wishlistDoc.get("Productid");
 
@@ -585,10 +596,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         }
 
                         if (productIds.contains(productId)) {
-                            // Sản phẩm đã có trong wishlist -> Remove
                             removeProductFromWishlist(wishlistId, productId);
                         } else {
-                            // Sản phẩm chưa có trong wishlist -> Add
                             addProductToWishlist(wishlistId, productId);
                         }
                     }
