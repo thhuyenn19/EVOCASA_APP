@@ -56,14 +56,12 @@ public class CategoryFragment extends Fragment {
     private Toolbar toolbar;
     private LinearLayout btnBack;
 
-
     private List<SubCategory> subCategoryList;
     private List<ProductItem> currentProductList;
     private FirebaseFirestore db;
     private String selectedCategory;
     private String categoryId;
     private Map<String, String> subCategoryIds = new HashMap<>();
-
 
     private ValueAnimator backgroundAnimator;
     private ValueAnimator titleAnimator;
@@ -88,10 +86,8 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         db = FirebaseFirestore.getInstance();
         mainHandler = new android.os.Handler(android.os.Looper.getMainLooper());
-
 
         recyclerViewSubCategory = view.findViewById(R.id.recyclerViewSubCategory);
         recyclerViewProducts = view.findViewById(R.id.recyclerViewProducts);
@@ -104,7 +100,6 @@ public class CategoryFragment extends Fragment {
         heroSection = view.findViewById(R.id.heroSection);
         sortFilterSection = view.findViewById(R.id.sortFilterSection);
         btnBack = view.findViewById(R.id.btnBack);
-
 
         Bundle args = getArguments();
         if (args != null) {
@@ -119,11 +114,9 @@ public class CategoryFragment extends Fragment {
             }
         }
 
-
         FontUtils.setZboldFont(requireContext(), txtSubCategoryShop);
         FontUtils.setZboldFont(requireContext(), txtCollapsedTitle);
         FontUtils.setMediumFont(requireContext(), tvSortBy);
-
 
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
         params.setBehavior(new FlingBehavior(getContext(), null));
@@ -140,11 +133,10 @@ public class CategoryFragment extends Fragment {
 
     private void setupProducts() {
         currentProductList = new ArrayList<>();
-        productAdapter = new SubCategoryProductAdapter(currentProductList);
+        productAdapter = new SubCategoryProductAdapter(currentProductList, requireContext());
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerViewProducts.setAdapter(productAdapter);
     }
-
 
     private void fetchAllProductsForShopAll() {
         if (isFetchingProducts) {
@@ -165,7 +157,20 @@ public class CategoryFragment extends Fragment {
                             product.setName(doc.getString("Name"));
                             product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                             product.setImage(doc.getString("Image"));
-                            product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+
+                            // Lấy ratings từ Firestore
+                            Object ratingsObj = doc.get("Ratings");
+                            if (ratingsObj instanceof Map) {
+                                @SuppressWarnings("unchecked")
+                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                ProductItem.Ratings ratings = new ProductItem.Ratings();
+                                Object averageObj = ratingsMap.get("Average");
+                                if (averageObj instanceof Number) {
+                                    ratings.setAverage(((Number) averageObj).doubleValue());
+                                }
+                                product.setRatings(ratings);
+                            }
+
                             currentProductList.add(product);
                             Log.d(TAG, "Added product: " + product.getName());
                         } catch (Exception e) {
@@ -206,7 +211,20 @@ public class CategoryFragment extends Fragment {
                                 product.setName(doc.getString("Name"));
                                 product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                                 product.setImage(doc.getString("Image"));
-                                product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+
+                                // Lấy ratings từ Firestore
+                                Object ratingsObj = doc.get("Ratings");
+                                if (ratingsObj instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                    ProductItem.Ratings ratings = new ProductItem.Ratings();
+                                    Object averageObj = ratingsMap.get("Average");
+                                    if (averageObj instanceof Number) {
+                                        ratings.setAverage(((Number) averageObj).doubleValue());
+                                    }
+                                    product.setRatings(ratings);
+                                }
+
                                 currentProductList.add(product);
                                 Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + productCategoryId);
                             }
@@ -235,7 +253,20 @@ public class CategoryFragment extends Fragment {
                                 product.setName(doc.getString("Name"));
                                 product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                                 product.setImage(doc.getString("Image"));
-                                product.setRating(doc.getDouble("Rating") != null ? doc.getDouble("Rating") : 0.0);
+
+                                // Lấy ratings từ Firestore
+                                Object ratingsObj = doc.get("Ratings");
+                                if (ratingsObj instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                    ProductItem.Ratings ratings = new ProductItem.Ratings();
+                                    Object averageObj = ratingsMap.get("Average");
+                                    if (averageObj instanceof Number) {
+                                        ratings.setAverage(((Number) averageObj).doubleValue());
+                                    }
+                                    product.setRatings(ratings);
+                                }
+
                                 currentProductList.add(product);
                                 Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + subCategoryId);
                             }
@@ -254,8 +285,6 @@ public class CategoryFragment extends Fragment {
             isFetchingProducts = false;
         }
     }
-
-    // Thay thế phần setupSubCategories() trong CategoryFragment với code này:
 
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
@@ -364,7 +393,6 @@ public class CategoryFragment extends Fragment {
         });
     }
 
-
     private void setupBackButton() {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> {
@@ -374,7 +402,6 @@ public class CategoryFragment extends Fragment {
             });
         }
     }
-
 
     private void initializeLookupTable() {
         alphaLookupTable = new float[101];
@@ -387,7 +414,6 @@ public class CategoryFragment extends Fragment {
         }
         isLookupTableInitialized = true;
     }
-
 
     private float smoothInterpolate(float input) {
         return input * input * (3.0f - 2.0f * input);
@@ -444,7 +470,6 @@ public class CategoryFragment extends Fragment {
         updateElementsVisibilityFast(smoothPercentage);
     }
 
-
     private void updateToolbarBackgroundFast(float percentage) {
         if (toolbar == null) return;
         if (percentage > 0.3f) {
@@ -456,7 +481,6 @@ public class CategoryFragment extends Fragment {
             toolbar.setBackgroundColor(0x00000000);
         }
     }
-
 
     private void updateCollapsedTitleFast(float percentage) {
         if (txtCollapsedTitle == null) return;
@@ -502,7 +526,6 @@ public class CategoryFragment extends Fragment {
             txtSubCategoryShop.setAlpha(Math.max(0f, 1f - (percentage * 1.3f)));
         }
     }
-
 
     @Override
     public void onDestroyView() {
