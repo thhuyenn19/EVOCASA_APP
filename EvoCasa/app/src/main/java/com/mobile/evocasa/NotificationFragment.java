@@ -41,6 +41,7 @@ public class NotificationFragment extends Fragment {
     private List<NotificationItem> items = new ArrayList<>();
     private FirebaseFirestore db;
     private UserSessionManager session;
+    private List<Map<String, Object>> originalNotificationData = new ArrayList<>();
 
 
     @Nullable
@@ -65,7 +66,24 @@ public class NotificationFragment extends Fragment {
         // Bắt sự kiện nút "Mark all as read"
         TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);
         if (txtMarkAllRead != null) {
-            txtMarkAllRead.setOnClickListener(v -> adapter.markAllAsRead());
+            txtMarkAllRead.setOnClickListener(v -> {
+                // 1. Cập nhật trạng thái trong adapter
+                adapter.markAllAsRead();
+
+                // 2. Cập nhật trạng thái trong danh sách lưu để ghi xuống Firestore
+                for (Map<String, Object> noti : originalNotificationData) {
+                    noti.put("Status", "Read");
+                }
+
+                // 3. Ghi lại mảng vào Firestore
+                String customerId = session.getUid();
+                db.collection("Customers")
+                        .document(customerId)
+                        .update("Notifications", originalNotificationData)
+                        .addOnSuccessListener(unused -> Log.d(TAG, "All notifications marked as read."))
+                        .addOnFailureListener(e -> Log.e(TAG, "Failed to update notifications", e));
+            });
+
         }
 
         loadNotifications();
@@ -90,6 +108,7 @@ public class NotificationFragment extends Fragment {
                     if (doc.exists() && doc.contains("Notifications")) {
                         List<Map<String, Object>> notiList = (List<Map<String, Object>>) doc.get("Notifications");
                         Log.d(TAG, "Fetched " + notiList.size() + " notifications from array.");
+                        originalNotificationData = new ArrayList<>(notiList);  // lưu bản gốc để ghi lại sau
 
                         items.clear();
                         String lastDate = "";
