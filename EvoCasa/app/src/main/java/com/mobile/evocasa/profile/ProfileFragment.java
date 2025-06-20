@@ -68,6 +68,7 @@ public class ProfileFragment extends Fragment {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         sessionManager = new UserSessionManager(requireContext());
+
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         txtName = view.findViewById(R.id.txtName);
