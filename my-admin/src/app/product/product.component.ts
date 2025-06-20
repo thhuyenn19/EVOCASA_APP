@@ -374,9 +374,7 @@ export class ProductComponent implements OnInit {
       identifier = (product as any).id;
     }
 
-    this.router.navigate([
-      `/admin-product-view/${encodeURIComponent(identifier)}`,
-    ]);
+    this.router.navigate([`/admin-product-view/${identifier}`]);
   }
 
   editProduct(product: IProduct): void {
