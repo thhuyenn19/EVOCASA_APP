@@ -1,9 +1,10 @@
 package com.mobile.models;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class ProductItem {
+public class ProductItem implements Serializable {
     private String id;
     private String name;
     private Double price;
@@ -104,7 +105,7 @@ public class ProductItem {
     }
 
     // Inner class cho Ratings
-    public static class Ratings {
+    public static class Ratings implements Serializable {
         private Double average;
         private List<Detail> details; // Thêm danh sách chi tiết đánh giá (tùy chọn)
 
@@ -131,7 +132,7 @@ public class ProductItem {
         }
 
         // Inner class cho chi tiết đánh giá
-        public static class Detail {
+        public static class Detail implements Serializable {
             private String reviewId;
             private int rating;
             private String comment;

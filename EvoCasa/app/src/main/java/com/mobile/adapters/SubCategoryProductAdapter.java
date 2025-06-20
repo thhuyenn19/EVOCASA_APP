@@ -100,60 +100,16 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         // Kiểm tra xem sản phẩm đã trong wishlist chưa
         String customerId = sessionManager.getUid();
         if (customerId != null) {
-            db.collection("Wishlist")
-                    .whereEqualTo("Customer_id", customerId)
-                    .get()
-                    .addOnSuccessListener(querySnapshot -> {
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            List<String> productIds = (List<String>) document.get("Productid");
-                            if (productIds != null && productIds.contains(product.getId())) {
-                                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
-                                break;
-                            } else {
-                                holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
-                    });
+            checkWishlistStatus(customerId, product.getId(), holder);
         } else {
             holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
         }
 
-        // Xử lý sự kiện nhấn vào icon yêu thích
+        // Xử lý sự kiện nhấn vào icon yêu thích - Toggle wishlist
         holder.imgFavorite.setOnClickListener(v -> {
             String customerIdClick = sessionManager.getUid();
             if (customerIdClick != null) {
-                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
-                Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
-
-                db.collection("Wishlist")
-                        .whereEqualTo("Customer_id", customerIdClick)
-                        .get()
-                        .addOnSuccessListener(querySnapshot -> {
-                            if (querySnapshot.isEmpty()) {
-                                Map<String, Object> wishlistData = new HashMap<>();
-                                wishlistData.put("Customer_id", customerIdClick);
-                                wishlistData.put("CreatedAt", FieldValue.serverTimestamp());
-                                wishlistData.put("Productid", new ArrayList<>());
-                                db.collection("Wishlist")
-                                        .add(wishlistData)
-                                        .addOnSuccessListener(documentReference -> {
-                                            String wishlistId = documentReference.getId();
-                                            addProductToWishlist(wishlistId, product.getId(), holder);
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(holder.itemView.getContext(), "Failed to create wishlist", Toast.LENGTH_SHORT).show();
-                                        });
-                            } else {
-                                String wishlistId = querySnapshot.getDocuments().get(0).getId();
-                                addProductToWishlist(wishlistId, product.getId(), holder);
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            Toast.makeText(holder.itemView.getContext(), "Failed to check wishlist", Toast.LENGTH_SHORT).show();
-                        });
+                toggleWishlist(customerIdClick, product.getId(), holder);
             } else {
                 Toast.makeText(holder.itemView.getContext(), "Please sign in to add to wishlist", Toast.LENGTH_SHORT).show();
             }
@@ -172,6 +128,82 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         });
     }
 
+    private void checkWishlistStatus(String customerId, String productId, SubCategoryProductViewHolder holder) {
+        db.collection("Wishlist")
+                .whereEqualTo("Customer_id", customerId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    boolean isInWishlist = false;
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        List<String> productIds = (List<String>) document.get("Productid");
+                        if (productIds != null && productIds.contains(productId)) {
+                            isInWishlist = true;
+                            break;
+                        }
+                    }
+
+                    if (isInWishlist) {
+                        holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                    } else {
+                        holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                });
+    }
+
+    private void toggleWishlist(String customerId, String productId, SubCategoryProductViewHolder holder) {
+        db.collection("Wishlist")
+                .whereEqualTo("Customer_id", customerId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (querySnapshot.isEmpty()) {
+                        // Tạo wishlist mới và thêm sản phẩm
+                        createWishlistAndAddProduct(customerId, productId, holder);
+                    } else {
+                        // Kiểm tra sản phẩm đã có trong wishlist chưa
+                        QueryDocumentSnapshot wishlistDoc = (QueryDocumentSnapshot) querySnapshot.getDocuments().get(0);
+                        String wishlistId = wishlistDoc.getId();
+                        List<String> productIds = (List<String>) wishlistDoc.get("Productid");
+
+                        if (productIds == null) {
+                            productIds = new ArrayList<>();
+                        }
+
+                        if (productIds.contains(productId)) {
+                            // Sản phẩm đã có trong wishlist -> Remove
+                            removeProductFromWishlist(wishlistId, productId, holder);
+                        } else {
+                            // Sản phẩm chưa có trong wishlist -> Add
+                            addProductToWishlist(wishlistId, productId, holder);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(holder.itemView.getContext(), "Failed to check wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void createWishlistAndAddProduct(String customerId, String productId, SubCategoryProductViewHolder holder) {
+        Map<String, Object> wishlistData = new HashMap<>();
+        wishlistData.put("Customer_id", customerId);
+        wishlistData.put("CreatedAt", FieldValue.serverTimestamp());
+        List<String> productIds = new ArrayList<>();
+        productIds.add(productId);
+        wishlistData.put("Productid", productIds);
+
+        db.collection("Wishlist")
+                .add(wishlistData)
+                .addOnSuccessListener(documentReference -> {
+                    holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                    Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(holder.itemView.getContext(), "Failed to create wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
     private void addProductToWishlist(String wishlistId, String productId, SubCategoryProductViewHolder holder) {
         db.collection("Wishlist").document(wishlistId)
                 .get()
@@ -181,20 +213,49 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
                         if (productIds == null) {
                             productIds = new ArrayList<>();
                         }
+
                         if (!productIds.contains(productId)) {
                             productIds.add(productId);
                             Map<String, Object> updates = new HashMap<>();
                             updates.put("Productid", productIds);
+
                             db.collection("Wishlist").document(wishlistId)
                                     .update(updates)
                                     .addOnSuccessListener(aVoid -> {
-                                        // Cập nhật thành công
+                                        holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                                        Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(holder.itemView.getContext(), "Failed to add to wishlist", Toast.LENGTH_SHORT).show();
                                     });
-                        } else {
-                            Toast.makeText(holder.itemView.getContext(), "Product already in wishlist", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(holder.itemView.getContext(), "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void removeProductFromWishlist(String wishlistId, String productId, SubCategoryProductViewHolder holder) {
+        db.collection("Wishlist").document(wishlistId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> productIds = (List<String>) documentSnapshot.get("Productid");
+                        if (productIds != null && productIds.contains(productId)) {
+                            productIds.remove(productId);
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("Productid", productIds);
+
+                            db.collection("Wishlist").document(wishlistId)
+                                    .update(updates)
+                                    .addOnSuccessListener(aVoid -> {
+                                        holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                                        Toast.makeText(holder.itemView.getContext(), "Removed from wishlist", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(holder.itemView.getContext(), "Failed to remove from wishlist", Toast.LENGTH_SHORT).show();
+                                    });
                         }
                     }
                 })

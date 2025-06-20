@@ -1,8 +1,6 @@
 package com.mobile.evocasa.productdetails;
 
 import android.content.Intent;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,20 +24,33 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mobile.adapters.ImagePagerAdapter;
 import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.R;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.UserSessionManager;
 
+import java.lang.reflect.Type;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ProductDetailsActivity extends AppCompatActivity {
@@ -47,12 +59,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private ProductDetailPagerAdapter pagerAdapter;
     private RecyclerView recyclerViewRecommend;
+    private LinearLayout btnBack;
     private SuggestedProductAdapter suggestedProductAdapter;
     private List<ProductItem> productList;
     private FirebaseFirestore db;
-
     private WrapContentViewPager2Helper viewPagerHelper;
-
     private TextView txtProductName;
     private TextView txtProductPrice;
     private TextView txtRating;
@@ -60,6 +71,13 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private TextView txtRecommendItems;
     private Button btnAddToCart;
     private Button btnBuyNow;
+    private ViewPager2 imageViewPager;
+    private List<String> imageUrls;
+    private ImageButton btnFavorite;
+    private LinearLayout ratingLayout;
+    private UserSessionManager sessionManager;
+    private String productId;
+    private DecimalFormat decimalFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +86,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_details);
 
         db = FirebaseFirestore.getInstance();
-
+        sessionManager = new UserSessionManager(this);
         FontUtils.initFonts(this);
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+        decimalFormat = new DecimalFormat("0.0", symbols);
+        decimalFormat.setGroupingUsed(false);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -78,49 +99,32 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
 
         initViews();
-        ImageView imageView = findViewById(R.id.imgProduct);
-        imageView.post(() -> {
-            Drawable drawable = imageView.getDrawable();
-            if (drawable == null) return;
-
-            float scale;
-            Matrix matrix = new Matrix();
-
-            int imageWidth = drawable.getIntrinsicWidth();
-            int imageHeight = drawable.getIntrinsicHeight();
-            int viewWidth = imageView.getWidth();
-            int viewHeight = imageView.getHeight();
-
-            scale = (float) viewWidth / (float) imageWidth;
-
-            float dy = viewHeight - imageHeight * scale;
-
-            matrix.setScale(scale, scale);
-            matrix.postTranslate(0, dy);
-
-            imageView.setImageMatrix(matrix);
-        });
-
         setFonts();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         btnAddToCart = findViewById(R.id.btnAddToCart);
         btnBuyNow = findViewById(R.id.btnBuyNow);
+        btnBack = findViewById(R.id.btnBack);
+        imageViewPager = findViewById(R.id.imgProductViewPager);
 
         btnAddToCart.setOnClickListener(v -> showAddToCartBottomSheet());
         btnBuyNow.setOnClickListener(v -> showBuyNowBottomSheet());
 
         viewPagerHelper = new WrapContentViewPager2Helper(viewPager);
-
         pagerAdapter = new ProductDetailPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(0, false);
         viewPager.setOffscreenPageLimit(3);
-
         viewPagerHelper.setupInitialHeight();
-
         viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        btnBack.setOnClickListener(v -> {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("wishlistChanged", true); // bạn có thể tùy chỉnh cờ này nếu cần
+            setResult(RESULT_OK, resultIntent);
+            finish(); // Đóng activity và quay lại màn trước
+        });
+
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";
@@ -150,7 +154,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
 
                 int position = tab.getPosition();
-
                 if (position == 2) {
                     tabLayout.postDelayed(() -> {
                         Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
@@ -166,6 +169,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 600);
             }
 
+
             @Override
             public void onTabUnselected(@NonNull TabLayout.Tab tab) {
                 View view = tab.getCustomView();
@@ -179,14 +183,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
-
                 if (position == 2) {
                     Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                     if (reviewsFragment instanceof ReviewsFragment) {
                         ((ReviewsFragment) reviewsFragment).onFragmentVisible();
                     }
                 }
-
                 updateViewPagerHeight();
             }
         });
@@ -195,19 +197,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-
                 viewPager.postDelayed(() -> {
                     if (viewPagerHelper != null) {
                         viewPagerHelper.updateHeight();
                     }
                 }, 50);
-
                 viewPager.postDelayed(() -> {
                     if (viewPagerHelper != null) {
                         viewPagerHelper.updateHeight();
                     }
                 }, 150);
-
                 viewPager.postDelayed(() -> {
                     if (viewPagerHelper != null) {
                         viewPagerHelper.updateHeight();
@@ -224,12 +223,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 if (view instanceof TextView) {
                     TextView tv = (TextView) view;
                     tv.setTypeface(FontUtils.getZbold(ProductDetailsActivity.this));
-                    tv.setTextColor(ContextCompat.getColor(ProductDetailsActivity.this, R.color.color_5E4C3E));
+                    tv.setTextColor(ContextCompat.getColor(this, R.color.color_5E4C3E));
                 }
             }
         });
 
-        String productId = getIntent().getStringExtra("productId");
+        productId = getIntent().getStringExtra("productId");
         if (productId != null) {
             db.collection("Product").document(productId)
                     .get()
@@ -241,6 +240,33 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             if (txtProductPrice != null && documentSnapshot.getDouble("Price") != null) {
                                 txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
                             }
+                            String imageJson = documentSnapshot.getString("Image");
+                            if (imageJson != null) {
+                                try {
+                                    Gson gson = new Gson();
+                                    Type listType = new TypeToken<List<String>>() {}.getType();
+                                    imageUrls = gson.fromJson(imageJson, listType);
+                                    setupImageViewPager();
+                                } catch (Exception e) {
+                                    Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            Object ratingsObj = documentSnapshot.get("Ratings");
+                            if (ratingsObj instanceof Map) {
+                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                Object averageObj = ratingsMap.get("Average");
+                                if (averageObj instanceof Number && txtRating != null) {
+                                    ratingLayout.setVisibility(View.VISIBLE);
+                                    txtRating.setText(decimalFormat.format(((Number) averageObj).doubleValue()));
+                                } else {
+                                    ratingLayout.setVisibility(View.VISIBLE);
+                                    txtRating.setText("5.0");
+                                }
+                            } else {
+                                ratingLayout.setVisibility(View.VISIBLE);
+                                txtRating.setText("5.0");
+                            }
+                            checkWishlistStatus();
                         } else {
                             Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
                         }
@@ -267,6 +293,33 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
 
         loadSuggestedProducts();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("wishlistChanged", true); // nếu có thay đổi
+        setResult(RESULT_OK, resultIntent);
+        super.onBackPressed();
+    }
+
+    private void setupImageViewPager() {
+        if (imageUrls != null && !imageUrls.isEmpty()) {
+            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imageUrls);
+            imageViewPager.setAdapter(imageAdapter);
+            imageViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                @Override
+                public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+                    if (txtImageIndex != null) {
+                        txtImageIndex.setText((position + 1) + "/" + imageUrls.size());
+                    }
+                }
+            });
+            txtImageIndex.setText("1/" + imageUrls.size());
+        } else {
+            txtImageIndex.setText("0/0");
+        }
     }
 
     private void loadSuggestedProducts() {
@@ -425,33 +478,29 @@ public class ProductDetailsActivity extends AppCompatActivity {
         txtRecommendItems = findViewById(R.id.txtRecommendItems);
         btnAddToCart = findViewById(R.id.btnAddToCart);
         btnBuyNow = findViewById(R.id.btnBuyNow);
+        btnFavorite = findViewById(R.id.btnFavorite);
+        ratingLayout = findViewById(R.id.linearLayoutRating);
     }
 
     private void setFonts() {
         if (txtProductName != null) {
             FontUtils.setZboldFont(this, txtProductName);
         }
-
         if (txtProductPrice != null) {
             FontUtils.setZboldFont(this, txtProductPrice);
         }
-
         if (txtRating != null) {
             FontUtils.setZregularFont(this, txtRating);
         }
-
         if (txtImageIndex != null) {
             FontUtils.setRegularFont(this, txtImageIndex);
         }
-
         if (txtRecommendItems != null) {
             FontUtils.setZboldFont(this, txtRecommendItems);
         }
-
         if (btnAddToCart != null) {
             FontUtils.setBoldFont(this, btnAddToCart);
         }
-
         if (btnBuyNow != null) {
             FontUtils.setBoldFont(this, btnBuyNow);
         }
@@ -473,12 +522,158 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
     public void forceRefreshCurrentFragment() {
         if (pagerAdapter != null) {
-            int currentItem = viewPager.getCurrentItem();
-            Fragment currentFragment = pagerAdapter.getCurrentFragment(currentItem);
+            int position = viewPager.getCurrentItem();
+            Fragment currentFragment = pagerAdapter.getCurrentFragment(position);
             if (currentFragment instanceof ReviewsFragment) {
                 ((ReviewsFragment) currentFragment).refreshReviews();
             }
             updateViewPagerHeight();
         }
+    }
+
+    private void checkWishlistStatus() {
+        String customerId = sessionManager.getUid();
+        if (customerId != null && productId != null) {
+            db.collection("Wishlist")
+                    .whereEqualTo("Customer_id", customerId)
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            List<String> productIds = (List<String>) document.get("Productid");
+                            if (productIds != null && productIds.contains(productId)) {
+                                btnFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                                break;
+                            } else {
+                                btnFavorite.setImageResource(R.drawable.ic_favourite);
+                            }
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        btnFavorite.setImageResource(R.drawable.ic_favourite);
+                    });
+        } else {
+            btnFavorite.setImageResource(R.drawable.ic_favourite);
+        }
+
+        btnFavorite.setOnClickListener(v -> {
+            String customerIdClick = sessionManager.getUid();
+            if (customerIdClick != null && productId != null) {
+                toggleWishlist(customerIdClick, productId);
+            } else {
+                Toast.makeText(this, "Please sign in to add to wishlist", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void toggleWishlist(String customerId, String productId) {
+        db.collection("Wishlist")
+                .whereEqualTo("Customer_id", customerId)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (querySnapshot.isEmpty()) {
+                        // Tạo wishlist mới và thêm sản phẩm
+                        createWishlistAndAddProduct(customerId, productId);
+                    } else {
+                        // Kiểm tra sản phẩm đã có trong wishlist chưa
+                        DocumentSnapshot wishlistDoc = querySnapshot.getDocuments().get(0);
+
+                        String wishlistId = wishlistDoc.getId();
+                        List<String> productIds = (List<String>) wishlistDoc.get("Productid");
+
+                        if (productIds == null) {
+                            productIds = new ArrayList<>();
+                        }
+
+                        if (productIds.contains(productId)) {
+                            // Sản phẩm đã có trong wishlist -> Remove
+                            removeProductFromWishlist(wishlistId, productId);
+                        } else {
+                            // Sản phẩm chưa có trong wishlist -> Add
+                            addProductToWishlist(wishlistId, productId);
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to check wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void createWishlistAndAddProduct(String customerId, String productId) {
+        Map<String, Object> wishlistData = new HashMap<>();
+        wishlistData.put("Customer_id", customerId);
+        wishlistData.put("CreatedAt", FieldValue.serverTimestamp());
+        List<String> productIds = new ArrayList<>();
+        productIds.add(productId);
+        wishlistData.put("Productid", productIds);
+
+        db.collection("Wishlist")
+                .add(wishlistData)
+                .addOnSuccessListener(documentReference -> {
+                    btnFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                    Toast.makeText(this, "Added to wishlist", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to create wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void addProductToWishlist(String wishlistId, String productId) {
+        db.collection("Wishlist").document(wishlistId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> productIds = (List<String>) documentSnapshot.get("Productid");
+                        if (productIds == null) {
+                            productIds = new ArrayList<>();
+                        }
+
+                        if (!productIds.contains(productId)) {
+                            productIds.add(productId);
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("Productid", productIds);
+
+                            db.collection("Wishlist").document(wishlistId)
+                                    .update(updates)
+                                    .addOnSuccessListener(aVoid -> {
+                                        btnFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                                        Toast.makeText(this, "Added to wishlist", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Failed to add to wishlist", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void removeProductFromWishlist(String wishlistId, String productId) {
+        db.collection("Wishlist").document(wishlistId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<String> productIds = (List<String>) documentSnapshot.get("Productid");
+                        if (productIds != null && productIds.contains(productId)) {
+                            productIds.remove(productId);
+                            Map<String, Object> updates = new HashMap<>();
+                            updates.put("Productid", productIds);
+
+                            db.collection("Wishlist").document(wishlistId)
+                                    .update(updates)
+                                    .addOnSuccessListener(aVoid -> {
+                                        btnFavorite.setImageResource(R.drawable.ic_favourite);
+                                        Toast.makeText(this, "Removed from wishlist", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(this, "Failed to remove from wishlist", Toast.LENGTH_SHORT).show();
+                                    });
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
+                });
     }
 }

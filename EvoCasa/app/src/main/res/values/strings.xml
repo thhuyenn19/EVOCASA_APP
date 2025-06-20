@@ -206,6 +206,11 @@
     <string name="fb_login_protocol_scheme">fb30814704168116794</string>
     <string name="default_web_client_id">408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com</string>
     <string name="facebook_client_token">cd117f107da97476f0e5a323eaaa1e44</string>
+    <string name="title_setting">Setting</string>
+    <string name="title_order_id">Order ID:</string>
+    <string name="title_order_date">Order Date:</string>
+    <string name="title_estimated_deli">Estimated delivery:</string>
+    <string name="title_tracking_number">Tracking Number:</string>
 
 
 </resources>
