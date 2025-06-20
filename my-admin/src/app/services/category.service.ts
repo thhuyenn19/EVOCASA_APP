@@ -1,7 +1,18 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, retry, catchError, throwError, tap } from 'rxjs';
+import { Observable, map, retry, catchError, throwError, tap, from } from 'rxjs';
 import { Category } from '../interfaces/category';
+
+import { getDocs } from 'firebase/firestore';
+import { db } from '../firebase-config'; // Đã sửa đúng đường dẫn
+import {
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+} from 'firebase/firestore';
 
 interface CategoryHierarchy extends Category {
   children: CategoryHierarchy[];
@@ -11,65 +22,127 @@ interface CategoryHierarchy extends Category {
   providedIn: 'root'
 })
 export class CategoryService {
-  private apiUrl = 'http://localhost:3002/categories';
-  private baseUrl = 'http://localhost:3002';
+  // private apiUrl = 'http://localhost:3002/categories';
+  // private baseUrl = 'http://localhost:3002';
 
-  constructor(private _http: HttpClient) {}
+  // constructor(private _http: HttpClient) {}
+
+  constructor() {}
 
   getCategories(): Observable<Category[]> {
-    console.log('Fetching categories from:', this.apiUrl);
-    return this._http.get<any[]>(this.apiUrl).pipe(
-      tap(response => console.log('Raw categories response:', response)),
-      map(response => {
-        return response.map(item => this.normalizeCategoryData(item));
-      }),
-      tap(categories => console.log('Processed categories:', categories)),
-      retry(3),
-      catchError(this.handleError)
-    );
+    // console.log('Fetching categories from:', this.apiUrl);
+    // return this._http.get<any[]>(this.apiUrl).pipe(
+    //   tap(response => console.log('Raw categories response:', response)),
+    //   map(response => {
+    //     return response.map(item => this.normalizeCategoryData(item));
+    //   }),
+    //   tap(categories => console.log('Processed categories:', categories)),
+    //   retry(3),
+    //   catchError(this.handleError)
+    // );
+    const categoryRef = collection(db, 'Category'); 
+    const categoryPromise = getDocs(categoryRef).then(snapshot => {
+      return snapshot.docs.map(doc => {
+        const data = doc.data() as any;
+        return {
+          id: (data._id && data._id.$oid) || doc.id,
+          name: data.Name,
+          description: data.Description,
+          image: [data.Image], // convert to array as expected
+          parentCategory: data.ParentCategory,
+          slug: data.Slug,
+        } as Category;
+      });
+    });
+
+    return from(categoryPromise);
   }
 
    getCategory(id: string): Observable<Category> {
+    // console.log(`Fetching category with ID: ${id}`);
+    // return this._http.get<Category>(`${this.apiUrl}/${id}`).pipe(
+    //   tap(response => console.log('Raw category response:', response)),
+    //   map(response => this.normalizeCategoryData(response)),
+    //   map(category => this.processCategoryImage(category)),
+    //   retry(3),
+    //   catchError(this.handleError)
+    // );
     console.log(`Fetching category with ID: ${id}`);
-    return this._http.get<Category>(`${this.apiUrl}/${id}`).pipe(
-      tap(response => console.log('Raw category response:', response)),
-      map(response => this.normalizeCategoryData(response)),
-      map(category => this.processCategoryImage(category)),
-      retry(3),
-      catchError(this.handleError)
-    );
+    const docRef = doc(db, 'Category', id);
+    const docPromise = getDoc(docRef).then((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data() as any;
+        return {
+          id: docSnap.id,
+          name: data.Name,
+          description: data.Description,
+          image: [data.Image],
+          parentCategory: data.ParentCategory,
+          slug: data.Slug,
+        } as Category;
+      } else {
+        throw new Error('Category not found');
+      }
+    });
+
+    return from(docPromise);
   }
 
-  putCategory(category: Category): Observable<Category[]> {
+  putCategory(category: Category): Observable<void> {
+    // console.log('Updating category:', category);
+    // const headers = new HttpHeaders().set("Content-Type", "application/json");
+    // return this._http.put<any[]>(this.apiUrl, category, { headers }).pipe(
+    //   tap(response => console.log('Category update response:', response)),
+    //   retry(3),
+    //   catchError(this.handleError)
+    // );
     console.log('Updating category:', category);
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
-    return this._http.put<any[]>(this.apiUrl, category, { headers }).pipe(
-      tap(response => console.log('Category update response:', response)),
-      retry(3),
-      catchError(this.handleError)
-    );
+    const docRef = doc(db, 'Category', category.id);
+    const updateData = {
+      Name: category.name,
+      Description: category.description,
+      Image: category.image?.[0] || '',
+      ParentCategory: category.parentCategory || null,
+      Slug: category.slug,
+    };
+
+    return from(updateDoc(docRef, updateData));
   }
 
-  createCategory(category: Category): Observable<Category> {
+  createCategory(category: Category): Observable<void> {
+    // console.log('Creating new category:', category);
+    // const headers = new HttpHeaders().set("Content-Type", "application/json");
+    // return this._http.post<any>(this.apiUrl, category, { headers }).pipe(
+    //   tap(response => console.log('Category creation response:', response)),
+    //   map(response => this.normalizeCategoryData(response)),
+    //   map(category => this.processCategoryImage(category)),
+    //   retry(3),
+    //   catchError(this.handleError)
+    // );
     console.log('Creating new category:', category);
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
-    return this._http.post<any>(this.apiUrl, category, { headers }).pipe(
-      tap(response => console.log('Category creation response:', response)),
-      map(response => this.normalizeCategoryData(response)),
-      map(category => this.processCategoryImage(category)),
-      retry(3),
-      catchError(this.handleError)
-    );
+    const newDocRef = doc(collection(db, 'Category'));
+    const categoryData = {
+      Name: category.name,
+      Description: category.description,
+      Image: category.image?.[0] || '',
+      ParentCategory: category.parentCategory || null,
+      Slug: category.slug,
+    };
+
+    return from(setDoc(newDocRef, categoryData));
   }
 
-  deleteCategory(categoryId: string): Observable<any> {
+  deleteCategory(categoryId: string): Observable<void> {
+    // console.log(`Deleting category with ID: ${categoryId}`);
+    // const headers = new HttpHeaders().set("Content-Type", "application/json");
+    // return this._http.delete<any>(`${this.apiUrl}/${categoryId}`, { headers }).pipe(
+    //   tap(response => console.log('Category deletion response:', response)),
+    //   retry(3),
+    //   catchError(this.handleError)
+    // );
     console.log(`Deleting category with ID: ${categoryId}`);
-    const headers = new HttpHeaders().set("Content-Type", "application/json");
-    return this._http.delete<any>(`${this.apiUrl}/${categoryId}`, { headers }).pipe(
-      tap(response => console.log('Category deletion response:', response)),
-      retry(3),
-      catchError(this.handleError)
-    );
+    const docRef = doc(db, 'Category', categoryId);
+    return from(deleteDoc(docRef));
   }
 
   getMainCategories(): Observable<Category[]> {
