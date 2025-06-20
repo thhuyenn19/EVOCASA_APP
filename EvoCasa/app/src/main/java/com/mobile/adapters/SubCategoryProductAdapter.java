@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
@@ -37,6 +39,7 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
     private final DecimalFormat decimalFormat;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final UserSessionManager sessionManager;
+    private OnItemClickListener onItemClickListener;
 
     public SubCategoryProductAdapter(List<ProductItem> productList, Context context) {
         this.productList = productList;
@@ -44,6 +47,16 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         this.decimalFormat = new DecimalFormat("0.0", symbols);
         decimalFormat.setGroupingUsed(false);
         this.sessionManager = new UserSessionManager(context);
+    }
+
+    // Interface cho click listener
+    public interface OnItemClickListener {
+        void onItemClick(ProductItem product);
+    }
+
+    // Phương thức để set click listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -143,6 +156,18 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
                         });
             } else {
                 Toast.makeText(holder.itemView.getContext(), "Please sign in to add to wishlist", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Xử lý sự kiện nhấn vào item để mở ProductDetailsActivity
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(product);
+            } else {
+                // Fallback: Open ProductDetailsActivity directly
+                Intent intent = new Intent(holder.itemView.getContext(), ProductDetailsActivity.class);
+                intent.putExtra("productId", product.getId());
+                holder.itemView.getContext().startActivity(intent);
             }
         });
     }

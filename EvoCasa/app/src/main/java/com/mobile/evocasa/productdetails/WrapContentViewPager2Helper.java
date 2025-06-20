@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.mobile.adapters.ProductDetailPagerAdapter;
+
 public class WrapContentViewPager2Helper {
     private ViewPager2 viewPager;
     private FragmentActivity activity;

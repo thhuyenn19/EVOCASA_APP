@@ -1,13 +1,12 @@
 package com.mobile.evocasa.productdetails;
 
+import android.content.Intent;
 import android.graphics.Matrix;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,7 +17,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,14 +28,18 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.R;
-import com.mobile.models.SuggestedProducts;
+import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -46,12 +48,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ProductDetailPagerAdapter pagerAdapter;
     private RecyclerView recyclerViewRecommend;
     private SuggestedProductAdapter suggestedProductAdapter;
-    private List<SuggestedProducts> productList;
+    private List<ProductItem> productList;
+    private FirebaseFirestore db;
 
-    // Add the helper for wrap content functionality
     private WrapContentViewPager2Helper viewPagerHelper;
 
-    // UI Elements for font setting
     private TextView txtProductName;
     private TextView txtProductPrice;
     private TextView txtRating;
@@ -66,17 +67,16 @@ public class ProductDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
 
-        // Initialize FontUtils
+        db = FirebaseFirestore.getInstance();
+
         FontUtils.initFonts(this);
 
-        // Áp dụng padding cho status bar
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Initialize UI elements
         initViews();
         ImageView imageView = findViewById(R.id.imgProduct);
         imageView.post(() -> {
@@ -91,22 +91,18 @@ public class ProductDetailsActivity extends AppCompatActivity {
             int viewWidth = imageView.getWidth();
             int viewHeight = imageView.getHeight();
 
-            // Scale theo chiều rộng
             scale = (float) viewWidth / (float) imageWidth;
 
-            // Dịch ảnh lên để phần dưới được giữ lại
             float dy = viewHeight - imageHeight * scale;
 
             matrix.setScale(scale, scale);
-            matrix.postTranslate(0, dy); // Dịch theo chiều dọc
+            matrix.postTranslate(0, dy);
 
             imageView.setImageMatrix(matrix);
         });
 
-        // Set fonts for UI elements
         setFonts();
 
-        // Ánh xạ View
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
         btnAddToCart = findViewById(R.id.btnAddToCart);
@@ -115,25 +111,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(v -> showAddToCartBottomSheet());
         btnBuyNow.setOnClickListener(v -> showBuyNowBottomSheet());
 
-        // Initialize the wrap content helper
         viewPagerHelper = new WrapContentViewPager2Helper(viewPager);
 
-        // Khởi tạo adapter và gán vào ViewPager2
         pagerAdapter = new ProductDetailPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(0, false); // Mặc định tab đầu tiên được chọn
-        viewPager.setOffscreenPageLimit(3); // Giữ tất cả fragments trong memory
-
-        // Setup initial height after adapter is set
-        viewPagerHelper.setupInitialHeight();
-
-        // Giữ tất cả fragment để chuyển mượt hơn
+        viewPager.setCurrentItem(0, false);
         viewPager.setOffscreenPageLimit(3);
 
-        // Tắt hiệu ứng kéo vượt quá => Khi vuốt nhanh, ViewPager2 có hiệu ứng overscroll (lò xo hoặc sáng góc),có thể gây cảm giác lag hoặc không mượt.
+        viewPagerHelper.setupInitialHeight();
+
         viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
-        // Gán TabLayout với ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";
             switch (position) {
@@ -163,9 +151,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
                 int position = tab.getPosition();
 
-                // Special handling for Reviews tab
-                if (position == 2) { // Reviews tab
-                    // Force refresh reviews fragment
+                if (position == 2) {
                     tabLayout.postDelayed(() -> {
                         Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                         if (reviewsFragment instanceof ReviewsFragment) {
@@ -174,7 +160,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     }, 100);
                 }
 
-                // Force update height multiple times
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 50);
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 200);
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 400);
@@ -195,26 +180,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
             public void onTabReselected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
 
-                // Special handling for Reviews tab
-                if (position == 2) { // Reviews tab
+                if (position == 2) {
                     Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                     if (reviewsFragment instanceof ReviewsFragment) {
                         ((ReviewsFragment) reviewsFragment).onFragmentVisible();
                     }
                 }
 
-                // Force refresh when tab is reselected
                 updateViewPagerHeight();
             }
         });
 
-        // 🔧 Force height update every time tab changes (fix mất item review)
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
 
-                // Multiple attempts to update height with delays
                 viewPager.postDelayed(() -> {
                     if (viewPagerHelper != null) {
                         viewPagerHelper.updateHeight();
@@ -234,7 +215,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }, 300);
             }
         });
-        // Fix: Apply style cho tab đầu tiên sau khi attach
+
         tabLayout.post(() -> {
             TabLayout.Tab firstTab = tabLayout.getTabAt(0);
             if (firstTab != null) {
@@ -248,18 +229,82 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        /* Suggested Products */
+        String productId = getIntent().getStringExtra("productId");
+        if (productId != null) {
+            db.collection("Product").document(productId)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            if (txtProductName != null) {
+                                txtProductName.setText(documentSnapshot.getString("Name"));
+                            }
+                            if (txtProductPrice != null && documentSnapshot.getDouble("Price") != null) {
+                                txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
+                            }
+                        } else {
+                            Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to load product details", Toast.LENGTH_SHORT).show();
+                    });
+        } else {
+            Toast.makeText(this, "Invalid product ID", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
         recyclerViewRecommend = findViewById(R.id.recyclerViewRecommend);
         recyclerViewRecommend.setLayoutManager(new GridLayoutManager(this, 2));
-
-        List<SuggestedProducts> productList = new ArrayList<>();
-        productList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        productList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        productList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        productList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductAdapter = new SuggestedProductAdapter(productList);
+        productList = new ArrayList<>();
+        suggestedProductAdapter = new SuggestedProductAdapter(productList, this);
         recyclerViewRecommend.setAdapter(suggestedProductAdapter);
         recyclerViewRecommend.setHasFixedSize(false);
+
+        suggestedProductAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(this, ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
+
+        loadSuggestedProducts();
+    }
+
+    private void loadSuggestedProducts() {
+        db.collection("Product")
+                .limit(4)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    productList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        ProductItem product = new ProductItem();
+                        product.setId(doc.getId());
+                        product.setName(doc.getString("Name"));
+                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                        product.setImage(doc.getString("Image"));
+                        product.setDescription(doc.getString("Description"));
+                        product.setDimensions(doc.getString("Dimensions"));
+                        ProductItem.Ratings ratings = new ProductItem.Ratings();
+                        Object ratingsObj = doc.get("Ratings");
+                        if (ratingsObj instanceof Map) {
+                            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                            Object averageObj = ratingsMap.get("Average");
+                            if (averageObj instanceof Number) {
+                                ratings.setAverage(((Number) averageObj).doubleValue());
+                            }
+                        }
+                        product.setRatings(ratings);
+                        Object categoryIdObj = doc.get("category_id");
+                        if (categoryIdObj instanceof Map) {
+                            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
+                            product.setCategoryId(categoryIdMap);
+                        }
+                        productList.add(product);
+                    }
+                    suggestedProductAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load suggested products", Toast.LENGTH_SHORT).show();
+                });
     }
 
     private void showBuyNowBottomSheet() {
@@ -383,7 +428,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void setFonts() {
-        // Set fonts for product details
         if (txtProductName != null) {
             FontUtils.setZboldFont(this, txtProductName);
         }
@@ -404,7 +448,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
             FontUtils.setZboldFont(this, txtRecommendItems);
         }
 
-        // Set fonts for buttons
         if (btnAddToCart != null) {
             FontUtils.setBoldFont(this, btnAddToCart);
         }
@@ -417,7 +460,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Clean up the helper
         if (viewPagerHelper != null) {
             viewPagerHelper.destroy();
         }
@@ -428,12 +470,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
             viewPagerHelper.updateHeight();
         }
     }
+
     public void forceRefreshCurrentFragment() {
         if (pagerAdapter != null) {
             int currentItem = viewPager.getCurrentItem();
             Fragment currentFragment = pagerAdapter.getCurrentFragment(currentItem);
             if (currentFragment instanceof ReviewsFragment) {
-                // Force recreate the reviews
                 ((ReviewsFragment) currentFragment).refreshReviews();
             }
             updateViewPagerHeight();

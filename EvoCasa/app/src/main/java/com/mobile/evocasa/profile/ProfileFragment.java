@@ -4,6 +4,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.utils.UserSessionManager;
@@ -34,10 +35,9 @@ import com.mobile.evocasa.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
 import com.mobile.evocasa.helpcenter.HelpCenterFragment;
-import com.mobile.models.SuggestedProducts;
+import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +49,10 @@ public class ProfileFragment extends Fragment {
     private RecyclerView recyclerView;
     private View view;
 
-    // CartBadge
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
+    private FirebaseFirestore db;
 
-    //
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,19 +60,15 @@ public class ProfileFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         applyCustomFonts(view);
 
-        // Initialize views
-        txtName = view.findViewById(R.id.txtName);
+        db = FirebaseFirestore.getInstance();
 
-       // CartBadge
+        txtName = view.findViewById(R.id.txtName);
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         sessionManager = new UserSessionManager(requireContext());
-
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
-        txtName = view.findViewById(R.id.txtName);
 
-        //
         loadCustomerInformation();
         setupSuggestedProducts();
         setupClickListeners();
@@ -86,18 +81,54 @@ public class ProfileFragment extends Fragment {
         RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
         recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        List<SuggestedProducts> suggestedProductsList = new ArrayList<>();
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-        suggestedProductsList.add(new SuggestedProducts(R.mipmap.ic_lighting_brasslamp, "MCM Brass Lamp", "$109", "$85", "-22%", 5.0f));
-
-        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(suggestedProductsList);
+        List<ProductItem> productList = new ArrayList<>();
+        SuggestedProductAdapter suggestedProductsAdapter = new SuggestedProductAdapter(productList, requireContext());
         recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
+
+        suggestedProductsAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
+
+        db.collection("Product")
+                .limit(4)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    productList.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        ProductItem product = new ProductItem();
+                        product.setId(doc.getId());
+                        product.setName(doc.getString("Name"));
+                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+                        product.setImage(doc.getString("Image"));
+                        product.setDescription(doc.getString("Description"));
+                        product.setDimensions(doc.getString("Dimensions"));
+                        ProductItem.Ratings ratings = new ProductItem.Ratings();
+                        Object ratingsObj = doc.get("Ratings");
+                        if (ratingsObj instanceof Map) {
+                            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                            Object averageObj = ratingsMap.get("Average");
+                            if (averageObj instanceof Number) {
+                                ratings.setAverage(((Number) averageObj).doubleValue());
+                            }
+                        }
+                        product.setRatings(ratings);
+                        Object categoryIdObj = doc.get("category_id");
+                        if (categoryIdObj instanceof Map) {
+                            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
+                            product.setCategoryId(categoryIdMap);
+                        }
+                        productList.add(product);
+                    }
+                    suggestedProductsAdapter.notifyDataSetChanged();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileFragment", "Failed to load suggested products", e);
+                });
     }
 
     private void setupClickListeners() {
-        // Blog Fragment
         View txtEvoCasaBlog = view.findViewById(R.id.txtEvoCasaBlog);
         txtEvoCasaBlog.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -109,7 +140,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Wishlist Fragment
         View txtWishlist = view.findViewById(R.id.txtWishlist);
         txtWishlist.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -132,7 +162,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Help Center
         View imgHelpCenter = view.findViewById(R.id.imgHelpCenter);
         imgHelpCenter.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -155,7 +184,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Profile Detail
         ImageView imgAvatar = view.findViewById(R.id.img_avatar);
         ImageButton btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
 
@@ -179,7 +207,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Logout
         TextView txtLogOut = view.findViewById(R.id.txtLogOut);
         txtLogOut.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -190,7 +217,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Orders
         LinearLayout containerSeeAll = view.findViewById(R.id.containerSeeAll);
         containerSeeAll.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -202,7 +228,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // Order Status Items
         LinearLayout itemPending = view.findViewById(R.id.containerPending);
         LinearLayout itemPickup = view.findViewById(R.id.containerPickup);
         LinearLayout itemTransit = view.findViewById(R.id.containerInTransit);
@@ -234,7 +259,6 @@ public class ProfileFragment extends Fragment {
         itemTransit.setOnClickListener(goToOrders);
         itemReview.setOnClickListener(goToOrders);
 
-        // Chat
         TextView txtChat = view.findViewById(R.id.txtChat);
         ImageView icChat = view.findViewById(R.id.icChat);
 
@@ -252,7 +276,6 @@ public class ProfileFragment extends Fragment {
             icChat.setOnClickListener(openChatActivity);
         }
 
-        // Cart
         if (imgCart != null) {
             imgCart.setOnClickListener(v -> {
                 if (isAdded() && getActivity() != null) {
@@ -277,7 +300,6 @@ public class ProfileFragment extends Fragment {
                         if (!isAdded() || getContext() == null) return;
 
                         if (documentSnapshot.exists()) {
-                            // Gán tên người dùng
                             String name = documentSnapshot.getString("Name");
                             if (txtName != null) {
                                 if (name != null && !name.isEmpty()) {
@@ -287,7 +309,6 @@ public class ProfileFragment extends Fragment {
                                 }
                             }
 
-                            // Gán ảnh avatar
                             String avatarUrl = documentSnapshot.getString("Image");
                             if (imgAvatar != null && avatarUrl != null && !avatarUrl.isEmpty()) {
                                 Glide.with(requireContext())
@@ -311,7 +332,6 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-
 
     private void applyCustomFonts(View view) {
         TextView txtName = view.findViewById(R.id.txtName);
@@ -350,11 +370,7 @@ public class ProfileFragment extends Fragment {
             }
         }
     }
-    
-    // CartBadge
-    /**
-     * Start listening for cart changes and update badge
-     */
+
     private void startCartBadgeListener() {
         String uid = sessionManager.getUid();
 
@@ -366,7 +382,6 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        // Remove existing listener before creating new one
         if (cartListener != null) {
             cartListener.remove();
             cartListener = null;
@@ -376,7 +391,6 @@ public class ProfileFragment extends Fragment {
                 .collection("Customers")
                 .document(uid)
                 .addSnapshotListener((documentSnapshot, e) -> {
-                    // CRITICAL: Check if fragment is still attached AND context is not null
                     if (!isAdded() || getContext() == null || getActivity() == null) {
                         Log.d("CartBadge", "Fragment not attached, ignoring listener callback");
                         return;
@@ -384,7 +398,6 @@ public class ProfileFragment extends Fragment {
 
                     if (e != null) {
                         Log.w("CartBadge", "Listen failed.", e);
-                        // Safe update with lifecycle check
                         safeUpdateCartBadge(0);
                         return;
                     }
@@ -411,22 +424,18 @@ public class ProfileFragment extends Fragment {
     }
 
     private void safeUpdateCartBadge(int totalQuantity) {
-        // First check: Fragment lifecycle
         if (!isAdded() || getContext() == null || getActivity() == null) {
             Log.w("CartBadge", "Fragment not attached, cannot update badge");
             return;
         }
 
-        // Second check: View availability
         if (txtCartBadge == null) {
             Log.w("CartBadge", "Cart badge view is null, cannot update");
             return;
         }
 
-        // Use Handler with additional safety check
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            // Triple check: Ensure fragment is still attached when handler executes
             if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
                 Log.w("CartBadge", "Fragment detached during handler execution, skip update");
                 return;
@@ -448,40 +457,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-
-    /**
-     * Update cart badge display
-     */
-    private void updateCartBadge(int totalQuantity) {
-        // Add comprehensive lifecycle checks
-        if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
-            Log.w("CartBadge", "Fragment not attached or views null, skip update");
-            return;
-        }
-
-        // Post to main thread with additional safety check
-        new android.os.Handler(android.os.Looper.getMainLooper()).post(() -> {
-            // Double-check lifecycle state in the posted runnable
-            if (!isAdded() || getContext() == null || getActivity() == null || txtCartBadge == null) {
-                Log.w("CartBadge", "Fragment detached during handler post, skip update");
-                return;
-            }
-
-            if (totalQuantity > 0) {
-                txtCartBadge.setVisibility(View.VISIBLE);
-                String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
-                txtCartBadge.setText(displayText);
-                Log.d("CartBadge", "Badge updated: " + displayText);
-            } else {
-                txtCartBadge.setVisibility(View.GONE);
-                Log.d("CartBadge", "Badge hidden (quantity = 0)");
-            }
-        });
-    }
-
-    /**
-     * Public method for fragments to refresh cart badge
-     */
     public void refreshCartBadge() {
         if (!isAdded() || getContext() == null || getActivity() == null) {
             Log.d("CartBadge", "Cannot refresh badge - fragment not properly attached");
@@ -502,7 +477,6 @@ public class ProfileFragment extends Fragment {
                 .document(uid)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    // Check if fragment is still attached when callback returns
                     if (!isAdded() || getContext() == null || getActivity() == null) {
                         Log.d("CartBadge", "Fragment detached during refresh, ignoring result");
                         return;
@@ -545,7 +519,6 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("CartBadge", "Fragment onResume()");
-        // Only start listener if we don't already have one and fragment is properly attached
         if (cartListener == null && isAdded() && getContext() != null &&
                 sessionManager != null && txtCartBadge != null) {
             startCartBadgeListener();
@@ -570,7 +543,7 @@ public class ProfileFragment extends Fragment {
         super.onDestroyView();
         Log.d("CartBadge", "Fragment onDestroyView()");
         cleanupCartListener();
-        txtCartBadge = null; // Clear view reference
+        txtCartBadge = null;
     }
 
     @Override

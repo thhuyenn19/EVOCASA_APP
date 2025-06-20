@@ -3,6 +3,7 @@ package com.mobile.evocasa.category;
 import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -29,10 +30,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.adapters.SubCategoryAdapter;
 import com.mobile.adapters.SubCategoryProductAdapter;
+import com.mobile.evocasa.R;
+import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;
 import com.mobile.models.SubCategory;
 import com.mobile.utils.FontUtils;
-import com.mobile.evocasa.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -136,6 +138,13 @@ public class CategoryFragment extends Fragment {
         productAdapter = new SubCategoryProductAdapter(currentProductList, requireContext());
         recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recyclerViewProducts.setAdapter(productAdapter);
+
+        // Thêm click listener để mở ProductDetailsActivity
+        productAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
     }
 
     private void fetchAllProductsForShopAll() {
@@ -157,18 +166,29 @@ public class CategoryFragment extends Fragment {
                             product.setName(doc.getString("Name"));
                             product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                             product.setImage(doc.getString("Image"));
+                            product.setDescription(doc.getString("Description"));
+                            product.setDimensions(doc.getString("Dimensions"));
+                            product.setCustomizeImage(doc.getString("CustomizeImage"));
 
-                            // Lấy ratings từ Firestore
+                            // Khởi tạo ratings mặc định
+                            ProductItem.Ratings ratings = new ProductItem.Ratings();
                             Object ratingsObj = doc.get("Ratings");
                             if (ratingsObj instanceof Map) {
                                 @SuppressWarnings("unchecked")
                                 Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                ProductItem.Ratings ratings = new ProductItem.Ratings();
                                 Object averageObj = ratingsMap.get("Average");
                                 if (averageObj instanceof Number) {
                                     ratings.setAverage(((Number) averageObj).doubleValue());
                                 }
-                                product.setRatings(ratings);
+                            }
+                            product.setRatings(ratings);
+
+                            // Lấy categoryId
+                            Object categoryIdObj = doc.get("category_id");
+                            if (categoryIdObj instanceof Map) {
+                                @SuppressWarnings("unchecked")
+                                Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
+                                product.setCategoryId(categoryIdMap);
                             }
 
                             currentProductList.add(product);
@@ -211,18 +231,29 @@ public class CategoryFragment extends Fragment {
                                 product.setName(doc.getString("Name"));
                                 product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                                 product.setImage(doc.getString("Image"));
+                                product.setDescription(doc.getString("Description"));
+                                product.setDimensions(doc.getString("Dimensions"));
+                                product.setCustomizeImage(doc.getString("CustomizeImage"));
 
-                                // Lấy ratings từ Firestore
+                                // Khởi tạo ratings mặc định
+                                ProductItem.Ratings ratings = new ProductItem.Ratings();
                                 Object ratingsObj = doc.get("Ratings");
                                 if (ratingsObj instanceof Map) {
                                     @SuppressWarnings("unchecked")
                                     Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                    ProductItem.Ratings ratings = new ProductItem.Ratings();
                                     Object averageObj = ratingsMap.get("Average");
                                     if (averageObj instanceof Number) {
                                         ratings.setAverage(((Number) averageObj).doubleValue());
                                     }
-                                    product.setRatings(ratings);
+                                }
+                                product.setRatings(ratings);
+
+                                // Lấy categoryId
+                                Object categoryIdMapObj = doc.get("category_id");
+                                if (categoryIdMapObj instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdMapObj;
+                                    product.setCategoryId(categoryIdMap);
                                 }
 
                                 currentProductList.add(product);
@@ -253,18 +284,29 @@ public class CategoryFragment extends Fragment {
                                 product.setName(doc.getString("Name"));
                                 product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
                                 product.setImage(doc.getString("Image"));
+                                product.setDescription(doc.getString("Description"));
+                                product.setDimensions(doc.getString("Dimensions"));
+                                product.setCustomizeImage(doc.getString("CustomizeImage"));
 
-                                // Lấy ratings từ Firestore
+                                // Khởi tạo ratings mặc định
+                                ProductItem.Ratings ratings = new ProductItem.Ratings();
                                 Object ratingsObj = doc.get("Ratings");
                                 if (ratingsObj instanceof Map) {
                                     @SuppressWarnings("unchecked")
                                     Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                    ProductItem.Ratings ratings = new ProductItem.Ratings();
                                     Object averageObj = ratingsMap.get("Average");
                                     if (averageObj instanceof Number) {
                                         ratings.setAverage(((Number) averageObj).doubleValue());
                                     }
-                                    product.setRatings(ratings);
+                                }
+                                product.setRatings(ratings);
+
+                                // Lấy categoryId
+                                Object categoryIdMapObj = doc.get("category_id");
+                                if (categoryIdMapObj instanceof Map) {
+                                    @SuppressWarnings("unchecked")
+                                    Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdMapObj;
+                                    product.setCategoryId(categoryIdMap);
                                 }
 
                                 currentProductList.add(product);
@@ -309,8 +351,15 @@ public class CategoryFragment extends Fragment {
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         Log.d(TAG, "Subcategory query returned " + queryDocumentSnapshots.size() + " documents");
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                            Map<String, Object> parentCategory = (Map<String, Object>) doc.get("ParentCategory");
-                            String parentCategoryId = parentCategory != null ? (String) parentCategory.get("$oid") : null;
+                            Object parentCategoryObj = doc.get("ParentCategory");
+                            String parentCategoryId = null;
+                            if (parentCategoryObj instanceof Map) {
+                                @SuppressWarnings("unchecked")
+                                Map<String, Object> parentCategory = (Map<String, Object>) parentCategoryObj;
+                                parentCategoryId = (String) parentCategory.get("$oid");
+                            } else if (parentCategoryObj instanceof String) {
+                                parentCategoryId = (String) parentCategoryObj;
+                            }
                             if (parentCategoryId != null && parentCategoryId.equals(categoryId)) {
                                 String name = doc.getString("Name");
                                 String id = doc.getId();
