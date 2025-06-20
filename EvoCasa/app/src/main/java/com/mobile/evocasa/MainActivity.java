@@ -10,6 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.mobile.evocasa.auth.SignUp1Fragment;
 import com.mobile.utils.UserSessionManager;
 import com.mobile.evocasa.auth.SignInFragment;
 import com.facebook.FacebookSdk;
@@ -45,6 +47,21 @@ public class MainActivity extends AppCompatActivity {
                         .addToBackStack(null)
                         .commit();
             }
+        }
+        String openFragment = getIntent().getStringExtra("openFragment");
+
+        if ("SignUp".equals(openFragment)) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SignUp1Fragment())
+                    .commit();
+            return;
+        } else if ("SignIn".equals(openFragment)) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new SignInFragment())
+                    .commit();
+            return;
         }
 
     }

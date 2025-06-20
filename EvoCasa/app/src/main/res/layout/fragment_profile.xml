@@ -46,10 +46,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:src="@mipmap/sample_avt"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/circle_shape"
-                        android:clipToOutline="true"
-                        android:contentDescription="Avatar" />
+                            android:scaleType="centerCrop"
+                            android:background="@drawable/circle_shape"
+                            android:clipToOutline="true"
+                            android:contentDescription="Avatar" />
 
                         <!-- Nút edit chồng lên, giữ nguyên nếu bạn muốn -->
                         <ImageButton
@@ -65,7 +65,7 @@
 
                 </FrameLayout>
 
-                <!-- TextView cho tên người dùng -->
+                <!-- TextView cho tên người dùng (will be hidden when not logged in) -->
                 <TextView
                     android:id="@+id/txtName"
                     android:layout_width="wrap_content"
@@ -73,6 +73,48 @@
                     android:text="John Anthony"
                     android:textSize="18sp"
                     android:textColor="@color/color_5E4C3E" />
+
+                <!-- Container for Login/Register buttons (will be shown when not logged in) -->
+                <LinearLayout
+                    android:id="@+id/containerLoginRegister"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/txtLogin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_sign_in_profile"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_5E4C3E"
+                        android:layout_marginEnd="15dp"
+                        android:textStyle="italic"
+                        android:clickable="true"
+                        android:focusable="true" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="|"
+                        android:textSize="20sp"
+                        android:textColor="@color/color_5E4C3E"
+                        android:layout_marginEnd="15dp" />
+
+                    <TextView
+                        android:id="@+id/txtRegister"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_sign_up_profile"
+                        android:textSize="16sp"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textStyle="italic"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
+
             </LinearLayout>
 
 

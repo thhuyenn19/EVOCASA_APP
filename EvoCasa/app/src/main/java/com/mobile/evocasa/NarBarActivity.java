@@ -81,4 +81,5 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
                 .replace(R.id.fragment_container, frag)
                 .commit();
     }
+
 }

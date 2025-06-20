@@ -7,6 +7,9 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
+import com.mobile.evocasa.NarBarActivity;
+import com.mobile.evocasa.auth.SignIn1Fragment;
+import com.mobile.evocasa.auth.SignUp1Fragment;
 import com.mobile.utils.UserSessionManager;
 
 import android.content.Intent;
@@ -21,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProfileFragment extends Fragment {
-    private TextView txtName, txtLogOut, txtCartBadge;
+    private TextView txtName, txtLogOut, txtLogin, txtRegister, txtCartBadge;
     private ImageView imgAvatar, imgCart;
     ImageButton btnEditAvatar;
     private RecyclerView recyclerView;
@@ -52,6 +56,7 @@ public class ProfileFragment extends Fragment {
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
     private FirebaseFirestore db;
+    private LinearLayout containerLoginRegister;
 
     @Nullable
     @Override
@@ -68,6 +73,11 @@ public class ProfileFragment extends Fragment {
         sessionManager = new UserSessionManager(requireContext());
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
+
+        // Initialize login/register views
+        txtLogin = view.findViewById(R.id.txtLogin);
+        txtRegister = view.findViewById(R.id.txtRegister);
+        containerLoginRegister = view.findViewById(R.id.containerLoginRegister);
 
         loadCustomerInformation();
         setupSuggestedProducts();
@@ -129,6 +139,31 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupClickListeners() {
+        if (txtLogin != null) {
+            txtLogin.setOnClickListener(v -> {
+                if (isAdded() && getActivity() != null) {
+                    // Navigate to Login Activity - replace with your actual login activity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("openFragment", "SignIn");
+                    startActivity(intent);
+                }
+            });
+        }
+
+        // Register button click listener
+        if (txtRegister != null) {
+            txtRegister.setOnClickListener(v -> {
+                if (isAdded() && getActivity() != null) {
+                    // Navigate to Register Activity - replace with your actual register activity
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.putExtra("openFragment", "SignUp");
+                    startActivity(intent);
+                }
+            });
+        }
+
         View txtEvoCasaBlog = view.findViewById(R.id.txtEvoCasaBlog);
         txtEvoCasaBlog.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
@@ -189,11 +224,19 @@ public class ProfileFragment extends Fragment {
 
         imgAvatar.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, new ProfileDetailFragment())
-                        .addToBackStack(null)
-                        .commit();
+                UserSessionManager sessionManager = new UserSessionManager(requireContext());
+
+                if (sessionManager.isLoggedIn()) {
+                    // User is logged in → navigate to ProfileDetailFragment
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new ProfileDetailFragment())
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    // Not logged in → show message or navigate to login
+                    Toast.makeText(requireContext(), "You need to log in to view your profile.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -207,15 +250,19 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        TextView txtLogOut = view.findViewById(R.id.txtLogOut);
+        txtLogOut = view.findViewById(R.id.txtLogOut);
         txtLogOut.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
                 new UserSessionManager(requireContext()).clearSession();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, new ProfileFragment()) // container chính của bạn
+                        .commit();
             }
         });
+
 
         LinearLayout containerSeeAll = view.findViewById(R.id.containerSeeAll);
         containerSeeAll.setOnClickListener(v -> {
@@ -292,6 +339,8 @@ public class ProfileFragment extends Fragment {
         String uid = sessionManager.getUid();
 
         if (uid != null) {
+            // User is logged in - show user info and hide login/register buttons
+            showUserInfo();
             FirebaseFirestore.getInstance()
                     .collection("Customers")
                     .document(uid)
@@ -327,10 +376,23 @@ public class ProfileFragment extends Fragment {
                         if (txtName != null) txtName.setText("Error");
                     });
         } else {
-            if (txtName != null) {
-                txtName.setText("Not logged in");
-            }
+            // User is not logged in - show login/register buttons and hide user info
+            showLoginRegisterButtons();
         }
+    }
+
+    private void showLoginRegisterButtons() {
+        if (txtName != null) txtName.setVisibility(View.GONE);
+        if (imgAvatar != null) imgAvatar.setVisibility(View.VISIBLE);
+        if (btnEditAvatar != null) btnEditAvatar.setVisibility(View.GONE);
+        if (containerLoginRegister != null) containerLoginRegister.setVisibility(View.VISIBLE);
+    }
+
+    private void showUserInfo() {
+        if (txtName != null) txtName.setVisibility(View.VISIBLE);
+        if (imgAvatar != null) imgAvatar.setVisibility(View.VISIBLE);
+        if (btnEditAvatar != null) btnEditAvatar.setVisibility(View.VISIBLE);
+        if (containerLoginRegister != null) containerLoginRegister.setVisibility(View.GONE);
     }
 
     private void applyCustomFonts(View view) {

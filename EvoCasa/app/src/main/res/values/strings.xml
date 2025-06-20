@@ -187,6 +187,8 @@
     <string name="title_close">Close</string>
     <string name="title_delete">Delete</string>
     <string name="title_add_to_wishlist">Add to Wishlist</string>
+    <string name="title_sign_in_profile">Sign In</string>
+    <string name="title_sign_up_profile">Sign Up</string>
 
     <string name="title_help_center">Help Center</string>
     <string name="title_faq">FAQ</string>
