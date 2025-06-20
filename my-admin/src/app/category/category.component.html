@@ -52,15 +52,11 @@
           <!-- Hiển thị hình ảnh -->
           <!-- <td><img *ngIf="category.image" [src]="category.image" alt="Category Image" ></td> -->
           <td>
-            <img
-              *ngIf="category.image"
-              [src]="getCategoryImageForTable(category)"
-              alt="{{ category.name }}"
-              width="50"
-              style="object-fit: cover"
-            />
-            <span *ngIf="!category.image">{{ category.id }}</span>
-          </td>
+            <img *ngIf="category.image"
+                 [src]="getCategoryImageForTable(category)"
+                 alt="{{ category.name }}"
+                 width="50" />
+          </td>   
           <!-- Hiển thị tên danh mục -->
           <td>{{ category.name }}</td>
           <!-- Hiển thị mã danh mục -->

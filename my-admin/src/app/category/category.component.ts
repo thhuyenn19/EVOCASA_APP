@@ -8,7 +8,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   selector: 'app-category',
   standalone: false,
   templateUrl: './category.component.html',
-  styleUrl: './category.component.css',
+  styleUrls: ['./category.component.css'],
 })
 export class CategoryComponent implements OnInit {
   categories: Category[] = [];
@@ -185,67 +185,62 @@ export class CategoryComponent implements OnInit {
    */
   processCategoryImages(): void {
     this.categories.forEach((category) => {
-      // Handle the uppercase Image property from API
-      const imageData = category.image || (category as any).Image;
-
-      // Store the processed image data back in the category object
-      if (typeof imageData === 'string') {
-        category.image = imageData; // Store as is for string paths
-      } else if (Array.isArray(imageData)) {
-        category.image = imageData; // Keep array format
-      } else if (!imageData) {
-        category.image = ''; // Empty string if no image
+    try {
+      // Nếu là chuỗi JSON, parse ra
+      if (typeof category.image === 'string' && category.image.trim().startsWith('[')) {
+        category.image = JSON.parse(category.image);
       }
 
-      console.log(
-        `Processed image for category ${category.name}:`,
-        category.image
-      );
-    });
+      // Nếu là mảng, giữ nguyên
+      if (!Array.isArray(category.image)) {
+        category.image = [];
+      }
+    } catch (e) {
+      console.error('Error parsing image for category:', category.name, e);
+      category.image = [];
+    }
+  });
   }
 
   /**
    * Get image URL for display in tables or lists
    */
   getCategoryImageForTable(category: Category): string {
-    if (!category) return 'assets/images/category-placeholder.jpg';
+     try {
+    let imageArray = [];
 
-    // Get image from either lowercase or uppercase property
-    const imageData = category.image || (category as any).Image;
-
-    if (!imageData) {
-      return 'assets/images/category-placeholder.jpg';
+    if (typeof category.image === 'string' && category.image.trim().startsWith('[')) {
+      imageArray = JSON.parse(category.image);
+    } else if (Array.isArray(category.image)) {
+      imageArray = category.image;
     }
 
-    // Handle string path (like "/images/Furniture/Ambiance Coffee Table1.jpg")
-    if (typeof imageData === 'string') {
-      return this.getFullImagePath(imageData);
+    if (imageArray.length > 0) {
+      return imageArray[0]; // ✅ Trả ảnh đầu tiên
     }
+  } catch (e) {
+    console.error('Error getting image:', category.name, e);
+  }
 
-    // Handle array of images
-    if (Array.isArray(imageData) && imageData.length > 0) {
-      return this.getFullImagePath(imageData[0]);
-    }
-
-    return 'assets/images/category-placeholder.jpg';
+  return 'assets/images/category-placeholder.png'; // fallback
   }
 
   /**
    * Get full image path with base URL
    */
-  getFullImagePath(imagePath: string): string {
-    if (!imagePath) return 'assets/images/category-placeholder.jpg';
+  // getFullImagePath(imagePath: string): string {
+  //   if (!imagePath) return 'assets/images/category-placeholder.jpg';
 
-    // If it's already a data URL or absolute path, return as is
-    if (imagePath.startsWith('data:')) {
-      return imagePath;
-    }
+  //   // If it's already a data URL or absolute path, return as is
+  //   if (imagePath.startsWith('data:')) {
+  //     return imagePath;
+  //   }
 
-    // Use relative paths to access local images in your project
-    // Remove any server-specific path components
-    const cleanPath = imagePath.replace(/^\//, ''); // Remove leading slash if present
-    return `assets/images/${cleanPath}`;
-  }
+  //   // Use relative paths to access local images in your project
+  //   // Remove any server-specific path components
+  //   const cleanPath = imagePath.replace(/^\//, ''); // Remove leading slash if present
+  //   return `assets/images/${cleanPath}`;
+  // }
 
   /**
    * Get the name of the parent category by its ID
