@@ -48,6 +48,7 @@ public class OrderDetailFragment extends Fragment {
     private Button btnTrackOrder;
     private TextView txtShippingMethodValue,txtPaymentMethodValue,  txtMessageForShopValue;
     private TextView txtTotalPrice, txtShippingFee, txtDiscount, txtTotalPayment, txtYouSave;
+    private TextView txtCustomerName, txtCustomerPhone, txtCustomerAddress;
 
     public OrderDetailFragment() {
         // Required empty public constructor
@@ -89,8 +90,9 @@ public class OrderDetailFragment extends Fragment {
         txtTotalPayment = view.findViewById(R.id.txtTotalPayment);
         txtYouSave = view.findViewById(R.id.txtYouSave);
 
-
-
+        txtCustomerName = view.findViewById(R.id.txtCustomerName);
+        txtCustomerPhone = view.findViewById(R.id.txtCustomerPhone);
+        txtCustomerAddress = view.findViewById(R.id.txtCustomerAddress);
 
         String orderId = getArguments() != null ? getArguments().getString("orderId") : null;
         if (orderId != null) {
@@ -200,6 +202,17 @@ public class OrderDetailFragment extends Fragment {
 
             db.collection("Order").document(orderId).get().addOnSuccessListener(orderDoc -> {
                 if (!orderDoc.exists()) return;
+                Map<String, Object> shippingAddress = (Map<String, Object>) orderDoc.get("ShippingAddresses");
+                if (shippingAddress != null) {
+                    String name = (String) shippingAddress.get("Name");
+                    String phone = (String) shippingAddress.get("Phone");
+                    String address = (String) shippingAddress.get("Address");
+
+                    txtCustomerName.setText(name != null ? name : "N/A");
+                    txtCustomerPhone.setText(phone != null ? phone : "N/A");
+                    txtCustomerAddress.setText(address != null ? address : "N/A");
+                }
+
 // NEW: Get shippingMethod, paymentMethod, and note from Firestore
                 String shippingMethod = orderDoc.getString("ShippingMethod");
                 String paymentMethod = orderDoc.getString("PaymentMethod");

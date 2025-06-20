@@ -21,15 +21,64 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvOrderId"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Order ID: ..."
-            android:textColor="#E24747"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tvTrackingNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_tracking_number"
+                android:textColor="#E24747"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtTrackingNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#5E4C3E"
+                android:textSize="15sp"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+
 
         <!-- Order Date with icon -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="9dp"
+                android:src="@drawable/ic_order_id" />
+
+            <TextView
+                android:id="@+id/tvOrderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_order_id"
+                android:textColor="#5E4C3E"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/txtOrderId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#5E4C3E"
+                android:textSize="15sp"
+                android:layout_marginStart="6dp"/>
+
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,9 +96,18 @@
                 android:id="@+id/tvOrderDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Order Date: ..."
+                android:text="@string/title_order_date"
                 android:textColor="#5E4C3E"
                 android:textSize="15sp" />
+            <TextView
+                android:id="@+id/txtOrderDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#5E4C3E"
+                android:textSize="15sp"
+                android:layout_marginStart="6dp"/>
+
         </LinearLayout>
 
 
@@ -70,9 +128,18 @@
                 android:id="@+id/tvEstimatedDelivery"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estimated delivery: ..."
+                android:text="@string/title_estimated_deli"
                 android:textColor="#5E4C3E"
                 android:textSize="15sp" />
+            <TextView
+                android:id="@+id/txtEstimatedDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="#5E4C3E"
+                android:textSize="15sp"
+                android:layout_marginStart="6dp"/>
+
         </LinearLayout>
     </LinearLayout>
     <!-- ─── Status Timeline ─────────────────────────── -->

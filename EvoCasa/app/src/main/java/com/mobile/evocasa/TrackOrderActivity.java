@@ -15,17 +15,27 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.TimelineAdapter;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
 import com.mobile.models.TimelineItem;
 import com.mobile.utils.FontUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
+import com.mobile.utils.UserSessionManager;
 
 public class TrackOrderActivity extends AppCompatActivity {
+    private TextView txtTrackingNumber, txtOrderId,txtOrderDate,txtEstimatedDelivery;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +47,20 @@ public class TrackOrderActivity extends AppCompatActivity {
             return insets;
         });
         applyCustomFonts();
-    // 1. Chuẩn bị dữ liệu timeline
+
+        txtTrackingNumber = findViewById(R.id.txtTrackingNumber);
+        txtOrderId = findViewById(R.id.txtOrderId);
+        txtOrderDate = findViewById(R.id.txtOrderDate);
+        txtEstimatedDelivery = findViewById(R.id.txtEstimatedDelivery);
+
+        String orderId = getIntent().getStringExtra("orderId");
+        String uid = new UserSessionManager(this).getUid();
+
+        if (orderId != null && uid != null && !uid.isEmpty()) {
+            loadOrderTrackingInfo(orderId, uid);
+        }
+
+        // 1. Chuẩn bị dữ liệu timeline
         List<TimelineItem> timelineItems = new ArrayList<>();
 
         timelineItems.add(new HeaderItem("23rd, May"));
@@ -107,6 +130,66 @@ public class TrackOrderActivity extends AppCompatActivity {
                     isLineActive ? R.color.color_active : R.color.color_inactive));
         }
 
+    }
+
+    private void loadOrderTrackingInfo(String orderId, String uid) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Order").document(orderId).get().addOnSuccessListener(orderDoc -> {
+            if (!orderDoc.exists()) return;
+
+            Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
+            if (customerIdMap == null) return;
+
+            String orderUid = (String) customerIdMap.get("$oid");
+            if (!uid.equals(orderUid)) return;
+
+            // ✅ Tracking Number
+            String trackingNumber = orderDoc.getString("TrackingNumber");
+            txtTrackingNumber.setText(trackingNumber != null ? trackingNumber : "N/A");
+
+            // ✅ Order ID
+            txtOrderId.setText(orderId);
+
+            // ✅ Order Date
+            Map<String, Object> orderDateMap = (Map<String, Object>) orderDoc.get("OrderDate");
+            if (orderDateMap != null && orderDateMap.get("$date") != null) {
+                String rawDate = (String) orderDateMap.get("$date");
+                txtOrderDate.setText(formatDate(rawDate));
+
+                // ✅ Estimated Delivery = OrderDate + 4 days
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                    sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    Date orderDate = sdf.parse(rawDate);
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(orderDate);
+                    cal.add(Calendar.DAY_OF_MONTH, 4);
+
+                    SimpleDateFormat out = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+                    txtEstimatedDelivery.setText(out.format(cal.getTime()));
+                } catch (Exception e) {
+                    txtEstimatedDelivery.setText("N/A");
+                }
+            } else {
+                txtOrderDate.setText("N/A");
+                txtEstimatedDelivery.setText("N/A");
+            }
+        });
+    }
+
+    private String formatDate(String isoDate) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date date = sdf.parse(isoDate);
+
+            SimpleDateFormat out = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+            return out.format(date);
+        } catch (Exception e) {
+            return "N/A";
+        }
     }
 
     private void applyCustomFonts() {
