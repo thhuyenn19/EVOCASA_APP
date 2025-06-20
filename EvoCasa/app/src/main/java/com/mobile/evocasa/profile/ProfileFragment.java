@@ -8,6 +8,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.NarBarActivity;
+import com.mobile.evocasa.SettingFragment;
 import com.mobile.evocasa.auth.SignIn1Fragment;
 import com.mobile.evocasa.auth.SignUp1Fragment;
 import com.mobile.utils.UserSessionManager;
@@ -331,6 +332,20 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+        View btnSetting = view.findViewById(R.id.btnSetting); // ID của nút setting trong topbar
+        if (btnSetting != null) {
+            btnSetting.setOnClickListener(v -> {
+                Log.d("DEBUG", "btnSetting clicked – ready to open SettingFragment");
+                if (isAdded() && getActivity() != null) {
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, new SettingFragment())
+                            .addToBackStack(null)
+                            .commit();
+                }
+            });
+        }
+
     }
 
     private void loadCustomerInformation() {

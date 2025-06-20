@@ -253,9 +253,16 @@ public class CartActivity extends AppCompatActivity {
         Button btnCheckOut = findViewById(R.id.btnCheckOut);
         btnCheckOut.setOnClickListener(v -> {
             if (!selectedProducts.isEmpty()) {
-                Log.d(TAG, "Selected cartPayment: " + new Gson().toJson(selectedProducts));
+        Log.d(TAG, "Selected cartPayment: " + new Gson().toJson(selectedProducts));
+                String cartJson = new Gson().toJson(selectedProducts);
+                String voucherJson = selectedVoucher != null ? new Gson().toJson(selectedVoucher) : null;
+
+                // Chuyển sang PaymentActivity → MainPaymentFragment
                 Intent intent = new Intent(CartActivity.this, PaymentActivity.class);
-                intent.putExtra("cartPayment", new Gson().toJson(selectedProducts));
+                intent.putExtra("cartPayment", cartJson);
+                if (voucherJson != null) {
+                    intent.putExtra("selectedVoucher", voucherJson);
+                }
                 startActivity(intent);
             }
         });

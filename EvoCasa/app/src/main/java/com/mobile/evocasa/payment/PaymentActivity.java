@@ -27,5 +27,21 @@ public class PaymentActivity extends AppCompatActivity {
             transaction.replace(R.id.fragment_container, new MainPaymentFragment());
             transaction.commit();
         }
+        String cartJson = getIntent().getStringExtra("cartPayment");
+        String voucherJson = getIntent().getStringExtra("selectedVoucher");
+
+        Bundle args = new Bundle();
+        args.putString("cartPayment", cartJson);
+        if (voucherJson != null) {
+            args.putString("selectedVoucher", voucherJson);
+        }
+
+        MainPaymentFragment fragment = new MainPaymentFragment();
+        fragment.setArguments(args);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)  // fragment_container được định nghĩa trong activity_payment.xml:contentReference[oaicite:0]{index=0}
+                .commit();
     }
 }
