@@ -505,20 +505,76 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnAddToCart.setOnClickListener(v -> {
             String customerId = sessionManager.getUid();
             if (customerId != null && productItem != null) {
-                Map<String, Object> newCartItem = new HashMap<>();
-                newCartItem.put("productId", productItem.getId());
-                newCartItem.put("cartQuantity", quantity[0]);
-
+                String productId = productItem.getId();
                 db.collection("Customers")
                         .document(customerId)
-                        .update("Cart", FieldValue.arrayUnion(newCartItem))
-                        .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
-                            bottomSheetDialog.dismiss();
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                                boolean productExists = false;
+                                int existingIndex = -1;
+
+                                if (cartList != null) {
+                                    for (int i = 0; i < cartList.size(); i++) {
+                                        Map<String, Object> item = cartList.get(i);
+                                        if (item.get("productId") != null && item.get("productId").equals(productId)) {
+                                            productExists = true;
+                                            existingIndex = i;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (productExists && existingIndex >= 0) {
+                                    // Update existing cart item quantity
+                                    Map<String, Object> updatedCart = new HashMap<>();
+                                    updatedCart.put("productId", productId);
+                                    int newQuantity = ((Number) cartList.get(existingIndex).get("cartQuantity")).intValue() + quantity[0];
+                                    updatedCart.put("cartQuantity", newQuantity);
+
+                                    List<Map<String, Object>> updatedCartList = new ArrayList<>(cartList);
+                                    updatedCartList.set(existingIndex, updatedCart);
+
+                                    db.collection("Customers")
+                                            .document(customerId)
+                                            .update("Cart", updatedCartList)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(this, "Increased quantity by " + quantity[0] + " item(s) in cart", Toast.LENGTH_SHORT).show();
+                                                bottomSheetDialog.dismiss();
+                                                refreshCartBadge(); // Update cart badge
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("ProductDetails", "Failed to update cart quantity: " + e.getMessage());
+                                                Toast.makeText(this, "Failed to update cart quantity", Toast.LENGTH_SHORT).show();
+                                            });
+                                } else {
+                                    // Add new cart item
+                                    Map<String, Object> newCartItem = new HashMap<>();
+                                    newCartItem.put("productId", productId);
+                                    newCartItem.put("cartQuantity", quantity[0]);
+
+                                    db.collection("Customers")
+                                            .document(customerId)
+                                            .update("Cart", FieldValue.arrayUnion(newCartItem))
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
+                                                bottomSheetDialog.dismiss();
+                                                refreshCartBadge(); // Update cart badge
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("ProductDetails", "Failed to add to cart: " + e.getMessage());
+                                                Toast.makeText(this, "Failed to add to cart", Toast.LENGTH_SHORT).show();
+                                            });
+                                }
+                            } else {
+                                Log.w("ProductDetails", "Customer document not found for ID: " + customerId);
+                                Toast.makeText(this, "Customer data not found", Toast.LENGTH_SHORT).show();
+                            }
                         })
                         .addOnFailureListener(e -> {
-                            Log.e("ProductDetails", "Failed to add to cart: " + e.getMessage());
-                            Toast.makeText(this, "Failed to add to cart", Toast.LENGTH_SHORT).show();
+                            Log.e("ProductDetails", "Failed to check cart: " + e.getMessage());
+                            Toast.makeText(this, "Failed to check cart", Toast.LENGTH_SHORT).show();
                         });
             } else {
                 Toast.makeText(this, "Please sign in to add to cart", Toast.LENGTH_SHORT).show();
