@@ -186,6 +186,7 @@
 
             <!-- Shipping Method -->
             <LinearLayout
+                android:id="@+id/layoutShippingMethod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_border_rounded"
@@ -248,7 +249,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/txtShippngMethodName"
+                            android:id="@+id/txtShippingMethodName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Express Delivery"
@@ -257,6 +258,7 @@
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/txtShippingMethodDesc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Received on Thursday, May 15, 2025"
@@ -266,7 +268,7 @@
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/txtShippingFee2"
+                        android:id="@+id/txtShippingPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$50"
@@ -709,6 +711,64 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerVoucher"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="vertical"/>
+
+    </LinearLayout>
+    <!-- 2) thêm overlay cho shipping phía dưới -->
+    <View
+        android:id="@+id/overlayShipping"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true"/>
+
+    <LinearLayout
+        android:id="@+id/shippingOptionsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/color_F2EAD3"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="12dp">
+
+        <!-- header giống voucher -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/txtTitleSelectShipping"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Shipping Method"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <ImageView
+                android:id="@+id/btnCloseShippingLayout"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close"
+                android:contentDescription="Close"
+                android:clickable="true"
+                android:focusable="true"/>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerShipping"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
