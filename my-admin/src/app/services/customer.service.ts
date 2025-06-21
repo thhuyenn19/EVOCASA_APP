@@ -37,7 +37,7 @@ export class CustomerService {
 
   getCustomerById(id: string): Observable<Customer> {
     return new Observable(observer => {
-      const customerRef = doc(db, 'Customer', id);
+      const customerRef = doc(db, 'Customers', id);
       getDoc(customerRef)
         .then(docSnap => {
           if (docSnap.exists()) {
@@ -52,7 +52,7 @@ export class CustomerService {
 
   getCustomerByPhone(phone: string): Observable<Customer> {
     return new Observable(observer => {
-      const q = query(collection(db, 'Customer'), where('Phone', '==', phone));
+      const q = query(collection(db, 'Customers'), where('Phone', '==', phone));
       getDocs(q)
         .then(snapshot => {
           if (snapshot.empty) {
@@ -68,7 +68,7 @@ export class CustomerService {
 
   getCustomerByEmail(email: string): Observable<Customer> {
     return new Observable(observer => {
-      const q = query(collection(db, 'Customer'), where('Mail', '==', email));
+      const q = query(collection(db, 'Customers'), where('Mail', '==', email));
       getDocs(q)
         .then(snapshot => {
           if (snapshot.empty) {
@@ -84,7 +84,7 @@ export class CustomerService {
 
   updateCustomer(customer: Customer): Observable<Customer> {
     return new Observable(observer => {
-      const customerRef = doc(db, 'Customer', customer._id);
+      const customerRef = doc(db, 'Customers', customer._id);
       const { _id, ...data } = customer;
       updateDoc(customerRef, data)
         .then(() => {
@@ -97,7 +97,7 @@ export class CustomerService {
 
   updateCart(customerId: string, cart: CartItem1[]): Observable<Customer> {
     return new Observable(observer => {
-      const customerRef = doc(db, 'Customer', customerId);
+      const customerRef = doc(db, 'Customers', customerId);
       updateDoc(customerRef, { Cart: cart })
         .then(() => {
           this.getCustomerById(customerId).subscribe({
@@ -135,7 +135,7 @@ export class CustomerService {
 
   deleteCustomer(customerId: string): Observable<void> {
     return new Observable(observer => {
-      const customerRef = doc(db, 'Customer', customerId);
+      const customerRef = doc(db, 'Customers', customerId);
       deleteDoc(customerRef)
         .then(() => {
           observer.next();
@@ -147,7 +147,7 @@ export class CustomerService {
 
   postCustomer(customer: Omit<Customer, '_id'>): Observable<Customer> {
     return new Observable(observer => {
-      addDoc(collection(db, 'Customer'), customer)
+      addDoc(collection(db, 'Customers'), customer)
         .then(docRef => {
           observer.next({ ...customer, _id: docRef.id });
           observer.complete();

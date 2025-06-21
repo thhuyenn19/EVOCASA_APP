@@ -11,7 +11,7 @@ import { Order } from '../interfaces/order';
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.css'
 })
-export class CustomerDetailComponent {
+export class CustomerDetailComponent implements OnInit {
   customers: Customer[] = [];
   displayedCustomers: Customer[] = [];
   selectedCustomer: Customer | null = null;
@@ -29,6 +29,13 @@ export class CustomerDetailComponent {
 
   ngOnInit(): void {
     // this.loadCustomers();
+    // this.route.paramMap.subscribe(params => {
+    //   const customerId = params.get('id');
+    //   if (customerId) {
+    //     this.loadCustomerDetails(customerId); 
+    //     this.fetchOrders(customerId);
+    //   }
+    // });
     this.route.paramMap.subscribe(params => {
       const customerId = params.get('id');
       if (customerId) {
@@ -39,31 +46,51 @@ export class CustomerDetailComponent {
   }
 
   loadCustomerDetails(customerId: string): void {
-    this.customerService.getCustomerById(customerId).subscribe(
-      (data) => {
-        this.selectedCustomer = data;  // Lưu thông tin khách hàng vào biến selectedCustomer
+    // this.customerService.getCustomerById(customerId).subscribe(
+    //   (data) => {
+    //     this.selectedCustomer = data;  // Lưu thông tin khách hàng vào biến selectedCustomer
+    //   },
+    //   (error) => {
+    //     console.error('Error fetching customer details:', error);
+    //   }
+    // );
+    this.customerService.getCustomerById(customerId).subscribe({
+      next: (data) => {
+        this.selectedCustomer = data;
+        console.log('Customer details loaded:', this.selectedCustomer);
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching customer details:', error);
       }
-    );
+    });
   }
   
   fetchOrders(customerId: string): void {
-    this.orderService.getOrdersByCustomer(customerId).subscribe(
-      (response: any) => {
-        console.log("Raw API response:", response);
-        if (response && response.success && response.data) {
-          this.orders = response.data; // Chỉ lấy `data` từ API
-        } else {
-          this.orders = [];
-        }
-        console.log('Orders after processing:', this.orders);
+    // this.orderService.getOrdersByCustomer(customerId).subscribe(
+    //   (response: any) => {
+    //     console.log("Raw API response:", response);
+    //     if (response && response.success && response.data) {
+    //       this.orders = response.data; // Chỉ lấy `data` từ API
+    //     } else {
+    //       this.orders = [];
+    //     }
+    //     console.log('Orders after processing:', this.orders);
+    //   },
+    //   (error) => {
+    //     console.error('Lỗi khi lấy đơn hàng:', error);
+    //   }
+    // );
+    this.orderService.getOrdersByCustomer(customerId).subscribe({
+      next: (orders) => {
+        this.orders = orders;
+        console.log('Orders loaded:', this.orders);
+        this.updateDisplayedOrders();
       },
-      (error) => {
+      error: (error) => {
         console.error('Lỗi khi lấy đơn hàng:', error);
+        this.orders = [];
       }
-    );
+    });
   }
   
   getTotalAmount(): number {
