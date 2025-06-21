@@ -147,16 +147,33 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                 return;
             }
 
-            int prevPos = selectedPosition;
-            selectedPosition = holder.getAdapterPosition();
+            int clickedPos = holder.getAdapterPosition();
 
-            // Update UI
+            // Check if clicking on already selected voucher
+            if (clickedPos == selectedPosition) {
+                // Deselect the voucher
+                int prevPos = selectedPosition;
+                selectedPosition = -1;
+
+                // Update UI for the deselected item
+                notifyItemChanged(prevPos);
+
+                // Notify listener with null to indicate no voucher selected
+                listener.onVoucherSelected(null);
+                return;
+            }
+
+            // Select new voucher
+            int prevPos = selectedPosition;
+            selectedPosition = clickedPos;
+
+            // Update UI for both old and new selections
             if (prevPos >= 0) {
                 notifyItemChanged(prevPos);
             }
             notifyItemChanged(selectedPosition);
 
-            // Notify listener
+            // Notify listener with selected voucher
             listener.onVoucherSelected(voucher);
         });
 

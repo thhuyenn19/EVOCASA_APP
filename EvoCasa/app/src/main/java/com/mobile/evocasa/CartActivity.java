@@ -473,9 +473,20 @@ public class CartActivity extends AppCompatActivity {
             Log.d(TAG, "Displaying " + validVouchers.size() + " valid vouchers out of " + vouchers.size() + " total");
 
             VoucherAdapter adapter = new VoucherAdapter(validVouchers, subtotal, voucher -> {
-                selectedVoucher = voucher;
+                // Handle both selection and deselection
+                if (voucher == null) {
+                    // Voucher was deselected
+                    selectedVoucher = null;
+                    Log.d(TAG, "Voucher deselected");
+                } else {
+                    // Voucher was selected
+                    selectedVoucher = voucher;
+                    Log.d(TAG, "Voucher selected: " + voucher.getName());
+                }
+
+                // Update the checkout layout to reflect changes
                 updateCheckoutLayout();
-                Log.d(TAG, "Voucher selected: " + voucher.getName());
+
             }, selectedVoucher);
 
             recyclerVoucher.setLayoutManager(new LinearLayoutManager(this));
