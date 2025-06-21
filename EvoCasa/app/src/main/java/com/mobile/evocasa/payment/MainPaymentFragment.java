@@ -65,6 +65,12 @@ public class MainPaymentFragment extends Fragment {
     private String savedCardNumber, savedCardName, savedExpiry, savedCvv;
     private int selectedColor;
     private int defaultColor;
+    private TextView txtTotalPrice, txtShippingFee, txtDiscount, txtTotalValue, txtSavingValue;
+    private double currentShippingFee = 0;
+    TextView txtTotalValueBottom, txtSavingValueBottom;
+    private double calculatedTotal = 0;
+    private double calculatedSaving = 0;
+
 
 
 
@@ -105,7 +111,6 @@ public class MainPaymentFragment extends Fragment {
         FontUtils.applyFont(view.findViewById(R.id.txtShippingAddress), requireContext(), R.font.inter);
 
 
-
         getParentFragmentManager()
                 .setFragmentResultListener("select_shipping", getViewLifecycleOwner(),
                         (requestKey, bundle) -> {
@@ -124,12 +129,77 @@ public class MainPaymentFragment extends Fragment {
         TextView txtEditInfor = view.findViewById(R.id.txtEditInfor);
         txtEditInfor.setPaintFlags(txtEditInfor.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        // Chuyển sang fragment chọn phương thức thanh toán
+
+        LinearLayout optionCOD     = view.findViewById(R.id.optionCOD);
+        LinearLayout optionMomo    = view.findViewById(R.id.optionMomo);
+        LinearLayout optionBanking = view.findViewById(R.id.optionBanking);
+        LinearLayout optionCredit  = view.findViewById(R.id.optionCredit);
+
+        selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
+        defaultColor  = getResources().getColor(android.R.color.transparent, null);
+
+        // 4) Dùng 1 listener chung
+        View.OnClickListener paymentClickListener = v -> {
+            /// reset all four
+            resetOption(optionCOD,     defaultColor);
+            resetOption(optionMomo,    defaultColor);
+            resetOption(optionBanking, defaultColor);
+            resetOption(optionCredit,  defaultColor);
+
+            // select new
+            currentSelectedOption = v;
+            v.setBackgroundColor(selectedColor);
+            setTextStyleInViewGroup((ViewGroup)v, Typeface.BOLD);
+
+            // update state
+            if      (v == optionCOD)     selectedPaymentMethod = "COD";
+            else if (v == optionMomo)    selectedPaymentMethod = "MOMO";
+            else if (v == optionBanking) selectedPaymentMethod = "BANKING";
+            else if (v == optionCredit)  selectedPaymentMethod = "CREDIT";
+        };
+
+
+        optionCOD    .setOnClickListener(paymentClickListener);
+        optionMomo   .setOnClickListener(paymentClickListener);
+        optionBanking.setOnClickListener(paymentClickListener);
+        optionCredit.setOnClickListener(v -> {
+            // Set selected method
+            selectedPaymentMethod = "CREDIT";
+
+            // Chuyển qua fragment PaymentMethodFragment và truyền CREDIT luôn
+            PaymentMethodFragment frag = new PaymentMethodFragment();
+            Bundle args = new Bundle();
+            args.putString("paymentMethod", "CREDIT");
+
+            // nếu đã có dữ liệu card từ trước thì truyền tiếp
+            if (savedCardNumber != null) {
+                args.putString("cardNumber", savedCardNumber);
+                args.putString("cardName", savedCardName);
+                args.putString("expiry", savedExpiry);
+                args.putString("cvv", savedCvv);
+            }
+
+            frag.setArguments(args);
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, frag)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
+
+        // reset ban đầu
+        resetOption(optionCOD,     defaultColor);
+        resetOption(optionMomo,    defaultColor);
+        resetOption(optionBanking, defaultColor);
+        resetOption(optionCredit,  defaultColor);
+
+        // 5) “See All Payment” mở PaymentMethodFragment cùng state
         TextView txtSeeAllPayment = view.findViewById(R.id.txtSeeAllPayment);
         txtSeeAllPayment.setOnClickListener(v -> {
             PaymentMethodFragment frag = new PaymentMethodFragment();
             Bundle args = new Bundle();
-            // truyền state hiện tại
+            args.putDouble("total", calculatedTotal);      // truyền total
+            args.putDouble("saving", calculatedSaving);    // truyền saving
             if (selectedPaymentMethod != null) {
                 args.putString("paymentMethod", selectedPaymentMethod);
                 if ("CREDIT".equals(selectedPaymentMethod)) {
@@ -145,7 +215,6 @@ public class MainPaymentFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
 
         // Chuyển sang fragment chọn edit Shipping Address
         txtEditInfor.setOnClickListener(v -> {
@@ -164,44 +233,6 @@ public class MainPaymentFragment extends Fragment {
             requireActivity().finish();
         });
 
-        // Ánh xạ các lựa chọn thanh toán
-        LinearLayout optionCOD = view.findViewById(R.id.optionCOD);
-        LinearLayout optionBanking = view.findViewById(R.id.optionBanking);
-        LinearLayout optionMomo = view.findViewById(R.id.optionMomo);
-        LinearLayout optionCredit = view.findViewById(R.id.optionCredit);
-
-        selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
-        defaultColor = getResources().getColor(android.R.color.transparent, null);
-
-        // Xử lý click chọn phương thức thanh toán
-        View.OnClickListener paymentClickListener = v -> {
-            if (currentSelectedOption == v) {
-                // Nhấn lại để bỏ chọn
-                resetOption((ViewGroup) currentSelectedOption, defaultColor);
-                currentSelectedOption = null;
-            } else {
-                // Reset lựa chọn cũ nếu có
-                if (currentSelectedOption != null) {
-                    resetOption((ViewGroup) currentSelectedOption, defaultColor);
-                }
-
-                // Chọn mới
-                currentSelectedOption = v;
-                v.setBackgroundColor(selectedColor);
-                setTextStyleInViewGroup((ViewGroup) v, Typeface.BOLD);
-            }
-        };
-
-        optionCOD.setOnClickListener(paymentClickListener);
-        optionBanking.setOnClickListener(paymentClickListener);
-        optionMomo.setOnClickListener(paymentClickListener);
-        optionCredit.setOnClickListener(paymentClickListener);
-
-        // Reset font và background ban đầu để tránh bị bold sẵn
-        resetOption(optionCOD, defaultColor);
-        resetOption(optionBanking, defaultColor);
-        resetOption(optionMomo, defaultColor);
-        resetOption(optionCredit, defaultColor);
 
         layoutUseVoucher = view.findViewById(R.id.layoutUseVoucher);
         voucherOptionsLayout = view.findViewById(R.id.voucherOptionsLayout);
@@ -234,29 +265,43 @@ public class MainPaymentFragment extends Fragment {
         txtFee   = view.findViewById(R.id.txtShippingPrice);
         txtDesc  = view.findViewById(R.id.txtShippingMethodDesc);
 
+        txtTotalPrice    = view.findViewById(R.id.txtTotalPrice);
+        txtShippingFee   = view.findViewById(R.id.txtShippingFee);
+        txtDiscount      = view.findViewById(R.id.txtDiscount);
+        txtTotalValue    = view.findViewById(R.id.txtTotalOrderValue);
+        txtSavingValue   = view.findViewById(R.id.txtTotalSaveValue);
+
+        txtTotalValueBottom = view.findViewById(R.id.txtTotalValue);
+        txtSavingValueBottom = view.findViewById(R.id.txtSavingValue);
 
 
-        setupPaymentMethodSelector(view);
+
         return view;
     }
 
     private void highlightPaymentOption(View root) {
         if (selectedPaymentMethod == null) return;
-        resetOption((ViewGroup) root.findViewById(R.id.optionCOD),     defaultColor);
-        resetOption((ViewGroup) root.findViewById(R.id.optionBanking), defaultColor);
-        resetOption((ViewGroup) root.findViewById(R.id.optionMomo),    defaultColor);
-        resetOption((ViewGroup) root.findViewById(R.id.optionCredit),  defaultColor);
+        LinearLayout c = root.findViewById(R.id.optionCOD);
+        LinearLayout m = root.findViewById(R.id.optionMomo);
+        LinearLayout b = root.findViewById(R.id.optionBanking);
+        LinearLayout r = root.findViewById(R.id.optionCredit);
+
+        resetOption(c, defaultColor);
+        resetOption(m, defaultColor);
+        resetOption(b, defaultColor);
+        resetOption(r, defaultColor);
 
         View toSelect = null;
         switch (selectedPaymentMethod) {
-            case "COD":     toSelect = root.findViewById(R.id.optionCOD);     break;
-            case "MOMO":    toSelect = root.findViewById(R.id.optionMomo);    break;
-            case "BANKING": toSelect = root.findViewById(R.id.optionBanking); break;
-            case "CREDIT":  toSelect = root.findViewById(R.id.optionCredit);  break;
+            case "COD":     toSelect = c; break;
+            case "MOMO":    toSelect = m; break;
+            case "BANKING": toSelect = b; break;
+            case "CREDIT":  toSelect = r; break;
         }
         if (toSelect != null) {
             toSelect.setBackgroundColor(selectedColor);
-            setTextStyleInViewGroup((ViewGroup) toSelect, Typeface.BOLD);
+            setTextStyleInViewGroup((ViewGroup)toSelect, Typeface.BOLD);
+            currentSelectedOption = toSelect;
         }
     }
 
@@ -289,6 +334,19 @@ public class MainPaymentFragment extends Fragment {
 
             bindProductsToUI(productList);
             bindVoucherToUI(selectedVoucher);
+            double subtotal = calculateSubtotal();           // tổng price x qty
+            double shippingFee = 50;                         // mặc định là Express Delivery
+            double discount = 0;
+
+            if (selectedVoucher != null) {
+                double percent = selectedVoucher.getDiscountPercent();
+                double maxValue = selectedVoucher.getMaxDiscount();
+                discount = Math.min(subtotal * percent / 100, maxValue);
+            }
+
+            calculatedTotal = subtotal + shippingFee - discount;
+            calculatedSaving = discount;
+            updatePaymentDetails();
         }
         // 2) chuẩn bị dữ liệu
         List<ShippingMethod> shippingList = Arrays.asList(
@@ -317,6 +375,9 @@ public class MainPaymentFragment extends Fragment {
             txtName.setText(method.getName());
             txtFee .setText("$" + (int)method.getPrice());
             txtDesc.setText(method.getReceiveOn());
+
+            currentShippingFee = method.getPrice();  // ← thêm dòng này
+            updatePaymentDetails();
             // ẩn overlay
             shippingOptionsLayout.setVisibility(View.GONE);
             overlayShipping.setVisibility(View.GONE);
@@ -327,6 +388,8 @@ public class MainPaymentFragment extends Fragment {
         txtName.setText(def.getName());
         txtFee .setText("$" + (int)def.getPrice());
         txtDesc.setText(def.getReceiveOn());
+        currentShippingFee = def.getPrice();  // ← tính luôn phí giao hàng mặc định
+        updatePaymentDetails();               // ← cập nhật lại tổng cộng
 
         // 5) show/hide overlay
         layoutShipping.setOnClickListener(v -> {
@@ -346,39 +409,6 @@ public class MainPaymentFragment extends Fragment {
 
     }
 
-    private void setupPaymentMethodSelector(View view) {
-        LinearLayout optionCOD = view.findViewById(R.id.optionCOD);
-        LinearLayout optionBanking = view.findViewById(R.id.optionBanking);
-        LinearLayout optionMomo = view.findViewById(R.id.optionMomo);
-        LinearLayout optionCredit = view.findViewById(R.id.optionCredit);
-
-        int selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
-        int defaultColor = getResources().getColor(android.R.color.transparent, null);
-
-        View.OnClickListener listener = v -> {
-            if (currentSelectedOption == v) {
-                resetOption((ViewGroup) currentSelectedOption, defaultColor);
-                currentSelectedOption = null;
-            } else {
-                if (currentSelectedOption != null) {
-                    resetOption((ViewGroup) currentSelectedOption, defaultColor);
-                }
-                currentSelectedOption = v;
-                v.setBackgroundColor(selectedColor);
-                setTextStyleInViewGroup((ViewGroup) v, Typeface.BOLD);
-            }
-        };
-
-        optionCOD.setOnClickListener(listener);
-        optionBanking.setOnClickListener(listener);
-        optionMomo.setOnClickListener(listener);
-        optionCredit.setOnClickListener(listener);
-
-        resetOption(optionCOD, defaultColor);
-        resetOption(optionBanking, defaultColor);
-        resetOption(optionMomo, defaultColor);
-        resetOption(optionCredit, defaultColor);
-    }
 
     private void loadAndDisplayVouchers() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -431,6 +461,7 @@ public class MainPaymentFragment extends Fragment {
             selectedVoucher = voucher;
             txtVoucher.setText("Voucher: " + voucher.getName());
             txtVoucher.setTextColor(getResources().getColor(R.color.color_FF6600));
+            updatePaymentDetails();
         }, selectedVoucher);
 
         recyclerVoucher.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -539,15 +570,17 @@ public class MainPaymentFragment extends Fragment {
     private void bindVoucherToUI(Voucher voucher) {
         TextView txtVoucher = getView().findViewById(R.id.txtVoucher);
         if (voucher != null) {
+            selectedVoucher = voucher;
             txtVoucher.setText(voucher.getName() + " -$" + voucher.getDiscountPercent());
         } else {
             txtVoucher.setText("No voucher selected");
         }
+        updatePaymentDetails();
     }
 
 
-    private void resetOption(ViewGroup group, int backgroundColor) {
-        group.setBackgroundColor(backgroundColor);
+    private void resetOption(ViewGroup group, int bgColor) {
+        group.setBackgroundColor(bgColor);
         setTextStyleInViewGroup(group, Typeface.NORMAL);
     }
 
@@ -567,5 +600,32 @@ public class MainPaymentFragment extends Fragment {
             }
         }
     }
+    private void updatePaymentDetails() {
+        double subtotal = calculateSubtotal();
+        double discount = 0;
+
+        if (selectedVoucher != null) {
+            double percent = selectedVoucher.getDiscountPercent();
+            double max = selectedVoucher.getMaxDiscount();  // thêm dòng này
+            discount = subtotal * percent / 100.0;
+            if (discount > max) discount = max;  // giới hạn theo maxDiscount
+        }
+
+        double total = subtotal + currentShippingFee - discount;
+
+        txtTotalPrice.setText("$" + String.format("%,.2f", subtotal));
+        txtShippingFee.setText("$" + String.format("%,.2f", currentShippingFee));
+        txtDiscount.setText("-$" + String.format("%,.2f", discount));
+        txtTotalValue.setText("$" + String.format("%,.2f", total));
+        txtSavingValue.setText(" $" + String.format("%,.2f", discount));
+
+        txtTotalValueBottom.setText(String.format("$%,.2f", total));
+        txtSavingValueBottom.setText(String.format("$%,.2f", discount));
+
+        calculatedSaving = discount;
+        calculatedTotal = total;
+
+    }
+
 
 }

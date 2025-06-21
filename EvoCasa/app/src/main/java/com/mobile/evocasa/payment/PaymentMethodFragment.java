@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,29 +17,12 @@ import androidx.fragment.app.Fragment;
 import com.mobile.evocasa.R;
 
 public class PaymentMethodFragment extends Fragment {
-
-
     private LinearLayout lCredit, lMomo, lBanking, lCOD;
     private View cardDetails;
     private EditText eNumber, eName, eExpiry, eCvv;
     private Button btnSave;
     private int selectedColor, defaultColor;
-
-
-    private void resetBackgrounds() {
-        lCredit.setBackgroundResource(R.drawable.bg_border_rounded);
-        lMomo.setBackgroundResource(R.drawable.bg_border_rounded);
-        lBanking.setBackgroundResource(R.drawable.bg_border_rounded);
-        lCOD.setBackgroundResource(R.drawable.bg_border_rounded);
-    }
-
-    private void hideCardDetails() {
-        cardDetails.setVisibility(View.GONE);
-    }
-
-    private void showCardDetails() {
-        cardDetails.setVisibility(View.VISIBLE);
-    }
+    private String selectedMethod = null;
 
     @Nullable
     @Override
@@ -48,7 +32,7 @@ public class PaymentMethodFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_payment_method, container, false);
 
-        // Ánh xạ View
+        // Ánh xạ UI
         lCredit   = view.findViewById(R.id.layoutCredit);
         lMomo     = view.findViewById(R.id.layoutMOMO);
         lBanking  = view.findViewById(R.id.layoutInternetBanking);
@@ -61,39 +45,74 @@ public class PaymentMethodFragment extends Fragment {
         eCvv    = cardDetails.findViewById(R.id.etCVV);
         btnSave = view.findViewById(R.id.btnSaveInfor);
 
+        TextView txtTotal = view.findViewById(R.id.txtTotalValue);
+        TextView txtSave  = view.findViewById(R.id.txtSavingValue);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            double total = args.getDouble("total", 0.0);
+            double save  = args.getDouble("saving", 0.0);
+
+            txtTotal.setText(String.format("  $%,.0f", total));   // ví dụ: "  $3,500"
+            txtSave.setText(String.format("  $%,.0f", save));     // ví dụ: "  $50"
+        }
+
+        // Màu highlight và mặc định
         selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
         defaultColor  = getResources().getColor(android.R.color.transparent, null);
 
-        Bundle args = getArguments();
+        // Nếu có state trước, prefill và highlight
         String pre = args != null ? args.getString("paymentMethod") : null;
-        if ("CREDIT".equals(pre)) {
-            cardDetails.setVisibility(View.VISIBLE);
-            eNumber.setText(args.getString("cardNumber"));
-            eName  .setText(args.getString("cardName"));
-            eExpiry.setText(args.getString("expiry"));
-            eCvv   .setText(args.getString("cvv"));
-            lCredit.setBackgroundColor(selectedColor);
+        if (pre != null) {
+            selectedMethod = pre;
+            if ("CREDIT".equals(pre)) {
+                cardDetails.setVisibility(View.VISIBLE);
+                eNumber.setText(args.getString("cardNumber"));
+                eName  .setText(args.getString("cardName"));
+                eExpiry.setText(args.getString("expiry"));
+                eCvv   .setText(args.getString("cvv"));
+                highlightOption(lCredit);
+            } else {
+                cardDetails.setVisibility(View.GONE);
+                switch (pre) {
+                    case "MOMO":    highlightOption(lMomo);    break;
+                    case "BANKING": highlightOption(lBanking); break;
+                    case "COD":     highlightOption(lCOD);     break;
+                }
+            }
         } else {
             cardDetails.setVisibility(View.GONE);
-            if ("MOMO".equals(pre))    lMomo   .setBackgroundColor(selectedColor);
-            if ("BANKING".equals(pre)) lBanking.setBackgroundColor(selectedColor);
-            if ("COD".equals(pre))     lCOD    .setBackgroundColor(selectedColor);
         }
+
+        // Khi click chọn option → đổi màu ngay
         View.OnClickListener optClick = v -> {
             resetAllOptionsBg();
-            v.setBackgroundColor(selectedColor);
-            cardDetails.setVisibility(v == lCredit ? View.VISIBLE : View.GONE);
+            v.setBackgroundResource(R.drawable.bg_selected_payment);
+            // xác định method
+            if (v == lCredit) {
+                selectedMethod = "CREDIT";
+                cardDetails.setVisibility(View.VISIBLE);
+            } else {
+                if (v == lMomo)    selectedMethod = "MOMO";
+                if (v == lBanking) selectedMethod = "BANKING";
+                if (v == lCOD)     selectedMethod = "COD";
+                cardDetails.setVisibility(View.GONE);
+            }
         };
-        lCredit  .setOnClickListener(optClick);
-        lMomo    .setOnClickListener(optClick);
-        lBanking .setOnClickListener(optClick);
-        lCOD     .setOnClickListener(optClick);
+        lCredit .setOnClickListener(optClick);
+        lMomo   .setOnClickListener(optClick);
+        lBanking.setOnClickListener(optClick);
+        lCOD    .setOnClickListener(optClick);
 
-        // ← ADD: nút Save
+        // Nút SAVE
         btnSave.setOnClickListener(v -> {
-            String method;
-            if (cardDetails.getVisibility() == View.VISIBLE) {
-                // validate
+            if (selectedMethod == null) {
+                Toast.makeText(getContext(),
+                        "Vui lòng chọn phương thức thanh toán",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if ("CREDIT".equals(selectedMethod)) {
                 if (eNumber.getText().toString().isEmpty() ||
                         eName  .getText().toString().isEmpty() ||
                         eExpiry.getText().toString().isEmpty() ||
@@ -103,15 +122,12 @@ public class PaymentMethodFragment extends Fragment {
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
-                method = "CREDIT";
-            } else if (lMomo.isPressed())       method = "MOMO";
-            else if (lBanking.isPressed())    method = "BANKING";
-            else if (lCOD.isPressed())        method = "COD";
-            else                               method = null;
+            }
 
+            // Gửi result
             Bundle result = new Bundle();
-            result.putString("paymentMethod", method);
-            if ("CREDIT".equals(method)) {
+            result.putString("paymentMethod", selectedMethod);
+            if ("CREDIT".equals(selectedMethod)) {
                 result.putString("cardNumber", eNumber.getText().toString());
                 result.putString("cardName",   eName  .getText().toString());
                 result.putString("expiry",     eExpiry.getText().toString());
@@ -121,46 +137,25 @@ public class PaymentMethodFragment extends Fragment {
                     .setFragmentResult("select_payment_method", result);
             requireActivity().getSupportFragmentManager().popBackStack();
         });
-        // Handle nút back
-        view.findViewById(R.id.btnBack).setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager().popBackStack();
-        });
 
-        // Credit/Debit Card chọn
-        lCredit.setOnClickListener(v -> {
-            resetAllOptionsBg();
-            lCredit.setBackgroundResource(R.drawable.bg_selected_payment);
-            cardDetails.setVisibility(View.VISIBLE);
-        });
-
-        // Momo chọn
-        lMomo.setOnClickListener(v -> {
-            resetBackgrounds();
-            lMomo.setBackgroundResource(R.drawable.bg_selected_payment);
-            hideCardDetails();
-        });
-
-        // Internet Banking chọn
-        lBanking.setOnClickListener(v -> {
-            resetBackgrounds();
-            lBanking.setBackgroundResource(R.drawable.bg_selected_payment);
-            hideCardDetails();
-        });
-
-        // COD chọn
-        lCOD.setOnClickListener(v -> {
-            resetBackgrounds();
-            lCOD.setBackgroundResource(R.drawable.bg_selected_payment);
-            hideCardDetails();
-        });
+        // Nút back (nếu có)
+        View back = view.findViewById(R.id.btnBack);
+        if (back != null) back.setOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
 
         return view;
     }
+
     private void resetAllOptionsBg() {
-        lCredit .setBackgroundColor(defaultColor);
-        lMomo   .setBackgroundColor(defaultColor);
-        lBanking.setBackgroundColor(defaultColor);
-        lCOD    .setBackgroundColor(defaultColor);
+        lCredit .setBackgroundResource(R.drawable.bg_border_rounded);
+        lMomo   .setBackgroundResource(R.drawable.bg_border_rounded);
+        lBanking.setBackgroundResource(R.drawable.bg_border_rounded);
+        lCOD    .setBackgroundResource(R.drawable.bg_border_rounded);
     }
 
+    private void highlightOption(View option) {
+        resetAllOptionsBg();
+        option.setBackgroundResource(R.drawable.bg_selected_payment);
+    }
 }
