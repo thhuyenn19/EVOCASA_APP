@@ -77,7 +77,11 @@ export class CategoryService {
           name: data.Name,
           description: data.Description,
           image: [data.Image],
-          parentCategory: data.ParentCategory,
+          parentCategory: (
+        data.ParentCategory && typeof data.ParentCategory === 'object' && '$oid' in data.ParentCategory
+          ? data.ParentCategory.$oid
+          : data.ParentCategory || null
+      ),
           slug: data.Slug,
         } as Category;
       } else {
@@ -102,7 +106,9 @@ export class CategoryService {
       Name: category.name,
       Description: category.description,
       Image: category.image?.[0] || '',
-      ParentCategory: category.parentCategory || null,
+      ParentCategory: category.parentCategory
+        ? { $oid: category.parentCategory }
+        : null,
       Slug: category.slug,
     };
 
@@ -125,7 +131,9 @@ export class CategoryService {
       Name: category.name,
       Description: category.description,
       Image: category.image?.[0] || '',
-      ParentCategory: category.parentCategory || null,
+      ParentCategory: category.parentCategory
+        ? { $oid: category.parentCategory }
+        : null,
       Slug: category.slug,
     };
 
@@ -185,7 +193,12 @@ export class CategoryService {
         path.unshift(currentCategory);
         
         while (currentCategory && currentCategory.parentCategory) {
-          const parentId: string | null = currentCategory.parentCategory;
+          let parentId: string | null = null;
+          if (typeof currentCategory.parentCategory === 'object' && currentCategory.parentCategory !== null && '$oid' in currentCategory.parentCategory) {
+            parentId = currentCategory.parentCategory.$oid;
+          } else {
+            parentId = currentCategory.parentCategory;
+          }
           currentCategory = categories.find(c => c._id === parentId);
           if (currentCategory) {
             path.unshift(currentCategory);
@@ -273,5 +286,18 @@ export class CategoryService {
     }
     return category;
   }
+  getCategoryIdByName(name: string): Observable<string | null> {
+  return this.getCategories().pipe(
+    map(categories => {
+      const found = categories.find(cat => cat.name === name);
+      if (!found) return null;
+      if (typeof found._id === 'object' && found._id !== null && '$oid' in found._id) {
+        return found._id.$oid as string;
+      }
+      return found._id as string;
+    })
+  );
+}
+
 
 }

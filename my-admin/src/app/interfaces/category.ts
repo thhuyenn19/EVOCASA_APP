@@ -4,6 +4,6 @@ export interface Category {
   name: string;
   description: string;
   slug: string;
-  parentCategory: string | null;
+  parentCategory: string | { $oid: string } | null;
   image: string | string[];
 }

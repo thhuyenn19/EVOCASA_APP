@@ -101,9 +101,9 @@
                 <div class="input-container">
                     <div class="label">Parent Category</div>
                     <div class="combo-box-container">
-                        <select class="input-field" [(ngModel)]="category.parentCategory">
-                            <option value="" disabled selected hidden class>Select parent category</option>
-                            <option *ngFor="let cat of categories" [value]="cat._id">{{ cat.name }}</option>
+                      <select class="input-field" [(ngModel)]="selectedParentId" (change)="onParentCategoryChange()">
+                        <option [ngValue]="null">None</option>
+                        <option *ngFor="let cat of categories" [ngValue]="cat._id">{{ cat.name }}</option>
                         </select>
                         <img src="images/category-detail/more.png" alt="icon" class="combo-box-icon">
                     </div>      

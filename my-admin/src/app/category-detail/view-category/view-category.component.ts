@@ -30,8 +30,7 @@ export class ViewCategoryComponent implements OnInit {
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute  ) {}
 
   ngOnInit() {
     this.route.params.subscribe(params => {
@@ -53,7 +52,27 @@ export class ViewCategoryComponent implements OnInit {
       next: (data) => {
         this.category = data;
         console.log('Loaded category details:', this.category);
-        
+
+        if (this.category.parentCategory) {
+      const parentCategoryId = typeof this.category.parentCategory === 'string'
+        ? this.category.parentCategory
+        : this.category.parentCategory && '$oid' in this.category.parentCategory
+          ? this.category.parentCategory.$oid
+          : '';
+          if (parentCategoryId) {
+            this.categoryService.getCategory(parentCategoryId).subscribe((parent: any) => {
+              this.parentCategoryName = parent.name;
+            }, error => {
+              console.error('Không tìm thấy parent category:', error);
+              this.parentCategoryName = 'Unknown';
+            });
+          } else {
+            this.parentCategoryName = 'Unknown';
+          }
+        } else {
+          this.parentCategoryName = 'None';
+        }
+
         // Set the preview image from the processed category data
         this.previewImage = Array.isArray(this.category.image) ? this.category.image[0] : this.category.image;
         this.isImageLoading = false;
