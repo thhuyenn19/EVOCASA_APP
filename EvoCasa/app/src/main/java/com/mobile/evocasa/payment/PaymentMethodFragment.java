@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,22 +17,27 @@ import com.mobile.evocasa.R;
 
 public class PaymentMethodFragment extends Fragment {
 
-    private LinearLayout layoutCredit, layoutMOMO, layoutInternetBanking, layoutCOD;
-    private View layoutCardDetails;
+
+    private LinearLayout lCredit, lMomo, lBanking, lCOD;
+    private View cardDetails;
+    private EditText eNumber, eName, eExpiry, eCvv;
+    private Button btnSave;
+    private int selectedColor, defaultColor;
+
 
     private void resetBackgrounds() {
-        layoutCredit.setBackgroundResource(R.drawable.bg_border_rounded);
-        layoutMOMO.setBackgroundResource(R.drawable.bg_border_rounded);
-        layoutInternetBanking.setBackgroundResource(R.drawable.bg_border_rounded);
-        layoutCOD.setBackgroundResource(R.drawable.bg_border_rounded);
+        lCredit.setBackgroundResource(R.drawable.bg_border_rounded);
+        lMomo.setBackgroundResource(R.drawable.bg_border_rounded);
+        lBanking.setBackgroundResource(R.drawable.bg_border_rounded);
+        lCOD.setBackgroundResource(R.drawable.bg_border_rounded);
     }
 
     private void hideCardDetails() {
-        layoutCardDetails.setVisibility(View.GONE);
+        cardDetails.setVisibility(View.GONE);
     }
 
     private void showCardDetails() {
-        layoutCardDetails.setVisibility(View.VISIBLE);
+        cardDetails.setVisibility(View.VISIBLE);
     }
 
     @Nullable
@@ -41,45 +49,118 @@ public class PaymentMethodFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_payment_method, container, false);
 
         // Ánh xạ View
-        layoutCredit = view.findViewById(R.id.layoutCredit);
-        layoutMOMO = view.findViewById(R.id.layoutMOMO);
-        layoutInternetBanking = view.findViewById(R.id.layoutInternetBanking);
-        layoutCOD = view.findViewById(R.id.layoutCOD);
-        layoutCardDetails = view.findViewById(R.id.layoutCardDetails);
+        lCredit   = view.findViewById(R.id.layoutCredit);
+        lMomo     = view.findViewById(R.id.layoutMOMO);
+        lBanking  = view.findViewById(R.id.layoutInternetBanking);
+        lCOD      = view.findViewById(R.id.layoutCOD);
+        cardDetails = view.findViewById(R.id.layoutCardDetails);
 
+        eNumber = cardDetails.findViewById(R.id.etCardNumber);
+        eName   = cardDetails.findViewById(R.id.etCardName);
+        eExpiry = cardDetails.findViewById(R.id.etExpiry);
+        eCvv    = cardDetails.findViewById(R.id.etCVV);
+        btnSave = view.findViewById(R.id.btnSaveInfor);
+
+        selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
+        defaultColor  = getResources().getColor(android.R.color.transparent, null);
+
+        Bundle args = getArguments();
+        String pre = args != null ? args.getString("paymentMethod") : null;
+        if ("CREDIT".equals(pre)) {
+            cardDetails.setVisibility(View.VISIBLE);
+            eNumber.setText(args.getString("cardNumber"));
+            eName  .setText(args.getString("cardName"));
+            eExpiry.setText(args.getString("expiry"));
+            eCvv   .setText(args.getString("cvv"));
+            lCredit.setBackgroundColor(selectedColor);
+        } else {
+            cardDetails.setVisibility(View.GONE);
+            if ("MOMO".equals(pre))    lMomo   .setBackgroundColor(selectedColor);
+            if ("BANKING".equals(pre)) lBanking.setBackgroundColor(selectedColor);
+            if ("COD".equals(pre))     lCOD    .setBackgroundColor(selectedColor);
+        }
+        View.OnClickListener optClick = v -> {
+            resetAllOptionsBg();
+            v.setBackgroundColor(selectedColor);
+            cardDetails.setVisibility(v == lCredit ? View.VISIBLE : View.GONE);
+        };
+        lCredit  .setOnClickListener(optClick);
+        lMomo    .setOnClickListener(optClick);
+        lBanking .setOnClickListener(optClick);
+        lCOD     .setOnClickListener(optClick);
+
+        // ← ADD: nút Save
+        btnSave.setOnClickListener(v -> {
+            String method;
+            if (cardDetails.getVisibility() == View.VISIBLE) {
+                // validate
+                if (eNumber.getText().toString().isEmpty() ||
+                        eName  .getText().toString().isEmpty() ||
+                        eExpiry.getText().toString().isEmpty() ||
+                        eCvv   .getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(),
+                            "Vui lòng điền đầy đủ thông tin thẻ",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                method = "CREDIT";
+            } else if (lMomo.isPressed())       method = "MOMO";
+            else if (lBanking.isPressed())    method = "BANKING";
+            else if (lCOD.isPressed())        method = "COD";
+            else                               method = null;
+
+            Bundle result = new Bundle();
+            result.putString("paymentMethod", method);
+            if ("CREDIT".equals(method)) {
+                result.putString("cardNumber", eNumber.getText().toString());
+                result.putString("cardName",   eName  .getText().toString());
+                result.putString("expiry",     eExpiry.getText().toString());
+                result.putString("cvv",        eCvv   .getText().toString());
+            }
+            getParentFragmentManager()
+                    .setFragmentResult("select_payment_method", result);
+            requireActivity().getSupportFragmentManager().popBackStack();
+        });
         // Handle nút back
         view.findViewById(R.id.btnBack).setOnClickListener(v -> {
             requireActivity().getSupportFragmentManager().popBackStack();
         });
 
         // Credit/Debit Card chọn
-        layoutCredit.setOnClickListener(v -> {
-            resetBackgrounds();
-            layoutCredit.setBackgroundResource(R.drawable.bg_selected_payment);
-            showCardDetails();
+        lCredit.setOnClickListener(v -> {
+            resetAllOptionsBg();
+            lCredit.setBackgroundResource(R.drawable.bg_selected_payment);
+            cardDetails.setVisibility(View.VISIBLE);
         });
 
         // Momo chọn
-        layoutMOMO.setOnClickListener(v -> {
+        lMomo.setOnClickListener(v -> {
             resetBackgrounds();
-            layoutMOMO.setBackgroundResource(R.drawable.bg_selected_payment);
+            lMomo.setBackgroundResource(R.drawable.bg_selected_payment);
             hideCardDetails();
         });
 
         // Internet Banking chọn
-        layoutInternetBanking.setOnClickListener(v -> {
+        lBanking.setOnClickListener(v -> {
             resetBackgrounds();
-            layoutInternetBanking.setBackgroundResource(R.drawable.bg_selected_payment);
+            lBanking.setBackgroundResource(R.drawable.bg_selected_payment);
             hideCardDetails();
         });
 
         // COD chọn
-        layoutCOD.setOnClickListener(v -> {
+        lCOD.setOnClickListener(v -> {
             resetBackgrounds();
-            layoutCOD.setBackgroundResource(R.drawable.bg_selected_payment);
+            lCOD.setBackgroundResource(R.drawable.bg_selected_payment);
             hideCardDetails();
         });
 
         return view;
     }
+    private void resetAllOptionsBg() {
+        lCredit .setBackgroundColor(defaultColor);
+        lMomo   .setBackgroundColor(defaultColor);
+        lBanking.setBackgroundColor(defaultColor);
+        lCOD    .setBackgroundColor(defaultColor);
+    }
+
 }

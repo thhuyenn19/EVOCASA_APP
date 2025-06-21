@@ -60,6 +60,12 @@ public class MainPaymentFragment extends Fragment {
     private RecyclerView rvShipping;
     private ImageView btnCloseShipping;
     private TextView txtName, txtFee, txtDesc;
+    private String selectedPaymentMethod = null;
+    // nếu Credit, lưu tiếp detail
+    private String savedCardNumber, savedCardName, savedExpiry, savedCvv;
+    private int selectedColor;
+    private int defaultColor;
+
 
 
     @Nullable
@@ -67,6 +73,22 @@ public class MainPaymentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_payment, container, false);
+        getParentFragmentManager()
+                .setFragmentResultListener("select_payment_method", getViewLifecycleOwner(),
+                        (key, bundle) -> {
+                            // lấy phương thức
+                            selectedPaymentMethod = bundle.getString("paymentMethod");
+                            // nếu credit thì lấy chi tiết
+                            if ("CREDIT".equals(selectedPaymentMethod)) {
+                                savedCardNumber = bundle.getString("cardNumber");
+                                savedCardName   = bundle.getString("cardName");
+                                savedExpiry     = bundle.getString("expiry");
+                                savedCvv        = bundle.getString("cvv");
+                            }
+                            // cập nhật UI highlight
+                            highlightPaymentOption(view);
+                        });
+
         productContainer = view.findViewById(R.id.productContainer);
         // Lấy dữ liệu cartPayment từ Intent (của Activity chứa fragment này)
         Intent intent = requireActivity().getIntent();
@@ -105,11 +127,25 @@ public class MainPaymentFragment extends Fragment {
         // Chuyển sang fragment chọn phương thức thanh toán
         TextView txtSeeAllPayment = view.findViewById(R.id.txtSeeAllPayment);
         txtSeeAllPayment.setOnClickListener(v -> {
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, new PaymentMethodFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            PaymentMethodFragment frag = new PaymentMethodFragment();
+            Bundle args = new Bundle();
+            // truyền state hiện tại
+            if (selectedPaymentMethod != null) {
+                args.putString("paymentMethod", selectedPaymentMethod);
+                if ("CREDIT".equals(selectedPaymentMethod)) {
+                    args.putString("cardNumber", savedCardNumber);
+                    args.putString("cardName",   savedCardName);
+                    args.putString("expiry",     savedExpiry);
+                    args.putString("cvv",        savedCvv);
+                }
+            }
+            frag.setArguments(args);
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, frag)
+                    .addToBackStack(null)
+                    .commit();
         });
+
 
         // Chuyển sang fragment chọn edit Shipping Address
         txtEditInfor.setOnClickListener(v -> {
@@ -134,8 +170,8 @@ public class MainPaymentFragment extends Fragment {
         LinearLayout optionMomo = view.findViewById(R.id.optionMomo);
         LinearLayout optionCredit = view.findViewById(R.id.optionCredit);
 
-        int selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
-        int defaultColor = getResources().getColor(android.R.color.transparent, null);
+        selectedColor = getResources().getColor(R.color.color_80F2EAD3, null);
+        defaultColor = getResources().getColor(android.R.color.transparent, null);
 
         // Xử lý click chọn phương thức thanh toán
         View.OnClickListener paymentClickListener = v -> {
@@ -203,6 +239,28 @@ public class MainPaymentFragment extends Fragment {
         setupPaymentMethodSelector(view);
         return view;
     }
+
+    private void highlightPaymentOption(View root) {
+        if (selectedPaymentMethod == null) return;
+        resetOption((ViewGroup) root.findViewById(R.id.optionCOD),     defaultColor);
+        resetOption((ViewGroup) root.findViewById(R.id.optionBanking), defaultColor);
+        resetOption((ViewGroup) root.findViewById(R.id.optionMomo),    defaultColor);
+        resetOption((ViewGroup) root.findViewById(R.id.optionCredit),  defaultColor);
+
+        View toSelect = null;
+        switch (selectedPaymentMethod) {
+            case "COD":     toSelect = root.findViewById(R.id.optionCOD);     break;
+            case "MOMO":    toSelect = root.findViewById(R.id.optionMomo);    break;
+            case "BANKING": toSelect = root.findViewById(R.id.optionBanking); break;
+            case "CREDIT":  toSelect = root.findViewById(R.id.optionCredit);  break;
+        }
+        if (toSelect != null) {
+            toSelect.setBackgroundColor(selectedColor);
+            setTextStyleInViewGroup((ViewGroup) toSelect, Typeface.BOLD);
+        }
+    }
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -237,15 +295,15 @@ public class MainPaymentFragment extends Fragment {
                 new ShippingMethod(
                         "Express Delivery", 50,
                         "Received on Thursday, May 15, 2025",
-                        R.drawable.ic_delivery),
+                        R.drawable.ic_express_delivery),
                 new ShippingMethod(
                         "Standard Delivery", 20,
                         "Received on Monday, May 19, 2025",
-                        R.drawable.ic_delivery),
+                        R.drawable.ic_standard_delivery),
                 new ShippingMethod(
                         "Weekend Delivery", 30,
                         "Received on Saturday, May 18, 2025",
-                        R.drawable.ic_delivery)
+                        R.drawable.ic_weekend_delivery)
         );
 
         // 3) thiết lập RecyclerView + Adapter

@@ -182,7 +182,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_delivery" />
+                        android:src="@drawable/ic_standard_delivery" />
 
                     <TextView
                         android:id="@+id/txtShippingMethod"
