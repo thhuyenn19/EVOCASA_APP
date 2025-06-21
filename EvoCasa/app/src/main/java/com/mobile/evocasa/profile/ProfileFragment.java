@@ -5,6 +5,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.NarBarActivity;
@@ -58,6 +59,7 @@ public class ProfileFragment extends Fragment {
     private UserSessionManager sessionManager;
     private FirebaseFirestore db;
     private LinearLayout containerLoginRegister;
+    private TextView badgePending, badgePickUp, badgeTransit, badgeReview;
 
     @Nullable
     @Override
@@ -75,6 +77,11 @@ public class ProfileFragment extends Fragment {
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
 
+        badgePending  = view.findViewById(R.id.badge_pending);
+        badgePickUp   = view.findViewById(R.id.badge_pick_up);
+        badgeTransit  = view.findViewById(R.id.badge_transit);
+        badgeReview   = view.findViewById(R.id.badge_review);
+
         // Initialize login/register views
         txtLogin = view.findViewById(R.id.txtLogin);
         txtRegister = view.findViewById(R.id.txtRegister);
@@ -84,8 +91,64 @@ public class ProfileFragment extends Fragment {
         setupSuggestedProducts();
         setupClickListeners();
         startCartBadgeListener();
+        loadOrderCounts();
 
         return view;
+    }
+
+    private void loadOrderCounts() {
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            // ẩn hết khi chưa login
+            updateBadge(badgePending,  0);
+            updateBadge(badgePickUp,   0);
+            updateBadge(badgeTransit,  0);
+            updateBadge(badgeReview,   0);
+            return;
+        }
+
+        db.collection("Order")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    int pendingCount   = 0;
+                    int pickUpCount    = 0;
+                    int inTransitCount = 0;
+                    int reviewCount    = 0;
+
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        // lọc đơn của user
+                        Map<String, Object> customerMap = (Map<String, Object>) doc.get("Customer_id");
+                        if (customerMap == null) continue;
+                        String orderUid = (String) customerMap.get("$oid");
+                        if (!uid.equals(orderUid)) continue;
+
+                        String status = doc.getString("Status");
+                        if (status == null) continue;
+                        switch (status) {
+                            case "Pending":    pendingCount++;   break;
+                            case "Pick Up":    pickUpCount++;    break;
+                            case "In Transit": inTransitCount++; break;
+                            case "Review":     reviewCount++;    break;
+                        }
+                    }
+
+                    // gọi helper để hiện/ẩn từng badge
+                    updateBadge(badgePending,  pendingCount);
+                    updateBadge(badgePickUp,   pickUpCount);
+                    updateBadge(badgeTransit,  inTransitCount);
+                    updateBadge(badgeReview,   reviewCount);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("ProfileFragment", "loadOrderCounts failed", e);
+                });
+    }
+    private void updateBadge(TextView badge, int count) {
+        if (count > 0) {
+            badge.setVisibility(View.VISIBLE);
+            badge.setText(String.valueOf(count));
+        } else {
+            badge.setVisibility(View.GONE);
+        }
     }
 
     private void setupSuggestedProducts() {
