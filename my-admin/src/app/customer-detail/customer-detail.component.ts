@@ -5,6 +5,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../services/order.service'; 
 import { Order } from '../interfaces/order';
 
+// Interface for Shipping Address
+interface ShippingAddress {
+  id?: string;
+  Address: string;
+  Name: string;
+  Phone: string;
+  IsDefault: boolean;
+}
+
 @Component({
   selector: 'app-customer-detail',
   standalone: false,
@@ -25,6 +34,10 @@ export class CustomerDetailComponent implements OnInit {
   // Thêm thuộc tính để điều khiển popup
   showPopup: boolean = false;
 
+  // Thêm thuộc tính cho shipping addresses
+  shippingAddresses: ShippingAddress[] = [];
+  isLoadingAddresses: boolean = false;
+
   constructor(private customerService: CustomerService,  private router: Router, private route: ActivatedRoute, private orderService: OrderService) {}
 
   ngOnInit(): void {
@@ -41,6 +54,7 @@ export class CustomerDetailComponent implements OnInit {
       if (customerId) {
         this.loadCustomerDetails(customerId); 
         this.fetchOrders(customerId);
+        this.loadShippingAddresses(customerId);
       }
     });
   }
@@ -92,6 +106,80 @@ export class CustomerDetailComponent implements OnInit {
       }
     });
   }
+
+  // Thêm hàm để load shipping addresses từ Firestore
+  loadShippingAddresses(customerId: string): void {
+    this.isLoadingAddresses = true;
+    this.customerService.getShippingAddresses(customerId).subscribe({
+      next: (addresses) => {
+        this.shippingAddresses = addresses.sort((a, b) => {
+          // Sắp xếp địa chỉ mặc định lên đầu
+          if (a.IsDefault && !b.IsDefault) return -1;
+          if (!a.IsDefault && b.IsDefault) return 1;
+          return 0;
+        });
+        console.log('Shipping addresses loaded:', this.shippingAddresses);
+        this.isLoadingAddresses = false;
+      },
+      error: (error) => {
+        console.error('Error fetching shipping addresses:', error);
+        this.shippingAddresses = [];
+        this.isLoadingAddresses = false;
+      }
+    });
+  }
+
+  // Hàm để xóa shipping address - FIXED VERSION
+deleteShippingAddress(addressId: string): void {
+  if (confirm('Bạn có chắc chắn muốn xóa địa chỉ này?')) {
+    // Lấy customerId từ route params
+    const customerId = this.route.snapshot.paramMap.get('id');
+    
+    if (!customerId) {
+      console.error('Customer ID not found');
+      alert('Không tìm thấy thông tin khách hàng!');
+      return;
+    }
+
+    // Gọi service với cả customerId và addressId
+    this.customerService.deleteShippingAddress(customerId, addressId).subscribe({
+      next: () => {
+        this.shippingAddresses = this.shippingAddresses.filter(addr => addr.id !== addressId);
+        console.log('Address deleted successfully');
+      },
+      error: (error) => {
+        console.error('Error deleting address:', error);
+        alert('Có lỗi xảy ra khi xóa địa chỉ!');
+      }
+    });
+  }
+}
+
+  // Hàm để đặt địa chỉ mặc định
+  setDefaultAddress(addressId: string): void {
+    const customerId = this.route.snapshot.paramMap.get('id');
+    if (!customerId) return;
+
+    this.customerService.setDefaultAddress(customerId, addressId).subscribe({
+      next: () => {
+        // Cập nhật local state
+        this.shippingAddresses.forEach(addr => {
+          addr.IsDefault = addr.id === addressId;
+        });
+        // Sắp xếp lại để địa chỉ mặc định lên đầu
+        this.shippingAddresses.sort((a, b) => {
+          if (a.IsDefault && !b.IsDefault) return -1;
+          if (!a.IsDefault && b.IsDefault) return 1;
+          return 0;
+        });
+        console.log('Default address updated successfully');
+      },
+      error: (error) => {
+        console.error('Error setting default address:', error);
+        alert('Có lỗi xảy ra khi đặt địa chỉ mặc định!');
+      }
+    });
+  }
   
   getTotalAmount(): number {
     return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
@@ -121,8 +209,22 @@ export class CustomerDetailComponent implements OnInit {
   }
 
   // Thêm methods để điều khiển popup
+  // openPopup(): void {
+  //   this.showPopup = true;
+  // }
+
+  // closePopup(): void {
+  //   this.showPopup = false;
+  // }
   openPopup(): void {
     this.showPopup = true;
+    // Load shipping addresses khi mở popup nếu chưa load
+    if (this.shippingAddresses.length === 0) {
+      const customerId = this.route.snapshot.paramMap.get('id');
+      if (customerId) {
+        this.loadShippingAddresses(customerId);
+      }
+    }
   }
 
   closePopup(): void {
