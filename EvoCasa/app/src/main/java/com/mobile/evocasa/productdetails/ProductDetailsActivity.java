@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +45,6 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +77,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat;
     private String productDescription;
     private String productDimensions;
-    private ProductItem productItem; // Thêm biến để lưu ProductItem
+    private ProductItem productItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,26 +236,21 @@ public class ProductDetailsActivity extends AppCompatActivity {
                             txtProductPrice.setText("$" + (documentSnapshot.getDouble("Price") != null ? documentSnapshot.getDouble("Price") : 0.0));
                             productDescription = documentSnapshot.getString("Description");
                             productDimensions = documentSnapshot.getString("Dimension");
-                            productItem = documentSnapshot.toObject(ProductItem.class); // Load toàn bộ ProductItem
+                            productItem = documentSnapshot.toObject(ProductItem.class);
                             Log.d("ProductDetails", "Loaded ProductItem: " + (productItem != null));
 
                             if (productItem != null) {
                                 productItem.setId(productId);
-                                // Đảm bảo Ratings không null và ánh xạ thủ công Average
                                 if (productItem.getRatings() == null) {
                                     productItem.setRatings(new ProductItem.Ratings());
                                 }
                                 Object ratingsObj = documentSnapshot.get("Ratings");
                                 if (ratingsObj instanceof Map) {
                                     Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-
-                                    // Parse average
                                     Object averageObj = ratingsMap.get("Average");
                                     if (averageObj instanceof Number) {
                                         productItem.getRatings().setAverage(((Number) averageObj).doubleValue());
                                     }
-
-                                    // Parse details
                                     Object detailsObj = ratingsMap.get("Details");
                                     if (detailsObj instanceof List) {
                                         List<ProductItem.Ratings.Detail> detailList = new ArrayList<>();
@@ -298,7 +291,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     }
                                 }
 
-                                // Cập nhật txtRating dựa trên productItem
                                 if (productItem.getRatings() != null && productItem.getRatings().getAverage() != null) {
                                     ratingLayout.setVisibility(View.VISIBLE);
                                     txtRating.setText(decimalFormat.format(productItem.getRatings().getAverage()));
@@ -389,6 +381,35 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     product.getRatings().setAverage(((Number) averageObj).doubleValue());
                                 }
                             }
+
+                            // Parse Image field
+                            String imageJson = doc.getString("Image");
+                            if (imageJson != null) {
+                                try {
+                                    Gson gson = new Gson();
+                                    Type listType = new TypeToken<List<String>>() {}.getType();
+                                    List<String> images = gson.fromJson(imageJson, listType);
+                                    if (images != null && !images.isEmpty()) {
+                                        product.setImage(String.join(",", images)); // Store as comma-separated string
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("ProductDetails", "Failed to parse images for suggested product: " + e.getMessage());
+                                }
+                            }
+
+                            // Explicitly set Name and Price
+                            String name = doc.getString("Name");
+                            Double price = doc.getDouble("Price");
+                            if (name != null) {
+                                product.setName(name); // Ensure Name is set
+                            }
+                            if (price != null) {
+                                product.setPrice(price); // Ensure Price is set
+                            }
+
+                            // Log to debug
+                            Log.d("ProductDetails", "Loaded Suggested Product: Name=" + product.getName() + ", Price=" + product.getPrice() + ", Image=" + product.getImage());
+
                             productList.add(product);
                         }
                     }
@@ -409,7 +430,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ImageButton btnDecrease = view.findViewById(R.id.btnDecrease);
 
         final int[] quantity = {1};
-        final int[] selectedOptionIndex = {-1};
 
         txtQuantity.setText(String.valueOf(quantity[0]));
 
@@ -425,28 +445,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ImageView img1 = view.findViewById(R.id.imgAvatar1);
-        ImageView img2 = view.findViewById(R.id.imgAvatar2);
-        ImageView img3 = view.findViewById(R.id.imgAvatar3);
-        List<ImageView> avatarOptions = Arrays.asList(img1, img2, img3);
-
-        for (int i = 0; i < avatarOptions.size(); i++) {
-            int finalI = i;
-            avatarOptions.get(i).setOnClickListener(v -> {
-                for (ImageView avatar : avatarOptions) {
-                    avatar.setBackground(null);
-                }
-                avatarOptions.get(finalI).setBackgroundResource(R.drawable.bg_option_selected);
-                selectedOptionIndex[0] = finalI;
-            });
-        }
-
         Button btnBuyNow = view.findViewById(R.id.btnBuyNow);
         btnBuyNow.setOnClickListener(v -> {
-            if (selectedOptionIndex[0] == -1) {
-                Toast.makeText(this, "Please select an option before buying!", Toast.LENGTH_SHORT).show();
-                return;
-            }
             Toast.makeText(this, "Đặt mua " + quantity[0] + " sản phẩm thành công!", Toast.LENGTH_SHORT).show();
             bottomSheetDialog.dismiss();
         });
@@ -464,7 +464,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ImageButton btnDecrease = view.findViewById(R.id.btnDecrease);
 
         final int[] quantity = {1};
-        final int[] selectedOptionIndex = {-1};
 
         txtQuantity.setText(String.valueOf(quantity[0]));
 
@@ -480,30 +479,28 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ImageView img1 = view.findViewById(R.id.imgAvatar1);
-        ImageView img2 = view.findViewById(R.id.imgAvatar2);
-        ImageView img3 = view.findViewById(R.id.imgAvatar3);
-        List<ImageView> avatarOptions = Arrays.asList(img1, img2, img3);
-
-        for (int i = 0; i < avatarOptions.size(); i++) {
-            int finalI = i;
-            avatarOptions.get(i).setOnClickListener(v -> {
-                for (ImageView avatar : avatarOptions) {
-                    avatar.setBackground(null);
-                }
-                avatarOptions.get(finalI).setBackgroundResource(R.drawable.bg_option_selected);
-                selectedOptionIndex[0] = finalI;
-            });
-        }
-
         Button btnAddToCart = view.findViewById(R.id.btnAddToCart);
         btnAddToCart.setOnClickListener(v -> {
-            if (selectedOptionIndex[0] == -1) {
-                Toast.makeText(this, "Please select an option before adding to cart!", Toast.LENGTH_SHORT).show();
-                return;
+            String customerId = sessionManager.getUid();
+            if (customerId != null && productItem != null) {
+                Map<String, Object> newCartItem = new HashMap<>();
+                newCartItem.put("ProductId", productItem.getId());
+                newCartItem.put("Quantity", quantity[0]);
+
+                db.collection("Customers")
+                        .document(customerId)
+                        .update("Cart", FieldValue.arrayUnion(newCartItem))
+                        .addOnSuccessListener(aVoid -> {
+                            Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.dismiss();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("ProductDetails", "Failed to add to cart: " + e.getMessage());
+                            Toast.makeText(this, "Failed to add to cart", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(this, "Please sign in to add to cart", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.show();
