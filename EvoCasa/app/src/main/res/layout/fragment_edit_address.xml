@@ -75,7 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_border"
-            android:padding="12dp" />
+            android:dropDownVerticalOffset="95dp"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,7 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_border"
-            android:padding="12dp" />
+            android:dropDownVerticalOffset="95dp"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -107,8 +109,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_border"
-            android:padding="12dp" />
-
+            android:dropDownVerticalOffset="95dp"
+            android:spinnerMode="dropdown" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -123,7 +125,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_border"
-            android:padding="12dp" />
+            android:dropDownVerticalOffset="95dp"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:layout_width="wrap_content"

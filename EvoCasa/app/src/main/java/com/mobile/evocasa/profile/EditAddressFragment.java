@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListPopupWindow;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.adapters.SpinnerCustomAdapter;
 import com.mobile.evocasa.R;
 import com.mobile.utils.UserSessionManager;
 
@@ -43,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 public class EditAddressFragment extends Fragment {
-
     private Spinner spinnerCountry, spinnerProvince, spinnerDistrict, spinnerWard;
     private Button btnSave;
     private RequestQueue requestQueue;
@@ -122,6 +123,7 @@ public class EditAddressFragment extends Fragment {
                 showExitDialog();
             });
         }
+
     }
 
     private void showExitDialog() {
@@ -182,10 +184,9 @@ public class EditAddressFragment extends Fragment {
                         }
 
                         countryNames.sort(String::compareTo);
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                                requireContext(), android.R.layout.simple_spinner_item, countryNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), countryNames);
                         spinnerCountry.setAdapter(adapter);
+
 
                         // Set default selection
                         String defaultCountry = selectedCountry.isEmpty() ? "Vietnam" : selectedCountry;
@@ -270,9 +271,8 @@ public class EditAddressFragment extends Fragment {
                             provinceNameToId.put(name, id);
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_spinner_item, provinceNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), provinceNames);
                         spinnerProvince.setAdapter(adapter);
 
                         // Set default selection if available
@@ -338,9 +338,7 @@ public class EditAddressFragment extends Fragment {
                             districtNameToId.put(name, id);
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_spinner_item, districtNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), districtNames);
                         spinnerDistrict.setAdapter(adapter);
 
                         // Set default selection if available
@@ -399,9 +397,7 @@ public class EditAddressFragment extends Fragment {
                             wardNames.add(ward.getString("name"));
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_spinner_item, wardNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), wardNames);
                         spinnerWard.setAdapter(adapter);
 
                         // Set default selection if available

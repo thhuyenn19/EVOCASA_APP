@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mobile.adapters.SpinnerCustomAdapter;
 import com.mobile.evocasa.R;
 import com.mobile.utils.UserSessionManager;
 
@@ -148,9 +149,7 @@ public class EditLocationFragment extends Fragment {
                         }
 
                         countryNames.sort(String::compareTo);
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                                requireContext(), android.R.layout.simple_spinner_item, countryNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), countryNames);
                         spinnerCountry.setAdapter(adapter);
 
                         int defaultIndex = countryNames.indexOf(selectedCountry);
@@ -202,9 +201,7 @@ public class EditLocationFragment extends Fragment {
                             provinceNames.add(province.getString("name"));
                         }
 
-                        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                                android.R.layout.simple_spinner_item, provinceNames);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        SpinnerCustomAdapter adapter = new SpinnerCustomAdapter(requireContext(), provinceNames);
                         spinnerProvince.setAdapter(adapter);
 
                         int defaultIndex = provinceNames.indexOf(selectedProvince);
