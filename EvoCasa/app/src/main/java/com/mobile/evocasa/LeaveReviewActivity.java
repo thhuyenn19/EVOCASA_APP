@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
@@ -27,11 +29,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.UserSessionManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -53,6 +57,10 @@ public class LeaveReviewActivity extends AppCompatActivity {
     ImageView btnAddPhoto;
     ImageView btnAddVideo;
     LinearLayout previewContainer;
+    private ListenerRegistration cartListener;
+    private UserSessionManager sessionManager;
+    private TextView txtCartBadge;
+    ImageView imgCart;
 
 
     @Override
@@ -65,6 +73,16 @@ public class LeaveReviewActivity extends AppCompatActivity {
             return insets;
         });
         applyCustomFonts();
+        sessionManager = new UserSessionManager(this);
+        txtCartBadge = findViewById(R.id.txtCartBadge);
+        imgCart = findViewById(R.id.imgCart);
+        // Cart
+        if (imgCart != null) {
+            imgCart.setOnClickListener(v -> {
+                Intent intent = new Intent(LeaveReviewActivity.this, CartActivity.class);
+                startActivity(intent);
+            });
+        }
 
         // Lấy các view con từ layout include
         View orderGroupView = findViewById(R.id.orderGroupReview);
@@ -100,6 +118,8 @@ public class LeaveReviewActivity extends AppCompatActivity {
             intent.setType("video/*");
             startActivityForResult(intent, 1002); // REQUEST_CODE_VIDEO
         });
+
+        startCartBadgeListener();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -327,6 +347,196 @@ public class LeaveReviewActivity extends AppCompatActivity {
                 FontUtils.setRegularFont(this, textView);
             }
         }
+    }
+    // CartBadge
+    /**
+     * Start listening for cart changes and update badge
+     */
+    private void startCartBadgeListener() {
+        String uid = sessionManager.getUid();
 
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "User not logged in, hiding badge");
+            if (txtCartBadge != null) {
+                txtCartBadge.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        if (cartListener != null) {
+            cartListener.remove();
+            cartListener = null;
+        }
+
+        cartListener = FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isFinishing() || isDestroyed()) {
+                        Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                        return;
+                    }
+
+                    if (e != null) {
+                        Log.w("CartBadge", "Listen failed.", e);
+                        safeUpdateCartBadge(0);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        int totalQuantity = 0;
+
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+
+                        safeUpdateCartBadge(totalQuantity);
+                    } else {
+                        Log.d("CartBadge", "No customer document found");
+                        safeUpdateCartBadge(0);
+                    }
+                });
+    }
+
+    private void safeUpdateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        if (txtCartBadge == null) {
+            Log.w("CartBadge", "Cart badge view is null, cannot update");
+            return;
+        }
+
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            try {
+                if (totalQuantity > 0) {
+                    txtCartBadge.setVisibility(View.VISIBLE);
+                    String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                    txtCartBadge.setText(displayText);
+                    Log.d("CartBadge", "Badge updated: " + displayText);
+                } else {
+                    txtCartBadge.setVisibility(View.GONE);
+                    Log.d("CartBadge", "Badge hidden (quantity = 0)");
+                }
+            } catch (Exception ex) {
+                Log.e("CartBadge", "Error updating cart badge UI", ex);
+            }
+        });
+    }
+
+    private void updateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            if (totalQuantity > 0) {
+                txtCartBadge.setVisibility(View.VISIBLE);
+                String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                txtCartBadge.setText(displayText);
+                Log.d("CartBadge", "Badge updated: " + displayText);
+            } else {
+                txtCartBadge.setVisibility(View.GONE);
+                Log.d("CartBadge", "Badge hidden (quantity = 0)");
+            }
+        });
+    }
+
+    public void refreshCartBadge() {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "Cannot refresh badge - user not logged in");
+            safeUpdateCartBadge(0);
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (isFinishing() || isDestroyed()) return;
+
+                    int totalQuantity = 0;
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+                    }
+                    safeUpdateCartBadge(totalQuantity);
+                })
+                .addOnFailureListener(e -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    Log.e("CartBadge", "Error refreshing cart badge", e);
+                    safeUpdateCartBadge(0);
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("CartBadge", "Activity onStart()");
+        if (sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CartBadge", "Activity onResume()");
+        if (cartListener == null && sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cleanupCartListener();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("CartBadge", "Activity onStop()");
+        cleanupCartListener();
+    }
+
+    private void cleanupCartListener() {
+        if (cartListener != null) {
+            Log.d("CartBadge", "Removing cart listener");
+            cartListener.remove();
+            cartListener = null;
+        }
     }
 }
