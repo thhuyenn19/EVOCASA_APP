@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -24,9 +25,10 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Ảnh sản phẩm + overlay -->
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="412dp">
+                android:layout_height="wrap_content">
 
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/imgProductViewPager"
@@ -45,6 +47,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_marginEnd="10dp"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/share" />
 
                     <ImageButton
@@ -60,8 +63,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
-                    android:layout_marginRight="18dp"
-                    android:layout_marginBottom="105dp"
+                    android:layout_marginEnd="18dp"
+                    android:layout_marginBottom="35dp"
                     android:background="@drawable/bg_image_index"
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
@@ -69,70 +72,75 @@
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="12sp" />
 
+                <!-- bottomCard chỉ đè bo góc -->
                 <FrameLayout
+                    android:id="@+id/bottomCard"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="20dp"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/bg_card_top_rounded">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="17dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/txtProductName"
-                                android:layout_width="317dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="Travertine Table Lamp"
-                                android:textColor="@color/color_5E4C3E"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/txtProductPrice"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="$3,500"
-                                android:textColor="@color/color_FF6600"
-                                android:textSize="20sp"
-                                android:textStyle="bold" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayoutRating"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
-
-                            <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
-                                android:src="@drawable/ic_star_yellow" />
-
-                            <TextView
-                                android:id="@+id/txtRating"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:text="4.8"
-                                android:textColor="@color/color_5E4C3E"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </FrameLayout>
+                    android:background="@drawable/bg_card_top_rounded" />
             </FrameLayout>
 
+            <!-- Nội dung thông tin sản phẩm nằm ngoài bottomCard -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginRight="17dp"
+                android:orientation="vertical"
+                tools:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtProductName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Loading product"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtProductPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="$3,500"
+                        android:textColor="@color/color_FF6600"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_star_yellow" />
+
+                    <TextView
+                        android:id="@+id/txtRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:text="4.8"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Nội dung tiếp theo -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,17 +154,18 @@
                     android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:background="@drawable/tab_background"
+                    android:elevation="0dp"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@android:color/transparent"
                     app:tabIndicatorHeight="0dp"
+                    app:tabMode="fixed"
+                    app:tabRippleColor="@android:color/transparent"
                     app:tabSelectedTextColor="@color/color_5E4C3E"
                     app:tabTextColor="@color/color_5E4C3E"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabMode="fixed"
-                    app:tabGravity="fill"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabUnboundedRipple="false"
-                    android:elevation="0dp"
-                    app:tabIndicatorColor="@android:color/transparent" />
+                    app:tabUnboundedRipple="false" />
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -192,6 +201,7 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Bottom Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
