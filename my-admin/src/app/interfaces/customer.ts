@@ -9,7 +9,8 @@ export class Customer {
       public Gender: string = '',
       public Image: string = '',
       public CreatedAt: Date | string = '',
-      public Cart: CartItem1[] = []
+      public Cart: CartItem1[] = [],
+      public Amount: number = 0,
     ) { }
   }
   

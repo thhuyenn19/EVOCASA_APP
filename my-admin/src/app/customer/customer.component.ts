@@ -18,16 +18,22 @@ export class CustomerComponent implements OnInit {
   totalCustomers: number = 0;
 
 
-  constructor(private customerService: CustomerService,  private router: Router) {}
+  constructor(private customerService: CustomerService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadCustomers();
   }
   loadCustomers(): void {
     this.customerService.getAllCustomers().subscribe(
-      (data) => {
-        this.customers = data;
-        this.totalCustomers = data.length;
+      async (data) => {
+        const enriched = await Promise.all(
+          data.map(async customer => {
+            const amount = await this.customerService.getTotalAmountByCustomerId(customer._id);
+            return { ...customer, Amount: amount };
+          })
+        );
+        this.customers = enriched; // ✅ Gán danh sách đã có Amount
+        this.totalCustomers = enriched.length;
         this.updateDisplayedCustomers();
       },
       (error) => {
@@ -76,12 +82,12 @@ export class CustomerComponent implements OnInit {
 
   exportCustomers(): void {
     const customersToExport = this.customers;
-  
+
     if (!customersToExport || customersToExport.length === 0) {
       alert('No data available for export!');
       return;
     }
-  
+
     const headers = ['No', 'Customer ID', 'Name', 'Gender', 'Email', 'Phone'];
     const csvRows = customersToExport.map((customer, index) => [
       index + 1,
@@ -91,9 +97,9 @@ export class CustomerComponent implements OnInit {
       `"${customer.Mail}"`,
       `"${customer.Phone}"`
     ]);
-  
+
     const csvContent = [headers, ...csvRows].map(row => row.join(',')).join('\n');
-  
+
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -106,13 +112,13 @@ export class CustomerComponent implements OnInit {
   }
 
 }
-  // Thực hiện các thao tác như xóa hoặc chỉnh sửa khách hàng
-  // editCustomer(id: string) {
-  //   console.log('Editing customer with ID:', id);
-  // }
+// Thực hiện các thao tác như xóa hoặc chỉnh sửa khách hàng
+// editCustomer(id: string) {
+//   console.log('Editing customer with ID:', id);
+// }
 
-  // deleteCustomer(id: string) {
-  //   console.log('Deleting customer with ID:', id);
-  //   this.customers = this.customers.filter(customer => customer.id !== id);
-  // }
+// deleteCustomer(id: string) {
+//   console.log('Deleting customer with ID:', id);
+//   this.customers = this.customers.filter(customer => customer.id !== id);
+// }
 

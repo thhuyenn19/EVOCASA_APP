@@ -1,6 +1,17 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+} from 'firebase/firestore';
+import { db } from '../firebase-config';
 import { Order } from '../interfaces/order';
 import { Customer } from '../interfaces/customer';
 
@@ -8,133 +19,148 @@ import { Customer } from '../interfaces/customer';
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:3002';
-  private customerApiUrl = 'http://localhost:3002/customers'; // URL cho customer API
+  constructor() { }
 
-  // HTTP options mặc định
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  constructor(private http: HttpClient) {}
-
-  /** 🔹 Lấy tất cả đơn hàng (Admin) */
+  /** 🔹 Lấy tất cả đơn hàng */
   getAllOrders(): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/orders`).pipe(
-      tap(() => console.log('Fetched all orders')),
-      catchError(this.handleError<Order[]>('getAllOrders', []))
-    );
+    return new Observable(observer => {
+      getDocs(collection(db, 'Order'))
+        .then(snapshot => {
+          const orders: Order[] = [];
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            orders.push({ ...(data as Order), _id: docSnap.id });
+          });
+          observer.next(orders);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
-  /** 🔹 Lấy danh sách đơn hàng của một khách hàng */
-
-  getOrdersByCustomer(customerId: string): Observable<Order[]> {
-    // Thay vì chuyển thành ObjectId, chỉ cần sử dụng customerId trực tiếp
-    return this.http
-      .get<Order[]>(`${this.apiUrl}/orders/customer/${customerId}`)
-      .pipe(
-        tap(() => console.log(`Fetched orders for customer ID=${customerId}`)),
-        catchError(this.handleError<Order[]>('getOrdersByCustomer', []))
-      );
-  }
-
-  /** 🔹 Lấy chi tiết một đơn hàng */
+  /** 🔹 Lấy đơn hàng theo ID */
   getOrderById(orderId: string): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/orders/${orderId}`).pipe(
-      tap(() => console.log(`Fetched order ID=${orderId}`)),
-      catchError(this.handleError<Order>('getOrderById'))
-    );
+    return new Observable(observer => {
+      const orderRef = doc(db, 'Order', orderId);
+      getDoc(orderRef)
+        .then(docSnap => {
+          if (docSnap.exists()) {
+            observer.next({ ...(docSnap.data() as Order), _id: docSnap.id });
+          } else {
+            observer.error(new Error('Order not found'));
+          }
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
-  /** 🔹 Lấy thông tin khách hàng */
+  /** 🔹 Lấy đơn hàng theo customer ID */
+  getOrdersByCustomer(customerId: string): Observable<Order[]> {
+    return new Observable(observer => {
+      getDocs(collection(db, 'Order'))
+        .then(snapshot => {
+          const orders: Order[] = [];
+          snapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const orderCustomerId = data['Customer_id']?.['$oid'];
+            if (orderCustomerId === customerId) {
+              orders.push({ ...(data as Order), _id: docSnap.id });
+            }
+          });
+          observer.next(orders);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
+  }
+
+  /** 🔹 Lấy thông tin customer (dùng cho UI nếu cần) */
   getCustomerById(customerId: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.customerApiUrl}/${customerId}`).pipe(
-      tap(() => console.log(`Fetched customer ID=${customerId}`)),
-      catchError(this.handleError<Customer>('getCustomerById'))
-    );
+    return new Observable(observer => {
+      const customerRef = doc(db, 'Customer', customerId);
+      getDoc(customerRef)
+        .then(docSnap => {
+          if (docSnap.exists()) {
+            observer.next({ ...(docSnap.data() as Customer), _id: docSnap.id });
+          } else {
+            observer.error(new Error('Customer not found'));
+          }
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
-  /** 🔹 Tạo đơn hàng mới (Khách hàng đặt hàng) */
-  createOrder(order: Order): Observable<Order> {
-    return this.http
-      .post<Order>(`${this.apiUrl}`, order, this.httpOptions)
-      .pipe(
-        tap((newOrder: Order) =>
-          console.log(
-            `Created order with TrackingNumber=${newOrder.TrackingNumber}`
-          )
-        ),
-        catchError(this.handleError<Order>('createOrder'))
-      );
+  /** 🔹 Tạo đơn hàng mới */
+  createOrder(order: Omit<Order, '_id'>): Observable<Order> {
+    return new Observable(observer => {
+      addDoc(collection(db, 'Order'), order)
+        .then(docRef => {
+          observer.next({ ...order, _id: docRef.id });
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
-  /** 🔹 Cập nhật đơn hàng (Admin cập nhật trạng thái, thông tin giao hàng, v.v.) */
-  updateOrder(
-    orderId: string,
-    updatedOrder: Partial<Order>
-  ): Observable<Order> {
-    return this.http
-      .put<Order>(`${this.apiUrl}/${orderId}`, updatedOrder, this.httpOptions)
-      .pipe(
-        tap(() => console.log(`Updated order ID=${orderId}`)),
-        catchError(this.handleError<Order>('updateOrder'))
-      );
+  /** 🔹 Cập nhật đơn hàng */
+  updateOrder(orderId: string, updatedOrder: Partial<Order>): Observable<Order> {
+    return new Observable(observer => {
+      const orderRef = doc(db, 'Order', orderId);
+      updateDoc(orderRef, updatedOrder)
+        .then(() => {
+          this.getOrderById(orderId).subscribe({
+            next: updated => observer.next(updated),
+            error: err => observer.error(err),
+            complete: () => observer.complete(),
+          });
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
-  /** 🔹 Xóa đơn hàng (Admin) */
-  deleteOrder(orderId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${orderId}`, this.httpOptions).pipe(
-      tap(() => console.log(`Deleted order ID=${orderId}`)),
-      catchError(this.handleError<any>('deleteOrder'))
-    );
+  /** 🔹 Xóa đơn hàng */
+  deleteOrder(orderId: string): Observable<void> {
+    return new Observable(observer => {
+      const orderRef = doc(db, 'Order', orderId);
+      deleteDoc(orderRef)
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
   /** 🔹 Cập nhật trạng thái đơn hàng */
   updateOrderStatus(
     orderId: string,
-    status: 'Cancelled' | 'In transit' | 'Delivered' | 'Completed'
+    status: 'Cancelled' | 'In transit' | 'Delivered' | 'Completed' | 'Pending' | 'Review' 
   ): Observable<Order> {
-    return this.updateOrder(orderId, { Status: status }).pipe(
-      tap(() =>
-        console.log(`Updated status of order ID=${orderId} to ${status}`)
-      ),
-      catchError(this.handleError<Order>('updateOrderStatus'))
-    );
+    return this.updateOrder(orderId, { Status: status });
   }
 
   /** 🔹 Thêm sản phẩm vào đơn hàng */
-  addProductToOrder(
-    orderId: string,
-    productId: string,
-    quantity: number
-  ): Observable<Order> {
-    return this.getOrderById(orderId).pipe(
-      switchMap((order) => {
-        const updatedProducts = [...order.OrderProduct];
-        const existingProduct = updatedProducts.find(
-          (p) => p._id === productId
-        );
+  addProductToOrder(orderId: string, productId: string, quantity: number): Observable<Order> {
+    return new Observable(observer => {
+      this.getOrderById(orderId).subscribe({
+        next: (order) => {
+          const updatedProducts = [...(order.OrderProduct || [])];
+          const existingProduct = updatedProducts.find(p => p._id === productId);
 
-        if (existingProduct) {
-          existingProduct.Quantity += quantity;
-        } else {
-          updatedProducts.push({ _id: productId, Quantity: quantity });
-        }
+          if (existingProduct) {
+            existingProduct.Quantity += quantity;
+          } else {
+            updatedProducts.push({ _id: productId, Quantity: quantity });
+          }
 
-        return this.updateOrder(orderId, { OrderProduct: updatedProducts });
-      }),
-      tap(() =>
-        console.log(`Added product ID=${productId} to order ID=${orderId}`)
-      ),
-      catchError(this.handleError<Order>('addProductToOrder'))
-    );
-  }
-
-  /** 🔹 Xử lý lỗi */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      return of(result as T);
-    };
+          this.updateOrder(orderId, { OrderProduct: updatedProducts }).subscribe({
+            next: updated => observer.next(updated),
+            error: err => observer.error(err),
+            complete: () => observer.complete()
+          });
+        },
+        error: err => observer.error(err)
+      });
+    });
   }
 }

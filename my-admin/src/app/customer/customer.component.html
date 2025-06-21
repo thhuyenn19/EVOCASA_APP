@@ -83,7 +83,8 @@
               <td>{{ customer.Gender }}</td>
               <td>{{ customer.Mail }}</td>
               <td>{{ customer.Phone }}</td>
-              <td>200</td>
+              <td>{{ customer.Amount | currency:'USD' }}</td>
+
               <td>
                 <button class="edit-btn">
                     <img src="images/customer/edit.svg" alt="Edit">

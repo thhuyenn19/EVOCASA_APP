@@ -1,142 +1,180 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError, of, retry } from 'rxjs';
-import { catchError, map, tap, switchMap } from 'rxjs/operators';
-import { Customer, ICustomer, CartItem1 } from '../interfaces/customer';
+import { Observable } from 'rxjs';
+import { Customer, CartItem1 } from '../interfaces/customer';
+import {
+  collection,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where,
+  updateDoc,
+  deleteDoc,
+  addDoc,
+} from 'firebase/firestore';
+import { db } from '../firebase-config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CustomerService {
-  private apiUrl = 'http://localhost:3002';
-
-  private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-  };
-
-  constructor(private http: HttpClient) {}
-
+  constructor() {}
 
   getAllCustomers(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(`${this.apiUrl}/customers`).pipe(
-      tap((_) => console.log('Fetched all customers')),
-      catchError(this.handleError<Customer[]>('getAllCustomers', []))
-    );
+    return new Observable(observer => {
+      getDocs(collection(db, 'Customers'))
+        .then(snapshot => {
+          const customers: Customer[] = [];
+          snapshot.forEach(docSnap => {
+            customers.push({ ...(docSnap.data() as Customer), _id: docSnap.id });
+          });
+          observer.next(customers);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
   getCustomerById(id: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.apiUrl}/customer/${id}`).pipe(
-      tap((_) => console.log(`Fetched customer id=${id}`)),
-      catchError(this.handleError<Customer>('getCustomerById'))
-    );
+    return new Observable(observer => {
+      const customerRef = doc(db, 'Customer', id);
+      getDoc(customerRef)
+        .then(docSnap => {
+          if (docSnap.exists()) {
+            observer.next({ ...(docSnap.data() as Customer), _id: docSnap.id });
+          } else {
+            observer.error(new Error('Customer not found'));
+          }
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
   getCustomerByPhone(phone: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.apiUrl}/customers/${phone}`).pipe(
-      tap((_) => console.log(`Fetched customer with phone=${phone}`)),
-      catchError(this.handleError<Customer>('getCustomerByPhone'))
-    );
+    return new Observable(observer => {
+      const q = query(collection(db, 'Customer'), where('Phone', '==', phone));
+      getDocs(q)
+        .then(snapshot => {
+          if (snapshot.empty) {
+            observer.error(new Error('Customer with phone not found'));
+            return;
+          }
+          const docSnap = snapshot.docs[0];
+          observer.next({ ...(docSnap.data() as Customer), _id: docSnap.id });
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
   getCustomerByEmail(email: string): Observable<Customer> {
-    return this.http.get<Customer[]>(`${this.apiUrl}/customers`).pipe(
-      map((customers) => {
-        const foundCustomer = customers.find(
-          (customer) => customer.Mail === email
-        );
-        if (!foundCustomer) {
-          throw new Error(`No customer found with email=${email}`);
-        }
-        return foundCustomer;
-      }),
-      tap((customer) => console.log(`Found customer with email=${email}`)),
-      catchError(this.handleError<Customer>('getCustomerByEmail'))
-    );
+    return new Observable(observer => {
+      const q = query(collection(db, 'Customer'), where('Mail', '==', email));
+      getDocs(q)
+        .then(snapshot => {
+          if (snapshot.empty) {
+            observer.error(new Error('Customer with email not found'));
+            return;
+          }
+          const docSnap = snapshot.docs[0];
+          observer.next({ ...(docSnap.data() as Customer), _id: docSnap.id });
+        })
+        .catch(error => observer.error(error));
+    });
   }
-
 
   updateCustomer(customer: Customer): Observable<Customer> {
-    return this.http
-      .put<Customer>(
-        `${this.apiUrl}/customers/${customer._id}`,
-        customer,
-        this.httpOptions
-      )
-      .pipe(
-        tap((_) => console.log(`Updated customer id=${customer._id}`)),
-        catchError(this.handleError<Customer>('updateCustomer'))
-      );
+    return new Observable(observer => {
+      const customerRef = doc(db, 'Customer', customer._id);
+      const { _id, ...data } = customer;
+      updateDoc(customerRef, data)
+        .then(() => {
+          observer.next(customer);
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
   }
-
 
   updateCart(customerId: string, cart: CartItem1[]): Observable<Customer> {
-    return this.http
-      .put<Customer>(
-        `${this.apiUrl}/customers/${customerId}/cart`,
-        { Cart: cart },
-        this.httpOptions
-      )
-      .pipe(
-        tap((_) => console.log(`Updated cart for customer id=${customerId}`)),
-        catchError(this.handleError<Customer>('updateCart'))
-      );
+    return new Observable(observer => {
+      const customerRef = doc(db, 'Customer', customerId);
+      updateDoc(customerRef, { Cart: cart })
+        .then(() => {
+          this.getCustomerById(customerId).subscribe({
+            next: customer => observer.next(customer),
+            error: err => observer.error(err),
+            complete: () => observer.complete(),
+          });
+        })
+        .catch(error => observer.error(error));
+    });
   }
 
+  addToCart(customerId: string, productId: string, quantity: number = 1): Observable<Customer> {
+    return new Observable(observer => {
+      this.getCustomerById(customerId).subscribe({
+        next: (customer) => {
+          const cart = [...(customer.Cart || [])];
+          const existingItem = cart.find(item => item.ProductId === productId);
+          if (existingItem) {
+            existingItem.Quantity += quantity;
+          } else {
+            cart.push({ ProductId: productId, Quantity: quantity });
+          }
 
-  addToCart(
-    customerId: string,
-    productId: string,
-    quantity: number = 1
-  ): Observable<Customer> {
-    return this.getCustomerById(customerId).pipe(
-      switchMap((customer) => {
-        const cart = [...customer.Cart];
-        const existingItem = cart.find((item) => item.ProductId === productId);
+          this.updateCart(customerId, cart).subscribe({
+            next: updated => observer.next(updated),
+            error: err => observer.error(err),
+            complete: () => observer.complete(),
+          });
+        },
+        error: err => observer.error(err),
+      });
+    });
+  }
 
-        if (existingItem) {
-          existingItem.Quantity += quantity;
-        } else {
-          cart.push({ ProductId: productId, Quantity: quantity });
+  deleteCustomer(customerId: string): Observable<void> {
+    return new Observable(observer => {
+      const customerRef = doc(db, 'Customer', customerId);
+      deleteDoc(customerRef)
+        .then(() => {
+          observer.next();
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
+  }
+
+  postCustomer(customer: Omit<Customer, '_id'>): Observable<Customer> {
+    return new Observable(observer => {
+      addDoc(collection(db, 'Customer'), customer)
+        .then(docRef => {
+          observer.next({ ...customer, _id: docRef.id });
+          observer.complete();
+        })
+        .catch(error => observer.error(error));
+    });
+  }
+  getTotalAmountByCustomerId(customerId: string): Promise<number> {
+    const q = query(collection(db, 'Order')); 
+  return getDocs(q)
+    .then(snapshot => {
+      let total = 0;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const orderCustomerId = data['Customer_id']?.['$oid'];
+
+        if (orderCustomerId === customerId) {
+          total += data['TotalPrice'] || 0;
         }
+      });
+        console.log('✅ Total for customer', customerId, '=', total);
+      return total;
+    })
+    .catch(error => {
+      console.error('❌ Error getting total amount:', error);
+      return 0;
+    });
+}
 
-        return this.updateCart(customerId, cart);
-      }),
-      catchError(this.handleError<Customer>('addToCart'))
-    );
-  }
-
-  deleteCustomer(customerId: string): Observable<any> {
-    return this.http
-      .delete(`${this.apiUrl}/customers/${customerId}`, this.httpOptions)
-      .pipe(
-        tap((_) => console.log(`Deleted customer id=${customerId}`)),
-        catchError(this.handleError<any>('deleteCustomer'))
-      );
-  }
-  postCustomer(customer: any): Observable<any> {
-    const headers = new HttpHeaders().set(
-      'Content-Type',
-      'application/json;charset=utf-8'
-    );
-    const requestOptions: Object = {
-      headers: headers,
-      responseType: 'text',
-    };
-    return this.http
-      .post<any>(`${this.apiUrl}/customers`, customer, requestOptions)
-      .pipe(
-        map((res) => JSON.parse(res) as Array<Customer>),
-        retry(3),
-        catchError(this.handleError<Array<Customer>>('postCustomer', []))
-      );
-  }
-
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`);
-      console.error(error);
-      return of(result as T);
-    };
-  }
 }

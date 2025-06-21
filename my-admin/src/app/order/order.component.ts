@@ -86,6 +86,15 @@ export class OrderComponent {
       }
     });
   }
+  formatDate(dateField: any): string {
+  const raw = dateField?.$date || dateField;
+  return new Date(raw).toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+}
+
   viewOrderDetails(id: string): void {
     this.orderService.getOrderById(id).subscribe(
       (data) => {
