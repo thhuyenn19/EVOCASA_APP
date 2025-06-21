@@ -135,4 +135,23 @@ export class CustomerDetailComponent implements OnInit {
       this.closePopup();
     }
   }
+
+  // Method để format date từ ISO string
+  formatDate(dateString: string): string {
+    if (!dateString) return '';
+    try {
+      // Parse ISO date string (2025-05-26T14:51:00.203Z)
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return dateString; // Return original if invalid
+      }
+      return date.toLocaleDateString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+    } catch (error) {
+      return dateString;
+    }
+  }
 }
