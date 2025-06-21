@@ -16,10 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.BottomNavFragment;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.UserSessionManager;
 
 public class FinishPaymentFragment extends Fragment {
     private LinearLayout tabHome, tabShop, tabNotification, tabProfile;
@@ -27,6 +29,7 @@ public class FinishPaymentFragment extends Fragment {
     private ImageView imgHome, imgShop, imgNotification, imgProfile;
 
     private Typeface fontSelected, fontRegular;
+    private TextView txtThanks;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -64,8 +67,32 @@ public class FinishPaymentFragment extends Fragment {
             }
         });
 
+        txtThanks = view.findViewById(R.id.txtPaymentSuccessfulThanks);
+
+        loadCustomerName();
+
         return view;
     }
+
+    private void loadCustomerName() {
+        String uid = new UserSessionManager(requireContext()).getUid();
+        if (uid == null || uid.isEmpty()) return;
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (doc.exists()) {
+                        String name = doc.getString("Name");
+                        if (name != null && !name.isEmpty()) {
+                            String msg = "Thank you " + name + ", your order has been placed.";
+                            txtThanks.setText(msg);
+                        }
+                    }
+                });
+    }
+
 
     private void startNavActivity(int tabPos) {
         Intent intent = new Intent(requireContext(), NarBarActivity.class);

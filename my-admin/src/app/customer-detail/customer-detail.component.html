@@ -97,7 +97,7 @@
         </button>
       </div>
 
-    <!-- Popup: Shipping Address (tĩnh) -->
+    <!-- Popup: Shipping Address (tĩnh)
 <div class="popup-overlay" *ngIf="showPopup" (click)="onOverlayClick($event)">
   <div class="popup-modal address-popup" (click)="$event.stopPropagation()">
     <div class="popup-header dark">
@@ -127,6 +127,53 @@
         <div class="action-icons">
           <img src="images/customer/edit.svg" alt="Edit" class="action-icon" />
           <img src="images/customer/trash.svg" alt="Delete" class="action-icon" />
+        </div>
+      </li>
+    </ul>
+  </div> -->
+
+   <!-- Popup: Shipping Address (dynamic data from Firestore) -->
+<div class="popup-overlay" *ngIf="showPopup" (click)="onOverlayClick($event)">
+  <div class="popup-modal address-popup" (click)="$event.stopPropagation()">
+    <div class="popup-header dark">
+      <h2>Shipping Addresses:</h2>
+      <button class="close-btn" (click)="closePopup()">
+        <span class="material-icons-outlined">close</span>
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="isLoadingAddresses" class="loading-container">
+      <p>Loading addresses...</p>
+    </div>
+
+    <!-- No addresses found -->
+    <div *ngIf="!isLoadingAddresses && shippingAddresses.length === 0" class="no-addresses">
+      <p>No shipping addresses found for this customer.</p>
+    </div>
+
+    <!-- Addresses list -->
+    <ul class="address-list clean-bullets" *ngIf="!isLoadingAddresses && shippingAddresses.length > 0">
+      <li *ngFor="let address of shippingAddresses" 
+          [class.default-address]="address.IsDefault">
+        <div class="address-info">
+          <div class="address-header">
+            <span class="address-name">{{ address.Name }}</span>
+            <span class="phone-number">{{ address.Phone }}</span>
+            <span class="default-badge" *ngIf="address.IsDefault">Default</span>
+          </div>
+          <span class="address-text">{{ address.Address }}</span>
+        </div>
+        <div class="action-icons">
+          <img src="images/customer/edit.svg" 
+               alt="Edit" 
+               class="action-icon edit-icon" 
+               title="Edit address" />
+                  <img src="images/customer/trash.svg" 
+               alt="Delete" 
+               class="action-icon delete-icon" 
+               title="Delete address"
+               (click)="deleteShippingAddress(address.id!)" />
         </div>
       </li>
     </ul>

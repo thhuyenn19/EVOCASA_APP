@@ -34,6 +34,7 @@ import com.mobile.utils.UserSessionManager;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -112,7 +113,6 @@ public class NotificationFragment extends Fragment {
     }
 
     private void loadNotifications() {
-
         String customerId = session.getUid();
         Log.d(TAG, "Customer ID: " + customerId);
 
@@ -123,15 +123,30 @@ public class NotificationFragment extends Fragment {
 
         db.collection("Customers")
                 .document(customerId)
-                .get()
-                .addOnSuccessListener(doc -> {
-                    if (doc.exists() && doc.contains("Notifications")) {
-                        List<Map<String, Object>> notiList = (List<Map<String, Object>>) doc.get("Notifications");
-                        Log.d(TAG, "Fetched " + notiList.size() + " notifications from array.");
-                        originalNotificationData = new ArrayList<>(notiList);  // lưu bản gốc để ghi lại sau
+                .addSnapshotListener((doc, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed", e);
+                        return;
+                    }
+
+                    if (doc != null && doc.exists() && doc.contains("Notifications")) {
+                        List<Map<String, Object>> notiList =
+                                (List<Map<String, Object>>) doc.get("Notifications");
+
+                        Log.d(TAG, "Fetched " + notiList.size() + " notifications from snapshot.");
+                        originalNotificationData = new ArrayList<>(notiList);
 
                         items.clear();
                         String lastDate = "";
+                        Collections.sort(notiList, (a, b) -> {
+                            try {
+                                Date dateA = parseDate(a.get("CreatedAt"));
+                                Date dateB = parseDate(b.get("CreatedAt"));
+                                return dateB.compareTo(dateA);  // Descending
+                            } catch (Exception ex) {
+                                return 0;
+                            }
+                        });
 
                         for (Map<String, Object> noti : notiList) {
                             String title = (String) noti.get("Title");
@@ -149,22 +164,15 @@ public class NotificationFragment extends Fragment {
                                     sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                                     Date date = sdf.parse((String) createdAtRaw);
                                     ts = new Timestamp(date);
-                                } catch (Exception e) {
-                                    Log.e(TAG, "Failed to parse CreatedAt string: " + createdAtRaw, e);
+                                } catch (Exception ex) {
+                                    Log.e(TAG, "Parse CreatedAt failed", ex);
                                 }
                             }
 
-                            Log.d(TAG, "Noti: title=" + title + ", type=" + type + ", status=" + status);
-
                             int iconRes = getIconForType(type);
-                            if (iconRes == -1) {
-                                Log.w(TAG, "Invalid type: " + type + ", skipping");
-                                continue;
-                            }
+                            if (iconRes == -1) continue;
 
                             String dateKey = formatDateGroup(ts);
-
-// ❗ Chỉ thêm header nếu noti hợp lệ và ngày khác
                             if (!dateKey.equals(lastDate)) {
                                 items.add(new NotificationItem(dateKey));
                                 lastDate = dateKey;
@@ -173,23 +181,33 @@ public class NotificationFragment extends Fragment {
                             boolean isRead = "Read".equalsIgnoreCase(status);
                             String timeStr = formatTime(ts);
 
-// Thêm notification sau header
                             items.add(new NotificationItem(iconRes, title, content, timeStr, isRead));
-
-
                         }
 
                         adapter.notifyDataSetChanged();
                     } else {
                         Log.w(TAG, "No Notifications field found.");
                     }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to load notifications", e);
-                    Toast.makeText(getContext(), "Failed to load notifications.", Toast.LENGTH_SHORT).show();
                 });
     }
-        private int getIconForType(String type) {
+
+    private Date parseDate(Object obj) {
+        if (obj instanceof Timestamp) {
+            return ((Timestamp) obj).toDate();
+        } else if (obj instanceof String) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+                sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                return sdf.parse((String) obj);
+            } catch (Exception e) {
+                Log.e(TAG, "parseDate failed for string: " + obj, e);
+            }
+        }
+        return new Date(0); // fallback
+    }
+
+
+    private int getIconForType(String type) {
         if (type == null) return -1; // icon không hợp lệ
         switch (type) {
             case "OrderDelivered":
