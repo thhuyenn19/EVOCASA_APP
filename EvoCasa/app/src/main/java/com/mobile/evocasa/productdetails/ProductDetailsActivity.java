@@ -79,6 +79,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private DecimalFormat decimalFormat;
     private String productDescription;
     private String productDimensions;
+    private ProductItem productItem; // Thêm biến để lưu ProductItem
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,11 +155,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
 
                 int position = tab.getPosition();
-                if (position == 2) {
+                if (position == 2 && productItem != null) {
                     tabLayout.postDelayed(() -> {
                         Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                         if (reviewsFragment instanceof ReviewsFragment) {
-                            ((ReviewsFragment) reviewsFragment).onFragmentVisible();
+                            ((ReviewsFragment) reviewsFragment).refreshReviews();
                         }
                     }, 100);
                 }
@@ -182,10 +183,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                if (position == 2) {
+                if (position == 2 && productItem != null) {
                     Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                     if (reviewsFragment instanceof ReviewsFragment) {
-                        ((ReviewsFragment) reviewsFragment).onFragmentVisible();
+                        ((ReviewsFragment) reviewsFragment).refreshReviews();
                     }
                 }
                 updateViewPagerHeight();
@@ -221,7 +222,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 View view = firstTab.getCustomView();
                 if (view instanceof TextView) {
                     TextView tv = (TextView) view;
-                    tv.setTypeface(FontUtils.getZbold(ProductDetailsActivity.this));
+                    tv.setTypeface(FontUtils.getZbold(this));
                     tv.setTextColor(ContextCompat.getColor(this, R.color.color_5E4C3E));
                 }
             }
@@ -234,51 +235,82 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             txtProductName.setText(documentSnapshot.getString("Name"));
-                            txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
+                            txtProductPrice.setText("$" + (documentSnapshot.getDouble("Price") != null ? documentSnapshot.getDouble("Price") : 0.0));
                             productDescription = documentSnapshot.getString("Description");
                             productDimensions = documentSnapshot.getString("Dimension");
+                            productItem = documentSnapshot.toObject(ProductItem.class); // Load toàn bộ ProductItem
+                            Log.d("ProductDetails", "Loaded ProductItem: " + (productItem != null));
 
-                            // Invalidate and re-set the adapter to force fragment recreation
-                            viewPager.getAdapter().notifyDataSetChanged();
-                            viewPager.setAdapter(pagerAdapter); // Re-set to ensure fresh instances
-                            viewPager.setCurrentItem(0, false); // Reset to first tab to trigger update
-
-                            String imageJson = documentSnapshot.getString("Image");
-                            if (imageJson != null) {
-                                try {
-                                    Gson gson = new Gson();
-                                    Type listType = new TypeToken<List<String>>() {}.getType();
-                                    imageUrls = gson.fromJson(imageJson, listType);
-                                    setupImageViewPager();
-                                } catch (Exception e) {
-                                    Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
-                                    Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
+                            if (productItem != null) {
+                                productItem.setId(productId);
+                                // Đảm bảo Ratings không null và ánh xạ thủ công Average
+                                if (productItem.getRatings() == null) {
+                                    productItem.setRatings(new ProductItem.Ratings());
                                 }
-                            }
-                            String ratingsJson = "";
-                            Object ratingsObj = documentSnapshot.get("Ratings");
-                            if (ratingsObj instanceof Map) {
-                                Gson gson = new Gson();
-                                ratingsJson = gson.toJson(((Map<String, Object>) ratingsObj).get("Details"));
-                            }
+                                Object ratingsObj = documentSnapshot.get("Ratings");
+                                if (ratingsObj instanceof Map) {
+                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
 
-                            if (ratingsObj instanceof Map) {
-                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                Object averageObj = ratingsMap.get("Average");
+                                    // Parse average
+                                    Object averageObj = ratingsMap.get("Average");
+                                    if (averageObj instanceof Number) {
+                                        productItem.getRatings().setAverage(((Number) averageObj).doubleValue());
+                                    }
 
-                                if (averageObj instanceof Number && txtRating != null) {
+                                    // Parse details
+                                    Object detailsObj = ratingsMap.get("Details");
+                                    if (detailsObj instanceof List) {
+                                        List<ProductItem.Ratings.Detail> detailList = new ArrayList<>();
+                                        List<Map<String, Object>> rawDetails = (List<Map<String, Object>>) detailsObj;
+                                        for (Map<String, Object> detailMap : rawDetails) {
+                                            ProductItem.Ratings.Detail detail = new ProductItem.Ratings.Detail();
+                                            detail.setReviewId((String) detailMap.get("ReviewId"));
+                                            detail.setComment((String) detailMap.get("Comment"));
+                                            detail.setCustomerName((String) detailMap.get("CustomerName"));
+                                            detail.setCreatedAt((String) detailMap.get("CreatedAt"));
+                                            Object ratingVal = detailMap.get("Rating");
+                                            if (ratingVal instanceof Number) {
+                                                detail.setRating(((Number) ratingVal).intValue());
+                                            }
+                                            detailList.add(detail);
+                                        }
+                                        productItem.getRatings().setDetails(detailList);
+                                    }
+                                }
+
+                                Log.d("ProductDetails", "ProductItem Ratings Average: " + (productItem.getRatings() != null ? productItem.getRatings().getAverage() : "null"));
+
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                pagerAdapter.setProductData(productDescription, productDimensions, productItem);
+                                viewPager.setAdapter(pagerAdapter);
+                                viewPager.setCurrentItem(0, false);
+
+                                String imageJson = documentSnapshot.getString("Image");
+                                if (imageJson != null) {
+                                    try {
+                                        Gson gson = new Gson();
+                                        Type listType = new TypeToken<List<String>>() {}.getType();
+                                        imageUrls = gson.fromJson(imageJson, listType);
+                                        setupImageViewPager();
+                                    } catch (Exception e) {
+                                        Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
+                                        Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                // Cập nhật txtRating dựa trên productItem
+                                if (productItem.getRatings() != null && productItem.getRatings().getAverage() != null) {
                                     ratingLayout.setVisibility(View.VISIBLE);
-                                    txtRating.setText(decimalFormat.format(((Number) averageObj).doubleValue()));
+                                    txtRating.setText(decimalFormat.format(productItem.getRatings().getAverage()));
                                 } else {
                                     ratingLayout.setVisibility(View.VISIBLE);
-                                    txtRating.setText("5.0");
+                                    txtRating.setText("0.0");
                                 }
+                                checkWishlistStatus();
                             } else {
-                                ratingLayout.setVisibility(View.VISIBLE);
-                                txtRating.setText("5.0");
+                                Log.w("ProductDetails", "Failed to parse ProductItem");
+                                Toast.makeText(this, "Failed to load product data", Toast.LENGTH_SHORT).show();
                             }
-                            pagerAdapter.setProductData(productDescription, productDimensions, ratingsJson, productId);
-                            checkWishlistStatus();
                         } else {
                             Log.w("ProductDetails", "Product not found for ID: " + productId);
                             Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
@@ -343,29 +375,22 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productList.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ProductItem product = new ProductItem();
-                        product.setId(doc.getId());
-                        product.setName(doc.getString("Name"));
-                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                        product.setImage(doc.getString("Image"));
-                        product.setDescription(doc.getString("Description"));
-                        product.setDimensions(doc.getString("Dimensions"));
-                        ProductItem.Ratings ratings = new ProductItem.Ratings();
-                        Object ratingsObj = doc.get("Ratings");
-                        if (ratingsObj instanceof Map) {
-                            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                            Object averageObj = ratingsMap.get("Average");
-                            if (averageObj instanceof Number) {
-                                ratings.setAverage(((Number) averageObj).doubleValue());
+                        ProductItem product = doc.toObject(ProductItem.class);
+                        if (product != null) {
+                            product.setId(doc.getId());
+                            if (product.getRatings() == null) {
+                                product.setRatings(new ProductItem.Ratings());
                             }
+                            Object ratingsObj = doc.get("Ratings");
+                            if (ratingsObj instanceof Map) {
+                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                Object averageObj = ratingsMap.get("Average");
+                                if (averageObj instanceof Number) {
+                                    product.getRatings().setAverage(((Number) averageObj).doubleValue());
+                                }
+                            }
+                            productList.add(product);
                         }
-                        product.setRatings(ratings);
-                        Object categoryIdObj = doc.get("category_id");
-                        if (categoryIdObj instanceof Map) {
-                            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
-                            product.setCategoryId(categoryIdMap);
-                        }
-                        productList.add(product);
                     }
                     suggestedProductAdapter.notifyDataSetChanged();
                 })

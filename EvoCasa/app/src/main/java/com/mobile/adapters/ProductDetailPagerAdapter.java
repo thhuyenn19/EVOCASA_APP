@@ -8,31 +8,36 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.google.gson.Gson;
 import com.mobile.evocasa.productdetails.DescriptionFragment;
 import com.mobile.evocasa.productdetails.DimensionsFragment;
 import com.mobile.evocasa.productdetails.ReviewsFragment;
+import com.mobile.models.ProductItem;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ProductDetailPagerAdapter extends FragmentStateAdapter {
 
-    private Map<Integer, Fragment> fragmentMap = new HashMap<>();
+    private final Map<Integer, Fragment> fragmentMap = new HashMap<>();
     private String description;
     private String dimensions;
-    private String reviewsJson;
+    private ProductItem productItem;
     private String productId;
-
 
     public ProductDetailPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
     }
 
-    public void setProductData(String description, String dimensions, String reviewsJson, String productId) {
-        this.description = description;
-        this.dimensions = dimensions;
-        this.reviewsJson = reviewsJson;
-        this.productId = productId;
+    public void setProductData(String description, String dimensions, ProductItem productItem) {
+        this.description = description != null ? description : "";
+        this.dimensions = dimensions != null ? dimensions : "";
+        this.productItem = productItem;
+        this.productId = productItem != null ? productItem.getId() : null;
+        if (productItem != null && productItem.getRatings() == null) {
+            productItem.setRatings(new ProductItem.Ratings()); // Khởi tạo Ratings nếu null
+        }
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -55,8 +60,17 @@ public class ProductDetailPagerAdapter extends FragmentStateAdapter {
                 break;
             case 2:
                 fragment = new ReviewsFragment();
-                args.putString(ReviewsFragment.ARG_REVIEWS_JSON, reviewsJson);
-                args.putString(ReviewsFragment.ARG_PRODUCT_ID, productId);
+                if (productItem != null && productItem.getRatings() != null) {
+                    Gson gson = new Gson();
+                    String ratingsJson = gson.toJson(productItem.getRatings()); // Truyền toàn bộ Ratings
+                    args.putString(ReviewsFragment.ARG_RATINGS_JSON, ratingsJson);
+                    args.putString(ReviewsFragment.ARG_PRODUCT_ID, productId);
+                    Log.d("ProductDetailPagerAdapter", "Created ReviewsFragment with ratingsJson: " + ratingsJson);
+                } else {
+                    args.putString(ReviewsFragment.ARG_RATINGS_JSON, "{}"); // Giá trị mặc định
+                    args.putString(ReviewsFragment.ARG_PRODUCT_ID, productId);
+                    Log.d("ProductDetailPagerAdapter", "Created ReviewsFragment with empty ratingsJson");
+                }
                 fragment.setArguments(args);
                 break;
             default:
@@ -66,7 +80,6 @@ public class ProductDetailPagerAdapter extends FragmentStateAdapter {
                 Log.d("ProductDetailPagerAdapter", "Created default DescriptionFragment with description: " + description);
                 break;
         }
-
         fragmentMap.put(position, fragment);
         return fragment;
     }

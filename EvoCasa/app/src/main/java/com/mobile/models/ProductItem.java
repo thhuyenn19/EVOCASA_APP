@@ -1,5 +1,6 @@
 package com.mobile.models;
 
+import com.google.firebase.firestore.PropertyName;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -53,7 +54,9 @@ public class ProductItem implements Serializable {
     public String getCustomizeImage() { return customizeImage; }
     public void setCustomizeImage(String customizeImage) { this.customizeImage = customizeImage; }
 
+    @PropertyName("Ratings")
     public Ratings getRatings() { return ratings; }
+    @PropertyName("Ratings")
     public void setRatings(Ratings ratings) { this.ratings = ratings; }
 
     public Map<String, Object> getCategoryId() { return categoryId; }
@@ -69,10 +72,14 @@ public class ProductItem implements Serializable {
             this.average = average;
         }
 
+        @PropertyName("Average")
         public Double getAverage() { return average; }
+        @PropertyName("Average")
         public void setAverage(Double average) { this.average = average; }
 
+        @PropertyName("Details")
         public List<Detail> getDetails() { return details; }
+        @PropertyName("Details")
         public void setDetails(List<Detail> details) { this.details = details; }
 
         public static class Detail implements Serializable {
