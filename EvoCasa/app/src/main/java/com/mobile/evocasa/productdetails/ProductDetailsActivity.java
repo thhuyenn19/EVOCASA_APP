@@ -2,12 +2,15 @@ package com.mobile.evocasa.productdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +33,14 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.ImagePagerAdapter;
 import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
+import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
@@ -78,6 +83,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private String productDescription;
     private String productDimensions;
     private ProductItem productItem;
+    private ListenerRegistration cartListener;
+    private TextView txtCartBadge;
+    ImageView imgCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +95,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         sessionManager = new UserSessionManager(this);
+        txtCartBadge = findViewById(R.id.txtCartBadge);
+        imgCart = findViewById(R.id.imgCart);
+
+        // Cart
+        if (imgCart != null) {
+            imgCart.setOnClickListener(v -> {
+                Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
+                startActivity(intent);
+            });
+        }
+
         FontUtils.initFonts(this);
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         decimalFormat = new DecimalFormat("0.0", symbols);
@@ -100,6 +119,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         initViews();
         setFonts();
+
+        // Start cart badge listener
+        startCartBadgeListener();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -484,8 +506,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             String customerId = sessionManager.getUid();
             if (customerId != null && productItem != null) {
                 Map<String, Object> newCartItem = new HashMap<>();
-                newCartItem.put("ProductId", productItem.getId());
-                newCartItem.put("Quantity", quantity[0]);
+                newCartItem.put("productId", productItem.getId());
+                newCartItem.put("cartQuantity", quantity[0]);
 
                 db.collection("Customers")
                         .document(customerId)
@@ -548,6 +570,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if (viewPagerHelper != null) {
             viewPagerHelper.destroy();
         }
+        cleanupCartListener();
     }
 
     public void updateViewPagerHeight() {
@@ -706,5 +729,192 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
                 });
+    }
+    // CartBadge
+    /**
+     * Start listening for cart changes and update badge
+     */
+    private void startCartBadgeListener() {
+        String uid = sessionManager.getUid();
+
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "User not logged in, hiding badge");
+            if (txtCartBadge != null) {
+                txtCartBadge.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        if (cartListener != null) {
+            cartListener.remove();
+            cartListener = null;
+        }
+
+        cartListener = FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isFinishing() || isDestroyed()) {
+                        Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                        return;
+                    }
+
+                    if (e != null) {
+                        Log.w("CartBadge", "Listen failed.", e);
+                        safeUpdateCartBadge(0);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        int totalQuantity = 0;
+
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+
+                        safeUpdateCartBadge(totalQuantity);
+                    } else {
+                        Log.d("CartBadge", "No customer document found");
+                        safeUpdateCartBadge(0);
+                    }
+                });
+    }
+
+    private void safeUpdateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        if (txtCartBadge == null) {
+            Log.w("CartBadge", "Cart badge view is null, cannot update");
+            return;
+        }
+
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            try {
+                if (totalQuantity > 0) {
+                    txtCartBadge.setVisibility(View.VISIBLE);
+                    String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                    txtCartBadge.setText(displayText);
+                    Log.d("CartBadge", "Badge updated: " + displayText);
+                } else {
+                    txtCartBadge.setVisibility(View.GONE);
+                    Log.d("CartBadge", "Badge hidden (quantity = 0)");
+                }
+            } catch (Exception ex) {
+                Log.e("CartBadge", "Error updating cart badge UI", ex);
+            }
+        });
+    }
+
+    private void updateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            if (totalQuantity > 0) {
+                txtCartBadge.setVisibility(View.VISIBLE);
+                String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                txtCartBadge.setText(displayText);
+                Log.d("CartBadge", "Badge updated: " + displayText);
+            } else {
+                txtCartBadge.setVisibility(View.GONE);
+                Log.d("CartBadge", "Badge hidden (quantity = 0)");
+            }
+        });
+    }
+
+    public void refreshCartBadge() {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "Cannot refresh badge - user not logged in");
+            safeUpdateCartBadge(0);
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (isFinishing() || isDestroyed()) return;
+
+                    int totalQuantity = 0;
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+                    }
+                    safeUpdateCartBadge(totalQuantity);
+                })
+                .addOnFailureListener(e -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    Log.e("CartBadge", "Error refreshing cart badge", e);
+                    safeUpdateCartBadge(0);
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("CartBadge", "Activity onStart()");
+        if (sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CartBadge", "Activity onResume()");
+        if (cartListener == null && sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("CartBadge", "Activity onStop()");
+        cleanupCartListener();
+    }
+
+    private void cleanupCartListener() {
+        if (cartListener != null) {
+            Log.d("CartBadge", "Removing cart listener");
+            cartListener.remove();
+            cartListener = null;
+        }
     }
 }
