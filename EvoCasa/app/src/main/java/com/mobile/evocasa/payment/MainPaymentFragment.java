@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -33,6 +34,7 @@ import com.mobile.adapters.VoucherAdapter;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
 import com.mobile.models.CartProduct;
+import com.mobile.models.ShippingAddress;
 import com.mobile.models.Voucher;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
@@ -47,25 +49,42 @@ public class MainPaymentFragment extends Fragment {
     private List<CartProduct> selectedProducts = new ArrayList<>();
     private List<Voucher> voucherList = new ArrayList<>();
     private Voucher selectedVoucher;
+    private ShippingAddress selectedShipping = null;
+    private LinearLayout productContainer;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_payment, container, false);
-
+        productContainer = view.findViewById(R.id.productContainer);
         // Lấy dữ liệu cartPayment từ Intent (của Activity chứa fragment này)
         Intent intent = requireActivity().getIntent();
         String jsonCart = intent.getStringExtra("cartPayment");
-
         Type type = new TypeToken<List<CartProduct>>() {}.getType();
         List<CartProduct> cartPayment = new Gson().fromJson(jsonCart, type);
+        selectedProducts = cartPayment;            // lưu tạm
+        bindProductsToUI(cartPayment);             // 2) show lên UI
 
         // In ra console để kiểm tra
         Log.d("PaymentActivity", "Received cartPayment: " + new Gson().toJson(cartPayment));
 
         // Set font và underline cho các TextView cần thiết
         FontUtils.applyFont(view.findViewById(R.id.txtShippingAddress), requireContext(), R.font.inter);
+
+
+
+        getParentFragmentManager()
+                .setFragmentResultListener("select_shipping", getViewLifecycleOwner(),
+                        (requestKey, bundle) -> {
+                            // 3) Lấy object ShippingAddress từ bundle và cập nhật UI
+                            ShippingAddress addr = (ShippingAddress) bundle.getSerializable("selectedShipping");
+                            if (addr != null) {
+                                selectedShipping = addr;
+                                updateShippingUI(view, selectedShipping);
+                            }
+                        });
+
 
         txtVoucher = view.findViewById(R.id.txtVoucher);
         txtVoucher.setPaintFlags(txtVoucher.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -161,7 +180,6 @@ public class MainPaymentFragment extends Fragment {
         });
 
         setupPaymentMethodSelector(view);
-        loadShippingInfoFromFirestore(view);
         return view;
     }
     @Override
@@ -294,8 +312,19 @@ public class MainPaymentFragment extends Fragment {
         return subtotal;
     }
 
-
+    private void updateShippingUI(View view, ShippingAddress addr) {
+        TextView n = view.findViewById(R.id.txtCustomerName);
+        TextView p = view.findViewById(R.id.txtCustomerPhone);
+        TextView a = view.findViewById(R.id.txtCustomerAddress);
+        n.setText(addr.getName());
+        p.setText(addr.getPhone());
+        a.setText(addr.getAddress());
+    }
     private void loadShippingInfoFromFirestore(View view) {
+        if (selectedShipping != null) {
+            updateShippingUI(view, selectedShipping);
+            return;  // ← bỏ qua load default
+        }
         String uid = new UserSessionManager(requireContext()).getUid();
         if (uid == null || uid.isEmpty()) {
             Log.e("MainPaymentFragment", "User not logged in");
@@ -343,7 +372,36 @@ public class MainPaymentFragment extends Fragment {
 
 
     private void bindProductsToUI(List<CartProduct> productList) {
-        // TODO: Hiển thị danh sách sản phẩm ra layout, tùy theo bạn render bằng include, RecyclerView hay addView
+        productContainer.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        for (CartProduct p : productList) {
+            // inflate layout cho 1 sản phẩm
+            View item = inflater.inflate(R.layout.item_payment_product, productContainer, false);
+
+            // map data vào các view con
+            ImageView img = item.findViewById(R.id.imgProduct);
+            TextView txtName = item.findViewById(R.id.txtProductTitle);
+            TextView txtPrice = item.findViewById(R.id.txtProductPrice);
+            TextView txtQty  = item.findViewById(R.id.txtProductQuantity);
+
+            // nếu có URL ảnh, load bằng Glide hoặc Picasso
+            // Glide.with(item).load(p.getImageUrl()).into(img);
+            String url = p.getFirstImageUrl();
+            if (url != null && !url.isEmpty()) {
+                Glide.with(this)                   // hoặc Glide.with(requireContext())
+                        .load(url)
+                        .placeholder(R.mipmap.ic_cart_product)
+                        .error(R.mipmap.ic_cart_product)
+                        .into(img);
+            } else {
+                img.setImageResource(R.mipmap.ic_cart_product);
+            }
+            txtName.setText(p.getName());
+            txtPrice.setText("$" + String.format("%,.2f", p.getPrice()));
+            txtQty.setText("Quantity: " + p.getQuantity());
+
+            productContainer.addView(item);
+        }
     }
 
     private void bindVoucherToUI(Voucher voucher) {

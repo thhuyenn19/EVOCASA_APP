@@ -87,18 +87,20 @@
             </LinearLayout>
 
             <!-- Product Item sử dụng item_order_product.xml -->
+            <!-- sau -->
             <LinearLayout
+                android:id="@+id/productContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:background="@drawable/bg_border_rounded"
                 android:paddingHorizontal="10dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="2dp"
                 android:layout_marginTop="12dp">
-
-                <include layout="@layout/item_payment_product" />
-
+                <!-- sẽ inflate từng item_payment_product vào đây -->
             </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

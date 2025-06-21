@@ -21,15 +21,23 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
 
     private final List<ShippingAddress> list;
     private final OnEditClickListener editClickListener;
+    private final OnSelectClickListener selectClickListener;
     private int selectedPosition = -1;
 
-    public ShippingAddressPaymentAdapter(List<ShippingAddress> list, OnEditClickListener editClickListener) {
+    public ShippingAddressPaymentAdapter(
+            List<ShippingAddress> list,
+            OnEditClickListener editClickListener,
+            OnSelectClickListener selectClickListener) {
         this.list = list;
         this.editClickListener = editClickListener;
+        this.selectClickListener = selectClickListener;
     }
 
     public interface OnEditClickListener {
         void onEditClick(ShippingAddress address);
+    }
+    public interface OnSelectClickListener {
+        void onSelectClick(ShippingAddress address);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -78,6 +86,9 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
             selectedPosition = holder.getAdapterPosition();
             notifyItemChanged(oldPos);
             notifyItemChanged(selectedPosition);
+            if (selectClickListener != null) {
+                selectClickListener.onSelectClick(item);
+            }
         };
 
         holder.itemView.setOnClickListener(selectListener);
