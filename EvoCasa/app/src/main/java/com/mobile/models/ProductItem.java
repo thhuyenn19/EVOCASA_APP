@@ -36,26 +36,38 @@ public class ProductItem implements Serializable {
         this.customize = customize;
     }
 
-    // Getters and setters
+    // ID không có trong Firestore, nên không cần PropertyName
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
 
+    @PropertyName("Name")
     public String getName() { return name; }
+    @PropertyName("Name")
     public void setName(String name) { this.name = name; }
 
+    @PropertyName("Price")
     public Double getPrice() { return price; }
+    @PropertyName("Price")
     public void setPrice(Double price) { this.price = price; }
 
+    @PropertyName("Image")
     public String getImage() { return image; }
+    @PropertyName("Image")
     public void setImage(String image) { this.image = image; }
 
+    @PropertyName("Description")
     public String getDescription() { return description; }
+    @PropertyName("Description")
     public void setDescription(String description) { this.description = description; }
 
+    @PropertyName("Dimension")
     public String getDimensions() { return dimensions; }
+    @PropertyName("Dimension")
     public void setDimensions(String dimensions) { this.dimensions = dimensions; }
 
+    @PropertyName("CustomizeImage")
     public String getCustomizeImage() { return customizeImage; }
+    @PropertyName("CustomizeImage")
     public void setCustomizeImage(String customizeImage) { this.customizeImage = customizeImage; }
 
     @PropertyName("Ratings")
@@ -86,14 +98,13 @@ public class ProductItem implements Serializable {
                 this.customize.put(entry.getKey(), optionList);
             }
         } else if (customizeObj instanceof List) {
-            // Handle ArrayList case (e.g., []) by setting customize to an empty map
             this.customize = new HashMap<>();
         } else {
-            // Handle null or other unexpected types
             this.customize = new HashMap<>();
         }
     }
 
+    // ==== Inner class Ratings ====
     public static class Ratings implements Serializable {
         private Double average;
         private List<Detail> details;
@@ -114,6 +125,7 @@ public class ProductItem implements Serializable {
         @PropertyName("Details")
         public void setDetails(List<Detail> details) { this.details = details; }
 
+        // ==== Inner class Ratings.Detail ====
         public static class Detail implements Serializable {
             @SerializedName("ReviewId")
             private String reviewId;
@@ -149,6 +161,7 @@ public class ProductItem implements Serializable {
         }
     }
 
+    // ==== Inner class CustomizeOption ====
     public static class CustomizeOption implements Serializable {
         private String type;
         private String image;

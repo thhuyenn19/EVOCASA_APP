@@ -82,7 +82,17 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         }
 
         holder.txtProductName.setText(product.getName());
-        holder.txtPrice.setText("$" + product.getPrice());
+        Double price = product.getPrice();
+        if (price != null) {
+            if (price % 1 == 0) {
+                holder.txtPrice.setText("$" + String.format(Locale.US, "%.0f", price));
+            } else {
+                holder.txtPrice.setText("$" + String.format(Locale.US, "%.2f", price));
+            }
+        } else {
+            holder.txtPrice.setText("$0");
+        }
+
 
         // Hiển thị rating nếu có, nếu null thì hiện 5.0
         Double averageRating = product.getRatings().getAverage();

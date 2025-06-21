@@ -42,6 +42,8 @@ import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.payment.PaymentActivity;
+import com.mobile.models.CartProduct;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
@@ -131,7 +133,14 @@ public class ProductDetailsActivity extends AppCompatActivity {
         imageViewPager = findViewById(R.id.imgProductViewPager);
 
         btnAddToCart.setOnClickListener(v -> showAddToCartBottomSheet());
-        btnBuyNow.setOnClickListener(v -> showBuyNowBottomSheet());
+        btnBuyNow.setOnClickListener(v -> {
+            if (productItem != null) {
+                showBuyNowBottomSheet();
+            } else {
+                Toast.makeText(this, "Product data not loaded yet", Toast.LENGTH_SHORT).show();
+                Log.w("ProductDetails", "Attempted Buy Now before productItem is loaded");
+            }
+        });
 
         viewPagerHelper = new WrapContentViewPager2Helper(viewPager);
         pagerAdapter = new ProductDetailPagerAdapter(this);
@@ -255,7 +264,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
                             txtProductName.setText(documentSnapshot.getString("Name"));
-                            txtProductPrice.setText("$" + (documentSnapshot.getDouble("Price") != null ? documentSnapshot.getDouble("Price") : 0.0));
+                            Double price = documentSnapshot.getDouble("Price");
+                            if (price != null) {
+                                if (price % 1 == 0) {
+                                    txtProductPrice.setText("$" + String.format(Locale.US, "%.0f", price));
+                                } else {
+                                    txtProductPrice.setText("$" + String.format(Locale.US, "%.2f", price));
+                                }
+                            } else {
+                                txtProductPrice.setText("$0");
+                            }
+
                             productDescription = documentSnapshot.getString("Description");
                             productDimensions = documentSnapshot.getString("Dimension");
                             productItem = documentSnapshot.toObject(ProductItem.class);
@@ -452,7 +471,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ImageButton btnDecrease = view.findViewById(R.id.btnDecrease);
 
         final int[] quantity = {1};
-
         txtQuantity.setText(String.valueOf(quantity[0]));
 
         btnIncrease.setOnClickListener(v -> {
@@ -469,12 +487,53 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         Button btnBuyNow = view.findViewById(R.id.btnBuyNow);
         btnBuyNow.setOnClickListener(v -> {
-            Toast.makeText(this, "Đặt mua " + quantity[0] + " sản phẩm thành công!", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
+            if (productItem == null) {
+                Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try {
+                CartProduct cartProduct = new CartProduct();
+
+                cartProduct.setId(productItem.getId() != null ? productItem.getId() : "");
+                cartProduct.setName(productItem.getName() != null ? productItem.getName() : "Sản phẩm không tên");
+                cartProduct.setPrice(productItem.getPrice() != null ? productItem.getPrice() : 0.0);
+                cartProduct.setQuantity(quantity[0]);
+
+                // Parse image URLs
+                List<String> imageUrls = new ArrayList<>();
+                String imageRaw = productItem.getImage();
+                if (imageRaw != null && !imageRaw.isEmpty()) {
+                    try {
+                        Type listType = new TypeToken<List<String>>() {}.getType();
+                        imageUrls = new Gson().fromJson(imageRaw, listType);
+                    } catch (Exception e) {
+                        Log.e("BuyNow", "Failed to parse image JSON: " + e.getMessage());
+                    }
+                }
+                cartProduct.setImageUrls(imageUrls);
+
+                // Chuyển sang PaymentActivity
+                List<CartProduct> cartList = new ArrayList<>();
+                cartList.add(cartProduct);
+                String cartJson = new Gson().toJson(cartList);
+
+                Log.d("BuyNowDebug", "Sending cart: " + cartJson);
+
+                Intent intent = new Intent(ProductDetailsActivity.this, PaymentActivity.class);
+                intent.putExtra("cartPayment", cartJson);
+                startActivity(intent);
+                bottomSheetDialog.dismiss();
+
+            } catch (Exception ex) {
+                Log.e("BuyNow", "Error preparing product for purchase: " + ex.getMessage(), ex);
+                Toast.makeText(this, "Đã xảy ra lỗi khi xử lý sản phẩm", Toast.LENGTH_SHORT).show();
+            }
         });
 
         bottomSheetDialog.show();
     }
+
 
     private void showAddToCartBottomSheet() {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
