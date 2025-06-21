@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,11 +31,13 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mobile.adapters.ShippingMethodAdapter;
 import com.mobile.adapters.VoucherAdapter;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
 import com.mobile.models.CartProduct;
 import com.mobile.models.ShippingAddress;
+import com.mobile.models.ShippingMethod;
 import com.mobile.models.Voucher;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
@@ -51,6 +54,13 @@ public class MainPaymentFragment extends Fragment {
     private Voucher selectedVoucher;
     private ShippingAddress selectedShipping = null;
     private LinearLayout productContainer;
+    private LinearLayout layoutShipping;
+    private View overlayShipping;
+    private LinearLayout shippingOptionsLayout;
+    private RecyclerView rvShipping;
+    private ImageView btnCloseShipping;
+    private TextView txtName, txtFee, txtDesc;
+
 
     @Nullable
     @Override
@@ -178,6 +188,17 @@ public class MainPaymentFragment extends Fragment {
             overlayBackground.setVisibility(View.GONE);
             voucherOptionsLayout.setVisibility(View.GONE);
         });
+        layoutShipping         = view.findViewById(R.id.layoutShippingMethod);
+        overlayShipping        = view.findViewById(R.id.overlayShipping);
+        shippingOptionsLayout  = view.findViewById(R.id.shippingOptionsLayout);
+        rvShipping             = view.findViewById(R.id.recyclerShipping);
+        btnCloseShipping       = view.findViewById(R.id.btnCloseShippingLayout);
+
+        txtName  = view.findViewById(R.id.txtShippingMethodName);
+        txtFee   = view.findViewById(R.id.txtShippingPrice);
+        txtDesc  = view.findViewById(R.id.txtShippingMethodDesc);
+
+
 
         setupPaymentMethodSelector(view);
         return view;
@@ -211,9 +232,62 @@ public class MainPaymentFragment extends Fragment {
             bindProductsToUI(productList);
             bindVoucherToUI(selectedVoucher);
         }
+        // 2) chuẩn bị dữ liệu
+        List<ShippingMethod> shippingList = Arrays.asList(
+                new ShippingMethod(
+                        "Express Delivery", 50,
+                        "Received on Thursday, May 15, 2025",
+                        R.drawable.ic_delivery),
+                new ShippingMethod(
+                        "Standard Delivery", 20,
+                        "Received on Monday, May 19, 2025",
+                        R.drawable.ic_delivery),
+                new ShippingMethod(
+                        "Weekend Delivery", 30,
+                        "Received on Saturday, May 18, 2025",
+                        R.drawable.ic_delivery)
+        );
+
+        // 3) thiết lập RecyclerView + Adapter
+        ShippingMethodAdapter adapter =
+                new ShippingMethodAdapter(shippingList, requireContext());
+        rvShipping.setLayoutManager(new LinearLayoutManager(requireContext()));
+        rvShipping.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(method -> {
+            // cập nhật summary khi chọn
+            txtName.setText(method.getName());
+            txtFee .setText("$" + (int)method.getPrice());
+            txtDesc.setText(method.getReceiveOn());
+            // ẩn overlay
+            shippingOptionsLayout.setVisibility(View.GONE);
+            overlayShipping.setVisibility(View.GONE);
+        });
+
+        // 4) default hiển thị mục đầu tiên
+        ShippingMethod def = shippingList.get(0);
+        txtName.setText(def.getName());
+        txtFee .setText("$" + (int)def.getPrice());
+        txtDesc.setText(def.getReceiveOn());
+
+        // 5) show/hide overlay
+        layoutShipping.setOnClickListener(v -> {
+            overlayShipping.setVisibility(View.VISIBLE);
+            shippingOptionsLayout.setVisibility(View.VISIBLE);
+        });
+        btnCloseShipping.setOnClickListener(v -> {
+            shippingOptionsLayout.setVisibility(View.GONE);
+            overlayShipping.setVisibility(View.GONE);
+        });
+
+        overlayShipping.setOnClickListener(v -> {
+            shippingOptionsLayout.setVisibility(View.GONE);
+            overlayShipping.setVisibility(View.GONE);
+        });
         loadShippingInfoFromFirestore(view);
 
     }
+
     private void setupPaymentMethodSelector(View view) {
         LinearLayout optionCOD = view.findViewById(R.id.optionCOD);
         LinearLayout optionBanking = view.findViewById(R.id.optionBanking);
@@ -435,4 +509,5 @@ public class MainPaymentFragment extends Fragment {
             }
         }
     }
+
 }

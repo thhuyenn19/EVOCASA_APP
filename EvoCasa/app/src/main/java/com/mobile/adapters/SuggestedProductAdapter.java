@@ -88,8 +88,18 @@ public class SuggestedProductAdapter extends RecyclerView.Adapter<SuggestedProdu
             holder.txtProductName.setText(product.getName() != null ? product.getName() : "Unknown Product");
         }
         if (holder.txtPrice != null) {
-            holder.txtPrice.setText(product.getPrice() != null ? "$" + product.getPrice() : "$0.0");
+            Double price = product.getPrice();
+            if (price != null) {
+                if (price % 1 == 0) {
+                    holder.txtPrice.setText("$" + String.format(Locale.US, "%.0f", price));
+                } else {
+                    holder.txtPrice.setText("$" + String.format(Locale.US, "%.2f", price));
+                }
+            } else {
+                holder.txtPrice.setText("$0");
+            }
         }
+
 
         // Hiển thị rating nếu có, nếu null thì hiện 5.0
         if (holder.txtRating != null) {
