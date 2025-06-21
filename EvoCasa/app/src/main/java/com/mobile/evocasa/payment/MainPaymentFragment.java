@@ -12,16 +12,23 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.annotation.NonNull;
@@ -70,6 +77,8 @@ public class MainPaymentFragment extends Fragment {
     TextView txtTotalValueBottom, txtSavingValueBottom;
     private double calculatedTotal = 0;
     private double calculatedSaving = 0;
+    private boolean isDefault;
+
 
 
 
@@ -227,11 +236,136 @@ public class MainPaymentFragment extends Fragment {
         // Nút Checkout
         Button btnCheckout = view.findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
-            Intent checkoutIntent = new Intent(requireContext(), NarBarActivity.class);
-            intent.putExtra("tab_pos", 4);
-            startActivity(intent);
-            requireActivity().finish();
+            if (selectedPaymentMethod == null) {
+                Toast.makeText(requireContext(), "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Tạo ID cho order
+            String orderId = String.valueOf(System.currentTimeMillis());
+
+            // Lấy uid từ session
+            String uid = new UserSessionManager(requireContext()).getUid();
+
+            // Chuẩn bị dữ liệu đơn hàng
+            Map<String, Object> order = new HashMap<>();
+
+            // Gán ID người dùng
+            Map<String, Object> customerIdObj = new HashMap<>();
+            customerIdObj.put("$oid", uid);
+            order.put("Customer_id", customerIdObj);
+
+            Map<String, Object> orderIdObj = new HashMap<>();
+            orderIdObj.put("$oid", orderId);
+            order.put("_id", orderIdObj);
+
+            Map<String, Object> orderDateObj = new HashMap<>();
+            orderDateObj.put("$date", new Date());
+
+            order.put("OrderDate", orderDateObj);
+            order.put("ShipDate", orderDateObj);  // hoặc tạo 1 bản riêng nếu khác thời gian
+
+// Shipping info
+            order.put("ShippingMethod", txtName.getText().toString());
+            order.put("DeliveryFee", currentShippingFee);
+
+            // Ghi chú từ người dùng (cho phép rỗng)
+            String note = ((TextView) requireView().findViewById(R.id.edtMessageForShop)).getText().toString();
+            order.put("Note", note);
+
+            // Trạng thái đơn
+            order.put("Status", "Pending");
+
+            // Tạo mã tracking random
+            String tracking = "TRK" + String.format("%06d", new Random().nextInt(999999));
+            order.put("TrackingNumber", tracking);
+
+            // Phương thức thanh toán
+            order.put("PaymentMethod", getPaymentText(selectedPaymentMethod));
+
+            // Giá tiền
+            double subtotal = calculateSubtotal();
+            order.put("TotalPrice", subtotal + currentShippingFee - calculatedSaving);
+            order.put("PrePrice", subtotal);
+
+            // Danh sách sản phẩm
+            List<Map<String, Object>> orderProducts = new ArrayList<>();
+            for (CartProduct p : selectedProducts) {
+                Map<String, Object> product = new HashMap<>();
+                product.put("Quantity", p.getQuantity());
+                product.put("Customize", null); // nếu có tuỳ chỉnh thì thay thế ở đây
+
+                // Product ID kiểu $oid
+                Map<String, Object> idObj = new HashMap<>();
+                idObj.put("$oid", p.getId());
+                product.put("id", idObj);
+
+                orderProducts.add(product);
+            }
+            order.put("OrderProduct", orderProducts);
+
+            // Thông tin Voucher (nếu có)
+            if (selectedVoucher != null) {
+                Map<String, Object> voucher = new HashMap<>();
+                voucher.put("VoucherName", selectedVoucher.getName());
+                voucher.put("DiscountAmount", calculatedSaving);
+                voucher.put("DiscountPercent", selectedVoucher.getDiscountPercent());
+
+                // Nếu có ID của voucher → thêm vào
+                if (selectedVoucher.getId() != null) {
+                    Map<String, Object> voucherIdObj = new HashMap<>();
+                    voucherIdObj.put("$oid", selectedVoucher.getId());
+                }
+
+                order.put("Voucher", voucher);
+            }
+            if (selectedShipping != null) {
+                Map<String, Object> shippingAddress = new HashMap<>();
+                shippingAddress.put("Name", selectedShipping.getName());
+                shippingAddress.put("Phone", selectedShipping.getPhone());
+                shippingAddress.put("Address", selectedShipping.getAddress());
+
+                order.put("ShippingAddresses", shippingAddress);
+            }
+
+
+            // Gửi lên Firestore
+            FirebaseFirestore.getInstance()
+                    .collection("Order")
+                    .document(orderId)
+                    .set(order)
+                    .addOnSuccessListener(aVoid -> {
+                        // Push thông báo sau khi tạo đơn thành công
+                        Map<String, Object> notification = new HashMap<>();
+                        String notiId = "NOTI" + System.currentTimeMillis();
+                        String createdAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(new Date());
+
+                        notification.put("NotificationId", notiId);
+                        notification.put("CreatedAt", createdAt);
+                        notification.put("Title", "Payment Confirmed");
+                        notification.put("Content", "Your order " + orderId + " has been placed successfully.");
+                        notification.put("Image", "/images/Notification/OrderPlaced.jpg");  // bạn có thể đổi lại đường dẫn phù hợp
+                        notification.put("Status", "Unread");
+                        notification.put("Type", "PaymentConfirmed");
+
+// Đẩy vào danh sách Notifications của người dùng
+                        FirebaseFirestore.getInstance()
+                                .collection("Customers")
+                                .document(uid)
+                                .update("Notifications", FieldValue.arrayUnion(notification));
+                        // Chuyển sang trang finish khi thành công
+                        requireActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragment_container, new FinishPaymentFragment())
+                                .addToBackStack(null)
+                                .commit();
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(requireContext(), "Failed to place order", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    });
+
+
         });
+
 
 
         layoutUseVoucher = view.findViewById(R.id.layoutUseVoucher);
@@ -277,6 +411,16 @@ public class MainPaymentFragment extends Fragment {
 
 
         return view;
+    }
+
+    private Object getPaymentText(String method) {
+        if (method == null) return "COD";
+        switch (method) {
+            case "MOMO": return "Momo";
+            case "BANKING": return "Internet Banking";
+            case "CREDIT": return "Credit / Debit Card";
+            default: return "COD";
+        }
     }
 
     private void highlightPaymentOption(View root) {
@@ -510,6 +654,9 @@ public class MainPaymentFragment extends Fragment {
                                     String name = (String) addressMap.get("Name");
                                     String phone = (String) addressMap.get("Phone");
                                     String address = (String) addressMap.get("Address");
+                                    isDefault = (Boolean) addressMap.get("IsDefault");
+
+                                    selectedShipping = new ShippingAddress(name, phone, address, isDefault != null && isDefault);
 
                                     TextView txtName = view.findViewById(R.id.txtCustomerName);
                                     TextView txtPhone = view.findViewById(R.id.txtCustomerPhone);
