@@ -694,11 +694,12 @@
                 android:id="@+id/recyclerViewSuggestedProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="4dp"
                 android:clipToPadding="false"
-                android:paddingBottom="8dp"
                 android:nestedScrollingEnabled="false"
-                android:overScrollMode="never" />
+                android:overScrollMode="never"
+                android:paddingBottom="8dp" />
         </LinearLayout>
 
     </ScrollView>

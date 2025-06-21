@@ -15,6 +15,8 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ViewProductComponent } from './product-detail/view-product/view-product.component';
 import { ViewCategoryComponent } from './category-detail/view-category/view-category.component';
+import { MessageComponent } from './message/message.component'; 
+
 
 const routes: Routes = [
   { path: 'dashboard-page', component: DashboardComponent, canActivate: [AuthGuard] },
@@ -30,6 +32,7 @@ const routes: Routes = [
   { path: 'admin-product', component: ProductComponent, canActivate: [AuthGuard] },
   { path: 'admin-category', component: CategoryComponent, canActivate: [AuthGuard] },
   { path: 'admin-order', component: OrderComponent, canActivate: [AuthGuard]},
+  { path: 'admin-message', component: MessageComponent, canActivate: [AuthGuard]}, 
   { path: 'login-page', component: LoginComponent },
   { path: '', component: LoginComponent },
   { path: '**', redirectTo: '' }

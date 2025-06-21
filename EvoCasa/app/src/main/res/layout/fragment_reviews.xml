@@ -32,6 +32,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txtCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -66,7 +67,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -77,32 +77,15 @@
         android:nestedScrollingEnabled="false"
         android:minHeight="200dp" />
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/txtNoReviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:text="No reviews yet."
+        android:textColor="@color/color_5E4C3E"
+        android:textSize="16sp"
         android:gravity="center"
-        android:paddingTop="15dp"
-        android:orientation="horizontal">
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:id="@+id/txtViewMore"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="8dp"
-            android:gravity="center_vertical"
-            android:text="@string/title_view_more"
-            android:textColor="@color/color_tab_active"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_right" />
-    </LinearLayout>
+        android:padding="16dp" />
 
 </LinearLayout>

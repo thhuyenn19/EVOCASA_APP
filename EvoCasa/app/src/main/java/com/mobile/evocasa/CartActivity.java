@@ -3,6 +3,7 @@ package com.mobile.evocasa;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import com.google.firebase.firestore.ListenerRegistration;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -51,6 +52,7 @@ public class CartActivity extends AppCompatActivity {
     private TextView txtSubtotalAmount;
     private TextView txtAllProducts;
     private View overlayBackground;
+    private ListenerRegistration cartListener;
 
     private CartProductAdapter cartProductAdapter;
     private CheckBox checkboxAllProducts;
@@ -229,7 +231,25 @@ public class CartActivity extends AppCompatActivity {
         recyclerViewCartProducts.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewCartProducts.setAdapter(cartProductAdapter);
     }
-
+//    private void startCartRealtimeListener() {
+//        String uid = new UserSessionManager(this).getUid();
+//        if (uid == null) return;
+//
+//        cartListener = FirebaseFirestore.getInstance()
+//                .collection("Customers")
+//                .document(uid)
+//                .addSnapshotListener((snapshot, error) -> {
+//                    if (error != null) {
+//                        Log.e("Cart", "Realtime update failed", error);
+//                        return;
+//                    }
+//
+//                    if (snapshot != null && snapshot.exists()) {
+//                        Log.d("Cart", "Cart data changed. Reloading cart.");
+//                        loadCartProducts(); // Load lại cart từ Firestore
+//                    }
+//                });
+//    }
     private void setupListeners() {
         checkboxAllProducts.setOnCheckedChangeListener((buttonView, isChecked) -> {
             isEditing = false;
@@ -747,6 +767,12 @@ public class CartActivity extends AppCompatActivity {
 
     private void loadCartProducts() {
         Log.d(TAG, "Bắt đầu load cart products");
+
+        // FIX: Clear danh sách cũ trước khi load mới để tránh trùng
+        cartProductList.clear();
+        selectedProducts.clear();
+        runOnUiThread(() -> cartProductAdapter.notifyDataSetChanged());
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         UserSessionManager sessionManager = new UserSessionManager(this);
         String uid = sessionManager.getUid();
@@ -1000,5 +1026,27 @@ public class CartActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Failed to get cart for product removal", e);
                 });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setupListeners();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (cartListener != null) {
+            cartListener.remove(); // ngừng lắng nghe khi activity dừng
+            cartListener = null;
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (cartListener != null) {
+            cartListener.remove();
+        }
     }
 }

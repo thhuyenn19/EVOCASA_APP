@@ -2,6 +2,9 @@ package com.mobile.evocasa.productdetails;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,20 +27,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.ImagePagerAdapter;
 import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
+import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
@@ -47,7 +50,6 @@ import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -78,6 +80,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private UserSessionManager sessionManager;
     private String productId;
     private DecimalFormat decimalFormat;
+    private String productDescription;
+    private String productDimensions;
+    private ProductItem productItem;
+    private ListenerRegistration cartListener;
+    private TextView txtCartBadge;
+    ImageView imgCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +95,17 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         sessionManager = new UserSessionManager(this);
+        txtCartBadge = findViewById(R.id.txtCartBadge);
+        imgCart = findViewById(R.id.imgCart);
+
+        // Cart
+        if (imgCart != null) {
+            imgCart.setOnClickListener(v -> {
+                Intent intent = new Intent(ProductDetailsActivity.this, CartActivity.class);
+                startActivity(intent);
+            });
+        }
+
         FontUtils.initFonts(this);
         DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
         decimalFormat = new DecimalFormat("0.0", symbols);
@@ -100,6 +119,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         initViews();
         setFonts();
+
+        // Start cart badge listener
+        startCartBadgeListener();
 
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
@@ -120,11 +142,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
         viewPager.setOverScrollMode(View.OVER_SCROLL_NEVER);
         btnBack.setOnClickListener(v -> {
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("wishlistChanged", true); // bạn có thể tùy chỉnh cờ này nếu cần
+            resultIntent.putExtra("wishlistChanged", true);
             setResult(RESULT_OK, resultIntent);
-            finish(); // Đóng activity và quay lại màn trước
+            finish();
         });
-
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";
@@ -154,11 +175,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
 
                 int position = tab.getPosition();
-                if (position == 2) {
+                if (position == 2 && productItem != null) {
                     tabLayout.postDelayed(() -> {
                         Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                         if (reviewsFragment instanceof ReviewsFragment) {
-                            ((ReviewsFragment) reviewsFragment).onFragmentVisible();
+                            ((ReviewsFragment) reviewsFragment).refreshReviews();
                         }
                     }, 100);
                 }
@@ -168,7 +189,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 400);
                 tabLayout.postDelayed(() -> updateViewPagerHeight(), 600);
             }
-
 
             @Override
             public void onTabUnselected(@NonNull TabLayout.Tab tab) {
@@ -183,10 +203,10 @@ public class ProductDetailsActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(@NonNull TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                if (position == 2) {
+                if (position == 2 && productItem != null) {
                     Fragment reviewsFragment = pagerAdapter.getCurrentFragment(2);
                     if (reviewsFragment instanceof ReviewsFragment) {
-                        ((ReviewsFragment) reviewsFragment).onFragmentVisible();
+                        ((ReviewsFragment) reviewsFragment).refreshReviews();
                     }
                 }
                 updateViewPagerHeight();
@@ -222,7 +242,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 View view = firstTab.getCustomView();
                 if (view instanceof TextView) {
                     TextView tv = (TextView) view;
-                    tv.setTypeface(FontUtils.getZbold(ProductDetailsActivity.this));
+                    tv.setTypeface(FontUtils.getZbold(this));
                     tv.setTextColor(ContextCompat.getColor(this, R.color.color_5E4C3E));
                 }
             }
@@ -234,44 +254,84 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     .get()
                     .addOnSuccessListener(documentSnapshot -> {
                         if (documentSnapshot.exists()) {
-                            if (txtProductName != null) {
-                                txtProductName.setText(documentSnapshot.getString("Name"));
-                            }
-                            if (txtProductPrice != null && documentSnapshot.getDouble("Price") != null) {
-                                txtProductPrice.setText("$" + documentSnapshot.getDouble("Price"));
-                            }
-                            String imageJson = documentSnapshot.getString("Image");
-                            if (imageJson != null) {
-                                try {
-                                    Gson gson = new Gson();
-                                    Type listType = new TypeToken<List<String>>() {}.getType();
-                                    imageUrls = gson.fromJson(imageJson, listType);
-                                    setupImageViewPager();
-                                } catch (Exception e) {
-                                    Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
+                            txtProductName.setText(documentSnapshot.getString("Name"));
+                            txtProductPrice.setText("$" + (documentSnapshot.getDouble("Price") != null ? documentSnapshot.getDouble("Price") : 0.0));
+                            productDescription = documentSnapshot.getString("Description");
+                            productDimensions = documentSnapshot.getString("Dimension");
+                            productItem = documentSnapshot.toObject(ProductItem.class);
+                            Log.d("ProductDetails", "Loaded ProductItem: " + (productItem != null));
+
+                            if (productItem != null) {
+                                productItem.setId(productId);
+                                if (productItem.getRatings() == null) {
+                                    productItem.setRatings(new ProductItem.Ratings());
                                 }
-                            }
-                            Object ratingsObj = documentSnapshot.get("Ratings");
-                            if (ratingsObj instanceof Map) {
-                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                Object averageObj = ratingsMap.get("Average");
-                                if (averageObj instanceof Number && txtRating != null) {
+                                Object ratingsObj = documentSnapshot.get("Ratings");
+                                if (ratingsObj instanceof Map) {
+                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                    Object averageObj = ratingsMap.get("Average");
+                                    if (averageObj instanceof Number) {
+                                        productItem.getRatings().setAverage(((Number) averageObj).doubleValue());
+                                    }
+                                    Object detailsObj = ratingsMap.get("Details");
+                                    if (detailsObj instanceof List) {
+                                        List<ProductItem.Ratings.Detail> detailList = new ArrayList<>();
+                                        List<Map<String, Object>> rawDetails = (List<Map<String, Object>>) detailsObj;
+                                        for (Map<String, Object> detailMap : rawDetails) {
+                                            ProductItem.Ratings.Detail detail = new ProductItem.Ratings.Detail();
+                                            detail.setReviewId((String) detailMap.get("ReviewId"));
+                                            detail.setComment((String) detailMap.get("Comment"));
+                                            detail.setCustomerName((String) detailMap.get("CustomerName"));
+                                            detail.setCreatedAt((String) detailMap.get("CreatedAt"));
+                                            Object ratingVal = detailMap.get("Rating");
+                                            if (ratingVal instanceof Number) {
+                                                detail.setRating(((Number) ratingVal).intValue());
+                                            }
+                                            detailList.add(detail);
+                                        }
+                                        productItem.getRatings().setDetails(detailList);
+                                    }
+                                }
+
+                                Log.d("ProductDetails", "ProductItem Ratings Average: " + (productItem.getRatings() != null ? productItem.getRatings().getAverage() : "null"));
+
+                                viewPager.getAdapter().notifyDataSetChanged();
+                                pagerAdapter.setProductData(productDescription, productDimensions, productItem);
+                                viewPager.setAdapter(pagerAdapter);
+                                viewPager.setCurrentItem(0, false);
+
+                                String imageJson = documentSnapshot.getString("Image");
+                                if (imageJson != null) {
+                                    try {
+                                        Gson gson = new Gson();
+                                        Type listType = new TypeToken<List<String>>() {}.getType();
+                                        imageUrls = gson.fromJson(imageJson, listType);
+                                        setupImageViewPager();
+                                    } catch (Exception e) {
+                                        Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
+                                        Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                if (productItem.getRatings() != null && productItem.getRatings().getAverage() != null) {
                                     ratingLayout.setVisibility(View.VISIBLE);
-                                    txtRating.setText(decimalFormat.format(((Number) averageObj).doubleValue()));
+                                    txtRating.setText(decimalFormat.format(productItem.getRatings().getAverage()));
                                 } else {
                                     ratingLayout.setVisibility(View.VISIBLE);
-                                    txtRating.setText("5.0");
+                                    txtRating.setText("0.0");
                                 }
+                                checkWishlistStatus();
                             } else {
-                                ratingLayout.setVisibility(View.VISIBLE);
-                                txtRating.setText("5.0");
+                                Log.w("ProductDetails", "Failed to parse ProductItem");
+                                Toast.makeText(this, "Failed to load product data", Toast.LENGTH_SHORT).show();
                             }
-                            checkWishlistStatus();
                         } else {
+                            Log.w("ProductDetails", "Product not found for ID: " + productId);
                             Toast.makeText(this, "Product not found", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnFailureListener(e -> {
+                        Log.e("ProductDetails", "Failed to load product details: " + e.getMessage());
                         Toast.makeText(this, "Failed to load product details", Toast.LENGTH_SHORT).show();
                     });
         } else {
@@ -298,7 +358,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("wishlistChanged", true); // nếu có thay đổi
+        resultIntent.putExtra("wishlistChanged", true);
         setResult(RESULT_OK, resultIntent);
         super.onBackPressed();
     }
@@ -329,29 +389,51 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productList.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ProductItem product = new ProductItem();
-                        product.setId(doc.getId());
-                        product.setName(doc.getString("Name"));
-                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                        product.setImage(doc.getString("Image"));
-                        product.setDescription(doc.getString("Description"));
-                        product.setDimensions(doc.getString("Dimensions"));
-                        ProductItem.Ratings ratings = new ProductItem.Ratings();
-                        Object ratingsObj = doc.get("Ratings");
-                        if (ratingsObj instanceof Map) {
-                            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                            Object averageObj = ratingsMap.get("Average");
-                            if (averageObj instanceof Number) {
-                                ratings.setAverage(((Number) averageObj).doubleValue());
+                        ProductItem product = doc.toObject(ProductItem.class);
+                        if (product != null) {
+                            product.setId(doc.getId());
+                            if (product.getRatings() == null) {
+                                product.setRatings(new ProductItem.Ratings());
                             }
+                            Object ratingsObj = doc.get("Ratings");
+                            if (ratingsObj instanceof Map) {
+                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                                Object averageObj = ratingsMap.get("Average");
+                                if (averageObj instanceof Number) {
+                                    product.getRatings().setAverage(((Number) averageObj).doubleValue());
+                                }
+                            }
+
+                            // Parse Image field
+                            String imageJson = doc.getString("Image");
+                            if (imageJson != null) {
+                                try {
+                                    Gson gson = new Gson();
+                                    Type listType = new TypeToken<List<String>>() {}.getType();
+                                    List<String> images = gson.fromJson(imageJson, listType);
+                                    if (images != null && !images.isEmpty()) {
+                                        product.setImage(String.join(",", images)); // Store as comma-separated string
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("ProductDetails", "Failed to parse images for suggested product: " + e.getMessage());
+                                }
+                            }
+
+                            // Explicitly set Name and Price
+                            String name = doc.getString("Name");
+                            Double price = doc.getDouble("Price");
+                            if (name != null) {
+                                product.setName(name); // Ensure Name is set
+                            }
+                            if (price != null) {
+                                product.setPrice(price); // Ensure Price is set
+                            }
+
+                            // Log to debug
+                            Log.d("ProductDetails", "Loaded Suggested Product: Name=" + product.getName() + ", Price=" + product.getPrice() + ", Image=" + product.getImage());
+
+                            productList.add(product);
                         }
-                        product.setRatings(ratings);
-                        Object categoryIdObj = doc.get("category_id");
-                        if (categoryIdObj instanceof Map) {
-                            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
-                            product.setCategoryId(categoryIdMap);
-                        }
-                        productList.add(product);
                     }
                     suggestedProductAdapter.notifyDataSetChanged();
                 })
@@ -370,7 +452,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ImageButton btnDecrease = view.findViewById(R.id.btnDecrease);
 
         final int[] quantity = {1};
-        final int[] selectedOptionIndex = {-1};
 
         txtQuantity.setText(String.valueOf(quantity[0]));
 
@@ -386,28 +467,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ImageView img1 = view.findViewById(R.id.imgAvatar1);
-        ImageView img2 = view.findViewById(R.id.imgAvatar2);
-        ImageView img3 = view.findViewById(R.id.imgAvatar3);
-        List<ImageView> avatarOptions = Arrays.asList(img1, img2, img3);
-
-        for (int i = 0; i < avatarOptions.size(); i++) {
-            int finalI = i;
-            avatarOptions.get(i).setOnClickListener(v -> {
-                for (ImageView avatar : avatarOptions) {
-                    avatar.setBackground(null);
-                }
-                avatarOptions.get(finalI).setBackgroundResource(R.drawable.bg_option_selected);
-                selectedOptionIndex[0] = finalI;
-            });
-        }
-
         Button btnBuyNow = view.findViewById(R.id.btnBuyNow);
         btnBuyNow.setOnClickListener(v -> {
-            if (selectedOptionIndex[0] == -1) {
-                Toast.makeText(this, "Please select an option before buying!", Toast.LENGTH_SHORT).show();
-                return;
-            }
             Toast.makeText(this, "Đặt mua " + quantity[0] + " sản phẩm thành công!", Toast.LENGTH_SHORT).show();
             bottomSheetDialog.dismiss();
         });
@@ -425,7 +486,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
         ImageButton btnDecrease = view.findViewById(R.id.btnDecrease);
 
         final int[] quantity = {1};
-        final int[] selectedOptionIndex = {-1};
 
         txtQuantity.setText(String.valueOf(quantity[0]));
 
@@ -441,30 +501,84 @@ public class ProductDetailsActivity extends AppCompatActivity {
             }
         });
 
-        ImageView img1 = view.findViewById(R.id.imgAvatar1);
-        ImageView img2 = view.findViewById(R.id.imgAvatar2);
-        ImageView img3 = view.findViewById(R.id.imgAvatar3);
-        List<ImageView> avatarOptions = Arrays.asList(img1, img2, img3);
-
-        for (int i = 0; i < avatarOptions.size(); i++) {
-            int finalI = i;
-            avatarOptions.get(i).setOnClickListener(v -> {
-                for (ImageView avatar : avatarOptions) {
-                    avatar.setBackground(null);
-                }
-                avatarOptions.get(finalI).setBackgroundResource(R.drawable.bg_option_selected);
-                selectedOptionIndex[0] = finalI;
-            });
-        }
-
         Button btnAddToCart = view.findViewById(R.id.btnAddToCart);
         btnAddToCart.setOnClickListener(v -> {
-            if (selectedOptionIndex[0] == -1) {
-                Toast.makeText(this, "Please select an option before adding to cart!", Toast.LENGTH_SHORT).show();
-                return;
+            String customerId = sessionManager.getUid();
+            if (customerId != null && productItem != null) {
+                String productId = productItem.getId();
+                db.collection("Customers")
+                        .document(customerId)
+                        .get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            if (documentSnapshot.exists()) {
+                                List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                                boolean productExists = false;
+                                int existingIndex = -1;
+
+                                if (cartList != null) {
+                                    for (int i = 0; i < cartList.size(); i++) {
+                                        Map<String, Object> item = cartList.get(i);
+                                        if (item.get("productId") != null && item.get("productId").equals(productId)) {
+                                            productExists = true;
+                                            existingIndex = i;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (productExists && existingIndex >= 0) {
+                                    // Update existing cart item quantity
+                                    Map<String, Object> updatedCart = new HashMap<>();
+                                    updatedCart.put("productId", productId);
+                                    int newQuantity = ((Number) cartList.get(existingIndex).get("cartQuantity")).intValue() + quantity[0];
+                                    updatedCart.put("cartQuantity", newQuantity);
+
+                                    List<Map<String, Object>> updatedCartList = new ArrayList<>(cartList);
+                                    updatedCartList.set(existingIndex, updatedCart);
+
+                                    db.collection("Customers")
+                                            .document(customerId)
+                                            .update("Cart", updatedCartList)
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(this, "Increased quantity by " + quantity[0] + " item(s) in cart", Toast.LENGTH_SHORT).show();
+                                                bottomSheetDialog.dismiss();
+                                                refreshCartBadge(); // Update cart badge
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("ProductDetails", "Failed to update cart quantity: " + e.getMessage());
+                                                Toast.makeText(this, "Failed to update cart quantity", Toast.LENGTH_SHORT).show();
+                                            });
+                                } else {
+                                    // Add new cart item
+                                    Map<String, Object> newCartItem = new HashMap<>();
+                                    newCartItem.put("productId", productId);
+                                    newCartItem.put("cartQuantity", quantity[0]);
+
+                                    db.collection("Customers")
+                                            .document(customerId)
+                                            .update("Cart", FieldValue.arrayUnion(newCartItem))
+                                            .addOnSuccessListener(aVoid -> {
+                                                Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
+                                                bottomSheetDialog.dismiss();
+                                                refreshCartBadge(); // Update cart badge
+                                            })
+                                            .addOnFailureListener(e -> {
+                                                Log.e("ProductDetails", "Failed to add to cart: " + e.getMessage());
+                                                Toast.makeText(this, "Failed to add to cart", Toast.LENGTH_SHORT).show();
+                                            });
+                                }
+                            } else {
+                                Log.w("ProductDetails", "Customer document not found for ID: " + customerId);
+                                Toast.makeText(this, "Customer data not found", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e("ProductDetails", "Failed to check cart: " + e.getMessage());
+                            Toast.makeText(this, "Failed to check cart", Toast.LENGTH_SHORT).show();
+                        });
+            } else {
+                Toast.makeText(this, "Please sign in to add to cart", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "Added " + quantity[0] + " item(s) to cart", Toast.LENGTH_SHORT).show();
-            bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.show();
@@ -512,6 +626,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         if (viewPagerHelper != null) {
             viewPagerHelper.destroy();
         }
+        cleanupCartListener();
     }
 
     public void updateViewPagerHeight() {
@@ -571,12 +686,9 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     if (querySnapshot.isEmpty()) {
-                        // Tạo wishlist mới và thêm sản phẩm
                         createWishlistAndAddProduct(customerId, productId);
                     } else {
-                        // Kiểm tra sản phẩm đã có trong wishlist chưa
                         DocumentSnapshot wishlistDoc = querySnapshot.getDocuments().get(0);
-
                         String wishlistId = wishlistDoc.getId();
                         List<String> productIds = (List<String>) wishlistDoc.get("Productid");
 
@@ -585,10 +697,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
                         }
 
                         if (productIds.contains(productId)) {
-                            // Sản phẩm đã có trong wishlist -> Remove
                             removeProductFromWishlist(wishlistId, productId);
                         } else {
-                            // Sản phẩm chưa có trong wishlist -> Add
                             addProductToWishlist(wishlistId, productId);
                         }
                     }
@@ -675,5 +785,192 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
                 });
+    }
+    // CartBadge
+    /**
+     * Start listening for cart changes and update badge
+     */
+    private void startCartBadgeListener() {
+        String uid = sessionManager.getUid();
+
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "User not logged in, hiding badge");
+            if (txtCartBadge != null) {
+                txtCartBadge.setVisibility(View.GONE);
+            }
+            return;
+        }
+
+        if (cartListener != null) {
+            cartListener.remove();
+            cartListener = null;
+        }
+
+        cartListener = FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (isFinishing() || isDestroyed()) {
+                        Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                        return;
+                    }
+
+                    if (e != null) {
+                        Log.w("CartBadge", "Listen failed.", e);
+                        safeUpdateCartBadge(0);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        int totalQuantity = 0;
+
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+
+                        safeUpdateCartBadge(totalQuantity);
+                    } else {
+                        Log.d("CartBadge", "No customer document found");
+                        safeUpdateCartBadge(0);
+                    }
+                });
+    }
+
+    private void safeUpdateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        if (txtCartBadge == null) {
+            Log.w("CartBadge", "Cart badge view is null, cannot update");
+            return;
+        }
+
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            try {
+                if (totalQuantity > 0) {
+                    txtCartBadge.setVisibility(View.VISIBLE);
+                    String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                    txtCartBadge.setText(displayText);
+                    Log.d("CartBadge", "Badge updated: " + displayText);
+                } else {
+                    txtCartBadge.setVisibility(View.GONE);
+                    Log.d("CartBadge", "Badge hidden (quantity = 0)");
+                }
+            } catch (Exception ex) {
+                Log.e("CartBadge", "Error updating cart badge UI", ex);
+            }
+        });
+    }
+
+    private void updateCartBadge(int totalQuantity) {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if (isFinishing() || isDestroyed() || txtCartBadge == null) {
+                Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+                return;
+            }
+
+            if (totalQuantity > 0) {
+                txtCartBadge.setVisibility(View.VISIBLE);
+                String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
+                txtCartBadge.setText(displayText);
+                Log.d("CartBadge", "Badge updated: " + displayText);
+            } else {
+                txtCartBadge.setVisibility(View.GONE);
+                Log.d("CartBadge", "Badge hidden (quantity = 0)");
+            }
+        });
+    }
+
+    public void refreshCartBadge() {
+        if (isFinishing() || isDestroyed()) {
+            Log.d("CartBadge", "Activity finishing or destroyed, skipping");
+            return;
+        }
+
+        String uid = sessionManager.getUid();
+        if (uid == null || uid.isEmpty()) {
+            Log.d("CartBadge", "Cannot refresh badge - user not logged in");
+            safeUpdateCartBadge(0);
+            return;
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (isFinishing() || isDestroyed()) return;
+
+                    int totalQuantity = 0;
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> cartList = (List<Map<String, Object>>) documentSnapshot.get("Cart");
+                        if (cartList != null) {
+                            for (Map<String, Object> item : cartList) {
+                                Object qtyObj = item.get("cartQuantity");
+                                if (qtyObj instanceof Number) {
+                                    totalQuantity += ((Number) qtyObj).intValue();
+                                }
+                            }
+                        }
+                    }
+                    safeUpdateCartBadge(totalQuantity);
+                })
+                .addOnFailureListener(e -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    Log.e("CartBadge", "Error refreshing cart badge", e);
+                    safeUpdateCartBadge(0);
+                });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d("CartBadge", "Activity onStart()");
+        if (sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("CartBadge", "Activity onResume()");
+        if (cartListener == null && sessionManager != null && txtCartBadge != null) {
+            startCartBadgeListener();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d("CartBadge", "Activity onStop()");
+        cleanupCartListener();
+    }
+
+    private void cleanupCartListener() {
+        if (cartListener != null) {
+            Log.d("CartBadge", "Removing cart listener");
+            cartListener.remove();
+            cartListener = null;
+        }
     }
 }

@@ -4,21 +4,22 @@ import android.content.Context;
 import android.graphics.text.LineBreaker;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
-import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
 
 public class DescriptionFragment extends Fragment {
+
+    public static final String ARG_DESCRIPTION = "description";
 
     public DescriptionFragment() {}
 
@@ -30,9 +31,18 @@ public class DescriptionFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_description, container, false);
 
         TextView txtDescription = view.findViewById(R.id.txtDescription);
-        txtDescription.setText("Oversized travertine table lamp at 24.5\" tall, this Asian inspired sculptural lamp has a weighted travertine base and verdigris metal body. An empire style metal shade and finial completes each piece. Rewired to US standard with neutral double twist cord.");
-        Context context = null;
-        txtDescription.setTypeface(FontUtils.getRegular(null));
+        Log.d("DescriptionFragment", "onCreateView called");
+        Bundle args = getArguments();
+        if (args != null && args.containsKey(ARG_DESCRIPTION)) {
+            String description = args.getString(ARG_DESCRIPTION);
+            txtDescription.setText(description);
+            Log.d("DescriptionFragment", "Received and set description: " + description);
+        } else {
+            txtDescription.setText("No description available.");
+            Log.w("DescriptionFragment", "No description data received");
+        }
+
+        txtDescription.setTypeface(FontUtils.getRegular(getContext()));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             txtDescription.setJustificationMode(LineBreaker.JUSTIFICATION_MODE_INTER_WORD);
         }

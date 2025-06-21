@@ -51,9 +51,9 @@ public class ProfileDetailFragment extends Fragment {
     private static final int REQUEST_CODE_PICK_IMAGE = 1001;
 
     private View view;
-    private TextView txtName, txtCartBadge;
+    private TextView txtName, txtCartBadge, txtNoShippingAddress;
     private ImageView imgAvatar, imgCart, iconEditName;
-    private LinearLayout layoutEditProfile, name_with_icon;
+    private LinearLayout layoutEditProfile,layoutAddShipping, name_with_icon;
     private ImageButton btnEditAvatar;
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
@@ -70,7 +70,6 @@ public class ProfileDetailFragment extends Fragment {
         setupRecyclerViews();
         setupClickListeners();
         applyCustomFonts(view);
-
         loadCustomerInformation();
 
         return view;
@@ -83,20 +82,26 @@ public class ProfileDetailFragment extends Fragment {
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
         txtName = view.findViewById(R.id.txtName);
         layoutEditProfile = view.findViewById(R.id.layoutEditProfile);
+        layoutAddShipping = view.findViewById(R.id.layoutAddShipping);
         name_with_icon = view.findViewById(R.id.name_with_icon);
+        txtNoShippingAddress = view.findViewById(R.id.txtNoShippingAddress);
     }
 
     private void setupRecyclerViews() {
         // Profile Info RecyclerView
         RecyclerView rvProfileInfo = view.findViewById(R.id.rv_profile_info);
-        rvProfileInfo.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<ProfileInfo> profileData = new ArrayList<>();
-        adapter = new ProfileInfoAdapter(profileData);
-        rvProfileInfo.setAdapter(adapter);
+        if (rvProfileInfo.getAdapter() == null) {
+            rvProfileInfo.setLayoutManager(new LinearLayoutManager(getContext()));
+            List<ProfileInfo> profileData = new ArrayList<>();
+            adapter = new ProfileInfoAdapter(profileData);
+            rvProfileInfo.setAdapter(adapter);
+        }
 
-        // Shipping Address RecyclerView
+        // Shipping Address RecyclerView - chỉ setup một lần
         RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
-        rvShipping.setLayoutManager(new LinearLayoutManager(getContext()));
+        if (rvShipping.getLayoutManager() == null) {
+            rvShipping.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
         // Load shipping addresses from Firebase
         loadShippingAddresses();
@@ -113,7 +118,6 @@ public class ProfileDetailFragment extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
-
         // Edit profile buttons
 
         ImageView iconEditName = view.findViewById(R.id.iconEditName);
@@ -121,6 +125,15 @@ public class ProfileDetailFragment extends Fragment {
         // Avatar edit buttons
         btnEditAvatar.setOnClickListener(v -> showBottomSheetDialog());
         imgAvatar.setOnClickListener(v -> showBottomSheetDialog());
+        // EditShippingFragment khi click vào layoutAddShipping
+        layoutAddShipping.setOnClickListener(v -> {
+            requireActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, new EditShippingFragment())
+                .addToBackStack(null)
+                .commit();
+        });
     }
 
     private void openEditPersonalFragment(Customer customer) {
@@ -203,26 +216,22 @@ public class ProfileDetailFragment extends Fragment {
     private void updateProfileInfo(Customer customer) {
         List<ProfileInfo> profileInfoList = new ArrayList<>();
 
-        // Email - chỉ thêm nếu không null và không rỗng
-        if (customer.getMail() != null && !customer.getMail().trim().isEmpty()) {
-            profileInfoList.add(new ProfileInfo("Email", customer.getMail(), R.drawable.ic_email));
-        }
+        // Email
+        String email = (customer.getMail() == null || customer.getMail().trim().isEmpty()) ? "" : customer.getMail();
+        profileInfoList.add(new ProfileInfo("Email", email, R.drawable.ic_email));
 
-        // Phone - chỉ thêm nếu không null và không rỗng
-        if (customer.getPhone() != null && !customer.getPhone().trim().isEmpty()) {
-            profileInfoList.add(new ProfileInfo("Phone", customer.getPhone(), R.drawable.ic_phone));
-        }
+        // Phone
+        String phone = (customer.getPhone() == null || customer.getPhone().trim().isEmpty()) ? "" : customer.getPhone();
+        profileInfoList.add(new ProfileInfo("Phone", phone, R.drawable.ic_phone));
 
-        // Date of Birth - sử dụng method getDOBString() để xử lý
+        // Date of Birth
         String dobString = customer.getDOBString();
-        if (dobString != null && !dobString.trim().isEmpty()) {
-            profileInfoList.add(new ProfileInfo("Date of Birth", dobString, R.drawable.ic_calendar));
-        }
+        dobString = (dobString == null || dobString.trim().isEmpty()) ? "" : dobString;
+        profileInfoList.add(new ProfileInfo("Date of Birth", dobString, R.drawable.ic_calendar));
 
-        // Address - chỉ thêm nếu không null và không rỗng
-        if (customer.getAddress() != null && !customer.getAddress().trim().isEmpty()) {
-            profileInfoList.add(new ProfileInfo("Location", customer.getAddress(), R.drawable.ic_location));
-        }
+        // Address
+        String address = (customer.getAddress() == null || customer.getAddress().trim().isEmpty()) ? "" : customer.getAddress();
+        profileInfoList.add(new ProfileInfo("Location", address, R.drawable.ic_location));
 
         // Update adapter
         if (adapter != null) {
@@ -269,27 +278,45 @@ public class ProfileDetailFragment extends Fragment {
     }
 
     private void loadShippingAddresses() {
+        if (!isAdded() || getContext() == null) {
+            Log.d("Shipping", "Fragment not attached, skip loading");
+            return;
+        }
+
         String uid = sessionManager.getUid();
         if (uid == null) {
             Log.e("Shipping", "User ID is null");
+            updateShippingUI(new ArrayList<>());
             return;
         }
+
+        Log.d("Shipping", "Loading shipping addresses for user: " + uid);
 
         FirebaseFirestore.getInstance()
                 .collection("Customers")
                 .document(uid)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
+                    if (!isAdded() || getContext() == null) {
+                        Log.d("Shipping", "Fragment detached during load, ignoring result");
+                        return;
+                    }
+
                     if (!documentSnapshot.exists()) {
                         Log.d("Shipping", "Customer document not found");
+                        updateShippingUI(new ArrayList<>());
                         return;
                     }
 
                     List<Map<String, Object>> rawList = (List<Map<String, Object>>) documentSnapshot.get("ShippingAddresses");
+
                     if (rawList == null || rawList.isEmpty()) {
                         Log.d("Shipping", "No shipping addresses found");
+                        updateShippingUI(new ArrayList<>());
                         return;
                     }
+
+                    Log.d("Shipping", "Found " + rawList.size() + " shipping addresses");
 
                     List<ShippingAddress> shippingAddresses = new ArrayList<>();
                     for (Map<String, Object> item : rawList) {
@@ -299,30 +326,82 @@ public class ProfileDetailFragment extends Fragment {
                         boolean isDefault = item.get("IsDefault") != null && (Boolean) item.get("IsDefault");
 
                         shippingAddresses.add(new ShippingAddress(name, phone, address, isDefault));
+                        Log.d("Shipping", "Added address: " + name + " - " + address);
                     }
 
-                    RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
-                    ShippingAddressAdapter adapter = new ShippingAddressAdapter(shippingAddresses, address -> {
-                        // Xử lý click: mở EditShippingFragment
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("shippingAddress", address);
-
-                        EditShippingFragment fragment = new EditShippingFragment();
-                        fragment.setArguments(bundle);
-
-                        requireActivity()
-                                .getSupportFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, fragment)
-                                .addToBackStack(null)
-                                .commit();
-                    });
-
-                    rvShipping.setAdapter(adapter);
+                    updateShippingUI(shippingAddresses);
                 })
                 .addOnFailureListener(e -> {
+                    if (!isAdded() || getContext() == null) {
+                        Log.d("Shipping", "Fragment detached during error, ignoring");
+                        return;
+                    }
                     Log.e("Shipping", "Failed to load shipping addresses", e);
+                    updateShippingUI(new ArrayList<>());
                 });
+    }
+    private void setRecyclerViewHeight(RecyclerView recyclerView) {
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        if (adapter == null) return;
+
+        int totalHeight = 160;
+        for (int i = 0; i < adapter.getItemCount(); i++) {
+            RecyclerView.ViewHolder holder = adapter.createViewHolder(recyclerView, adapter.getItemViewType(i));
+            adapter.onBindViewHolder(holder, i);
+            holder.itemView.measure(
+                    View.MeasureSpec.makeMeasureSpec(recyclerView.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.UNSPECIFIED
+            );
+            totalHeight += holder.itemView.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = recyclerView.getLayoutParams();
+        params.height = totalHeight;
+        recyclerView.setLayoutParams(params);
+    }
+    private void updateShippingUI(List<ShippingAddress> shippingAddresses) {
+        if (!isAdded() || getContext() == null) {
+            return;
+        }
+
+        RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
+
+        if (shippingAddresses.isEmpty()) {
+            txtNoShippingAddress.setVisibility(View.VISIBLE);
+            rvShipping.setVisibility(View.GONE);
+            Log.d("Shipping", "No addresses to display");
+        } else {
+            txtNoShippingAddress.setVisibility(View.GONE);
+            rvShipping.setVisibility(View.VISIBLE);
+
+            Log.d("Shipping", "Displaying " + shippingAddresses.size() + " addresses");
+
+            // Tạo adapter mới hoặc cập nhật adapter hiện tại
+            ShippingAddressAdapter adapter = new ShippingAddressAdapter(shippingAddresses, address -> {
+                // Mở EditShippingFragment khi click
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("shippingAddress", address);
+
+                EditShippingFragment fragment = new EditShippingFragment();
+                fragment.setArguments(bundle);
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+            });
+
+            rvShipping.setAdapter(adapter);
+            rvShipping.post(() -> setRecyclerViewHeight(rvShipping));
+
+            // Log từng địa chỉ để debug
+            for (int i = 0; i < shippingAddresses.size(); i++) {
+                ShippingAddress addr = shippingAddresses.get(i);
+                Log.d("Shipping", "Address " + i + ": " + addr.getName() + " - " + addr.getAddress());
+            }
+        }
     }
 
 
@@ -459,6 +538,7 @@ public class ProfileDetailFragment extends Fragment {
         TextView txtPersonalInformation = view.findViewById(R.id.txtPersonalInformation);
         TextView txtShippingAddress = view.findViewById(R.id.txtShippingAddress);
         TextView txtEdit = view.findViewById(R.id.txtEdit);
+        TextView txtAddShipping = view.findViewById(R.id.txtAddShipping);
         if (txtPersonalInformation != null) {
             FontUtils.setZblackFont(getContext(), txtPersonalInformation);
         }
@@ -467,6 +547,9 @@ public class ProfileDetailFragment extends Fragment {
         }
         if (txtEdit != null) {
             FontUtils.setZblackFont(getContext(), txtEdit);
+        }
+        if (txtAddShipping != null) {
+            FontUtils.setZblackFont(getContext(), txtAddShipping);
         }
     }
 
@@ -612,12 +695,18 @@ public class ProfileDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("CartBadge", "Fragment onResume()");
+        Log.d("ProfileDetail", "onResume() called");
+
+        // Chỉ tải lại dữ liệu, không tạo lại RecyclerView
+        loadShippingAddresses();
+        loadCustomerInformation(); // Tải lại thông tin customer nếu cần
+
         if (cartListener == null && isAdded() && getContext() != null &&
                 sessionManager != null && txtCartBadge != null) {
             startCartBadgeListener();
         }
     }
+
 
     @Override
     public void onStop() {

@@ -1,6 +1,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Review review = reviewList.get(position);
-
+        Log.d("ReviewAdapter", "Name: " + review.getName());
+        Log.d("ReviewAdapter", "Comment: " + review.getComment());
+        Log.d("ReviewAdapter", "Date: " + review.getCreatedAt());
+        Log.d("ReviewAdapter", "Rating: " + review.getRating());
         holder.txtReviewerName.setText(review.getName());
         holder.txtReviewComment.setText(review.getComment());
         holder.txtReviewDate.setText(review.getCreatedAt());

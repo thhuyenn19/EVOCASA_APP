@@ -37,5 +37,5 @@
         android:id="@+id/imgCamera"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/ic_camera" />
+        android:src="@drawable/ic_camera_1" />
 </LinearLayout>
