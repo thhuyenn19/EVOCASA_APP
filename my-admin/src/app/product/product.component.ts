@@ -361,24 +361,67 @@ export class ProductComponent implements OnInit {
   }
 
   viewProduct(product: IProduct): void {
-    let identifier = '';
-    if (product._id) {
+    // Lấy ra id (document id) của sản phẩm dưới mọi định dạng có thể gặp
+    let identifier: string = '';
+
+    if (product?._id) {
+      if (typeof product._id === 'string') {
+        identifier = product._id;
+      } else if (typeof product._id === 'object') {
+        const idObj: any = product._id;
+        // Thử lần lượt các khoá thường gặp trong ObjectId
+        identifier = idObj.$oid || idObj.oid || idObj._id || '';
+
+        // Nếu vẫn chưa có, cố gắng stringify đối tượng
+        if (!identifier) {
+          try {
+            identifier = JSON.stringify(idObj);
+          } catch (_) {
+            identifier = String(idObj);
+          }
+        }
+      }
+    }
+
+    // Trường hợp cuối cùng, thử lấy thuộc tính id (nếu có)
+    if (!identifier && (product as any).id) {
+      identifier = (product as any).id;
+    }
+
+    // Nếu vẫn không tìm được id, cảnh báo và không điều hướng
+    if (!identifier) {
+      console.warn(
+        'Can not navigate to product view page – missing identifier',
+        product
+      );
+      return;
+    }
+
+    // Điều hướng tới trang xem chi tiết sản phẩm
+    this.router.navigate(['/admin-product-view', identifier]);
+  }
+
+  editProduct(product: IProduct): void {
+    // Lấy identifier (ưu tiên _id, fallback id)
+    let identifier: string | undefined;
+
+    if (product?._id) {
       identifier =
         typeof product._id === 'string'
           ? product._id
           : (product._id as any).$oid || String(product._id);
     }
 
-    // Fallback to another identifier if _id is missing
     if (!identifier && (product as any).id) {
       identifier = (product as any).id;
     }
 
-    this.router.navigate([`/admin-product-view/${identifier}`]);
-  }
+    if (!identifier) {
+      console.warn('Missing product identifier, cannot navigate', product);
+      return;
+    }
 
-  editProduct(product: IProduct): void {
-    this.router.navigate([`/admin-product-edit/${product._id}`]);
+    this.router.navigate([`/admin-product-edit/${identifier}`]);
   }
 
   deleteProduct(identifier: string): void {
