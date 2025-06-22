@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Layout hiển thị một voucher (màn hình Profile > Voucher) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="6dp">
+
+    <!-- Container card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_voucher_card"
+        android:padding="12dp">
+
+        <!-- Icon giảm giá -->
+        <ImageView
+            android:id="@+id/imgVoucherIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_voucher" />
+
+        <!-- Thông tin -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/txtVoucherCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/zen_old_mincho"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:text="LOVEEVOCASA"
+                android:textColor="@color/color_5E4C3E"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/txtVoucherDesc1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="13sp"
+                android:text="15% off Capped at 50$"
+                app:layout_constraintStart_toStartOf="@id/txtVoucherCode"
+                app:layout_constraintTop_toBottomOf="@id/txtVoucherCode"/>
+
+            <TextView
+                android:id="@+id/txtVoucherDesc2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="13sp"
+                android:text="Min. Spend 300$"
+                app:layout_constraintStart_toStartOf="@id/txtVoucherCode"
+                app:layout_constraintTop_toBottomOf="@id/txtVoucherDesc1"/>
+
+            <TextView
+                android:id="@+id/txtVoucherExpire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:textSize="12sp"
+                android:textColor="#E24747"
+                android:text="Expired: 30/06/2025"
+                app:layout_constraintStart_toStartOf="@id/txtVoucherCode"
+                app:layout_constraintTop_toBottomOf="@id/txtVoucherDesc2"/>
+
+            <!-- Nút điều kiện -->
+            <TextView
+                android:id="@+id/txtVoucherCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:text="Condition"
+                android:textColor="@color/color_5E4C3E"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</LinearLayout> 

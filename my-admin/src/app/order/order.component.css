@@ -77,7 +77,6 @@ h4 {
   cursor: pointer;
 }
 
-
 .filter-text {
   margin: auto 0;
 }
@@ -156,7 +155,7 @@ h4 {
   margin-right: 34px;
   overflow-x: auto;
   /* Giúp cuộn ngang khi bảng quá rộng */
-  border: 1px solid #3f2305;
+  border: 1px solid rgba(63, 35, 5, 1);
   /* Thêm viền */
 }
 
@@ -174,7 +173,7 @@ h4 {
 }
 
 .order-table th {
-  background-color: #5e4c3e;
+  background-color: rgba(63, 35, 5, 1);
   color: #f2ead3;
 }
 
@@ -251,7 +250,7 @@ p {
 
 .pagination button {
   padding: 10px;
-  background-color: #5E4C3E;
+  background-color: #5e4c3e;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -259,7 +258,7 @@ p {
 }
 
 .pagination button:hover {
-  background-color: #C5B6A7;
+  background-color: #c5b6a7;
 }
 
 .page-number {

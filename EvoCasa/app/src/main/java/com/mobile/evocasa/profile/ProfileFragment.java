@@ -8,7 +8,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
-import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.SettingFragment;
 import com.mobile.evocasa.auth.SignIn1Fragment;
 import com.mobile.evocasa.auth.SignUp1Fragment;
@@ -51,10 +50,9 @@ import java.util.Map;
 public class ProfileFragment extends Fragment {
     private TextView txtName, txtLogOut, txtLogin, txtRegister, txtCartBadge;
     private ImageView imgAvatar, imgCart;
-    ImageButton btnEditAvatar;
+    private ImageButton btnEditAvatar;
     private RecyclerView recyclerView;
     private View view;
-
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
     private FirebaseFirestore db;
@@ -77,10 +75,10 @@ public class ProfileFragment extends Fragment {
         imgAvatar = view.findViewById(R.id.img_avatar);
         btnEditAvatar = view.findViewById(R.id.btn_edit_avatar);
 
-        badgePending  = view.findViewById(R.id.badge_pending);
-        badgePickUp   = view.findViewById(R.id.badge_pick_up);
-        badgeTransit  = view.findViewById(R.id.badge_transit);
-        badgeReview   = view.findViewById(R.id.badge_review);
+        badgePending = view.findViewById(R.id.badge_pending);
+        badgePickUp = view.findViewById(R.id.badge_pick_up);
+        badgeTransit = view.findViewById(R.id.badge_transit);
+        badgeReview = view.findViewById(R.id.badge_review);
 
         // Initialize login/register views
         txtLogin = view.findViewById(R.id.txtLogin);
@@ -99,24 +97,22 @@ public class ProfileFragment extends Fragment {
     private void loadOrderCounts() {
         String uid = sessionManager.getUid();
         if (uid == null || uid.isEmpty()) {
-            // ẩn hết khi chưa login
-            updateBadge(badgePending,  0);
-            updateBadge(badgePickUp,   0);
-            updateBadge(badgeTransit,  0);
-            updateBadge(badgeReview,   0);
+            updateBadge(badgePending, 0);
+            updateBadge(badgePickUp, 0);
+            updateBadge(badgeTransit, 0);
+            updateBadge(badgeReview, 0);
             return;
         }
 
         db.collection("Order")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    int pendingCount   = 0;
-                    int pickUpCount    = 0;
+                    int pendingCount = 0;
+                    int pickUpCount = 0;
                     int inTransitCount = 0;
-                    int reviewCount    = 0;
+                    int reviewCount = 0;
 
                     for (QueryDocumentSnapshot doc : querySnapshot) {
-                        // lọc đơn của user
                         Map<String, Object> customerMap = (Map<String, Object>) doc.get("Customer_id");
                         if (customerMap == null) continue;
                         String orderUid = (String) customerMap.get("$oid");
@@ -125,23 +121,31 @@ public class ProfileFragment extends Fragment {
                         String status = doc.getString("Status");
                         if (status == null) continue;
                         switch (status) {
-                            case "Pending":    pendingCount++;   break;
-                            case "Pick Up":    pickUpCount++;    break;
-                            case "In Transit": inTransitCount++; break;
-                            case "Review":     reviewCount++;    break;
+                            case "Pending":
+                                pendingCount++;
+                                break;
+                            case "Pick Up":
+                                pickUpCount++;
+                                break;
+                            case "In Transit":
+                                inTransitCount++;
+                                break;
+                            case "Review":
+                                reviewCount++;
+                                break;
                         }
                     }
 
-                    // gọi helper để hiện/ẩn từng badge
-                    updateBadge(badgePending,  pendingCount);
-                    updateBadge(badgePickUp,   pickUpCount);
-                    updateBadge(badgeTransit,  inTransitCount);
-                    updateBadge(badgeReview,   reviewCount);
+                    updateBadge(badgePending, pendingCount);
+                    updateBadge(badgePickUp, pickUpCount);
+                    updateBadge(badgeTransit, inTransitCount);
+                    updateBadge(badgeReview, reviewCount);
                 })
                 .addOnFailureListener(e -> {
                     Log.e("ProfileFragment", "loadOrderCounts failed", e);
                 });
     }
+
     private void updateBadge(TextView badge, int count) {
         if (count > 0) {
             badge.setVisibility(View.VISIBLE);
@@ -206,7 +210,6 @@ public class ProfileFragment extends Fragment {
         if (txtLogin != null) {
             txtLogin.setOnClickListener(v -> {
                 if (isAdded() && getActivity() != null) {
-                    // Navigate to Login Activity - replace with your actual login activity
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra("openFragment", "SignIn");
@@ -215,11 +218,9 @@ public class ProfileFragment extends Fragment {
             });
         }
 
-        // Register button click listener
         if (txtRegister != null) {
             txtRegister.setOnClickListener(v -> {
                 if (isAdded() && getActivity() != null) {
-                    // Navigate to Register Activity - replace with your actual register activity
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     intent.putExtra("openFragment", "SignUp");
@@ -288,17 +289,13 @@ public class ProfileFragment extends Fragment {
 
         imgAvatar.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
-                UserSessionManager sessionManager = new UserSessionManager(requireContext());
-
                 if (sessionManager.isLoggedIn()) {
-                    // User is logged in → navigate to ProfileDetailFragment
                     requireActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, new ProfileDetailFragment())
                             .addToBackStack(null)
                             .commit();
                 } else {
-                    // Not logged in → show message or navigate to login
                     Toast.makeText(requireContext(), "You need to log in to view your profile.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -318,15 +315,13 @@ public class ProfileFragment extends Fragment {
         txtLogOut.setOnClickListener(v -> {
             if (isAdded() && getActivity() != null) {
                 new UserSessionManager(requireContext()).clearSession();
-
                 requireActivity()
                         .getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.fragment_container, new ProfileFragment()) // container chính của bạn
+                        .replace(R.id.fragment_container, new ProfileFragment())
                         .commit();
             }
         });
-
 
         LinearLayout containerSeeAll = view.findViewById(R.id.containerSeeAll);
         containerSeeAll.setOnClickListener(v -> {
@@ -395,20 +390,32 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
-        View btnSetting = view.findViewById(R.id.btnSetting); // ID của nút setting trong topbar
+
+        View btnSetting = view.findViewById(R.id.btnSetting);
         if (btnSetting != null) {
             btnSetting.setOnClickListener(v -> {
-                Log.d("DEBUG", "btnSetting clicked – ready to open SettingFragment");
                 if (isAdded() && getActivity() != null) {
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, new SettingFragment())
-                            .addToBackStack(null)
-                            .commit();
+                    if (sessionManager.isLoggedIn()) {
+                        Log.d("DEBUG", "btnSetting clicked – ready to open SettingFragment");
+                        requireActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, new SettingFragment())
+                                .addToBackStack(null)
+                                .commit();
+                    } else {
+                        Toast.makeText(requireContext(), "You need to log in to access settings.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
-
+        // Vouchers
+        View txtVouchers = view.findViewById(R.id.txtVouchers);
+        txtVouchers.setOnClickListener(v -> {
+            if (isAdded() && getActivity() != null) {
+                Intent intent = new Intent(getActivity(), com.mobile.evocasa.VoucherActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadCustomerInformation() {
@@ -416,8 +423,7 @@ public class ProfileFragment extends Fragment {
 
         String uid = sessionManager.getUid();
 
-        if (uid != null) {
-            // User is logged in - show user info and hide login/register buttons
+        if (uid != null && !uid.isEmpty()) {
             showUserInfo();
             FirebaseFirestore.getInstance()
                     .collection("Customers")
@@ -444,7 +450,6 @@ public class ProfileFragment extends Fragment {
                                         .circleCrop()
                                         .into(imgAvatar);
                             }
-
                         } else {
                             if (txtName != null) txtName.setText("No Profile Found");
                         }
@@ -454,7 +459,6 @@ public class ProfileFragment extends Fragment {
                         if (txtName != null) txtName.setText("Error");
                     });
         } else {
-            // User is not logged in - show login/register buttons and hide user info
             showLoginRegisterButtons();
         }
     }

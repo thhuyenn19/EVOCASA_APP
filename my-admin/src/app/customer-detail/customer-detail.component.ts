@@ -181,12 +181,55 @@ deleteShippingAddress(addressId: string): void {
     });
   }
   
+  // getTotalAmount(): number {
+  //   return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
+  // }
+
+  // getOrderQuantity(order: Order): number {
+  //   return order.OrderProduct.reduce((total, product) => total + product.Quantity, 0);
+  // }
+
+  // FIXED: getTotalAmount method with proper null checking
   getTotalAmount(): number {
-    return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
+    if (!this.orders || this.orders.length === 0) {
+      return 0;
+    }
+    return this.orders.reduce((total, order) => {
+      // Check if order and TotalPrice exist
+      if (order && typeof order.TotalPrice === 'number') {
+        return total + order.TotalPrice;
+      }
+      return total;
+    }, 0);
   }
 
+  // FIXED: getOrderQuantity method with proper null checking
   getOrderQuantity(order: Order): number {
-    return order.OrderProduct.reduce((total, product) => total + product.Quantity, 0);
+    // Check if order exists
+    if (!order) {
+      console.warn('Order is null or undefined');
+      return 0;
+    }
+
+    // Check if OrderProduct exists and is an array
+    if (!order.OrderProduct || !Array.isArray(order.OrderProduct)) {
+      console.warn('OrderProduct is not an array or is undefined:', order.OrderProduct);
+      return 0;
+    }
+
+    try {
+      return order.OrderProduct.reduce((total, product) => {
+        // Check if product and Quantity exist
+        if (product && typeof product.Quantity === 'number') {
+          return total + product.Quantity;
+        }
+        console.warn('Product or Quantity is invalid:', product);
+        return total;
+      }, 0);
+    } catch (error) {
+      console.error('Error calculating order quantity:', error, order);
+      return 0;
+    }
   }
   
   get totalPages(): number {
@@ -238,22 +281,87 @@ deleteShippingAddress(addressId: string): void {
     }
   }
 
-  // Method để format date từ ISO string
-  formatDate(dateString: string): string {
-    if (!dateString) return '';
+  // Method để format date từ các định dạng khác nhau - IMPROVED VERSION
+  formatDate(raw: any): string {
+    if (!raw) return 'N/A';
+
+    let dateObj: Date | null = null;
+
     try {
-      // Parse ISO date string (2025-05-26T14:51:00.203Z)
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) {
-        return dateString; // Return original if invalid
+      // Nếu đã là Date object
+      if (raw instanceof Date) {
+        dateObj = raw;
       }
-      return date.toLocaleDateString('vi-VN', {
+      // Firestore Timestamp format { seconds, nanoseconds }
+      else if (typeof raw === 'object' && raw.seconds !== undefined && raw.nanoseconds !== undefined) {
+        dateObj = new Date(raw.seconds * 1000);
+      }
+      // MongoDB Export format { $date: '2025-05-26T14:51:00.203Z' }
+      else if (typeof raw === 'object' && raw.$date) {
+        dateObj = new Date(raw.$date);
+      }
+      // ISO string format
+      else if (typeof raw === 'string') {
+        dateObj = new Date(raw);
+      }
+      // Timestamp number (milliseconds)
+      else if (typeof raw === 'number') {
+        dateObj = new Date(raw);
+      }
+
+      // Kiểm tra nếu date hợp lệ
+      if (!dateObj || isNaN(dateObj.getTime())) {
+        console.warn('Invalid date format:', raw);
+        return 'Invalid Date';
+      }
+
+      // Format date theo định dạng Việt Nam
+      return dateObj.toLocaleDateString('vi-VN', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
       });
     } catch (error) {
-      return dateString;
+      console.error('Error formatting date:', error, raw);
+      return 'Error';
+    }
+  }
+
+  // Alternative format method for different display needs
+  formatDateTime(raw: any): string {
+    if (!raw) return 'N/A';
+
+    let dateObj: Date | null = null;
+
+    try {
+      // Same parsing logic as formatDate
+      if (raw instanceof Date) {
+        dateObj = raw;
+      } else if (typeof raw === 'object' && raw.seconds !== undefined) {
+        dateObj = new Date(raw.seconds * 1000);
+      } else if (typeof raw === 'object' && raw.$date) {
+        dateObj = new Date(raw.$date);
+      } else if (typeof raw === 'string') {
+        dateObj = new Date(raw);
+      } else if (typeof raw === 'number') {
+        dateObj = new Date(raw);
+      }
+
+      if (!dateObj || isNaN(dateObj.getTime())) {
+        return 'Invalid Date';
+      }
+
+      // Format with time included
+      return dateObj.toLocaleString('vi-VN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error formatting datetime:', error, raw);
+      return 'Error';
     }
   }
 }
