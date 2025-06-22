@@ -26,6 +26,10 @@ export class OrderDetailComponent implements OnInit {
   // Lưu địa chỉ giao hàng (nếu có)
   shippingAddress: any = null;
 
+  // Theo dõi thay đổi trạng thái
+  originalStatus: string | null = null;
+  isDirty: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -151,6 +155,9 @@ export class OrderDetailComponent implements OnInit {
         }
 
         this.loadProductDetails(this.order?.OrderProduct as any);
+
+        this.originalStatus = orderData.Status;
+        this.isDirty = false;
       },
       error: (err) => {
         this.error = 'Không thể tải thông tin đơn hàng. Vui lòng thử lại sau.';
@@ -216,19 +223,33 @@ export class OrderDetailComponent implements OnInit {
   ) {
     if (!this.order) return;
 
-    // Cập nhật trạng thái ngay trên giao diện
     this.order.Status = newStatus;
+    this.isDirty = this.order.Status !== this.originalStatus;
+  }
 
-    // Gọi API để cập nhật trạng thái trên server
-    this.orderService.updateOrderStatus(this.orderId, newStatus).subscribe({
-      next: (updatedOrder) => {
-        console.log('Order status updated successfully:', updatedOrder);
-      },
-      error: (err) => {
-        console.error('Error updating order status:', err);
-        alert('Cập nhật trạng thái thất bại! Vui lòng thử lại.');
-      },
-    });
+  // Xử lý khi nhấn Save
+  onSave() {
+    if (!this.isDirty || !this.order) {
+      alert('Không có thay đổi để lưu.');
+      return;
+    }
+
+    const agree = confirm('Do you want to save the changes?');
+    if (!agree) return;
+
+    this.orderService
+      .updateOrderStatus(this.orderId, this.order.Status)
+      .subscribe({
+        next: (updated) => {
+          this.originalStatus = updated.Status;
+          this.isDirty = false;
+          alert('Lưu thay đổi thành công.');
+        },
+        error: (err) => {
+          console.error('Error saving order:', err);
+          alert('Lưu thất bại, vui lòng thử lại.');
+        },
+      });
   }
 
   // Quay lại trang danh sách đơn hàng
