@@ -1,7 +1,12 @@
 package com.mobile.evocasa;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +22,15 @@ import com.mobile.evocasa.auth.SignInFragment;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Locale;
 
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // QUAN TRỌNG: Gọi setAppLocale() TRƯỚC super.onCreate()
+        setAppLocale();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -48,21 +57,56 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
             }
         }
+
         String openFragment = getIntent().getStringExtra("openFragment");
 
         if ("SignUp".equals(openFragment)) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new SignUp1Fragment())
-                    .commit();
+            switchToFragment(new SignUp1Fragment());
             return;
         } else if ("SignIn".equals(openFragment)) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new SignInFragment())
-                    .commit();
+            switchToFragment(new SignInFragment());
             return;
         }
+    }
 
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(updateBaseContextLocale(newBase));
+    }
+
+    private Context updateBaseContextLocale(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("LanguagePrefs", Context.MODE_PRIVATE);
+        String language = prefs.getString("language", "en"); // Mặc định LUÔN là tiếng Anh
+
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Configuration configuration = context.getResources().getConfiguration();
+        configuration.setLocale(locale);
+        configuration.setLayoutDirection(locale);
+
+        return context.createConfigurationContext(configuration);
+    }
+
+    // Thêm phương thức switchToFragment
+    public void switchToFragment(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void setAppLocale() {
+        SharedPreferences prefs = getSharedPreferences("LanguagePrefs", Context.MODE_PRIVATE);
+        String language = prefs.getString("language", "en"); // Mặc định tiếng Anh
+
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.setLocale(locale);
+        res.updateConfiguration(conf, dm);
     }
 }
