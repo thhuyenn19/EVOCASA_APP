@@ -36,7 +36,9 @@ public class VoucherActivity extends AppCompatActivity {
 
         List<Voucher> sampleVouchers = createSampleVouchers();
         VoucherProfileAdapter adapter = new VoucherProfileAdapter(sampleVouchers, voucher -> {
-            // TODO: xử lý khi click voucher
+            // Mở màn VoucherDetailActivity mà không cần truyền dữ liệu
+            android.content.Intent intent = new android.content.Intent(VoucherActivity.this, VoucherDetailActivity.class);
+            startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
 

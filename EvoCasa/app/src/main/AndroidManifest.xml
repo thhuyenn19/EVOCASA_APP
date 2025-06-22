@@ -9,7 +9,6 @@
         tools:node="remove" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -22,6 +21,9 @@
         android:theme="@style/Theme.EvoCasa"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".VoucherDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".VoucherActivity"
             android:exported="false" />
