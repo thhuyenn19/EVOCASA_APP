@@ -7,6 +7,7 @@ import { Order } from '../interfaces/order';
 import { Customer } from '../interfaces/customer';
 import { IProduct } from '../interfaces/product';
 import { forkJoin } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-order-detail',
@@ -54,6 +55,42 @@ export class OrderDetailComponent implements OnInit {
     return String(raw);
   }
 
+  /**
+   * Chuyển raw OrderProduct (array hoặc object) → mảng chuẩn {_id, Quantity}
+   */
+  private transformOrderProducts(
+    raw: any
+  ): { _id: string; Quantity: number }[] {
+    if (!raw) return [];
+
+    const toItem = (obj: any): { _id: string; Quantity: number } => {
+      const idField = obj._id ?? obj.id ?? obj.ProductId ?? obj.Product_id;
+      const _id = this.normalizeId(idField);
+
+      let qtyRaw: any = obj.Quantity;
+      if (qtyRaw === undefined && obj.Customize) {
+        qtyRaw = obj.Customize.Quantity;
+      }
+      const Quantity = Number(
+        qtyRaw?.$numberInt ?? qtyRaw?.$numberDouble ?? qtyRaw ?? 0
+      );
+      return { _id, Quantity };
+    };
+
+    if (Array.isArray(raw)) {
+      return raw.map((item) => toItem(item));
+    }
+
+    // nếu là object đơn sản phẩm
+    if (typeof raw === 'object') {
+      // Trường hợp tương tự screenshot: { id: { $oid }, Customize: { Quantity } }
+      const merged = { ...(raw.Customize || {}), ...raw };
+      return [toItem(merged)];
+    }
+
+    return [];
+  }
+
   loadOrderDetails() {
     this.loading = true;
     this.error = '';
@@ -61,14 +98,9 @@ export class OrderDetailComponent implements OnInit {
     this.orderService.getOrderById(this.orderId).subscribe({
       next: (orderData) => {
         // ✅ Chuẩn hoá danh sách sản phẩm (_id thành chuỗi thuần)
-        if (Array.isArray(orderData.OrderProduct)) {
-          orderData.OrderProduct = orderData.OrderProduct.map((item: any) => {
-            const normId = this.normalizeId(
-              item._id ?? item.id ?? item.ProductId ?? item.Product_id
-            );
-            return { ...item, _id: normId };
-          });
-        }
+        orderData.OrderProduct = this.transformOrderProducts(
+          orderData.OrderProduct
+        );
 
         // Lưu đơn hàng sau khi chuẩn hoá
         this.order = orderData;
@@ -99,7 +131,26 @@ export class OrderDetailComponent implements OnInit {
           });
         }
 
-        this.loadProductDetails(orderData.OrderProduct as any);
+        // 🔢 Chuẩn hoá lại Quantity và DeliveryFee (có thể bị bọc số)
+        if (this.order) {
+          this.order.DeliveryFee = Number(
+            (this.order.DeliveryFee as any)?.$numberInt ??
+              this.order.DeliveryFee ??
+              0
+          );
+
+          this.order.OrderProduct = (this.order.OrderProduct || []).map(
+            (item: any) => {
+              const qtyRaw = item.Quantity;
+              const qtyNum = Number(
+                qtyRaw?.$numberInt ?? qtyRaw?.$numberDouble ?? qtyRaw ?? 0
+              );
+              return { ...item, Quantity: qtyNum };
+            }
+          );
+        }
+
+        this.loadProductDetails(this.order?.OrderProduct as any);
       },
       error: (err) => {
         this.error = 'Không thể tải thông tin đơn hàng. Vui lòng thử lại sau.';
@@ -134,13 +185,20 @@ export class OrderDetailComponent implements OnInit {
     );
 
     const productObservables = productIds.map((pid) =>
-      this.productService.getProductByIdentifier(pid)
+      this.productService.getProductByIdentifier(pid).pipe(
+        catchError((err) => {
+          console.warn('Product not found', pid, err);
+          return of(null);
+        })
+      )
     );
 
     forkJoin(productObservables).subscribe({
       next: (products) => {
         products.forEach((product, index) => {
-          this.products[productIds[index]] = product;
+          if (product) {
+            this.products[productIds[index]] = product;
+          }
         });
         this.loading = false;
       },
@@ -179,8 +237,33 @@ export class OrderDetailComponent implements OnInit {
   }
 
   // Format date string
-  formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('vi-VN', {
+  formatDate(raw: any): string {
+    if (!raw) return 'N/A';
+
+    let dateObj: Date | null = null;
+
+    // Nếu đã là Date
+    if (raw instanceof Date) {
+      dateObj = raw;
+    }
+    // Firestore Timestamp { seconds, nanoseconds }
+    else if (raw.seconds !== undefined && raw.nanoseconds !== undefined) {
+      dateObj = new Date(raw.seconds * 1000);
+    }
+    // Định dạng MongoDB Export { $date: '2025-05-26T14:51:00.203Z' }
+    else if (typeof raw === 'object' && raw.$date) {
+      dateObj = new Date(raw.$date);
+    }
+    // Chuỗi ISO
+    else if (typeof raw === 'string') {
+      dateObj = new Date(raw);
+    }
+
+    if (!dateObj || isNaN(dateObj.getTime())) {
+      return 'N/A';
+    }
+
+    return dateObj.toLocaleDateString('vi-VN', {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric',
