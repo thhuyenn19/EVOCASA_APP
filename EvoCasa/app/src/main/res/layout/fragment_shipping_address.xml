@@ -21,10 +21,26 @@
             android:id="@+id/rv_shipping_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="300dp"
             android:nestedScrollingEnabled="false"
             android:overScrollMode="never" />
 
     </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_add_shipping"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="16dp"
+        android:background="@color/color_bg"
+        android:text="Add New"
+        android:textColor="@color/color_5E4C3E"
+        android:drawableStart="@drawable/ic_add"
+        android:drawablePadding="4dp"
+        android:textSize="15sp"
+        android:stateListAnimator="@null"
+        android:elevation="0dp"
+        android:outlineProvider="none"
+        android:backgroundTint="@android:color/transparent" />
+
 
 </LinearLayout>
