@@ -223,5 +223,11 @@
     <string name="language_selection">Chọn Ngôn Ngữ</string>
     <string name="coming_soon">Sắp ra mắt: %s</string>
     <string name="password_change">Đổi Mật Khẩu</string>
+    <string name="no_internet">Không có kết nối Internet</string>
+    <string name="check_connection">Vui lòng kiểm tra kết nối mạng\nvà thử lại</string>
+    <string name="retry">Thử lại</string>
+    <string name="no_internet_icon">Biểu tượng mất kết nối</string>
+    <string name="open_network_settings">Cài đặt mạng</string>
+
 
 </resources>

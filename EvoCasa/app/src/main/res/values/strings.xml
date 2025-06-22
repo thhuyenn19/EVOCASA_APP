@@ -224,6 +224,11 @@
     <string name="language_selection">Language Selection</string>
     <string name="coming_soon">Coming soon: %s</string>
     <string name="password_change">Password Change</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="check_connection">Please check your network\nand try again</string>
+    <string name="retry">Retry</string>
+    <string name="no_internet_icon">No Internet Icon</string>
+    <string name="open_network_settings">Open Network Settings</string>
 
 
 
