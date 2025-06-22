@@ -82,8 +82,9 @@
             <!-- Khu vực hiển thị ảnh đã chọn -->
             <div>
                <!-- Ảnh lớn -->
+                <div class="main-image-container" *ngIf="product.Image.length > 0">
             <img *ngIf="imageList.length > 0" [src]="imageList[0]" class="main-image" />
-
+            </div>
             <!-- Ảnh nhỏ -->
             <div class="image-thumbnails">
             <div *ngFor="let image of imageList.slice(1, 5); let i = index" class="thumbnail-container">

@@ -1,5 +1,5 @@
 export interface IProduct {
-  _id?: string; 
+  _id?: string | { $oid: string }; 
   category_id?: string | { $oid: string } | null; 
   category_name?: string;
   Name: string; 
@@ -26,7 +26,7 @@ export interface IProduct {
 }
 
 export class Product implements IProduct {
-  _id?: string;
+  _id?: string | { $oid: string }; 
   category_id?: string | { $oid: string } | null; 
   category_name?: string;
   Name: string;
@@ -52,7 +52,13 @@ export class Product implements IProduct {
   ShippingReturn?: string;
 
   constructor(product?: Partial<IProduct>) {
-    this._id = product?._id || undefined;
+    if (typeof product?._id === 'string') {
+      this._id = product._id;
+    } else if (product?._id && typeof product._id === 'object' && '$oid' in product._id) {
+      this._id = (product._id as { $oid: string }).$oid;
+    } else {
+      this._id = undefined;
+    }
     this.category_name = product?.category_name || undefined;
     
     if (typeof product?.category_id === 'string') {

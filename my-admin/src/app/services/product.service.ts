@@ -46,70 +46,103 @@ export class ProductService {
   }
 
   getProductByIdentifier(identifier: string): Observable<IProduct> {
-    const productDoc = doc(this.firestore, 'Product', identifier);
-    return from(getDoc(productDoc)).pipe(
-      map((docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data() as IProduct;
-          return this.processProductImage({
-            ...data,
-            _id: docSnap.id, // Add the document ID as _id
-          });
-        } else {
-          throw new Error('Product not found');
-        }
-      }),
-      catchError(this.handleError)
-    );
-  }
+  const productDoc = doc(this.firestore, 'Product', identifier);
+
+  return from(getDoc(productDoc)).pipe(
+    map((docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data() as IProduct;
+
+        // ✅ Chuyển _id và category_id từ {$oid: "..."} về string
+        const converted: IProduct = {
+          ...data,
+          _id: this.extractOid(data._id) || docSnap.id,
+          category_id: this.extractOid(data.category_id),
+        };
+
+        return this.processProductImage(converted); // nếu bạn cần xử lý ảnh riêng
+      } else {
+        throw new Error('Product not found');
+      }
+    }),
+    catchError(this.handleError)
+  );
+}
+private extractOid(field: any): string {
+  return (field && typeof field === 'object' && '$oid' in field) ? field.$oid : field;
+}
 
   /**
    * Create product and stringify image array
    */
   async createProduct(productData: Partial<IProduct>): Promise<string> {
-    try {
-      const firestoreData = {
-        ...productData,
-        Image: productData.Image || '', // Ensure Image is a string
-      };
+  try {
+    // Tạo ID Firestore
+    const newDocRef = doc(collection(db, 'Product'));
+    const newId = newDocRef.id;
 
-      const docRef = await addDoc(collection(this.firestore, 'Product'), firestoreData);
-      console.log('Product added with ID:', docRef.id);
-      return docRef.id;
-    } catch (error) {
-      console.error('Error adding product:', error);
-      throw error;
-    }
-  }
-
-  updateProduct(identifier: string, product: IProduct): Observable<IProduct> {
-    const docRef = doc(this.firestore, 'Product', identifier);
-
-    const rawPayload = {
-      Name: product.Name,
-      Price: product.Price,
-      Image: typeof product.Image === 'string' ? product.Image : JSON.stringify(product.Image || []),
-      Description: product.Description,
-      Quantity: product.Quantity,
-      Dimension: product.Dimension || '',
-      category_id: product.category_id || '',
-      Origin: product.Origin || '',
-      Uses: product.Uses || '',
-      Store: product.Store || '',
-      Create_date: product.Create_date || new Date(),
+    // Tạo dữ liệu đúng định dạng
+    const firestoreData = {
+      ...productData,
+      _id: { $oid: newId },
+      category_id: typeof productData.category_id === 'string'
+        ? { $oid: productData.category_id }
+        : productData.category_id || '',
+      Image: productData.Image || '',
+      Create_date: productData.Create_date || new Date(),
     };
 
-    const payload = Object.fromEntries(
-      Object.entries(rawPayload).filter(([_, value]) => value !== undefined)
-    );
+    // Ghi document
+    await setDoc(newDocRef, firestoreData);
 
-    const promise = updateDoc(docRef, payload).then(() => ({
-      ...product,
-      _id: identifier,
-    }));
-
-    return from(promise);
+    console.log('Product added with ID:', newId);
+    return newId;
+  } catch (error) {
+    console.error('Error adding product:', error);
+    throw error;
   }
+}
+
+  updateProduct(identifier: string, product: IProduct): Observable<IProduct> {
+  const docRef = doc(this.firestore, 'Product', identifier);
+
+  // ✅ Ép ảnh thành chuỗi nếu là mảng
+  const preparedImage = Array.isArray(product.Image)
+    ? JSON.stringify(product.Image)
+    : product.Image || '[]';
+
+  // ✅ Tạo dữ liệu raw có định dạng $oid
+  const rawPayload: any = {
+    ...product,
+    Image: preparedImage,
+    Create_date: product.Create_date || new Date(),
+
+    // ✅ category_id dạng map
+    category_id:
+      typeof product.category_id === 'string'
+        ? { $oid: product.category_id }
+        : product.category_id,
+
+    // ✅ _id dạng map (dựa vào identifier truyền vào)
+    _id:
+      typeof product._id === 'string'
+        ? { $oid: product._id }
+        : product._id || { $oid: identifier }
+  };
+
+  // ✅ Loại bỏ tất cả field undefined
+  const payload = Object.fromEntries(
+    Object.entries(rawPayload).filter(([_, value]) => value !== undefined)
+  );
+
+  // ✅ Ghi dữ liệu lên Firestore
+  const promise = setDoc(docRef, payload).then(() => ({
+    ...product,
+    _id: identifier
+  }));
+
+  return from(promise);
+}
 
   deleteProduct(identifier: string): Observable<any> {
     const docRef = doc(this.firestore, 'Product', identifier);
@@ -121,16 +154,18 @@ export class ProductService {
   }
 
   private processProductImage(product: IProduct): IProduct {
-    if (product && product._id && typeof product._id === 'object') {
-      const maybeOid = product._id as any;
-      if (maybeOid.$oid) {
-        product._id = maybeOid.$oid;
-      } else if (maybeOid.toString) {
-        product._id = maybeOid.toString();
-      }
-    }
-    return product;
+  // Convert _id.$oid to string
+  if (product._id && typeof product._id === 'object' && '$oid' in product._id) {
+    product._id = product._id.$oid;
   }
+
+  // Convert category_id.$oid to string
+  if (product.category_id && typeof product.category_id === 'object' && '$oid' in product.category_id) {
+    product.category_id = product.category_id.$oid;
+  }
+
+  return product;
+}
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred';
