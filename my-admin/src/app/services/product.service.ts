@@ -21,8 +21,7 @@ import { db } from '../firebase-config';
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:3002/products';
-  private firestore = db; // ✅ GÁN firestore đúng cách
+  private firestore = db; // Reference to Firestore
 
   constructor(private http: HttpClient) {}
 
@@ -30,33 +29,49 @@ export class ProductService {
    * Fetch all products from Firestore collection "Product".
    */
   getProducts(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(this.apiUrl).pipe(
-      map((products) => this.processProductImages(products)),
+    const productsCollection = collection(this.firestore, 'Product');
+    return from(getDocs(productsCollection)).pipe(
+      map((snapshot) => {
+        const products: IProduct[] = snapshot.docs.map((doc) => {
+          const data = doc.data() as IProduct;
+          return {
+            ...data,
+            _id: doc.id, // Add the document ID as _id
+          };
+        });
+        return this.processProductImages(products);
+      }),
       catchError(this.handleError)
     );
   }
 
   getProductByIdentifier(identifier: string): Observable<IProduct> {
-    return this.http
-      .get<IProduct>(`${this.apiUrl}/${encodeURIComponent(identifier)}`)
-      .pipe(
-        map((product) => this.processProductImage(product)),
-        catchError(this.handleError)
-      );
+    const productDoc = doc(this.firestore, 'Product', identifier);
+    return from(getDoc(productDoc)).pipe(
+      map((docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data() as IProduct;
+          return this.processProductImage({
+            ...data,
+            _id: docSnap.id, // Add the document ID as _id
+          });
+        } else {
+          throw new Error('Product not found');
+        }
+      }),
+      catchError(this.handleError)
+    );
   }
 
   /**
-   * ✅ Create product and stringify image array
+   * Create product and stringify image array
    */
   async createProduct(productData: Partial<IProduct>): Promise<string> {
     try {
-     const firestoreData = {
-      ...productData,
-      Image: productData.Image || '' // ✅ Giữ nguyên chuỗi
-    };
-
-    // Use the standalone collection and addDoc functions
-    await addDoc(collection(this.firestore, 'Product'), firestoreData);
+      const firestoreData = {
+        ...productData,
+        Image: productData.Image || '', // Ensure Image is a string
+      };
 
       const docRef = await addDoc(collection(this.firestore, 'Product'), firestoreData);
       console.log('Product added with ID:', docRef.id);
@@ -81,7 +96,7 @@ export class ProductService {
       Origin: product.Origin || '',
       Uses: product.Uses || '',
       Store: product.Store || '',
-      Create_date: product.Create_date || new Date()
+      Create_date: product.Create_date || new Date(),
     };
 
     const payload = Object.fromEntries(
@@ -90,7 +105,7 @@ export class ProductService {
 
     const promise = updateDoc(docRef, payload).then(() => ({
       ...product,
-      _id: identifier
+      _id: identifier,
     }));
 
     return from(promise);
@@ -130,6 +145,7 @@ export class ProductService {
     return throwError(() => new Error(errorMessage));
   }
 
+  // Keep uploadImage if still needed for Firebase Storage
   uploadImage(file: File): Observable<string> {
     const formData = new FormData();
     formData.append('image', file);

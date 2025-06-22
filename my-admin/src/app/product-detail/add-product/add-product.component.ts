@@ -32,7 +32,7 @@ export class AddProductComponent {
   ngOnInit() {
     this.product.category_id = '';
     if (!this.product.Image) {
-      this.product.Image = '';
+      this.product.Image = '[]'; // Khởi tạo Image là chuỗi JSON rỗng
     }
     this.loadAllSubcategories();
   }
@@ -62,10 +62,10 @@ export class AddProductComponent {
 
   onFilesSelected(event: any) {
     const files: FileList = event.target.files;
-    const currentImages: string = this.product.Image || '';
-    let imageArray: string[] = currentImages ? currentImages.split(',') : [];
+    const currentImages: string[] = this.product.getImageArray();
+    const totalImages = currentImages.length + files.length;
 
-    if (files.length + imageArray.length > this.maxImages) {
+    if (totalImages > this.maxImages) {
       alert('Only 5 images allowed.');
       return;
     }
@@ -76,9 +76,9 @@ export class AddProductComponent {
         return;
       }
 
-      this.ImageService.uploadImage(file).subscribe((downloadURL: string) => {
-        imageArray.push(downloadURL);
-        this.product.Image = JSON.stringify(imageArray);
+      this.ImageService.uploadImage(file, 'category-images').subscribe((downloadURL: string) => {
+        currentImages.push(downloadURL);
+        this.product.setImageArray(currentImages); // Chuyển thành chuỗi JSON
         console.log('Updated Image:', this.product.Image);
       });
     });
@@ -89,19 +89,11 @@ export class AddProductComponent {
   }
 
   removeImage(index: number) {
-    const images = this.imageList;
-    if (images.length > index) {
-      images.splice(index, 1);
-      this.product.Image = JSON.stringify(images);
-    }
+    this.product.removeImage(index);
   }
 
   get imageList(): string[] {
-    try {
-      return JSON.parse(this.product.Image || '[]');
-    } catch {
-      return [];
-    }
+    return this.product.getImageArray();
   }
 
   postProduct() {
@@ -111,9 +103,9 @@ export class AddProductComponent {
     }
 
     const cleanProduct = this.sanitizeProductBeforeSave(this.product);
-    cleanProduct.Image = JSON.stringify(this.imageList);
+    const firestoreData = cleanProduct.toFirestoreObject(); // Sử dụng toFirestoreObject để chuẩn bị dữ liệu
 
-    this.ProductService.createProduct(cleanProduct)
+    this.ProductService.createProduct(firestoreData)
       .then(() => {
         alert('Product added successfully!');
         this.resetForm();
@@ -127,9 +119,6 @@ export class AddProductComponent {
 
   sanitizeProductBeforeSave(product: Product): Product {
     const cleaned = new Product(product);
-
-    cleaned.Image = JSON.stringify(this.imageList);
-
     cleaned.category_id = typeof product.category_id === 'object' && product.category_id !== null
       ? (product.category_id as any).$oid || ''
       : product.category_id || '';
@@ -143,7 +132,7 @@ export class AddProductComponent {
 
   resetForm(): void {
     this.product = new Product();
-    this.product.Image = '';
+    this.product.Image = '[]'; // Reset Image về chuỗi JSON rỗng
     this.previewImages = [];
   }
 

@@ -86,7 +86,6 @@ export class ProductComponent implements OnInit {
 
         // Transform category data with flexible property name handling
         this.categories = data.map((cat) => {
-          // Handle properties that might be capitalized differently
           const formattedCat: Category = {
             _id: cat._id || cat.id || cat._id?.$oid,
             id: cat.id || cat._id || '',
@@ -128,31 +127,24 @@ export class ProductComponent implements OnInit {
       console.warn('No products or categories available for mapping');
       return;
     }
-    // Create a categoryMap for faster lookups by ID with more variants
     const categoryMap: { [key: string]: string } = {};
     this.categories.forEach((category) => {
-      // Debug each category's structure
       console.log('Processing category:', category);
       console.log('Category ID type:', typeof category._id);
 
-      // Check for Name vs name (case sensitivity in property names)
       const categoryName = category.name || (category as any).Name || 'Unnamed';
 
       if (category._id) {
-        // Store the ID in multiple formats
         if (typeof category._id === 'string') {
           categoryMap[category._id] = categoryName;
-          // Store lowercase version for case-insensitive matching
           categoryMap[category._id.toLowerCase()] = categoryName;
         } else if (typeof category._id === 'object') {
           if ('$oid' in category._id) {
             categoryMap[category._id.$oid] = categoryName;
-            // Store lowercase version
             categoryMap[category._id.$oid.toLowerCase()] = categoryName;
           }
         }
 
-        // Always store stringified version
         categoryMap[String(category._id)] = categoryName;
         categoryMap[String(category._id).toLowerCase()] = categoryName;
       }
@@ -160,7 +152,6 @@ export class ProductComponent implements OnInit {
 
     console.log('Category Map:', categoryMap);
 
-    // Check first product's category_id format for debugging
     if (this.products.length > 0) {
       const firstProduct = this.products[0];
       console.log('First product category_id:', firstProduct.category_id);
@@ -178,7 +169,6 @@ export class ProductComponent implements OnInit {
       let categoryFound = false;
 
       if (product.category_id) {
-        // Try various formats
         const categoryIdStr =
           typeof product.category_id === 'string'
             ? product.category_id
@@ -188,18 +178,13 @@ export class ProductComponent implements OnInit {
           `Looking for category match for product "${product.Name}" with ID: ${categoryIdStr}`
         );
 
-        // Try direct match
         if (categoryMap[categoryIdStr]) {
           product.category_name = categoryMap[categoryIdStr];
           categoryFound = true;
-        }
-        // Try lowercase match
-        else if (categoryMap[categoryIdStr.toLowerCase()]) {
+        } else if (categoryMap[categoryIdStr.toLowerCase()]) {
           product.category_name = categoryMap[categoryIdStr.toLowerCase()];
           categoryFound = true;
-        }
-        // Try all keys for potential partial matches
-        else {
+        } else {
           const categoryKeys = Object.keys(categoryMap);
           for (const key of categoryKeys) {
             if (key.includes(categoryIdStr) || categoryIdStr.includes(key)) {
@@ -219,26 +204,27 @@ export class ProductComponent implements OnInit {
       }
     });
 
-    // After mapping categories, update display
     this.processProductImages();
-    this.displayProducts = [...this.products]; // Initialize display products
+    this.displayProducts = [...this.products];
     this.updateFilteredProducts();
   }
 
   // Hàm xử lý hình ảnh sản phẩm
   processProductImages(): void {
     this.products.forEach((product) => {
-      // Đảm bảo Image là một mảng
+      // Đảm bảo Image là một chuỗi JSON
       if (typeof product.Image === 'string') {
         try {
-          product.Image = JSON.parse(product.Image);
+          const parsed = JSON.parse(product.Image);
+          if (!Array.isArray(parsed)) {
+            product.Image = JSON.stringify([product.Image]); // Convert single string to JSON array
+          }
         } catch (e) {
           console.error(`Error parsing image for product ${product.Name}:`, e);
-          const imgStr = product.Image as unknown as string;
-          product.Image = [imgStr]; // keep single string as array
+          product.Image = JSON.stringify([product.Image as string]); // Fallback to single-item array
         }
-      } else if (!Array.isArray(product.Image)) {
-        product.Image = [];
+      } else if (!product.Image) {
+        product.Image = JSON.stringify([]); // Set empty array as JSON string
       }
     });
   }
@@ -269,22 +255,18 @@ export class ProductComponent implements OnInit {
 
   // Cập nhật danh sách sản phẩm hiển thị theo trang
   updateFilteredProducts(): void {
-    // Calculate pagination based on displayProducts (filtered or all products)
     this.totalItems = this.displayProducts.length;
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
 
-    // Ensure current page is valid
     if (this.currentPage > this.totalPages && this.totalPages > 0) {
       this.currentPage = 1;
     }
 
-    // Update page numbers
     this.updatePageNumbers();
 
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
 
-    // Here's the fix - use displayProducts instead of products
     this.filteredProducts = this.displayProducts.slice(startIndex, endIndex);
 
     console.log(
@@ -294,20 +276,18 @@ export class ProductComponent implements OnInit {
       )} of ${this.totalItems}`
     );
   }
+
   updatePageNumbers(): void {
     this.pageNumbers = [];
 
     if (this.totalPages <= 6) {
-      // Show all pages when total is 6 or fewer
       for (let i = 1; i <= this.totalPages; i++) {
         this.pageNumbers.push(i);
       }
     } else {
       if (this.currentPage <= 3) {
-        // Beginning of list: show first 6 pages
         this.pageNumbers = [1, 2, 3, 4, 5, 6];
       } else if (this.currentPage >= this.totalPages - 2) {
-        // End of list: show last 6 pages
         this.pageNumbers = [
           this.totalPages - 5,
           this.totalPages - 4,
@@ -317,7 +297,6 @@ export class ProductComponent implements OnInit {
           this.totalPages,
         ];
       } else {
-        // Middle: show current page in position 3 (index 2)
         this.pageNumbers = [
           this.currentPage - 2,
           this.currentPage - 1,
@@ -361,7 +340,6 @@ export class ProductComponent implements OnInit {
   }
 
   viewProduct(product: IProduct): void {
-    // Lấy ra id (document id) của sản phẩm dưới mọi định dạng có thể gặp
     let identifier: string = '';
 
     if (product?._id) {
@@ -369,10 +347,8 @@ export class ProductComponent implements OnInit {
         identifier = product._id;
       } else if (typeof product._id === 'object') {
         const idObj: any = product._id;
-        // Thử lần lượt các khoá thường gặp trong ObjectId
         identifier = idObj.$oid || idObj.oid || idObj._id || '';
 
-        // Nếu vẫn chưa có, cố gắng stringify đối tượng
         if (!identifier) {
           try {
             identifier = JSON.stringify(idObj);
@@ -383,12 +359,10 @@ export class ProductComponent implements OnInit {
       }
     }
 
-    // Trường hợp cuối cùng, thử lấy thuộc tính id (nếu có)
     if (!identifier && (product as any).id) {
       identifier = (product as any).id;
     }
 
-    // Nếu vẫn không tìm được id, cảnh báo và không điều hướng
     if (!identifier) {
       console.warn(
         'Can not navigate to product view page – missing identifier',
@@ -397,12 +371,10 @@ export class ProductComponent implements OnInit {
       return;
     }
 
-    // Điều hướng tới trang xem chi tiết sản phẩm
     this.router.navigate(['/admin-product-view', identifier]);
   }
 
   editProduct(product: IProduct): void {
-    // Lấy identifier (ưu tiên _id, fallback id)
     let identifier: string | undefined;
 
     if (product?._id) {
@@ -452,11 +424,8 @@ export class ProductComponent implements OnInit {
 
   // Add this new method to handle immediate category filtering
   onCategoryChange(): void {
-    // Get the selected category value
     const selectedCategory = this.filterForm.get('category')?.value;
     console.log('Category changed to:', selectedCategory);
-
-    // Apply the filter immediately when category changes
     this.applyFilterChanges();
   }
 
@@ -473,23 +442,18 @@ export class ProductComponent implements OnInit {
       maxInventory,
     });
 
-    // Filter the products based on criteria
     this.displayProducts = this.products.filter((product) => {
       let matchesCategory = true;
       let matchesPrice = true;
       let matchesInventory = true;
 
-      // Category filter - enhanced to handle parent categories
       if (category && category !== '') {
-        // Get all child categories of the selected category
         const selectedCategory = this.categories.find(
           (cat) => cat.name === category
         );
 
         if (selectedCategory) {
-          // Find all subcategories that have this category as parent
           const childCategories = this.categories.filter((cat) => {
-            // Get the parent category ID regardless of its format
             let parentCategoryId: string | null = null;
 
             if (typeof cat.parentCategory === 'string') {
@@ -498,7 +462,6 @@ export class ProductComponent implements OnInit {
               cat.parentCategory &&
               typeof cat.parentCategory === 'object'
             ) {
-              // Handle MongoDB ObjectId format
               const parentObj = cat.parentCategory as any;
               if (parentObj.$oid) {
                 parentCategoryId = parentObj.$oid;
@@ -508,16 +471,13 @@ export class ProductComponent implements OnInit {
                 parentCategoryId = String(parentObj);
               }
             }
-            // Compare with the selected category ID (ensure both are strings)
             return parentCategoryId === String(selectedCategory._id);
           });
 
-          // Collect all relevant category IDs and names
           const categoryIds = [
             String(selectedCategory._id),
             ...childCategories.map((cat) => String(cat._id)),
           ];
-
           const categoryNames = [
             selectedCategory.name,
             ...childCategories.map((cat) => cat.name),
@@ -525,18 +485,15 @@ export class ProductComponent implements OnInit {
 
           console.log('Matching product against categories:', categoryNames);
 
-          // Check if product's category matches the selected category or any child category
           matchesCategory =
             categoryIds.includes(String(product.category_id)) ||
             categoryNames.includes(product.category_name ?? '');
         } else {
-          // Fallback to exact match if category not found
           matchesCategory = product.category_name === category;
         }
       }
 
-      // Price range filter - Fix the comparison
-      const productPrice = Number(product.Price); // Ensure conversion to number
+      const productPrice = Number(product.Price);
 
       if (minPrice !== null && minPrice !== '') {
         const minPriceValue = Number(minPrice);
@@ -554,7 +511,6 @@ export class ProductComponent implements OnInit {
         matchesPrice = matchesPrice && productPrice <= maxPriceValue;
       }
 
-      // Inventory range filter
       if (minInventory !== null && minInventory !== '') {
         matchesInventory =
           matchesInventory && Number(product.Quantity) >= Number(minInventory);
@@ -570,7 +526,6 @@ export class ProductComponent implements OnInit {
 
     console.log('Filtered products count:', this.displayProducts.length);
 
-    // Reset to first page and update display
     this.currentPage = 1;
     this.updateFilteredProducts();
   }
@@ -589,7 +544,6 @@ export class ProductComponent implements OnInit {
   }
 
   exportProducts() {
-    // Use displayProducts (filtered products) instead of all products
     const productsToExport =
       this.displayProducts.length > 0 ? this.displayProducts : this.products;
 

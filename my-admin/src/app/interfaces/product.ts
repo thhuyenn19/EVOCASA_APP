@@ -53,7 +53,7 @@ export class Product implements IProduct {
 
   constructor(product?: Partial<IProduct>) {
     this._id = product?._id || undefined;
-    this.category_name = product?.category_name;
+    this.category_name = product?.category_name || undefined;
     
     if (typeof product?.category_id === 'string') {
       this.category_id = product.category_id;
@@ -70,7 +70,6 @@ export class Product implements IProduct {
     if (product?.Image) {
       if (typeof product.Image === 'string') {
         try {
-          // Kiểm tra xem đã là JSON string chưa
           const parsed = JSON.parse(product.Image);
           if (Array.isArray(parsed)) {
             this.Image = product.Image; // Đã là JSON string array
@@ -78,7 +77,6 @@ export class Product implements IProduct {
             this.Image = JSON.stringify([product.Image]); // Chuyển single string thành array
           }
         } catch (e) {
-          // Nếu không parse được, coi như single string
           this.Image = JSON.stringify([product.Image]);
         }
       } else if (Array.isArray(product.Image)) {
@@ -102,18 +100,20 @@ export class Product implements IProduct {
         this.Dimension = product.Dimension;
       } else {
         this.Dimension = {
-          Width: product.Dimension.Width,
-          Length: product.Dimension.Length,
-          Height: product.Dimension.Height,
-          Depth: product.Dimension.Depth,
+          Width: product.Dimension.Width || undefined,
+          Length: product.Dimension.Length || undefined,
+          Height: product.Dimension.Height || undefined,
+          Depth: product.Dimension.Depth || undefined,
           unit: product.Dimension.unit || 'in',
         };
       }
+    } else {
+      this.Dimension = undefined;
     }
 
-    this.Story = product?.Story;
-    this.ProductCare = product?.ProductCare;
-    this.ShippingReturn = product?.ShippingReturn;
+    this.Story = product?.Story || undefined;
+    this.ProductCare = product?.ProductCare || undefined;
+    this.ShippingReturn = product?.ShippingReturn || undefined;
   }
 
   // Phương thức để lấy mảng images từ JSON string
@@ -134,26 +134,27 @@ export class Product implements IProduct {
 
   // Phương thức để thêm image
   addImage(url: string) {
-  try {
-    const current = JSON.parse(this.Image || '[]'); // Parse ra mảng
-    current.push(url);
-    this.Image = JSON.stringify(current); // Gán lại thành chuỗi
-  } catch {
-    this.Image = JSON.stringify([url]); // Nếu lỗi thì khởi tạo mới
+    try {
+      const current = JSON.parse(this.Image || '[]');
+      current.push(url);
+      this.Image = JSON.stringify(current);
+    } catch {
+      this.Image = JSON.stringify([url]);
+    }
   }
-}
+
   // Phương thức để xóa image
   removeImage(index: number) {
-  try {
-    const current = JSON.parse(this.Image || '[]');
-    if (Array.isArray(current) && index >= 0 && index < current.length) {
-      current.splice(index, 1);
-      this.Image = JSON.stringify(current);
+    try {
+      const current = JSON.parse(this.Image || '[]');
+      if (Array.isArray(current) && index >= 0 && index < current.length) {
+        current.splice(index, 1);
+        this.Image = JSON.stringify(current);
+      }
+    } catch {
+      this.Image = '[]';
     }
-  } catch {
-    this.Image = '[]';
   }
-}
 
   // Phương thức để lấy image đầu tiên
   getFirstImage(): string {
@@ -176,8 +177,9 @@ export class Product implements IProduct {
     }
   }
 
-  toFirestoreObject(): IProduct {
-    return {
+  // Convert to Firestore-compatible object, excluding _id
+  toFirestoreObject(): Partial<IProduct> {
+    const firestoreObj: Partial<IProduct> = {
       Name: this.Name,
       Price: Number(this.Price),
       Image: this.Image, // Đã là JSON string array
@@ -186,13 +188,19 @@ export class Product implements IProduct {
       Uses: this.Uses,
       Store: this.Store,
       Quantity: Number(this.Quantity),
-      Create_date: this.Create_date || new Date(),
+      Create_date: this.Create_date,
       category_id: this.category_id,
-      Dimension: typeof this.Dimension === 'string' ? this.Dimension : this.Dimension ? this.Dimension : '',
-      Story: this.Story || '',
-      ProductCare: this.ProductCare || '',
-      ShippingReturn: this.ShippingReturn || '',
     };
+
+    // Handle optional fields
+    if (this.Dimension) {
+      firestoreObj.Dimension = typeof this.Dimension === 'string' ? this.Dimension : this.Dimension;
+    }
+    if (this.Story) firestoreObj.Story = this.Story;
+    if (this.ProductCare) firestoreObj.ProductCare = this.ProductCare;
+    if (this.ShippingReturn) firestoreObj.ShippingReturn = this.ShippingReturn;
+
+    return firestoreObj;
   }
 
   // Static helper methods

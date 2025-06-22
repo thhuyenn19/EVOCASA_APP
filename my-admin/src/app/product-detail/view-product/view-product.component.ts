@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../interfaces/product';
@@ -11,7 +11,7 @@ import { CategoryService } from '../../services/category.service';
   templateUrl: './view-product.component.html',
   styleUrl: './view-product.component.css'
 })
-export class ViewProductComponent {
+export class ViewProductComponent implements OnInit {
   product: Product = new Product();
   selectedFiles: File[] = [];
   previewImages: string[] = [];
@@ -28,8 +28,7 @@ export class ViewProductComponent {
   ) {}
 
   ngOnInit() {
-    this.product.Image = this.product.Image || [];
-
+    // Initialize product properly
     this.loadAllSubcategories();
 
     this.activateRoute.paramMap.subscribe((param) => {
@@ -64,7 +63,6 @@ export class ViewProductComponent {
     });
   }
 
-
   // Lấy dữ liệu sản phẩm
   loadProduct(identifier: string) {
     this.productService.getProductByIdentifier(identifier).subscribe({
@@ -77,18 +75,19 @@ export class ViewProductComponent {
               ? data.category_id.$oid
               : '';
 
-        this.product = {
+        // Initialize product with data, ensuring Image is a JSON string
+        this.product = new Product({
           ...data,
           category_id: categoryId,
           Dimension: data.Dimension || '',
-          Image: Array.isArray(data.Image) ? data.Image : [data.Image]
-        };
+          Image: typeof data.Image === 'string' ? data.Image : JSON.stringify(data.Image || [])
+        });
 
         console.log('Loaded product:', this.product);
         if (this.categories.length > 0) {
-        const match = this.categories.find(cat => cat.id === this.product.category_id);
-        console.log('🔎 Category match found:', !!match, match || 'Không tìm thấy category tương ứng');
-      }
+          const match = this.categories.find(cat => cat.id === this.product.category_id);
+          console.log('🔎 Category match found:', !!match, match || 'Không tìm thấy category tương ứng');
+        }
       },
       error: (err) => {
         console.error('❌ Error loading product:', err);
@@ -103,7 +102,8 @@ export class ViewProductComponent {
       for (let file of event.target.files) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.product.Image.push(e.target.result);
+          // Use addImage to append the image URL/data
+          this.product.addImage(e.target.result);
         };
         reader.readAsDataURL(file);
       }
@@ -117,12 +117,21 @@ export class ViewProductComponent {
 
   // ✅ Xóa ảnh
   removeImage(index: number) {
-    if (this.product.Image.length > index) {
-      this.product.Image.splice(index, 1);
-    }
+    this.product.removeImage(index); // Use removeImage method
   }
 
   goBack() {
     this.router.navigate(['/admin-product']);
+  }
+
+  // Method to parse Image JSON string into array
+  getImageArray(): string[] {
+    try {
+      const parsed = JSON.parse(this.product.Image || '[]');
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+      console.error('Error parsing image string:', error);
+      return [];
+    }
   }
 }
