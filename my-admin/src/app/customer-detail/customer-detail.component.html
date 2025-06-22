@@ -71,7 +71,8 @@
               <td>{{ order._id}}</td>
               <td>{{ order.TotalPrice }}</td>
               <td>{{ getOrderQuantity(order) }}</td>
-              <td>{{ order.OrderDate }}</td>
+              <!-- <td>{{ order.OrderDate }}</td> -->
+              <td>{{ formatDate(order.OrderDate) }}</td>
               <td>{{ order.PaymentMethod }}</td>
               <td>{{ order.Status }}</td>
               <td>
