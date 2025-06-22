@@ -29,14 +29,28 @@ export class OrderComponent {
     private router: Router
   ) {}
 
+  /** Chuyển mọi kiểu Customer_id thành chuỗi thuần */
+  private normalizeId(raw: any): string {
+    if (!raw) return '';
+    if (typeof raw === 'string') return raw;
+    if (typeof raw === 'object') {
+      return raw.$oid || raw._id || raw.id || JSON.stringify(raw);
+    }
+    return String(raw);
+  }
+
   ngOnInit(): void {
     this.loadOrders();
   }
   loadOrders(): void {
     this.orderService.getAllOrders().subscribe(
       (data) => {
-        this.orders = data;
-        this.totalOrders = data.length;
+        // Chuẩn hoá Customer_id để luôn là string
+        this.orders = data.map((o) => ({
+          ...o,
+          Customer_id: this.normalizeId((o as any).Customer_id),
+        }));
+        this.totalOrders = this.orders.length;
         this.fetchCustomerNames();
         this.updateDisplayedOrders();
       },
@@ -73,11 +87,13 @@ export class OrderComponent {
   // Fetch customer names based on customer_id and store them temporarily
   fetchCustomerNames(): void {
     this.orders.forEach((order) => {
-      // Check if customer name is already fetched, if not, fetch it
-      if (!this.customerNames[order.Customer_id]) {
-        this.customerService.getCustomerById(order.Customer_id).subscribe(
+      const cid = order.Customer_id;
+      if (!cid) return;
+
+      if (!this.customerNames[cid]) {
+        this.customerService.getCustomerById(cid).subscribe(
           (customer: Customer) => {
-            this.customerNames[order.Customer_id] = customer.Name; // Store customer name by customer_id
+            this.customerNames[cid] = customer.Name;
           },
           (error) => {
             console.error('Error fetching customer details:', error);
@@ -87,13 +103,13 @@ export class OrderComponent {
     });
   }
   formatDate(dateField: any): string {
-  const raw = dateField?.$date || dateField;
-  return new Date(raw).toLocaleDateString('vi-VN', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric'
-  });
-}
+    const raw = dateField?.$date || dateField;
+    return new Date(raw).toLocaleDateString('vi-VN', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    });
+  }
 
   viewOrderDetails(id: string): void {
     this.orderService.getOrderById(id).subscribe(
