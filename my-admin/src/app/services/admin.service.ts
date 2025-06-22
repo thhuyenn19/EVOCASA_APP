@@ -4,7 +4,7 @@ import { map, catchError } from 'rxjs/operators';
 import { Admin } from '../interfaces/admin';
 
 import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { db } from '../firebase-config'; // ⚠️ Import db đã khởi tạo
+import { db } from '../firebase-config'; 
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,6 @@ export class AdminService {
     }
   }
 
-  // ⚠️ Lấy danh sách Admin từ Firestore thay vì HTTP
   getAllAdmins(): Observable<Admin[]> {
   return new Observable(observer => {
     getDocs(collection(db, 'Admin'))
@@ -31,12 +30,12 @@ export class AdminService {
           admins.push({ ...(data as Admin), _id: doc.id });
         });
 
-        console.log('📦 Admins from Firestore:', admins); // ✅ Log dữ liệu toàn bộ
+        console.log(' Admins from Firestore:', admins);
         observer.next(admins);
         observer.complete();
       })
       .catch(error => {
-        console.error('❌ Firestore error:', error);
+        console.error(' Firestore error:', error);
         observer.error(error);
       });
   });
