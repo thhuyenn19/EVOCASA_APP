@@ -13,11 +13,7 @@
     </button>
     <!-- button export -->
     <button class="export-button" (click)="exportOrders()">
-      <img
-        src="images/product/export.svg"
-        alt="Export icon"
-        class="export-icon"
-      />
+      <img src="images/product/export.svg" alt="Export icon" class="export-icon" />
       <span class="export-text">Exports</span>
       <img src="images/product/arrow.svg" alt="Dropdown arrow" />
     </button>
@@ -45,10 +41,7 @@
         <td>{{ order.Status }}</td>
         <td>
           <div class="action-buttons">
-            <button
-              class="view-btn"
-              [routerLink]="['/order-detail', order._id]"
-            >
+            <button class="view-btn" [routerLink]="['/order-detail', order._id]">
               <img src="images/product/view.svg" alt="View icon" />
             </button>
             <button class="delete-btn">
@@ -61,33 +54,21 @@
   </div>
 </div>
 <!-- Showing -->
+<div class="show">
+  <p>Showing {{ startOrder }} to {{ endOrder }} of {{ totalOrders }} results</p>
+</div>
 <div class="pagination">
-  <button
-    class="prev-btn"
-    (click)="changePage(currentPage - 1)"
-    [disabled]="currentPage === 1"
-  >
+  <button class="prev-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
     &lt;
   </button>
 
   <span *ngFor="let page of [].constructor(totalPages); let i = index">
-    <button
-      class="page-number"
-      (click)="changePage(i + 1)"
-      [class.active]="currentPage === i + 1"
-    >
+    <button class="page-btn" (click)="changePage(i + 1)" [class.active]="currentPage === i + 1">
       {{ i + 1 }}
     </button>
   </span>
 
-  <button
-    class="next-btn"
-    (click)="changePage(currentPage + 1)"
-    [disabled]="currentPage === totalPages"
-  >
+  <button class="next-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
     &gt;
   </button>
-</div>
-<div class="showing-results">
-  <p>Showing {{ startOrder }} to {{ endOrder }} of {{ totalOrders }} results</p>
 </div>

@@ -1,7 +1,6 @@
-
 <h1> CUSTOMER MANAGEMENT </h1>
-    
-    <div class="summary-container">
+
+<div class="summary-container">
   <!-- Total Customers -->
   <div class="summary-card">
     <div class="icon-box">
@@ -10,12 +9,12 @@
     <div class="card-content">
       <p class="card-title">Total customers</p>
       <div class="card-data-row">
-        <p class="card-value">641</p>
+        <p class="card-value">{{ totalCustomers }}</p>
         <p class="card-change">
           <span class="material-icons-outlined arrow-icon">arrow_upward</span> +15%
         </p>
-  </div>
-</div>
+      </div>
+    </div>
   </div>
 
   <!-- New Customers -->
@@ -23,10 +22,10 @@
     <div class="icon-box dual-icon">
       <span class="material-icons-outlined">person</span>
     </div>
-   <div class="card-content">
+    <div class="card-content">
       <p class="card-title">New customers</p>
       <div class="card-data-row">
-        <p class="card-value">60</p>
+        <p class="card-value">{{ newCustomers }}</p>
         <p class="card-change">
           <span class="material-icons-outlined arrow-icon">arrow_upward</span>+10%
         </p>
@@ -39,10 +38,10 @@
     <div class="icon-box">
       <span class="material-icons-outlined">shopping_cart</span>
     </div>
-     <div class="card-content">
+    <div class="card-content">
       <p class="card-title">Total orders</p>
       <div class="card-data-row-total-orders">
-        <p class="card-value">4,641</p>
+        <p class="card-value">{{ totalOrders | number }}</p>
         <p class="card-change">
           <span class="material-icons-outlined arrow-icon">arrow_upward</span>+10%
         </p>
@@ -51,74 +50,68 @@
   </div>
 </div>
 
-    <div class="actions">
-        <button class="filter-button" >
-          <img src="images/order/Filter.svg" alt="Filter icon" />
-          <span class="filter-text">Filter by</span>
-        </button>
-        <button class="export-button" (click)=exportCustomers()>
-          <img src="images/product/export.svg" alt="Export icon" class="export-icon"/>
-          <span class="export-text">Exports</span>
-          <img src="images/product/arrow.svg" alt="Dropdown arrow" class="dropdown-icon"/>
-        </button>
-    </div>
+<div class="actions">
+  <button class="filter-button">
+    <img src="images/order/Filter.svg" alt="Filter icon" />
+    <span class="filter-text">Filter by</span>
+  </button>
+  <button class="export-button" (click)=exportCustomers()>
+    <img src="images/product/export.svg" alt="Export icon" class="export-icon" />
+    <span class="export-text">Exports</span>
+    <img src="images/product/arrow.svg" alt="Dropdown arrow" class="dropdown-icon" />
+  </button>
+</div>
 
-    <div class="table-container">
-        <table class="customer-table">
-          <thead>
-            <tr>
-              <th>Customer ID</th>
-              <th>Name</th>
-              <th>Gender</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Amount</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let customer of displayedCustomers">
-              <td>{{ customer._id }}</td>
-              <td>{{ customer.Name }}</td>
-              <td>{{ customer.Gender }}</td>
-              <td>{{ customer.Mail }}</td>
-              <td>{{ customer.Phone }}</td>
-              <td>{{ customer.Amount | currency:'USD' }}</td>
+<div class="table-container">
+  <table class="customer-table">
+    <thead>
+      <tr>
+        <th>Customer ID</th>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Amount</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of displayedCustomers">
+        <td>{{ customer._id }}</td>
+        <td>{{ customer.Name }}</td>
+        <td>{{ customer.Gender }}</td>
+        <td>{{ customer.Mail }}</td>
+        <td>{{ customer.Phone }}</td>
+        <td>{{ customer.Amount | currency:'USD' }}</td>
 
-              <td>
-                <button class="edit-btn">
-                    <img src="images/customer/edit.svg" alt="Edit">
-                </button>
-                <button class="delete-btn">
-                    <img src="images/customer/trash.svg" alt="Delete">
-                </button>
-                <button class="view-btn" (click)="viewCustomerDetails(customer._id)">
-                  <!-- <a routerLink="/customer-detail"> -->
-                  <img src="images/customer/view.svg" alt="View">
-                  <!-- </a> -->
-                </button>
-            </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      
-  
-   <!-- Pagination Controls -->
+        <td>
+          <button class="edit-btn">
+            <img src="images/customer/edit.svg" alt="Edit">
+          </button>
+          <button class="view-btn" (click)="viewCustomerDetails(customer._id)">
+            <!-- <a routerLink="/customer-detail"> -->
+            <img src="images/customer/view.svg" alt="View">
+            <!-- </a> -->
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Showing results -->
+<div class="show">
+  <p>Showing {{ startCustomer }} to {{ endCustomer }} of {{ totalCustomers }} results</p>
+</div>
+<!-- Pagination Controls -->
 <div class="pagination">
   <button class="prev-btn" (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
 
   <span *ngFor="let page of [].constructor(totalPages); let i = index">
-    <button class="page-number" (click)="changePage(i + 1)" [class.active]="currentPage === (i + 1)">
+    <button class="page-btn" (click)="changePage(i + 1)" [class.active]="currentPage === (i + 1)">
       {{ i + 1 }}
     </button>
   </span>
 
   <button class="next-btn" (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
 </div>
-
-<!-- Showing results -->
-<div class="showing-results">
-  <p>Showing {{ startCustomer }} to {{ endCustomer }} of {{ totalCustomers }} results</p>
-</div>
-  

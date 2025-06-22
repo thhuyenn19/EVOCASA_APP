@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Customer } from '../interfaces/customer';
 import { CustomerService } from '../services/customer.service';
 import { Router } from '@angular/router';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-customer',
@@ -16,16 +17,40 @@ export class CustomerComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 4;
   totalCustomers: number = 0;
+  totalOrders = 0; 
+  newCustomers = 0;
 
 
-  constructor(private customerService: CustomerService, private router: Router) { }
+  constructor(private customerService: CustomerService,private orderService: OrderService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadCustomers();
+    this.loadTotalOrders();
   }
   loadCustomers(): void {
     this.customerService.getAllCustomers().subscribe(
       async (data) => {
+        this.totalCustomers = data.length;
+         const now = Date.now();
+        const threeDaysAgo = now - 3 * 24 * 60 * 60 * 1000;
+          this.newCustomers = data.filter(c => {
+          let createdTime: number;
+
+          // nếu Firestore trả về Timestamp
+          if ((c as any).CreatedAt?.toDate) {
+            createdTime = (c as any).CreatedAt.toDate().getTime();
+          }
+          // nếu lưu dưới dạng { $date: string }
+          else if ((c as any).CreatedAt?.$date) {
+            createdTime = new Date((c as any).CreatedAt.$date).getTime();
+          }
+          // fallback: thử parse trực tiếp
+          else {
+            createdTime = new Date((c as any).CreatedAt).getTime();
+          }
+
+          return createdTime >= threeDaysAgo;
+        }).length;
         const enriched = await Promise.all(
           data.map(async customer => {
             const amount = await this.customerService.getTotalAmountByCustomerId(customer._id);
@@ -39,6 +64,14 @@ export class CustomerComponent implements OnInit {
       (error) => {
         console.error('Error fetching customers:', error);
       }
+    );
+  }
+  loadTotalOrders(): void {
+    this.orderService.getAllOrders().subscribe(
+      orders => {
+        this.totalOrders = orders.length;
+      },
+      err => console.error('Error fetching orders:', err)
     );
   }
 
