@@ -28,7 +28,7 @@ export class EditProductComponent {
   ) {}
 
   ngOnInit() {
-    this.product.Image = this.product.Image || []; // Đảm bảo mảng ảnh tồn tại
+    // this.product.Image = this.product.Image || []; // Đảm bảo mảng ảnh tồn tại
     this.loadAllSubcategories();
     
     // Lấy ID sản phẩm từ URL và tải dữ liệu sản phẩm
@@ -68,7 +68,7 @@ loadAllSubcategories() {
   loadProduct(identifier: string) {
     this.productService.getProductByIdentifier(identifier).subscribe({
       next: (data) => {
-        this.product = data;
+        this.product = Object.assign(new Product(), data);
       },
       error: (err) => {
         this.errMessage = err.error?.message || 'Error loading product';
@@ -76,18 +76,21 @@ loadAllSubcategories() {
     });
   }
 
-  // Xử lý khi chọn file ảnh
-  onFilesSelected(event: any) {
-    if (event.target.files && event.target.files.length) {
-      for (let file of event.target.files) {
-        const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.product.Image.push(e.target.result); // Đẩy URL ảnh vào mảng
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  }
+  // // Xử lý khi chọn file ảnh
+  // onFilesSelected(event: any) {
+  //   if (event.target.files && event.target.files.length) {
+  //     for (let file of event.target.files) {
+  //       const reader = new FileReader();
+  //       reader.onload = (e: any) => {
+  //         if (!Array.isArray(this.product.Image)) {
+  //           this.product.Image = this.product.Image ? [this.product.Image] : [];
+  //         }
+  //         this.product.Image.push(e.target.result); // Đẩy URL ảnh vào mảng
+  //       };
+  //       reader.readAsDataURL(file);
+  //     }
+  //   }
+  // }
 
   // Kích hoạt input file khi nhấn nút "+"
   triggerFileInput() {
@@ -97,7 +100,7 @@ loadAllSubcategories() {
   // Xóa ảnh theo index
   removeImage(index: number) {
     if (this.product.Image.length > index) {
-      this.product.Image.splice(index, 1);
+      // this.product.Image.splice(index, 1);
     }
   }
 

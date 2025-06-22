@@ -165,7 +165,6 @@
         <!-- Input chọn nhiều ảnh -->
         <input
           type="file"
-          (change)="onFilesSelected($event)"
           multiple
           accept="image/*"
           id="file-upload"
@@ -182,13 +181,13 @@
 
           <!-- Ảnh nhỏ -->
           <div class="image-thumbnails">
-            <div
+            <!-- <div
               *ngFor="let image of product.Image.slice(1, 5); let i = index"
               class="thumbnail-container"
             >
               <img [src]="image" class="thumbnail" />
               <button class="remove-btn" (click)="removeImage(i)">✖</button>
-            </div>
+            </div> -->
 
             <!-- Nút thêm chỉ xuất hiện nếu số ảnh < 5 -->
             <div

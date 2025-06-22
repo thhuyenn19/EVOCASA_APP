@@ -13,6 +13,7 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
+  addDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase-config';
 
@@ -20,8 +21,8 @@ import { db } from '../firebase-config';
   providedIn: 'root',
 })
 export class ProductService {
-  // REST API URL is kept only for image uploading or fallback
   private apiUrl = 'http://localhost:3002/products';
+  private firestore = db; // ✅ GÁN firestore đúng cách
 
   constructor(private http: HttpClient) {}
 
@@ -29,104 +30,74 @@ export class ProductService {
    * Fetch all products from Firestore collection "Product".
    */
   getProducts(): Observable<IProduct[]> {
-    const productRef = collection(db, 'Product');
-    const promise = getDocs(productRef).then((snapshot) => {
-      return snapshot.docs.map((d) => {
-        const data = d.data() as any;
-        const product: IProduct = {
-          _id: d.id,
-          Name: data.Name,
-          Price: data.Price,
-          Image: this.parseImageField(data.Image),
-          Description: data.Description,
-          Quantity: data.Quantity,
-          category_id:
-            data.category_id ||
-            data.Category_id ||
-            data.categoryId ||
-            data.CategoryId,
-          Origin: data.Origin || '',
-          Uses: data.Uses || '',
-          Store: data.Store || '',
-          Create_date: data.Create_date
-            ? new Date(data.Create_date)
-            : new Date(),
-        } as IProduct;
-
-        return this.processProductImage(product);
-      });
-    });
-
-    return from(promise);
+    return this.http.get<IProduct[]>(this.apiUrl).pipe(
+      map((products) => this.processProductImages(products)),
+      catchError(this.handleError)
+    );
   }
 
-  /**
-   * Fetch a single product by document ID (identifier)
-   */
   getProductByIdentifier(identifier: string): Observable<IProduct> {
-    const docRef = doc(db, 'Product', identifier);
-    const promise = getDoc(docRef).then((docSnap) => {
-      if (!docSnap.exists()) {
-        throw new Error('Product not found');
-      }
-
-      const data = docSnap.data() as any;
-      const product: IProduct = {
-        _id: docSnap.id,
-        Name: data.Name,
-        Price: data.Price,
-        Image: this.parseImageField(data.Image),
-        Description: data.Description,
-        Quantity: data.Quantity,
-        category_id:
-          data.category_id ||
-          data.Category_id ||
-          data.categoryId ||
-          data.CategoryId,
-        Origin: data.Origin || '',
-        Uses: data.Uses || '',
-        Store: data.Store || '',
-        Create_date: data.Create_date ? new Date(data.Create_date) : new Date(),
-      } as IProduct;
-
-      return this.processProductImage(product);
-    });
-
-    return from(promise);
+    return this.http
+      .get<IProduct>(`${this.apiUrl}/${encodeURIComponent(identifier)}`)
+      .pipe(
+        map((product) => this.processProductImage(product)),
+        catchError(this.handleError)
+      );
   }
 
   /**
-   * Create a product document in Firestore.
+   * ✅ Create product and stringify image array
    */
-  createProduct(product: IProduct): Observable<IProduct> {
-    // Auto-generated document ID
-    const newDocRef = doc(collection(db, 'Product'));
-    const payload = {
-      ...product,
-      Image: product.Image, // stored as array
-    } as any;
+  async createProduct(productData: Partial<IProduct>): Promise<string> {
+    try {
+     const firestoreData = {
+      ...productData,
+      Image: productData.Image || '' // ✅ Giữ nguyên chuỗi
+    };
 
-    const promise = setDoc(newDocRef, payload).then(() => {
-      return { ...product, _id: newDocRef.id } as IProduct;
-    });
+    // Use the standalone collection and addDoc functions
+    await addDoc(collection(this.firestore, 'Product'), firestoreData);
 
-    return from(promise);
+      const docRef = await addDoc(collection(this.firestore, 'Product'), firestoreData);
+      console.log('Product added with ID:', docRef.id);
+      return docRef.id;
+    } catch (error) {
+      console.error('Error adding product:', error);
+      throw error;
+    }
   }
 
-  /**
-   * Update an existing product document.
-   */
   updateProduct(identifier: string, product: IProduct): Observable<IProduct> {
-    const docRef = doc(db, 'Product', identifier);
-    const promise = updateDoc(docRef, { ...product }).then(() => product);
+    const docRef = doc(this.firestore, 'Product', identifier);
+
+    const rawPayload = {
+      Name: product.Name,
+      Price: product.Price,
+      Image: typeof product.Image === 'string' ? product.Image : JSON.stringify(product.Image || []),
+      Description: product.Description,
+      Quantity: product.Quantity,
+      Dimension: product.Dimension || '',
+      category_id: product.category_id || '',
+      Origin: product.Origin || '',
+      Uses: product.Uses || '',
+      Store: product.Store || '',
+      Create_date: product.Create_date || new Date()
+    };
+
+    const payload = Object.fromEntries(
+      Object.entries(rawPayload).filter(([_, value]) => value !== undefined)
+    );
+
+    const promise = updateDoc(docRef, payload).then(() => ({
+      ...product,
+      _id: identifier
+    }));
+
     return from(promise);
   }
 
-  /**
-   * Delete a product document.
-   */
   deleteProduct(identifier: string): Observable<any> {
-    const docRef = doc(db, 'Product', identifier);
+    const docRef = doc(this.firestore, 'Product', identifier);
     return from(deleteDoc(docRef));
   }
 
@@ -135,21 +106,12 @@ export class ProductService {
   }
 
   private processProductImage(product: IProduct): IProduct {
-    // Normalize _id: convert MongoDB ObjectId object to string if necessary
     if (product && product._id && typeof product._id === 'object') {
       const maybeOid = product._id as any;
       if (maybeOid.$oid) {
         product._id = maybeOid.$oid;
       } else if (maybeOid.toString) {
         product._id = maybeOid.toString();
-      }
-    }
-
-    if (product.Image && typeof product.Image === 'string') {
-      try {
-        product.Image = JSON.parse(product.Image as unknown as string);
-      } catch (e) {
-        product.Image = [product.Image as unknown as string];
       }
     }
     return product;
@@ -177,19 +139,5 @@ export class ProductService {
       .pipe(
         map((response) => `http://localhost:3002/image/${response.filename}`)
       );
-  }
-
-  private parseImageField(image: any): any {
-    if (typeof image === 'string') {
-      try {
-        return JSON.parse(image);
-      } catch (e) {
-        return [image];
-      }
-    } else if (Array.isArray(image)) {
-      return image;
-    } else {
-      throw new Error('Invalid image format');
-    }
   }
 }

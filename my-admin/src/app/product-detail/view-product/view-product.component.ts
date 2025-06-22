@@ -5,7 +5,6 @@ import { Product } from '../../interfaces/product';
 import { Category } from '../../interfaces/category';
 import { CategoryService } from '../../services/category.service';
 
-
 @Component({
   selector: 'app-view-product',
   standalone: false,
@@ -13,11 +12,11 @@ import { CategoryService } from '../../services/category.service';
   styleUrl: './view-product.component.css'
 })
 export class ViewProductComponent {
- product = new Product();
-  selectedFiles: File[] = []; // Danh sách file ảnh đã chọn
-  previewImages: string[] = []; // Ảnh xem trước
-  maxImages: number = 5; // Giới hạn số ảnh tải lên
-  categories: Category[] = []; // Danh mục sản phẩm
+  product: Product = new Product();
+  selectedFiles: File[] = [];
+  previewImages: string[] = [];
+  maxImages: number = 5;
+  categories: Category[] = [];
   errMessage: string = '';
   productId: string = '';
 
@@ -29,12 +28,12 @@ export class ViewProductComponent {
   ) {}
 
   ngOnInit() {
-    this.product.Image = this.product.Image || []; // Đảm bảo mảng ảnh tồn tại
+    this.product.Image = this.product.Image || [];
+
     this.loadAllSubcategories();
-    
-    // Lấy ID sản phẩm từ URL và tải dữ liệu sản phẩm
+
     this.activateRoute.paramMap.subscribe((param) => {
-      let id = param.get('id');
+      const id = param.get('id');
       if (id) {
         this.productId = id;
         this.loadProduct(id);
@@ -42,60 +41,81 @@ export class ViewProductComponent {
     });
   }
 
-   // Lấy tất cả danh mục cha, sau đó gọi API để lấy danh mục con của từng danh mục cha
-loadAllSubcategories() {
-  this.CategoryService.getMainCategories().subscribe({
-    next: (mainCategories) => {
-      if (mainCategories.length > 0) {
+  // Lấy toàn bộ danh mục con
+  loadAllSubcategories() {
+    this.CategoryService.getMainCategories().subscribe({
+      next: (mainCategories) => {
         let allSubcategories: Category[] = [];
 
-        // Dùng forEach để lấy danh mục con của từng danh mục cha
         mainCategories.forEach((parent) => {
           this.CategoryService.getSubcategories(parent.id).subscribe({
             next: (subcategories) => {
-              allSubcategories = [...allSubcategories, ...subcategories]; // Gom tất cả danh mục con
-              this.categories = allSubcategories; // Cập nhật danh mục con hiển thị
+              allSubcategories = [...allSubcategories, ...subcategories];
+              this.categories = allSubcategories;
+              console.log('Loaded subcategories:', this.categories);
             },
             error: () => console.error(`Error loading subcategories for ${parent.id}`)
           });
         });
+      },
+      error: () => {
+        this.errMessage = 'Error loading main categories';
       }
-    },
-    error: () => (this.errMessage = 'Error loading main categories')
-  });
-}
+    });
+  }
 
-  // Lấy dữ liệu sản phẩm từ API theo ID
+
+  // Lấy dữ liệu sản phẩm
   loadProduct(identifier: string) {
     this.productService.getProductByIdentifier(identifier).subscribe({
-      next: (data) => {
-        this.product = data;
+      next: (data: any) => {
+        // Fix category_id nếu là object { $oid: "..." }
+        const categoryId =
+          typeof data.category_id === 'string'
+            ? data.category_id
+            : data.category_id && '$oid' in data.category_id
+              ? data.category_id.$oid
+              : '';
+
+        this.product = {
+          ...data,
+          category_id: categoryId,
+          Dimension: data.Dimension || '',
+          Image: Array.isArray(data.Image) ? data.Image : [data.Image]
+        };
+
+        console.log('Loaded product:', this.product);
+        if (this.categories.length > 0) {
+        const match = this.categories.find(cat => cat.id === this.product.category_id);
+        console.log('🔎 Category match found:', !!match, match || 'Không tìm thấy category tương ứng');
+      }
       },
       error: (err) => {
+        console.error('❌ Error loading product:', err);
         this.errMessage = err.error?.message || 'Error loading product';
       }
     });
   }
 
-  // Xử lý khi chọn file ảnh
+  // Chọn ảnh từ file
   onFilesSelected(event: any) {
     if (event.target.files && event.target.files.length) {
       for (let file of event.target.files) {
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.product.Image.push(e.target.result); // Đẩy URL ảnh vào mảng
+          this.product.Image.push(e.target.result);
         };
         reader.readAsDataURL(file);
       }
     }
   }
 
-  // Kích hoạt input file khi nhấn nút "+"
+  // ✅ Kích hoạt input file
   triggerFileInput() {
     document.getElementById('file-upload')?.click();
   }
 
-  // Xóa ảnh theo index
+  // ✅ Xóa ảnh
   removeImage(index: number) {
     if (this.product.Image.length > index) {
       this.product.Image.splice(index, 1);
@@ -106,4 +126,3 @@ loadAllSubcategories() {
     this.router.navigate(['/admin-product']);
   }
 }
-

@@ -116,15 +116,6 @@ export class CategoryService {
   }
 
   createCategory(category: Category): Observable<void> {
-    // console.log('Creating new category:', category);
-    // const headers = new HttpHeaders().set("Content-Type", "application/json");
-    // return this._http.post<any>(this.apiUrl, category, { headers }).pipe(
-    //   tap(response => console.log('Category creation response:', response)),
-    //   map(response => this.normalizeCategoryData(response)),
-    //   map(category => this.processCategoryImage(category)),
-    //   retry(3),
-    //   catchError(this.handleError)
-    // );
     console.log('Creating new category:', category);
     const newDocRef = doc(collection(db, 'Category'));
     const categoryData = {
@@ -165,17 +156,24 @@ export class CategoryService {
   }
 
   getSubcategories(parentCategoryId: string): Observable<Category[]> {
-    console.log(`Fetching subcategories for parent ID: ${parentCategoryId}`);
-    return this.getCategories().pipe(
-      map(categories => {
-        const subCats = categories.filter(category => 
-          category.parentCategory === parentCategoryId
-        );
-        console.log(`Found ${subCats.length} subcategories for parent ${parentCategoryId}`);
-        return subCats;
-      })
-    );
-  }
+  console.log(`🔍 Fetching subcategories for parent ID: ${parentCategoryId}`);
+  
+  return this.getCategories().pipe(
+    map(categories => {
+      const subCats = categories.filter(category => {
+        // Nếu parentCategory là object { $oid }, lấy ra chuỗi
+        const catParentId = typeof category.parentCategory === 'string'
+          ? category.parentCategory
+          : category.parentCategory?.$oid || '';
+
+        return catParentId === parentCategoryId;
+      });
+
+      console.log(`Found ${subCats.length} subcategories for parent ${parentCategoryId}`);
+      return subCats;
+    })
+  );
+}
 
 
   getCategoryPath(categoryId: string): Observable<Category[]> {
