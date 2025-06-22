@@ -11,7 +11,7 @@
           <img src="images/order/arrow.svg" />
           Back
         </button>
-        <button class="save-button">
+        <button class="save-button" (click)="onSave()" [disabled]="!isDirty">
           <img src="images/order/Save.svg" />
           Save
         </button>
