@@ -573,4 +573,12 @@ export class ProductComponent implements OnInit {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }
+  getProductId(product: IProduct): string {
+  if (typeof product._id === 'string') {
+    return product._id;
+  } else if (product._id && typeof product._id === 'object' && '$oid' in product._id) {
+    return product._id.$oid;
+  }
+  return '';
+}
 }

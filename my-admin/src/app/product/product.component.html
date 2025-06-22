@@ -160,7 +160,7 @@
                 style="border: black"
               />
             </button>
-            <button class="icon-btn" (click)="deleteProduct(product._id || '')">
+            <button class="icon-btn" (click)="deleteProduct(getProductId(product))">
               <img src="images/product/trash.svg" alt="trashicon" />
             </button>
           </td>
