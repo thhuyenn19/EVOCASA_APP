@@ -46,6 +46,7 @@ public class OrdersFragment extends Fragment {
     private UserSessionManager sessionManager;
     private TextView txtCartBadge;
     ImageView imgCart;
+    private ListenerRegistration orderListener;
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -166,7 +167,7 @@ public class OrdersFragment extends Fragment {
                 }
             });
         });
-        loadOrdersFromFirestore(selectedStatus);
+        listenToOrdersRealtime(selectedStatus);
         // 5) Lọc và hiển thị lần đầu
 //        filterOrdersByStatus(selectedStatus);
         // Cart
@@ -180,135 +181,124 @@ public class OrdersFragment extends Fragment {
         }
     }
 
-    private void loadOrdersFromFirestore(String selectedStatus) {
+    private void listenToOrdersRealtime(String selectedStatus) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Product")
-                .get()
-                .addOnSuccessListener(productSnapshots -> {
-                    Map<String, String> productNameMap = new HashMap<>();
-                    Map<String, Long> productPriceMap = new HashMap<>();
-                    Map<String, String> productImageMap = new HashMap<>();
+        db.collection("Product").get().addOnSuccessListener(productSnapshots -> {
+            Map<String, String> productNameMap = new HashMap<>();
+            Map<String, Long> productPriceMap = new HashMap<>();
+            Map<String, String> productImageMap = new HashMap<>();
 
-                    for (QueryDocumentSnapshot doc : productSnapshots) {
-                        String id = doc.getId();
-                        String name = doc.getString("Name");
-                        Long price = doc.getLong("Price");
+            for (QueryDocumentSnapshot doc : productSnapshots) {
+                String id = doc.getId();
+                String name = doc.getString("Name");
+                Long price = doc.getLong("Price");
 
-                        Object rawImageData = doc.get("Image");
-                        List<String> imageList = new ArrayList<>();
+                Object rawImageData = doc.get("Image");
+                List<String> imageList = new ArrayList<>();
 
-                        if (rawImageData instanceof List) {
-                            imageList = (List<String>) rawImageData;
-                        } else if (rawImageData instanceof String) {
+                if (rawImageData instanceof List) {
+                    imageList = (List<String>) rawImageData;
+                } else if (rawImageData instanceof String) {
+                    try {
+                        imageList = new com.google.gson.Gson().fromJson((String) rawImageData,
+                                new com.google.gson.reflect.TypeToken<List<String>>() {}.getType());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (id != null && name != null && price != null) {
+                    productNameMap.put(id, name);
+                    productPriceMap.put(id, price);
+                    if (!imageList.isEmpty()) {
+                        productImageMap.put(id, imageList.get(0));
+                    }
+                }
+            }
+
+            String uid = new UserSessionManager(getContext()).getUid();
+            if (uid == null || uid.isEmpty()) return;
+
+            if (orderListener != null) orderListener.remove(); // Clear old listener if any
+
+            orderListener = db.collection("Order")
+                    .addSnapshotListener((orderSnapshots, error) -> {
+                        if (error != null || orderSnapshots == null) {
+                            Log.e("OrdersFragment", "Listen error: ", error);
+                            return;
+                        }
+
+                        allOrderGroups.clear();
+
+                        for (QueryDocumentSnapshot orderDoc : orderSnapshots) {
                             try {
-                                imageList = new com.google.gson.Gson().fromJson((String) rawImageData,
-                                        new com.google.gson.reflect.TypeToken<List<String>>() {}.getType());
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                                Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
+                                if (customerIdMap == null) continue;
 
-                        if (id != null && name != null && price != null) {
-                            productNameMap.put(id, name);
-                            productPriceMap.put(id, price);
-                            if (!imageList.isEmpty()) {
-                                productImageMap.put(id, imageList.get(0));
-                            }
-                        }
-                    }
+                                String orderUid = (String) customerIdMap.get("$oid");
+                                if (!uid.equals(orderUid)) continue;
 
-                    UserSessionManager sessionManager = new UserSessionManager(getContext());
-                    String uid = sessionManager.getUid();
-                    Log.d("OrdersFragment", "UID hiện tại: " + uid);
+                                String status = orderDoc.getString("Status");
+                                List<Map<String, Object>> orderProducts =
+                                        (List<Map<String, Object>>) orderDoc.get("OrderProduct");
+                                if (orderProducts == null || orderProducts.isEmpty()) continue;
 
-                    if (uid == null || uid.isEmpty()) {
-                        Log.e("OrdersFragment", "UID is null or empty");
-                        return;
-                    }
+                                List<OrderItem> itemList = new ArrayList<>();
+                                int total = 0;
 
-                    db.collection("Order")
-                            .get()
-                            .addOnSuccessListener(orderSnapshots -> {
-                                Log.d("OrdersFragment", "Tổng số order: " + orderSnapshots.size());
+                                for (Map<String, Object> product : orderProducts) {
+                                    Map<String, Object> productIdMap = (Map<String, Object>) product.get("id");
+                                    if (productIdMap == null) continue;
 
-                                allOrderGroups.clear();
+                                    String productId = (String) productIdMap.get("$oid");
+                                    if (productId == null || !productNameMap.containsKey(productId)) continue;
 
-                                for (QueryDocumentSnapshot orderDoc : orderSnapshots) {
-                                    try {
-                                        Map<String, Object> customerIdMap = (Map<String, Object>) orderDoc.get("Customer_id");
-                                        if (customerIdMap == null) continue;
+                                    String productName = productNameMap.get(productId);
+                                    Long priceEach = productPriceMap.get(productId);
+                                    String imageUrl = productImageMap.get(productId);
+                                    Long quantity = (Long) product.get("Quantity");
 
-                                        String orderUid = (String) customerIdMap.get("$oid");
-                                        if (!uid.equals(orderUid)) continue;
+                                    int qty = quantity != null ? quantity.intValue() : 1;
+                                    int unitPrice = priceEach != null ? priceEach.intValue() : 0;
 
-                                        String status = orderDoc.getString("Status");
-                                        List<Map<String, Object>> orderProducts =
-                                                (List<Map<String, Object>>) orderDoc.get("OrderProduct");
-                                        if (orderProducts == null || orderProducts.isEmpty()) continue;
+                                    total += unitPrice * qty;
 
-                                        List<OrderItem> itemList = new ArrayList<>();
-                                        int total = 0;
+                                    itemList.add(new OrderItem(imageUrl, productName, unitPrice, qty));
+                                }
 
-                                        for (Map<String, Object> product : orderProducts) {
-                                            Map<String, Object> productIdMap = (Map<String, Object>) product.get("id");
-                                            if (productIdMap == null) continue;
+                                Long deliveryFee = orderDoc.getLong("DeliveryFee");
+                                if (deliveryFee != null) total += deliveryFee;
 
-                                            String productId = (String) productIdMap.get("$oid");
-                                            if (productId == null || !productNameMap.containsKey(productId)) continue;
-
-                                            String productName = productNameMap.get(productId);
-                                            Long priceEach = productPriceMap.get(productId);
-                                            String imageUrl = productImageMap.get(productId);
-                                            Long quantity = (Long) product.get("Quantity");
-
-                                            int qty = quantity != null ? quantity.intValue() : 1;
-                                            int unitPrice = priceEach != null ? priceEach.intValue() : 0;
-
-                                            total += unitPrice * qty;
-
-                                            itemList.add(new OrderItem(imageUrl, productName, unitPrice, qty));
-                                        }
-
-                                        // ✅ Add delivery fee
-                                        Long deliveryFee = orderDoc.getLong("DeliveryFee");
-                                        if (deliveryFee != null) {
-                                            total += deliveryFee.intValue();
-                                        }
-
-                                        // ✅ Apply discount percent
-                                        Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
-                                        if (voucher != null) {
-                                            Long discountPercent = (Long) voucher.get("DiscountPercent");
-                                            if (discountPercent != null) {
-                                                total -= (total * discountPercent.intValue()) / 100;
-                                            }
-                                        }
-
-                                        OrderGroup group = new OrderGroup(status, itemList);
-                                        group.setTotal(total);
-                                        group.setOrderId(orderDoc.getId());
-
-                                        allOrderGroups.add(group);
-
-                                    } catch (Exception e) {
-                                        Log.e("OrdersFragment", "Parse order error: " + e.getMessage());
+                                Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
+                                if (voucher != null) {
+                                    Long discountPercent = (Long) voucher.get("DiscountPercent");
+                                    if (discountPercent != null) {
+                                        total -= (total * discountPercent.intValue()) / 100;
                                     }
                                 }
 
-                                Log.d("OrdersFragment", "Tổng số OrderGroup sau xử lý: " + allOrderGroups.size());
-                                filterOrdersByStatus(selectedStatus);
-                            })
-                            .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Order", e));
-                })
-                .addOnFailureListener(e -> Log.e("OrdersFragment", "Lỗi khi lấy Product", e));
+                                OrderGroup group = new OrderGroup(status, itemList);
+                                group.setTotal(total);
+                                group.setOrderId(orderDoc.getId());
+
+                                allOrderGroups.add(group);
+
+                            } catch (Exception e) {
+                                Log.e("OrdersFragment", "Error parsing order: " + e.getMessage());
+                            }
+                        }
+
+                        filterOrdersByStatus(selectedStatus);
+                    });
+        });
     }
 
 
     private void filterOrdersByStatus(String status) {
         List<OrderGroup> filtered = new ArrayList<>();
         for (OrderGroup group : allOrderGroups) {
-            if (group.getStatus().equals(status)) {
+            if (group.getStatus() != null && group.getStatus().trim().equalsIgnoreCase(status.trim())) {
                 group.setExpanded(false);
                 filtered.add(group);
             }
@@ -535,6 +525,11 @@ public class OrdersFragment extends Fragment {
         Log.d("CartBadge", "Fragment onDestroyView()");
         cleanupCartListener();
         txtCartBadge = null; // Clear view reference
+        if (orderListener != null) {
+            orderListener.remove();
+            orderListener = null;
+        }
+
     }
 
     @Override

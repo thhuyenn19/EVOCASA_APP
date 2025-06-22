@@ -1,10 +1,17 @@
 package com.mobile.evocasa.payment;
 
+import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
@@ -33,6 +42,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -258,8 +270,13 @@ public class MainPaymentFragment extends Fragment {
             orderIdObj.put("$oid", orderId);
             order.put("_id", orderIdObj);
 
+            // Format ngày theo ISO 8601
+            String isoDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                    .format(new Date());
+
+// Đóng gói kiểu $date
             Map<String, Object> orderDateObj = new HashMap<>();
-            orderDateObj.put("$date", new Date());
+            orderDateObj.put("$date", isoDate);
 
             order.put("OrderDate", orderDateObj);
             order.put("ShipDate", orderDateObj);  // hoặc tạo 1 bản riêng nếu khác thời gian
@@ -352,11 +369,55 @@ public class MainPaymentFragment extends Fragment {
                                 .collection("Customers")
                                 .document(uid)
                                 .update("Notifications", FieldValue.arrayUnion(notification));
+
+                        Toast.makeText(v.getContext(), "Order placed successfully!", Toast.LENGTH_LONG).show();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                                    != PackageManager.PERMISSION_GRANTED) {
+                                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                                return;
+                            }
+                        }
+                        sendOrderPlacedNotification();
+
+
+
                         // Chuyển sang trang finish khi thành công
                         requireActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragment_container, new FinishPaymentFragment())
                                 .addToBackStack(null)
                                 .commit();
+                        
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        DocumentReference customerRef = db.collection("Customers").document(uid);
+
+// 1. Lấy Cart hiện tại
+                        customerRef.get().addOnSuccessListener(document -> {
+                            if (document.exists()) {
+                                List<Map<String, Object>> cartList = (List<Map<String, Object>>) document.get("Cart");
+                                if (cartList == null) return;
+
+                                // 2. Lấy ID các sản phẩm đã mua
+                                List<String> purchasedIds = new ArrayList<>();
+                                for (CartProduct p : selectedProducts) {
+                                    purchasedIds.add(p.getId());
+                                }
+
+                                // 3. Giữ lại các sản phẩm chưa mua
+                                List<Map<String, Object>> updatedCart = new ArrayList<>();
+                                for (Map<String, Object> item : cartList) {
+                                    String pid = (String) item.get("productId");
+                                    if (!purchasedIds.contains(pid)) {
+                                        updatedCart.add(item);  // giữ lại sản phẩm chưa được mua
+                                    }
+                                }
+
+                                // 4. Cập nhật mảng Cart mới
+                                customerRef.update("Cart", updatedCart);
+                            }
+                        });
+
+
                     })
                     .addOnFailureListener(e -> {
                         Toast.makeText(requireContext(), "Failed to place order", Toast.LENGTH_SHORT).show();
@@ -412,6 +473,36 @@ public class MainPaymentFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // ✅ Gửi notification ở đây sau khi được cấp phép
+            sendOrderPlacedNotification();
+        }
+    }
+    private void sendOrderPlacedNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                Log.w("Notification", "Permission NOT granted. Skip showing notification.");
+                return; // không có quyền thì không gọi notify
+            }
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(requireContext(), "order_channel_id")
+                .setSmallIcon(R.drawable.ic_payment_confirmed_noti)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_logo_app)) // logo màu
+                .setContentTitle("Order placed successfully")
+                .setContentText("Your order has been received and is being processed.")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(requireContext());
+        notificationManager.notify(new Random().nextInt(), builder.build());
+    }
+
 
     private Object getPaymentText(String method) {
         if (method == null) return "COD";
