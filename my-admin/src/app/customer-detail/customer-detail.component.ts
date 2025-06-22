@@ -181,12 +181,55 @@ deleteShippingAddress(addressId: string): void {
     });
   }
   
+  // getTotalAmount(): number {
+  //   return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
+  // }
+
+  // getOrderQuantity(order: Order): number {
+  //   return order.OrderProduct.reduce((total, product) => total + product.Quantity, 0);
+  // }
+
+  // FIXED: getTotalAmount method with proper null checking
   getTotalAmount(): number {
-    return this.orders.reduce((total, order) => total + order.TotalPrice, 0);
+    if (!this.orders || this.orders.length === 0) {
+      return 0;
+    }
+    return this.orders.reduce((total, order) => {
+      // Check if order and TotalPrice exist
+      if (order && typeof order.TotalPrice === 'number') {
+        return total + order.TotalPrice;
+      }
+      return total;
+    }, 0);
   }
 
+  // FIXED: getOrderQuantity method with proper null checking
   getOrderQuantity(order: Order): number {
-    return order.OrderProduct.reduce((total, product) => total + product.Quantity, 0);
+    // Check if order exists
+    if (!order) {
+      console.warn('Order is null or undefined');
+      return 0;
+    }
+
+    // Check if OrderProduct exists and is an array
+    if (!order.OrderProduct || !Array.isArray(order.OrderProduct)) {
+      console.warn('OrderProduct is not an array or is undefined:', order.OrderProduct);
+      return 0;
+    }
+
+    try {
+      return order.OrderProduct.reduce((total, product) => {
+        // Check if product and Quantity exist
+        if (product && typeof product.Quantity === 'number') {
+          return total + product.Quantity;
+        }
+        console.warn('Product or Quantity is invalid:', product);
+        return total;
+      }, 0);
+    } catch (error) {
+      console.error('Error calculating order quantity:', error, order);
+      return 0;
+    }
   }
   
   get totalPages(): number {
