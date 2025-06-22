@@ -408,6 +408,14 @@ public class ProfileFragment extends Fragment {
                 }
             });
         }
+        // Vouchers
+        View txtVouchers = view.findViewById(R.id.txtVouchers);
+        txtVouchers.setOnClickListener(v -> {
+            if (isAdded() && getActivity() != null) {
+                Intent intent = new Intent(getActivity(), com.mobile.evocasa.VoucherActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void loadCustomerInformation() {
