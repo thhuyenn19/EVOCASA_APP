@@ -104,7 +104,7 @@
                   <div class="product-info">
                     <span>{{
                       products[product._id].Name || "Đang tải..."
-                      }}</span>
+                    }}</span>
                   </div>
                 </td>
                 <td class="color-body">{{ product.Quantity }}</td>
@@ -113,9 +113,9 @@
                 </td>
                 <td class="color-body">
                   {{
-                  formatCurrency(
-                  (products[product._id].Price || 0) * product.Quantity
-                  )
+                    formatCurrency(
+                      (products[product._id].Price || 0) * product.Quantity
+                    )
                   }}
                 </td>
               </tr>
@@ -127,11 +127,15 @@
             <div class="price-details">
               <div class="price-row">
                 <span class="label">PrePrice:</span>
-                <span class="value">{{ formatCurrency(calculateTotalProductPrice()) }}</span>
+                <span class="value">{{
+                  formatCurrency(calculateTotalProductPrice())
+                }}</span>
               </div>
               <div class="price-row">
                 <span class="label">Delivery Fee:</span>
-                <span class="value">{{ formatCurrency(order?.DeliveryFee || 0) }}</span>
+                <span class="value">{{
+                  formatCurrency(order?.DeliveryFee || 0)
+                }}</span>
               </div>
               <div class="price-row">
                 <span class="label">Discount:</span>
@@ -143,26 +147,36 @@
 
             <div class="price-total">
               <span class="label">Total:</span>
-              <span class="value">{{ formatCurrency(calculateFinalTotal()) }}</span>
+              <span class="value">{{
+                formatCurrency(calculateFinalTotal())
+              }}</span>
             </div>
           </div>
 
-
-
-
-
           <!-- Status Buttons -->
           <div class="status-buttons">
-            <button [class.active]="order?.Status === 'Cancelled'" (click)="updateOrderStatus('Cancelled')">
+            <button
+              [class.active]="order?.Status === 'Cancelled'"
+              (click)="updateOrderStatus('Cancelled')"
+            >
               Cancelled
             </button>
-            <button [class.active]="order?.Status === 'In transit'" (click)="updateOrderStatus('In transit')">
+            <button
+              [class.active]="order?.Status === 'In transit'"
+              (click)="updateOrderStatus('In transit')"
+            >
               In transit
             </button>
-            <button [class.active]="order?.Status === 'Delivered'" (click)="updateOrderStatus('Delivered')">
+            <button
+              [class.active]="order?.Status === 'Delivered'"
+              (click)="updateOrderStatus('Delivered')"
+            >
               Delivered
             </button>
-            <button [class.active]="order?.Status === 'Completed'" (click)="updateOrderStatus('Completed')">
+            <button
+              [class.active]="order?.Status === 'Completed'"
+              (click)="updateOrderStatus('Completed')"
+            >
               Completed
             </button>
           </div>

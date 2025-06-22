@@ -22,6 +22,9 @@ export class OrderDetailComponent implements OnInit {
   loading: boolean = true;
   error: string = '';
 
+  // Lưu địa chỉ giao hàng (nếu có)
+  shippingAddress: any = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -39,17 +42,64 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
+  /**
+   * Chuẩn hoá ObjectId/string trả về từ Firestore thành chuỗi thuần
+   */
+  private normalizeId(raw: any): string {
+    if (!raw) return '';
+    if (typeof raw === 'string') return raw;
+    if (typeof raw === 'object') {
+      return raw.$oid || raw._id || raw.id || JSON.stringify(raw);
+    }
+    return String(raw);
+  }
+
   loadOrderDetails() {
     this.loading = true;
     this.error = '';
 
     this.orderService.getOrderById(this.orderId).subscribe({
       next: (orderData) => {
-        this.order = orderData;
-        if (orderData.Customer_id) {
-          this.loadCustomerDetails(orderData.Customer_id);
+        // ✅ Chuẩn hoá danh sách sản phẩm (_id thành chuỗi thuần)
+        if (Array.isArray(orderData.OrderProduct)) {
+          orderData.OrderProduct = orderData.OrderProduct.map((item: any) => {
+            const normId = this.normalizeId(
+              item._id ?? item.id ?? item.ProductId ?? item.Product_id
+            );
+            return { ...item, _id: normId };
+          });
         }
-        this.loadProductDetails(orderData.OrderProduct);
+
+        // Lưu đơn hàng sau khi chuẩn hoá
+        this.order = orderData;
+
+        // Lấy thông tin khách hàng (Name, address,...)
+        if (orderData.Customer_id) {
+          const customerId = this.normalizeId(orderData.Customer_id);
+          this.loadCustomerDetails(customerId);
+
+          // Lấy ShippingAddresses
+          this.customerService.getShippingAddresses(customerId).subscribe({
+            next: (addresses) => {
+              if (addresses && addresses.length > 0) {
+                const addr = addresses.find((a) => a.IsDefault) || addresses[0];
+                this.shippingAddress = addr;
+
+                // Gán vào order để template hiển thị
+                if (this.order) {
+                  this.order.Address = addr.Address || this.order.Address;
+                  this.order.Phone = addr.Phone || this.order.Phone;
+                  (this.order as any).Email =
+                    (addr as any).Email || this.order.Email;
+                }
+              }
+            },
+            error: (err) =>
+              console.error('Error loading shipping addresses', err),
+          });
+        }
+
+        this.loadProductDetails(orderData.OrderProduct as any);
       },
       error: (err) => {
         this.error = 'Không thể tải thông tin đơn hàng. Vui lòng thử lại sau.';
@@ -73,15 +123,24 @@ export class OrderDetailComponent implements OnInit {
     });
   }
 
-  loadProductDetails(orderProducts: { _id: string; Quantity: number }[]) {
-    const productObservables = orderProducts.map((item) =>
-      this.productService.getProductByIdentifier(item._id)
+  loadProductDetails(orderProducts: any[]) {
+    if (!orderProducts || orderProducts.length === 0) {
+      this.loading = false;
+      return;
+    }
+
+    const productIds: string[] = orderProducts.map((item) =>
+      this.normalizeId(item._id)
+    );
+
+    const productObservables = productIds.map((pid) =>
+      this.productService.getProductByIdentifier(pid)
     );
 
     forkJoin(productObservables).subscribe({
       next: (products) => {
         products.forEach((product, index) => {
-          this.products[orderProducts[index]._id] = product;
+          this.products[productIds[index]] = product;
         });
         this.loading = false;
       },
