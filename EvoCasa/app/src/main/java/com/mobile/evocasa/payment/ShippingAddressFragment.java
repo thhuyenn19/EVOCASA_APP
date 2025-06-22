@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.ShippingAddressPaymentAdapter;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.profile.EditShippingFragment;
 import com.mobile.models.ShippingAddress;
 import com.mobile.utils.UserSessionManager;
 
@@ -73,7 +75,7 @@ public class ShippingAddressFragment extends Fragment {
                                     address -> {
                                         Bundle b = new Bundle();
                                         b.putSerializable("shippingAddress", address);
-                                        EditShippingPaymentFragment f = new EditShippingPaymentFragment();
+                                        EditShippingFragment f = new EditShippingFragment();
                                         f.setArguments(b);
                                         requireActivity().getSupportFragmentManager()
                                                 .beginTransaction()
@@ -109,6 +111,15 @@ public class ShippingAddressFragment extends Fragment {
                 .addOnFailureListener(e ->
                         Log.e("ShippingAddressFrag", "Fail loading addresses", e)
                 );
+        AppCompatButton btnAddShipping = view.findViewById(R.id.btn_add_shipping);
+        btnAddShipping.setOnClickListener(v -> {
+            // Mở EditShippingFragment với form rỗng
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new EditShippingFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
 
         return view;
     }

@@ -229,6 +229,7 @@
     <string name="retry">Retry</string>
     <string name="no_internet_icon">No Internet Icon</string>
     <string name="open_network_settings">Open Network Settings</string>
+    <string name="title_profile_detail">Profile Detail</string>
 
 
 </resources>
