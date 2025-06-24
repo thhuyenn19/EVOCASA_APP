@@ -148,14 +148,13 @@ public class WishlistFragment extends Fragment {
                 hotProductList.remove(product);
                 hotProductsAdapter.notifyDataSetChanged();
 
+                // Add a new product to replace the removed one
+                addNewProductToHotProducts();
+
                 // Reset tab data để load lại từ Firestore
                 isTabDataLoaded = false;
                 initializeTabProductsMap();
 
-                // Nếu hết sản phẩm hot, load thêm
-                if (hotProductList.isEmpty()) {
-                    loadHotProducts();
-                }
             });
         });
 
@@ -383,13 +382,13 @@ public class WishlistFragment extends Fragment {
         }
     }
 
+    // Method to load Hot Products from Firestore
     private void loadHotProducts() {
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
                     List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
 
-                    // Lọc ra những sản phẩm chưa có trong wishlist
                     db.collection("Wishlist")
                             .whereEqualTo("Customer_id", currentCustomerId)
                             .get()
@@ -416,11 +415,10 @@ public class WishlistFragment extends Fragment {
                                 for (int i = 0; i < limit; i++) {
                                     HotProducts product = availableDocs.get(i).toObject(HotProducts.class);
                                     if (product != null) {
-                                        product.setId(availableDocs.get(i).getId());  // Setting the product ID
+                                        product.setId(availableDocs.get(i).getId());
                                         hotProductList.add(product);
                                     }
                                 }
-
 
                                 hotProductsAdapter.notifyDataSetChanged();
                                 recyclerViewHotProducts.setVisibility(hotProductList.isEmpty() ? View.GONE : View.VISIBLE);
@@ -430,9 +428,65 @@ public class WishlistFragment extends Fragment {
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Lỗi khi load Hot Products", e);
+                    Log.e("Firestore", "Error loading Hot Products", e);
                 });
     }
+
+    // Method to add a new product to Hot Products after one is removed
+    private void addNewProductToHotProducts() {
+        db.collection("Product")
+                .get()
+                .addOnSuccessListener(querySnapshots -> {
+                    List<DocumentSnapshot> allDocs = querySnapshots.getDocuments();
+
+                    db.collection("Wishlist")
+                            .whereEqualTo("Customer_id", currentCustomerId)
+                            .get()
+                            .addOnSuccessListener(wishlistQuery -> {
+                                List<String> wishlistProductIds = new ArrayList<>();
+                                if (!wishlistQuery.isEmpty()) {
+                                    List<String> productIds = (List<String>) wishlistQuery.getDocuments().get(0).get("Productid");
+                                    if (productIds != null) {
+                                        wishlistProductIds = productIds;
+                                    }
+                                }
+
+                                // List of products that are already in Hot Products and Wishlist
+                                List<String> allExcludedIds = new ArrayList<>(wishlistProductIds);
+                                for (HotProducts product : hotProductList) {
+                                    allExcludedIds.add(product.getId()); // Exclude hot products from new ones
+                                }
+
+                                // Filter out products that are already in Hot Products or Wishlist
+                                List<DocumentSnapshot> availableDocs = new ArrayList<>();
+                                for (DocumentSnapshot doc : allDocs) {
+                                    if (!allExcludedIds.contains(doc.getId())) {
+                                        availableDocs.add(doc);
+                                    }
+                                }
+
+                                // If there are available products, add a new one
+                                if (!availableDocs.isEmpty()) {
+                                    HotProducts newProduct = availableDocs.get(0).toObject(HotProducts.class);
+                                    if (newProduct != null) {
+                                        newProduct.setId(availableDocs.get(0).getId());
+                                        hotProductList.add(newProduct);
+                                    }
+                                }
+
+                                hotProductsAdapter.notifyDataSetChanged();
+                                recyclerViewHotProducts.setVisibility(hotProductList.isEmpty() ? View.GONE : View.VISIBLE);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("Firestore", "Error loading wishlist for hot products", e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("Firestore", "Error loading Hot Products", e);
+                });
+    }
+
+
 
     // Helper class cho Wishlist document structure
     public static class WishlistDocument {
