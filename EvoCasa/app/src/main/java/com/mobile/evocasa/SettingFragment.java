@@ -121,7 +121,6 @@ public class SettingFragment extends Fragment {
             Toast.makeText(getContext(), "Error changing language", Toast.LENGTH_SHORT).show();
         }
     }
-
     private void showDeleteAccountDialog() {
         if (!isAdded() || getActivity() == null) {
             Toast.makeText(getContext(), R.string.cannot_show_dialog, Toast.LENGTH_SHORT).show();

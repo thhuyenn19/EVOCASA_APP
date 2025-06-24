@@ -1,6 +1,7 @@
 package com.mobile.evocasa.onboarding;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,7 +14,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.mobile.adapters.ViewPagerAdapter;
 import com.mobile.evocasa.R;
@@ -26,54 +26,40 @@ public class Onboarding1Activity extends AppCompatActivity {
     private TextView tvSkip;
     private ViewPager viewPager;
     private CircleIndicator indicator;
-
     private ViewPagerAdapter viewPagerAdapter;
+    private static final String PREFS_NAME = "AppSettings";
+    private static final String KEY_ONBOARDING = "hasShownOnboarding";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_onboarding1);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
 
         initUI();
 
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         viewPager.setAdapter(viewPagerAdapter);
-
         indicator.setViewPager(viewPager);
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                if (position == 2){
+                if (position == 2) { // Trang 3 (cuối cùng)
                     tvSkip.setVisibility(View.GONE);
-                }
-                else {
+                } else {
                     tvSkip.setVisibility(View.VISIBLE);
                 }
-
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
-
-
     }
 
     private void initUI() {
@@ -81,30 +67,20 @@ public class Onboarding1Activity extends AppCompatActivity {
         viewPager = findViewById(R.id.view_pager);
         indicator = findViewById(R.id.indicator);
 
-        tvSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Onboarding1Activity.this, Onboarding5Activity.class);
-                startActivity(intent);
-                finish(); //không quay lại màn hình onboarding1 khi nhấn back
-            }
+        tvSkip.setOnClickListener(v -> {
+            // Lưu trạng thái đã xem onboarding
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_ONBOARDING, true);
+            editor.apply();
+
+            Intent intent = new Intent(this, Onboarding5Activity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
         });
 
-
-
-//        tvSkip.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//               viewPager.setCurrentItem(2);
-////                if (viewPager.getCurrentItem() <2 ){
-////                    viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
-////                }
-//            }
-//        });
-
         FontUtils.initFonts(this);
-
         FontUtils.setRegularFont(this, tvSkip);
-
     }
 }

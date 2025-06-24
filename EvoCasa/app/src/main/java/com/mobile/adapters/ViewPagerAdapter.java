@@ -1,6 +1,5 @@
 package com.mobile.adapters;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -22,13 +21,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return new Onboarding2Fragment();
-
             case 1:
                 return new Onboarding3Fragment();
-
             case 2:
                 return new Onboarding4Fragment();
-
             default:
                 return new Onboarding2Fragment();
         }
