@@ -1,10 +1,14 @@
 package com.mobile.evocasa;
-
+import android.Manifest;
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.annotation.NonNull;
@@ -45,6 +51,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.gson.Gson;
@@ -63,6 +70,9 @@ public class HomeFragment extends Fragment {
     private List<Integer> imageList;
 
     private ImageView imgCart;
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
+    private EditText edtSearch;
+    private ImageView imgMic;
 
     private ViewPager2 viewPagerBanner;
     private Handler sliderHandler = new Handler();
@@ -91,6 +101,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+       
         db = FirebaseFirestore.getInstance();
         /*Category*/
         // 1. Gán layout cho view
@@ -103,6 +114,12 @@ public class HomeFragment extends Fragment {
         timerHour = view.findViewById(R.id.timerHour);
         timerMinute = view.findViewById(R.id.timerMinute);
         timerSecond = view.findViewById(R.id.timerSecond);
+        edtSearch = view.findViewById(R.id.edtSearch);
+
+
+
+        imgMic = view.findViewById(R.id.imgMic);
+        imgMic.setOnClickListener(v -> startVoiceInput());
 
         // Áp dụng font cho các TextView
         applyCustomFonts();
@@ -264,6 +281,52 @@ public class HomeFragment extends Fragment {
         startCartBadgeListener();
 
         return view;
+    }
+
+    private void startVoiceInput() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+            return;
+        }
+
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please speak the product name...");
+
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getContext(), "Your device does not support speech recognition", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == Activity.RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result != null && !result.isEmpty()) {
+                String voiceText = result.get(0);
+                edtSearch.setText(voiceText);
+
+                // You can call a search/filter function here
+                // performSearch(voiceText);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                startVoiceInput(); // Retry after permission granted
+            } else {
+                Toast.makeText(getContext(), "You need to grant microphone access to use this feature", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

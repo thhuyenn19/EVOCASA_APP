@@ -24,7 +24,9 @@
         android:hint="@string/title_hint_Search"
         android:textColor="@color/color_5E4C3E"
         android:textColorHint="@color/color_5E4C3E"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:inputType="text"
+        android:imeOptions="actionSearch" />
 
     <ImageView
         android:id="@+id/imgMic"
