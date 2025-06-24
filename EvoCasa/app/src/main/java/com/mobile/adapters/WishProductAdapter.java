@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.mobile.evocasa.R;
+import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.FontUtils;
 
@@ -24,10 +25,20 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
     private List<WishProduct> wishProductList;
     private OnItemClickListener onItemClickListener;
     private String currentTab = "all";
+    private OnProductItemClickListener itemClickListener;
 
-    // Interface để xử lý sự kiện click
+    // Interface to handle click on wishlist item
     public interface OnItemClickListener {
         void onItemClick(int position);
+    }
+
+    // Renamed interface for HotProduct item click
+    public interface OnProductItemClickListener {
+        void onItemClick(HotProducts product);
+    }
+
+    public void setOnProductItemClickListener(OnProductItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 
     public WishProductAdapter(List<WishProduct> wishProductList, OnItemClickListener listener) {
@@ -86,6 +97,16 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
             }
         });
 
+        // Item click to navigate to product details
+        holder.itemView.setOnClickListener(v -> {
+            // Assuming HotProducts has been set with ID from Firestore (e.g., product.setId())
+            HotProducts hotProduct = new HotProducts();  // Create or map to HotProducts object
+            hotProduct.setId(product.getId());  // Assuming product has the ID you want to pass
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(hotProduct);
+            }
+        });
+
         // ✅ Xử lý Flash Sale badge theo tab
         if ("sale".equalsIgnoreCase(currentTab)) {
             holder.tvFlashSale.setVisibility(View.VISIBLE);
@@ -125,4 +146,3 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
         }
     }
 }
-

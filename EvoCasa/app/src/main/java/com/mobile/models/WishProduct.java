@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WishProduct {
+
+    @com.google.firebase.firestore.Exclude
+    private String id;
     @PropertyName("Image")
     private String image;  // là JSON String từ Firebase
 
@@ -75,6 +78,12 @@ public class WishProduct {
         List<String> list = getImageList();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
+
+    @com.google.firebase.firestore.Exclude
+    public String getId() { return id; }
+
+    @com.google.firebase.firestore.Exclude
+    public void setId(String id) { this.id = id; }
 }
 
 

@@ -83,6 +83,13 @@ public class WishlistFragment extends Fragment {
             });
         });
 
+        // Add the OnProductItemClickListener to open Product Details Activity
+        wishProductAdapter.setOnProductItemClickListener(product -> {
+            Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());  // Pass the productId to the details activity
+            startActivity(intent);
+        });
+
         recyclerViewWishProduct.setAdapter(wishProductAdapter);
 
         // Khởi tạo tab products map
@@ -219,6 +226,7 @@ public class WishlistFragment extends Fragment {
                                         if (productDoc.exists()) {
                                             WishProduct product = productDoc.toObject(WishProduct.class);
                                             if (product != null) {
+                                                product.setId(productDoc.getId());
                                                 allProducts.add(product);
                                             }
                                         }
