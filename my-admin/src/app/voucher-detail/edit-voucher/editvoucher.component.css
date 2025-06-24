@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+/* Reuse styles from add-voucher */
+@import url("../add-voucher/addvoucher.component.css");
+
+/* Override update button color */
+.update-voucher {
+  background: #495744;
+  color: #f2ead3;
+}

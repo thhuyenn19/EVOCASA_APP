@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap");
+
+* {
+  font-family: "Inter", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Header section */
+.container {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  margin-top: 18px;
+  justify-content: flex-start;
+}
+
+.title {
+  color: #3f2305;
+  font-size: 30px;
+  font-family: "Zen Old Mincho", serif;
+  flex: 1;
+}
+
+.flex-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.button {
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0 8px;
+}
+
+.save-draft {
+  border: 1px solid #3f2305;
+  color: #3f2305;
+}
+
+.add-voucher {
+  background: #525b4a;
+  color: #f2ead3;
+}
+
+.cancel {
+  border: 1px solid #3f2305;
+  color: #3f2305;
+  margin-right: 30px;
+}
+
+.button img {
+  width: 22px;
+  height: 22px;
+  margin-right: 4px;
+}
+
+/* Voucher ID text */
+.voucher-id {
+  margin-left: 50px;
+  margin-top: 10px;
+  font-style: italic;
+  color: #3f2305;
+}
+
+.id-value {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Form boxes */
+.custom-container {
+  display: flex;
+  gap: 30px;
+  margin-top: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+  padding-bottom: 10px;
+}
+
+.voucher-info-box {
+  width: 100%;
+  background: rgba(246, 239, 221, 0.5);
+  border-radius: 7px;
+}
+
+.voucher-info-content {
+  margin-left: 45px;
+  margin-right: 45px;
+  margin-bottom: 25px;
+}
+
+.voucher-info-title {
+  color: #5e4c3e;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.inputs-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 180px;
+}
+
+.half-width {
+  flex: 1;
+  max-width: calc(50% - 10px); /* half row minus gap */
+}
+
+.label {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 16px;
+  margin-top: 20px;
+  font-style: bold;
+}
+
+.input-field {
+  height: 30px;
+  padding-left: 15px;
+  border-radius: 7px;
+  margin-top: 5px;
+  border: 1px solid #f2ead3;
+  background: #f2ead3;
+  font-size: 14px;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+}
+
+.label2 {
+  background: #d8d3c5;
+  border-radius: 0 7px 7px 0;
+  padding: 6px 10px;
+  height: 30px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 40px; /* align with input field baseline */
+}
+
+.checkbox-container label {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 14px;
+  cursor: pointer;
+}

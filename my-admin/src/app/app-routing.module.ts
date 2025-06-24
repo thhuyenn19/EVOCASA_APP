@@ -15,27 +15,96 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ViewProductComponent } from './product-detail/view-product/view-product.component';
 import { ViewCategoryComponent } from './category-detail/view-category/view-category.component';
-import { MessageComponent } from './message/message.component'; 
-
+import { MessageComponent } from './message/message.component';
+import { VoucherComponent } from './voucher/voucher.component';
+import { AddVoucherComponent } from './voucher-detail/add-voucher/addvoucher.component';
+import { EditVoucherComponent } from './voucher-detail/edit-voucher/editvoucher.component';
 
 const routes: Routes = [
-  { path: 'dashboard-page', component: DashboardComponent, canActivate: [AuthGuard] },
-  { path: 'customer-detail/:id', component: CustomerDetailComponent, canActivate: [AuthGuard]},
-  { path: 'order-detail/:id', component: OrderDetailComponent, canActivate: [AuthGuard] },
-  { path: 'admin-product-add', component: AddProductComponent, canActivate: [AuthGuard]},
-  { path: 'admin-product-edit/:id', component: EditProductComponent, canActivate: [AuthGuard] },
-  { path: 'admin-product-view/:id', component: ViewProductComponent, canActivate: [AuthGuard] },
-  { path: 'admin-category-add', component: AddCategoryComponent, canActivate: [AuthGuard] },
-  { path: 'admin-category-edit/:id', component: EditCategoryComponent, canActivate: [AuthGuard]},
-  { path: 'admin-category-view/:id', component: ViewCategoryComponent, canActivate: [AuthGuard]},
-  { path: 'admin-customer', component: CustomerComponent, canActivate: [AuthGuard] },
-  { path: 'admin-product', component: ProductComponent, canActivate: [AuthGuard] },
-  { path: 'admin-category', component: CategoryComponent, canActivate: [AuthGuard] },
-  { path: 'admin-order', component: OrderComponent, canActivate: [AuthGuard]},
-  { path: 'admin-message', component: MessageComponent, canActivate: [AuthGuard]}, 
+  {
+    path: 'dashboard-page',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'customer-detail/:id',
+    component: CustomerDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-detail/:id',
+    component: OrderDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-product-add',
+    component: AddProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-product-edit/:id',
+    component: EditProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-product-view/:id',
+    component: ViewProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-category-add',
+    component: AddCategoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-category-edit/:id',
+    component: EditCategoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-category-view/:id',
+    component: ViewCategoryComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-customer',
+    component: CustomerComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-product',
+    component: ProductComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-category',
+    component: CategoryComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'admin-order', component: OrderComponent, canActivate: [AuthGuard] },
+  {
+    path: 'admin-promotion',
+    component: VoucherComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-message',
+    component: MessageComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'login-page', component: LoginComponent },
   { path: '', component: LoginComponent },
-  { path: '**', redirectTo: '' }
+  {
+    path: 'admin-voucher-add',
+    component: AddVoucherComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'admin-voucher-edit/:id',
+    component: EditVoucherComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

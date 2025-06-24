@@ -1,0 +1,105 @@
+<div class="main-content">
+  <h3>VOUCHER MANAGEMENT</h3>
+  <br />
+  <h4>
+    Total vouchers ({{ totalItems }}) | Showing {{ filteredVouchers.length }}/{{
+      totalItems
+    }}
+  </h4>
+
+  <!-- Action buttons -->
+  <div class="actions">
+    <button
+      class="filter-button"
+      [class.active]="showFilter"
+      (click)="toggleFilter()"
+    >
+      <img src="images/order/Filter.svg" alt="Filter" />
+      <span class="filter-text">Filter by</span>
+    </button>
+
+    <div class="right-button">
+      <div class="addvoucher-button" (click)="addVoucher()">
+        <img src="images/product/add.png" alt="Add" />
+        <span>Add voucher</span>
+      </div>
+      <button class="export-button" (click)="exportVouchers()">
+        <img src="images/product/export.svg" alt="Export" class="export-icon" />
+        <span class="export-text">Exports</span>
+        <img src="images/product/arrow.svg" alt="Arrow" class="dropdown-icon" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-container">
+    <table class="voucher-table">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Voucher ID</th>
+          <th>Discount value</th>
+          <th>Creation Date</th>
+          <th>Quantity</th>
+          <th>Campaign</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let voucher of pagedVouchers; let i = index">
+          <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+          <td>{{ voucher.code }}</td>
+          <td>{{ voucher.discount }}%</td>
+          <td>{{ voucher.startDate | date : "dd-MM-yyyy" }}</td>
+          <td>{{ voucher.quantity }}</td>
+          <td>{{ voucher.campaign }}</td>
+          <td>{{ voucher.active ? "Active" : "Expired" }}</td>
+          <td>
+            <button class="icon-btn" (click)="viewVoucher(voucher)">
+              <img src="images/product/view.svg" alt="view" />
+            </button>
+            <button class="icon-btn" (click)="editVoucher(voucher)">
+              <img src="images/product/editicon.svg" alt="edit" />
+            </button>
+            <button class="icon-btn" (click)="deleteVoucher(voucher.id)">
+              <img src="images/product/trash.svg" alt="delete" />
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Showing count -->
+  <div class="show">
+    Showing {{ filteredVouchers.length }}/{{ totalItems }} of all results
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    <button
+      class="prev-btn"
+      (click)="prevPage()"
+      [disabled]="currentPage === 1"
+    >
+      &lt;
+    </button>
+    <ng-container *ngFor="let page of pageNumbers">
+      <button
+        class="page-btn"
+        (click)="goToPage(page)"
+        [class.active]="currentPage === page"
+      >
+        {{ page }}
+      </button>
+    </ng-container>
+    <button
+      class="next-btn"
+      (click)="nextPage()"
+      [disabled]="currentPage === totalPages"
+    >
+      &gt;
+    </button>
+  </div>
+</div>

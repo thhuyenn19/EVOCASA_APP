@@ -23,7 +23,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ViewProductComponent } from './product-detail/view-product/view-product.component';
 import { ViewCategoryComponent } from './category-detail/view-category/view-category.component';
-import { MessageComponent } from './message/message.component'; 
+import { MessageComponent } from './message/message.component';
+import { VoucherComponent } from './voucher/voucher.component';
+import { AddVoucherComponent } from './voucher-detail/add-voucher/addvoucher.component';
+import { EditVoucherComponent } from './voucher-detail/edit-voucher/editvoucher.component';
 
 @NgModule({
   declarations: [
@@ -44,8 +47,18 @@ import { MessageComponent } from './message/message.component';
     LoginComponent,
     ViewProductComponent,
     ViewCategoryComponent,
+    VoucherComponent,
+    AddVoucherComponent,
+    EditVoucherComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
