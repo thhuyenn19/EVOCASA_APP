@@ -42,13 +42,6 @@
                 <a class="item--dropdown" routerLink="/admin-category" [ngClass]="{ active: isActive('/admin-category') }" (click)="keepDropdownOpen($event)">Category</a>
             </div>
         </li>
-
-        <li>
-              <a routerLink="/admin-notification" class="navigate__bar--link" [ngClass]="{ active: isActive('/admin-notification') }" (click)="closeDropdown()">
-                  <span class="material-icons-outlined">notifications</span>
-                  <span class="nav__item">Notification</span>
-              </a>
-          </li>
           <li>
               <a routerLink="/admin-promotion" class="navigate__bar--link" [ngClass]="{ active: isActive('/admin-promotion') }" (click)="closeDropdown()">
                   <span class="material-icons-outlined">confirmation_number</span>
