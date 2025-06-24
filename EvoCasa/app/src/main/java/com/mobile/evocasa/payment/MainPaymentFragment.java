@@ -52,6 +52,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.ShippingMethodAdapter;
 import com.mobile.adapters.VoucherAdapter;
+import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
 import com.mobile.models.CartProduct;
@@ -75,7 +76,7 @@ public class MainPaymentFragment extends Fragment {
     private LinearLayout productContainer;
     private LinearLayout layoutShipping;
     private View overlayShipping;
-    private LinearLayout shippingOptionsLayout;
+    private LinearLayout shippingOptionsLayout, btnBack;
     private RecyclerView rvShipping;
     private ImageView btnCloseShipping;
     private TextView txtName, txtFee, txtDesc;
@@ -146,6 +147,7 @@ public class MainPaymentFragment extends Fragment {
 
         txtVoucher = view.findViewById(R.id.txtVoucher);
         txtVoucher.setPaintFlags(txtVoucher.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        btnBack = view.findViewById(R.id.btnBack);
 
         TextView txtEditInfor = view.findViewById(R.id.txtEditInfor);
         txtEditInfor.setPaintFlags(txtEditInfor.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -544,7 +546,10 @@ public class MainPaymentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), CartActivity.class);
+            startActivity(intent);
+        });
         Bundle args = getArguments();
         if (args != null) {
             String cartJson = args.getString("cartPayment");
