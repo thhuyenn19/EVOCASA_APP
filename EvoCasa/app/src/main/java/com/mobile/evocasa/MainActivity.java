@@ -31,9 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // QUAN TRỌNG: Gọi setAppLocale() TRƯỚC super.onCreate()
         setAppLocale();
-
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -46,31 +44,23 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Kiểm tra xem có fragment nào được khôi phục không
         if (savedInstanceState == null) {
             UserSessionManager sessionManager = new UserSessionManager(this);
+            String openFragment = getIntent().getStringExtra("openFragment");
 
-            if (sessionManager.isLoggedIn()) {
-                // Đã đăng nhập → Mở luôn màn hình chính
+            if (openFragment != null) {
+                if ("SignUp".equals(openFragment)) {
+                    switchToFragment(new SignUp1Fragment());
+                } else if ("SignIn".equals(openFragment)) {
+                    switchToFragment(new SignInFragment());
+                }
+            } else if (sessionManager.isLoggedIn()) {
                 startActivity(new Intent(MainActivity.this, NarBarActivity.class));
-                finish(); // Đóng MainActivity để không quay lại được
+                finish();
             } else {
-                // Chưa đăng nhập → hiện SignInFragment
-                SignInFragment signInFragment = new SignInFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, signInFragment)
-                        .addToBackStack(null)
-                        .commit();
+                switchToFragment(new SignInFragment());
             }
-        }
-
-        String openFragment = getIntent().getStringExtra("openFragment");
-
-        if ("SignUp".equals(openFragment)) {
-            switchToFragment(new SignUp1Fragment());
-            return;
-        } else if ("SignIn".equals(openFragment)) {
-            switchToFragment(new SignInFragment());
-            return;
         }
     }
 

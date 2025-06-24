@@ -70,12 +70,9 @@ public class SettingFragment extends Fragment {
         String[] languages = {"English", "Tiếng Việt"};
         String[] languageCodes = {"en", "vi"};
 
-        // Lấy ngôn ngữ hiện tại
         SharedPreferences prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String currentLanguage = prefs.getString(KEY_LANGUAGE, "en"); // Mặc định là tiếng Anh
-
-        // Tìm vị trí của ngôn ngữ hiện tại trong danh sách
-        int selectedPosition = 0; // Mặc định là English
+        String currentLanguage = prefs.getString(KEY_LANGUAGE, "en");
+        int selectedPosition = 0;
         for (int i = 0; i < languageCodes.length; i++) {
             if (languageCodes[i].equals(currentLanguage)) {
                 selectedPosition = i;
@@ -85,26 +82,16 @@ public class SettingFragment extends Fragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
         builder.setTitle(R.string.language_selection);
-        builder.setSingleChoiceItems(languages, selectedPosition, new android.content.DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(android.content.DialogInterface dialog, int which) {
-                // Khi người dùng chọn một ngôn ngữ
-                String selectedLanguageCode = languageCodes[which];
-
-                // Chỉ thay đổi khi chọn ngôn ngữ khác với hiện tại
-                if (!selectedLanguageCode.equals(currentLanguage)) {
-                    setLocale(selectedLanguageCode);
-                }
-                dialog.dismiss();
+        builder.setSingleChoiceItems(languages, selectedPosition, (dialog, which) -> {
+            String selectedLanguageCode = languageCodes[which];
+            if (!selectedLanguageCode.equals(currentLanguage)) {
+                setLocale(selectedLanguageCode);
+                Toast.makeText(getContext(), "Language changed. Please restart the app.", Toast.LENGTH_LONG).show();
             }
+            dialog.dismiss();
         });
 
-        builder.setNegativeButton(android.R.string.cancel, new android.content.DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(android.content.DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
         builder.setCancelable(true);
 
         AlertDialog dialog = builder.create();
@@ -119,7 +106,7 @@ public class SettingFragment extends Fragment {
             editor.putString(KEY_LANGUAGE, languageCode);
             editor.apply();
 
-            // Áp dụng ngôn ngữ mới
+            // Áp dụng ngôn ngữ mới mà không recreate
             Locale locale = new Locale(languageCode);
             Locale.setDefault(locale);
 
@@ -128,9 +115,6 @@ public class SettingFragment extends Fragment {
             Configuration conf = res.getConfiguration();
             conf.setLocale(locale);
             res.updateConfiguration(conf, dm);
-
-            // Tái tạo Activity để áp dụng ngôn ngữ mới
-            requireActivity().recreate();
 
         } catch (Exception e) {
             Log.e(TAG, "Error setting locale", e);
@@ -195,14 +179,6 @@ public class SettingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Force kiểm tra và áp dụng ngôn ngữ đã lưu
-        SharedPreferences prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        String savedLanguage = prefs.getString(KEY_LANGUAGE, "en"); // Mặc định LUÔN là tiếng Anh
-
-        // Kiểm tra nếu ngôn ngữ hiện tại khác với đã lưu
-        String currentLanguage = Locale.getDefault().getLanguage();
-        if (!currentLanguage.equals(savedLanguage)) {
-            setLocale(savedLanguage);
-        }
+        // Không cần kiểm tra và áp dụng ngôn ngữ ở đây nữa
     }
 }

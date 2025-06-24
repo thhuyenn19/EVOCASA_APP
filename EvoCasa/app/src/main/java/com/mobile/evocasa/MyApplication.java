@@ -1,7 +1,8 @@
 package com.mobile.evocasa;
 
 import android.app.Application;
-import com.facebook.FacebookSdk;
+import android.content.SharedPreferences;
+
 import com.facebook.appevents.AppEventsLogger;
 
 public class MyApplication extends Application {
@@ -9,7 +10,15 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FacebookSdk.sdkInitialize(getApplicationContext()); 
+        // Khởi tạo ngôn ngữ mặc định nếu chưa có
+        SharedPreferences prefs = getSharedPreferences("LanguagePrefs", MODE_PRIVATE);
+        if (!prefs.contains("language")) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("language", "en");
+            editor.apply();
+        }
+
+        // Không cần gọi sdkInitialize() nữa
         AppEventsLogger.activateApp(this);
     }
 }
