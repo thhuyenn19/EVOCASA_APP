@@ -148,14 +148,14 @@
                 android:textColor="@color/color_5E4C3E"
                 android:textStyle="bold"/>
 
+            <!-- Section: Offer -->
             <TextView
                 android:id="@+id/txtPeriod"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="From 01/06/2025 to 30/06/2025. Valid daily from 10:00 AM to 10:00 PM."/>
+                android:text="From 01/06/2025 to 31/12/2025. Valid daily from 10:00 AM to 10:00 PM." />
 
-            <!-- Section: Offer -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
