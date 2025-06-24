@@ -17,8 +17,6 @@ import com.mobile.utils.UserSessionManager;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class VoucherActivity extends AppCompatActivity {
 
@@ -37,8 +35,8 @@ public class VoucherActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerVoucher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Load vouchers from Firestore
-        loadCustomerVouchers(recyclerView);
+        // Load ALL vouchers from Firestore
+        loadAllVouchers(recyclerView);
 
         // Handle back button in topbar
         LinearLayout btnBack = findViewById(R.id.btnBack);
@@ -47,80 +45,33 @@ public class VoucherActivity extends AppCompatActivity {
         }
     }
 
-    private void loadCustomerVouchers(RecyclerView recyclerView) {
-        UserSessionManager sessionManager = new UserSessionManager(this);
-        String uid = sessionManager.getUid();
-
-        if (uid == null || uid.isEmpty()) {
-            android.widget.Toast.makeText(this, "User not logged in", android.widget.Toast.LENGTH_SHORT).show();
-            displayVouchers(recyclerView, new ArrayList<>());
-            return;
-        }
-
+    /**
+     * Lấy toàn bộ voucher trong collection "Voucher" trên Firestore.
+     */
+    private void loadAllVouchers(RecyclerView recyclerView) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("Customers").document(uid)
-                .get()
-                .addOnSuccessListener(doc -> {
-                    if (!doc.exists()) {
-                        displayVouchers(recyclerView, new ArrayList<>());
-                        return;
-                    }
-
-                    @SuppressWarnings("unchecked")
-                    List<Map<String, Object>> voucherArray = (List<Map<String, Object>>) doc.get("Voucher");
-
-                    if (voucherArray == null || voucherArray.isEmpty()) {
-                        displayVouchers(recyclerView, new ArrayList<>());
-                        return;
-                    }
-
-                    List<String> voucherIds = new ArrayList<>();
-                    for (Map<String, Object> item : voucherArray) {
-                        String id = (String) item.get("VoucherId");
-                        if (id != null && !id.isEmpty()) voucherIds.add(id);
-                    }
-
-                    if (voucherIds.isEmpty()) {
-                        displayVouchers(recyclerView, new ArrayList<>());
-                    } else {
-                        loadVoucherDetails(recyclerView, voucherIds);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    e.printStackTrace();
-                    android.widget.Toast.makeText(this, "Failed to load vouchers", android.widget.Toast.LENGTH_SHORT).show();
-                    displayVouchers(recyclerView, new ArrayList<>());
-                });
-    }
-
-    private void loadVoucherDetails(RecyclerView recyclerView, List<String> voucherIds) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<Voucher> vouchers = new ArrayList<>();
-        AtomicInteger counter = new AtomicInteger(0);
-        int total = voucherIds.size();
-
-        for (String id : voucherIds) {
-            db.collection("Voucher").document(id)
-                    .get()
-                    .addOnSuccessListener(vDoc -> {
-                        if (vDoc.exists()) {
-                            Voucher v = vDoc.toObject(Voucher.class);
-                            if (v != null) {
-                                v.setId(vDoc.getId());
-                                vouchers.add(v);
-                            }
+        db.collection("Voucher")
+            .get()
+            .addOnSuccessListener(querySnapshot -> {
+                List<Voucher> list = new ArrayList<>();
+                long now = System.currentTimeMillis();
+                for (com.google.firebase.firestore.DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                    Voucher v = doc.toObject(Voucher.class);
+                    if (v != null) {
+                        v.setId(doc.getId());
+                        // Bỏ qua voucher hết hạn (nếu muốn)
+                        if (v.getExpireDate() == null || v.getExpireDate().toDate().getTime() > now) {
+                            list.add(v);
                         }
-                        if (counter.incrementAndGet() == total) {
-                            displayVouchers(recyclerView, vouchers);
-                        }
-                    })
-                    .addOnFailureListener(e -> {
-                        if (counter.incrementAndGet() == total) {
-                            displayVouchers(recyclerView, vouchers);
-                        }
-                    });
-        }
+                    }
+                }
+                displayVouchers(recyclerView, list);
+            })
+            .addOnFailureListener(e -> {
+                e.printStackTrace();
+                android.widget.Toast.makeText(this, "Failed to load vouchers", android.widget.Toast.LENGTH_SHORT).show();
+            });
     }
 
     private void displayVouchers(RecyclerView recyclerView, List<Voucher> voucherList) {
