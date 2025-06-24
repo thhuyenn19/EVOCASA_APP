@@ -144,6 +144,8 @@ export class OrderService {
       | 'Completed'
       | 'Pending'
       | 'Review'
+      | 'Pick Up'
+      | 'In Transit'
   ): Observable<Order> {
     return this.updateOrder(orderId, { Status: status });
   }

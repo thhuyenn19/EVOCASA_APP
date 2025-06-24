@@ -156,28 +156,28 @@
           <!-- Status Buttons -->
           <div class="status-buttons">
             <button
-              [class.active]="order?.Status === 'Cancelled'"
-              (click)="updateOrderStatus('Cancelled')"
+              [class.active]="order?.Status === 'Pending'"
+              (click)="updateOrderStatus('Pending')"
             >
-              Cancelled
+              Pending
             </button>
             <button
-              [class.active]="order?.Status === 'In transit'"
-              (click)="updateOrderStatus('In transit')"
+              [class.active]="order?.Status === 'Pick Up'"
+              (click)="updateOrderStatus('Pick Up')"
             >
-              In transit
+              Pick Up
             </button>
             <button
-              [class.active]="order?.Status === 'Delivered'"
-              (click)="updateOrderStatus('Delivered')"
+              [class.active]="order?.Status === 'In Transit'"
+              (click)="updateOrderStatus('In Transit')"
             >
-              Delivered
+              In Transit
             </button>
             <button
-              [class.active]="order?.Status === 'Completed'"
-              (click)="updateOrderStatus('Completed')"
+              [class.active]="order?.Status === 'Review'"
+              (click)="updateOrderStatus('Review')"
             >
-              Completed
+              Review
             </button>
           </div>
         </div>

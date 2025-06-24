@@ -4,7 +4,15 @@ export interface Order {
   TrackingNumber: string;
   OrderDate: string;
   ShipDate: string;
-  Status: 'Cancelled' | 'In transit' | 'Delivered' | 'Completed' | 'Pending' | 'Review' ;
+  Status:
+    | 'Cancelled'
+    | 'In transit'
+    | 'In Transit'
+    | 'Pick Up'
+    | 'Delivered'
+    | 'Completed'
+    | 'Pending'
+    | 'Review';
   Phone: string;
   Email: string;
   Address: string;

@@ -219,7 +219,15 @@ export class OrderDetailComponent implements OnInit {
 
   // Xử lý cập nhật trạng thái đơn hàng MỚI THÊM
   updateOrderStatus(
-    newStatus: 'Cancelled' | 'In transit' | 'Delivered' | 'Completed'
+    newStatus:
+      | 'Pending'
+      | 'Pick Up'
+      | 'In Transit'
+      | 'Review'
+      | 'In transit'
+      | 'Cancelled'
+      | 'Delivered'
+      | 'Completed'
   ) {
     if (!this.order) return;
 
