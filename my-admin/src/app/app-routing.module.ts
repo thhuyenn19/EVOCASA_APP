@@ -32,7 +32,6 @@ const routes: Routes = [
   { path: 'admin-product', component: ProductComponent, canActivate: [AuthGuard] },
   { path: 'admin-category', component: CategoryComponent, canActivate: [AuthGuard] },
   { path: 'admin-order', component: OrderComponent, canActivate: [AuthGuard]},
-  // { path: 'admin-notification', component: Notification, canActivate: [AuthGuard]},
   { path: 'admin-message', component: MessageComponent, canActivate: [AuthGuard]}, 
   { path: 'login-page', component: LoginComponent },
   { path: '', component: LoginComponent },
