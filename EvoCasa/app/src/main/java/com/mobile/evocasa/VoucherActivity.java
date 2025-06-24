@@ -12,10 +12,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mobile.adapters.VoucherProfileAdapter;
 import com.mobile.models.Voucher;
-import com.google.firebase.Timestamp;
+import com.mobile.utils.UserSessionManager;
+
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class VoucherActivity extends AppCompatActivity {
 
@@ -30,17 +33,12 @@ public class VoucherActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Setup RecyclerView & Adapter
+        // Setup RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerVoucher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Voucher> sampleVouchers = createSampleVouchers();
-        VoucherProfileAdapter adapter = new VoucherProfileAdapter(sampleVouchers, voucher -> {
-            // Mở màn VoucherDetailActivity mà không cần truyền dữ liệu
-            android.content.Intent intent = new android.content.Intent(VoucherActivity.this, VoucherDetailActivity.class);
-            startActivity(intent);
-        });
-        recyclerView.setAdapter(adapter);
+        // Load vouchers from Firestore
+        loadCustomerVouchers(recyclerView);
 
         // Handle back button in topbar
         LinearLayout btnBack = findViewById(R.id.btnBack);
@@ -49,20 +47,101 @@ public class VoucherActivity extends AppCompatActivity {
         }
     }
 
-    private List<Voucher> createSampleVouchers() {
-        List<Voucher> list = new ArrayList<>();
-        for (int i = 0; i < 11; i++) {
-            Voucher v = new Voucher();
-            v.setName("LOVEEVOCASA" + (i+1));
-            v.setDiscountPercent(15);
-            v.setMaxDiscount(50);
-            v.setMinOrderValue(300);
+    private void loadCustomerVouchers(RecyclerView recyclerView) {
+        UserSessionManager sessionManager = new UserSessionManager(this);
+        String uid = sessionManager.getUid();
 
-            Calendar cal = Calendar.getInstance();
-            cal.set(2025, Calendar.JUNE, 30);
-            v.setExpireDate(new Timestamp(cal.getTime()));
-            list.add(v);
+        if (uid == null || uid.isEmpty()) {
+            android.widget.Toast.makeText(this, "User not logged in", android.widget.Toast.LENGTH_SHORT).show();
+            displayVouchers(recyclerView, new ArrayList<>());
+            return;
         }
-        return list;
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("Customers").document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    if (!doc.exists()) {
+                        displayVouchers(recyclerView, new ArrayList<>());
+                        return;
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    List<Map<String, Object>> voucherArray = (List<Map<String, Object>>) doc.get("Voucher");
+
+                    if (voucherArray == null || voucherArray.isEmpty()) {
+                        displayVouchers(recyclerView, new ArrayList<>());
+                        return;
+                    }
+
+                    List<String> voucherIds = new ArrayList<>();
+                    for (Map<String, Object> item : voucherArray) {
+                        String id = (String) item.get("VoucherId");
+                        if (id != null && !id.isEmpty()) voucherIds.add(id);
+                    }
+
+                    if (voucherIds.isEmpty()) {
+                        displayVouchers(recyclerView, new ArrayList<>());
+                    } else {
+                        loadVoucherDetails(recyclerView, voucherIds);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    android.widget.Toast.makeText(this, "Failed to load vouchers", android.widget.Toast.LENGTH_SHORT).show();
+                    displayVouchers(recyclerView, new ArrayList<>());
+                });
+    }
+
+    private void loadVoucherDetails(RecyclerView recyclerView, List<String> voucherIds) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        List<Voucher> vouchers = new ArrayList<>();
+        AtomicInteger counter = new AtomicInteger(0);
+        int total = voucherIds.size();
+
+        for (String id : voucherIds) {
+            db.collection("Voucher").document(id)
+                    .get()
+                    .addOnSuccessListener(vDoc -> {
+                        if (vDoc.exists()) {
+                            Voucher v = vDoc.toObject(Voucher.class);
+                            if (v != null) {
+                                v.setId(vDoc.getId());
+                                vouchers.add(v);
+                            }
+                        }
+                        if (counter.incrementAndGet() == total) {
+                            displayVouchers(recyclerView, vouchers);
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        if (counter.incrementAndGet() == total) {
+                            displayVouchers(recyclerView, vouchers);
+                        }
+                    });
+        }
+    }
+
+    private void displayVouchers(RecyclerView recyclerView, List<Voucher> voucherList) {
+        VoucherProfileAdapter adapter = new VoucherProfileAdapter(voucherList, voucher -> {
+            android.content.Intent intent = new android.content.Intent(VoucherActivity.this, VoucherDetailActivity.class);
+
+            intent.putExtra("voucher_id", voucher.getId());
+            intent.putExtra("voucher_name", voucher.getName());
+            intent.putExtra("voucher_discount_percent", voucher.getDiscountPercent());
+            intent.putExtra("voucher_max_discount", voucher.getMaxDiscount());
+            intent.putExtra("voucher_min_order", voucher.getMinOrderValue());
+            long expireMillis = voucher.getExpireDate() != null ? voucher.getExpireDate().toDate().getTime() : -1;
+            intent.putExtra("voucher_expire_millis", expireMillis);
+
+            startActivity(intent);
+        });
+
+        recyclerView.setAdapter(adapter);
+
+        if (voucherList.isEmpty()) {
+            android.widget.Toast.makeText(this, "No vouchers available", android.widget.Toast.LENGTH_SHORT).show();
+        }
     }
 }
