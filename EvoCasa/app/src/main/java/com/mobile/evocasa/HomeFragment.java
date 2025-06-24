@@ -153,6 +153,11 @@ public class HomeFragment extends Fragment {
 
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
+        flashSaleAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
         recyclerViewFlashSale.setAdapter(flashSaleAdapter);
 
         long now = System.currentTimeMillis();
@@ -181,6 +186,7 @@ public class HomeFragment extends Fragment {
                         flashSaleList.clear();
                         for (int i = 0; i < Math.min(6, allDocs.size()); i++) {
                             FlashSaleProduct product = allDocs.get(i).toObject(FlashSaleProduct.class);
+                            product.setId(allDocs.get(i).getId());
                             flashSaleList.add(product);
                         }
 
@@ -210,6 +216,11 @@ public class HomeFragment extends Fragment {
 
         hotProductList = new ArrayList<>();
         hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        hotProductsAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
         recyclerViewHotProducts.setAdapter(hotProductsAdapter);
 
         // Gọi hàm load từ Firestore
@@ -439,6 +450,7 @@ public class HomeFragment extends Fragment {
                     int limit = Math.min(6, allDocs.size()); // lấy 6 sản phẩm
                     for (int i = 0; i < limit; i++) {
                         HotProducts product = allDocs.get(i).toObject(HotProducts.class);
+                        product.setId(allDocs.get(i).getId());
                         hotProductList.add(product);
                     }
 

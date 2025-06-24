@@ -17,6 +17,9 @@ public class FlashSaleProduct {
     @PropertyName("Image")
     private String image;  // là JSON String từ Firebase
 
+    @com.google.firebase.firestore.Exclude
+    private String id;
+
     // constructor rỗng cần có cho Firebase
     public FlashSaleProduct() {}
 
@@ -52,4 +55,10 @@ public class FlashSaleProduct {
         List<String> list = getImageList();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
+
+    @com.google.firebase.firestore.Exclude
+    public String getId() { return id; }
+
+    @com.google.firebase.firestore.Exclude
+    public void setId(String id) { this.id = id; }
 }

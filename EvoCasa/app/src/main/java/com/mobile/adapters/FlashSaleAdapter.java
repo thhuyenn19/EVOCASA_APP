@@ -23,9 +23,18 @@ import java.util.Random;
 public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.FlashSaleViewHolder> {
 
     private List<FlashSaleProduct> flashSaleList;
+    private OnItemClickListener itemClickListener;
 
     public FlashSaleAdapter(List<FlashSaleProduct> flashSaleList) {
         this.flashSaleList = flashSaleList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(FlashSaleProduct product);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -65,6 +74,12 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         }
 
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.tvProductName);
+
+        holder.itemView.setOnClickListener(v -> {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(product);
+            }
+        });
     }
 
     @Override

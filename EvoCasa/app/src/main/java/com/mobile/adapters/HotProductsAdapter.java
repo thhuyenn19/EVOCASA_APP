@@ -25,6 +25,7 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
 
     private List<HotProducts> hotProductList;
     private OnFavoriteClickListener favoriteClickListener;
+    private OnItemClickListener itemClickListener;
 
     public HotProductsAdapter(List<HotProducts> hotProductList, OnFavoriteClickListener listener) {
         this.hotProductList = hotProductList;
@@ -37,6 +38,15 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
 
     public interface OnFavoriteClickListener {
         void onFavoriteClick(HotProducts product, int position);
+    }
+
+    // NEW interface for item clicks
+    public interface OnItemClickListener {
+        void onItemClick(HotProducts product);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.itemClickListener = listener;
     }
 
     @NonNull
@@ -93,6 +103,13 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
                 // Chuyển icon thành wishlist heart khi click
                 holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
                 favoriteClickListener.onFavoriteClick(product, position);
+            }
+        });
+
+        // Item click listener -> open product detail
+        holder.itemView.setOnClickListener(v -> {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(product);
             }
         });
     }

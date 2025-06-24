@@ -20,6 +20,9 @@ public class HotProducts {
 
     private float rating; // không cần @PropertyName nếu không lấy từ Firestore
 
+    @com.google.firebase.firestore.Exclude
+    private String id;
+
     // Constructor rỗng cho Firebase
     public HotProducts() {}
 
@@ -65,4 +68,10 @@ public class HotProducts {
         List<String> list = getImageList();
         return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
+
+    @com.google.firebase.firestore.Exclude
+    public String getId() { return id; }
+
+    @com.google.firebase.firestore.Exclude
+    public void setId(String id) { this.id = id; }
 }
