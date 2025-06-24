@@ -1,5 +1,6 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -149,6 +150,12 @@ public class WishlistFragment extends Fragment {
                     loadHotProducts();
                 }
             });
+        });
+
+        hotProductsAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
         });
 
         recyclerViewHotProducts.setAdapter(hotProductsAdapter);
@@ -401,9 +408,11 @@ public class WishlistFragment extends Fragment {
                                 for (int i = 0; i < limit; i++) {
                                     HotProducts product = availableDocs.get(i).toObject(HotProducts.class);
                                     if (product != null) {
+                                        product.setId(availableDocs.get(i).getId());  // Setting the product ID
                                         hotProductList.add(product);
                                     }
                                 }
+
 
                                 hotProductsAdapter.notifyDataSetChanged();
                                 recyclerViewHotProducts.setVisibility(hotProductList.isEmpty() ? View.GONE : View.VISIBLE);
