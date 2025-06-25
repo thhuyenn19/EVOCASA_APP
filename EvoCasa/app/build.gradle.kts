@@ -69,6 +69,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation ("androidx.activity:activity:1.7.2")
+    implementation ("com.google.firebase:firebase-dynamic-links:21.1.0")
 
 
 
