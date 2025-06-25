@@ -1,0 +1,19 @@
+[
+  {
+    "id":  "abc001" ,
+    "customer_id": { "$oid": "65c0b01cc5fec55b70d0fa01" },
+    "product_id": { "$oid": "67c0a62f46527d4bf49e4847" },
+    "action_type": "wishlist",
+    "timestamp": { "$date": "2025-06-24T09:05:00Z" },
+    "source": "homepage"
+  },
+  {
+    "id":  "abc002" ,
+    "customer_id": { "$oid": "65c0b01cc5fec55b70d0fa02" },
+    "product_id": { "$oid": "67c0a04a46527d4bf49e483c" },
+    "action_type": "review",
+    "timestamp": { "$date": "2025-06-23T15:12:00Z" },
+    "rating": 4,
+    "source": "product_detail"
+  }
+]

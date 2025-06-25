@@ -10,7 +10,7 @@ admin.initializeApp({
 
 console.log("Firebase initialized, reading file...");
 const db = admin.firestore();
-const data = JSON.parse(fs.readFileSync('EvoCasa.Product.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('EvoCasa.CustomerBehavior.json', 'utf8'));
 
 console.log(`Data loaded: ${data.length} products found`);
 
@@ -24,7 +24,7 @@ async function uploadProducts() {
       const productData = { ...item };
       delete productData.id;
       
-      await db.collection('Product').doc(id).set(productData);
+      await db.collection('CustomerBehavior').doc(id).set(productData);
       console.log(`Added document ${id} successfully`);
     }
     

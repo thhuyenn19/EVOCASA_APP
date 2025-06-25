@@ -47,6 +47,8 @@ public class OrdersFragment extends Fragment {
     private TextView txtCartBadge;
     ImageView imgCart;
     private ListenerRegistration orderListener;
+    private String selectedStatus = "Pending";
+
 
     public OrdersFragment() {
         // Required empty public constructor
@@ -72,7 +74,6 @@ public class OrdersFragment extends Fragment {
         rvStatus.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         // Nhận trạng thái được truyền từ ProfileFragment
-        String selectedStatus = "Pending"; // mặc định
         if (getArguments() != null && getArguments().containsKey("selectedStatus")) {
             selectedStatus = getArguments().getString("selectedStatus");
         }
@@ -88,8 +89,12 @@ public class OrdersFragment extends Fragment {
 
         // Gắn adapter cho tab và xử lý click
         OrderStatusAdapter statusAdapter = new OrderStatusAdapter(statusList,
-                status -> filterOrdersByStatus(status)
+                status -> {
+                    selectedStatus = status;
+                    listenToOrdersRealtime(selectedStatus); // ✅ Gọi lại để tải dữ liệu đúng
+                }
         );
+
         rvStatus.setAdapter(statusAdapter);
 
         LinearLayout btnBack = view.findViewById(R.id.btnBack);
@@ -186,13 +191,16 @@ public class OrdersFragment extends Fragment {
 
         db.collection("Product").get().addOnSuccessListener(productSnapshots -> {
             Map<String, String> productNameMap = new HashMap<>();
-            Map<String, Long> productPriceMap = new HashMap<>();
+            Map<String, Number> productPriceMap = new HashMap<>();
             Map<String, String> productImageMap = new HashMap<>();
 
             for (QueryDocumentSnapshot doc : productSnapshots) {
                 String id = doc.getId();
                 String name = doc.getString("Name");
-                Long price = doc.getLong("Price");
+
+                // Lấy Price bất kể Long hay Double
+                Object priceObj = doc.get("Price");
+                Number priceNum = priceObj instanceof Number ? (Number) priceObj : 0L;
 
                 Object rawImageData = doc.get("Image");
                 List<String> imageList = new ArrayList<>();
@@ -208,9 +216,9 @@ public class OrdersFragment extends Fragment {
                     }
                 }
 
-                if (id != null && name != null && price != null) {
+                if (id != null && name != null) {
                     productNameMap.put(id, name);
-                    productPriceMap.put(id, price);
+                    productPriceMap.put(id, priceNum);
                     if (!imageList.isEmpty()) {
                         productImageMap.put(id, imageList.get(0));
                     }
@@ -220,13 +228,23 @@ public class OrdersFragment extends Fragment {
             String uid = new UserSessionManager(getContext()).getUid();
             if (uid == null || uid.isEmpty()) return;
 
-            if (orderListener != null) orderListener.remove(); // Clear old listener if any
+            // 3) Clear listener cũ nếu có
+            if (orderListener != null) {
+                orderListener.remove();
+                orderListener = null;
+            }
 
             orderListener = db.collection("Order")
                     .addSnapshotListener((orderSnapshots, error) -> {
                         if (error != null || orderSnapshots == null) {
                             Log.e("OrdersFragment", "Listen error: ", error);
                             return;
+                        }
+                        Log.d("OrdersFragment", "Snapshot vừa về, tổng docs = " + orderSnapshots.size());
+                        for (QueryDocumentSnapshot d : orderSnapshots) {
+                            Log.d("OrdersFragment", " • id=" + d.getId()
+                                    + "  Status=" + d.getString("Status")
+                                    + "  OrderProduct=" + d.get("OrderProduct"));
                         }
 
                         allOrderGroups.clear();
@@ -248,6 +266,10 @@ public class OrdersFragment extends Fragment {
                                 int total = 0;
 
                                 for (Map<String, Object> product : orderProducts) {
+                                    // C1) quantity
+                                    Object qtyObj = product.get("Quantity");
+                                    int quantity = qtyObj instanceof Number ? ((Number) qtyObj).intValue() : 1;
+
                                     Map<String, Object> productIdMap = (Map<String, Object>) product.get("id");
                                     if (productIdMap == null) continue;
 
@@ -255,27 +277,26 @@ public class OrdersFragment extends Fragment {
                                     if (productId == null || !productNameMap.containsKey(productId)) continue;
 
                                     String productName = productNameMap.get(productId);
-                                    Long priceEach = productPriceMap.get(productId);
+                                    Number priceEach = productPriceMap.get(productId);
                                     String imageUrl = productImageMap.get(productId);
-                                    Long quantity = (Long) product.get("Quantity");
-
-                                    int qty = quantity != null ? quantity.intValue() : 1;
                                     int unitPrice = priceEach != null ? priceEach.intValue() : 0;
 
-                                    total += unitPrice * qty;
+                                    total += unitPrice * quantity;
 
-                                    itemList.add(new OrderItem(imageUrl, productName, unitPrice, qty));
+                                    itemList.add(new OrderItem(imageUrl, productName, unitPrice, quantity));
                                 }
 
-                                Long deliveryFee = orderDoc.getLong("DeliveryFee");
-                                if (deliveryFee != null) total += deliveryFee;
+                                Object feeObj = orderDoc.get("DeliveryFee");
+                                long deliveryFee = feeObj instanceof Number
+                                        ? ((Number) feeObj).longValue() : 0L;
+                                total += deliveryFee;
 
                                 Map<String, Object> voucher = (Map<String, Object>) orderDoc.get("Voucher");
                                 if (voucher != null) {
-                                    Long discountPercent = (Long) voucher.get("DiscountPercent");
-                                    if (discountPercent != null) {
-                                        total -= (total * discountPercent.intValue()) / 100;
-                                    }
+                                    Object dpObj = voucher.get("DiscountPercent");
+                                    int dp = dpObj instanceof Number
+                                            ? ((Number) dpObj).intValue() : 0;
+                                    total -= (total * dp) / 100;
                                 }
 
                                 OrderGroup group = new OrderGroup(status, itemList);

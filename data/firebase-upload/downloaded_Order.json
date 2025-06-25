@@ -1,0 +1,468 @@
+[
+  {
+    "_id": {
+      "$oid": "1750597881630"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK889563",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c237c5fec55b70d0fcbd"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-22T20:11:21.631Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T20:11:21.631Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "zcxzxc",
+    "TotalPrice": 795,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+      "Phone": "0868347810",
+      "Name": "Nhung"
+    },
+    "PrePrice": 795,
+    "Status": "Delivered"
+  },
+  {
+    "_id": {
+      "$oid": "1750597896487"
+    },
+    "Status": "Pending",
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK493982",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c237c5fec55b70d0fcbd"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-22T20:11:36.488Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T20:11:36.488Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "zcxzxc",
+    "TotalPrice": 795,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+      "Phone": "0868347810",
+      "Name": "Nhung"
+    },
+    "PrePrice": 795
+  },
+  {
+    "_id": {
+      "$oid": "1750691688178"
+    },
+    "Status": "Pending",
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK138768",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ad5046527d4bf49e4857"
+        }
+      },
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0be8cc5fec55b70d0fcb3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-23T22:14:48.178Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-23T22:14:48.178Z"
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "",
+    "TotalPrice": 1938,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
+      "Phone": "0972 465 475",
+      "Name": "Le Van Anh"
+    },
+    "PrePrice": 1888
+  },
+  {
+    "_id": {
+      "$oid": "1750700675332"
+    },
+    "Status": "Pending",
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK595950",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ad5046527d4bf49e4857"
+        }
+      },
+      {
+        "Customize": null,
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0be8cc5fec55b70d0fcb3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-24T00:44:35.333Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-24T00:44:35.333Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "",
+    "TotalPrice": 1918,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
+      "Phone": "0972 465 475",
+      "Name": "Le Van Anh"
+    },
+    "PrePrice": 1888
+  },
+  {
+    "_id": {
+      "$oid": "1750744946476"
+    },
+    "Status": "Pending",
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK547451",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0be8cc5fec55b70d0fcb3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-24T13:02:26.477Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-24T13:02:26.477Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "",
+    "TotalPrice": 506,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
+      "Phone": "0972 465 475",
+      "Name": "Le Van Anh"
+    },
+    "PrePrice": 476
+  },
+  {
+    "_id": {
+      "$oid": "1750744965265"
+    },
+    "Status": "Pending",
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK488281",
+    "OrderProduct": [
+      {
+        "Customize": null,
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0be8cc5fec55b70d0fcb3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-24T13:02:45.265Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-24T13:02:45.265Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "Note": "",
+    "TotalPrice": 506,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
+      "Phone": "0972 465 475",
+      "Name": "Le Van Anh"
+    },
+    "PrePrice": 476
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000000"
+    },
+    "TrackingNumber": "TRK922032",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203Z"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203Z"
+    },
+    "Phone": "0987654321",
+    "Address": "Hà Nội, Việt Nam",
+    "PaymentMethod": "Credit / Debit Card",
+    "TotalPrice": 28475,
+    "PrePrice": 28350,
+    "DeliveryFee": 200,
+    "Note": "",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "ShippingMethod": "Express Delivery",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c099e8ac22517ab6403a78"
+        },
+        "Customize": null
+      },
+      {
+        "Customize": null,
+        "Quantity": 3,
+        "id": {
+          "$oid": "67c0a04a46527d4bf49e483c"
+        }
+      }
+    ],
+    "ShippingAddresses": {
+      "Name": "Le Van Anh",
+      "Phone": "0954981487",
+      "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam"
+    },
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000001"
+    },
+    "TrackingNumber": "TRK584633",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203Z"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203Z"
+    },
+    "Phone": "0978123456",
+    "Address": "Hồ Chí Minh, Việt Nam",
+    "PaymentMethod": "COD",
+    "TotalPrice": 44475,
+    "PrePrice": 44250,
+    "DeliveryFee": 300,
+    "Note": "Call before delivery",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    },
+    "Customer_id": {
+      "$oid": "IPtOgpOrLjZSirOM4AARlBBgkZT2"
+    },
+    "OrderProduct": [
+      {
+        "id": {
+          "$oid": "67c0a14646527d4bf49e483d"
+        },
+        "Customize": null,
+        "Quantity": 1
+      },
+      {
+        "id": {
+          "$oid": "67c0a3a946527d4bf49e4840"
+        },
+        "Customize": null,
+        "Quantity": 2
+      },
+      {
+        "id": {
+          "$oid": "67c0b61ac5fec55b70d0fca6"
+        },
+        "Quantity": 4,
+        "Customize": null
+      }
+    ],
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000002"
+    },
+    "TrackingNumber": "TRK621792",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203Z"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203Z"
+    },
+    "Phone": "0965234789",
+    "Address": "Đà Nẵng, Việt Nam",
+    "PaymentMethod": "COD",
+    "TotalPrice": 6225,
+    "PrePrice": 6000,
+    "DeliveryFee": 300,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a32346527d4bf49e483e"
+      },
+      "Quantity": 1,
+      "Customize": null
+    },
+    "Note": "Leave at front door",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    },
+    "Status": "Review",
+    "ShippingMethod": "Express Delivery",
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa01"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000003"
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa04"
+    },
+    "TrackingNumber": "TRK838245",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203Z"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203Z"
+    },
+    "Phone": "0954678912",
+    "Address": "Hải Phòng, Việt Nam",
+    "PaymentMethod": "Credit / Debit Card",
+    "TotalPrice": 49625,
+    "PrePrice": 49500,
+    "DeliveryFee": 200,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a3a946527d4bf49e4840"
+      },
+      "Quantity": 3,
+      "Customize": {
+        "Type": "Slate",
+        "Image": "/images/custom/slate.jpg"
+      }
+    },
+    "Note": "",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    },
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "665400000000000000000004"
+    },
+    "TrackingNumber": "TRK337926",
+    "OrderDate": {
+      "$date": "2025-05-26T14:51:00.203Z"
+    },
+    "ShipDate": {
+      "$date": "2025-05-28T14:51:00.203Z"
+    },
+    "Phone": "0945789123",
+    "Address": "Cần Thơ, Việt Nam",
+    "PaymentMethod": "Internet Banking",
+    "TotalPrice": 2625,
+    "PrePrice": 2450,
+    "DeliveryFee": 250,
+    "OrderProduct": {
+      "id": {
+        "$oid": "67c0a62f46527d4bf49e4847"
+      },
+      "Quantity": 1,
+      "Customize": null
+    },
+    "Note": "Leave at front door",
+    "Voucher": {
+      "VoucherName": "Mid-Year Big Sale",
+      "DiscountPercent": 25,
+      "DiscountAmount": 75
+    },
+    "ShippingMethod": "Express Delivery",
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa01"
+    },
+    "Status": "Completed"
+  }
+]

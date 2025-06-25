@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -39,6 +40,7 @@ import com.mobile.evocasa.R;
 import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;
 import com.mobile.models.SubCategory;
+import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -163,6 +165,18 @@ public class CategoryFragment extends Fragment {
 
         // Thêm click listener để mở ProductDetailsActivity
         productAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId(); // hoặc product.get_id()
+
+            // Ghi hành vi click
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "category_page",
+                    null
+            );
+
             Intent intent = new Intent(getContext(), ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivityForResult(intent, 1001);

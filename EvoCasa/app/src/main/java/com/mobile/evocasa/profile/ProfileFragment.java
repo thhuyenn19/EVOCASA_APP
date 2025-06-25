@@ -11,6 +11,7 @@ import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.SettingFragment;
 import com.mobile.evocasa.auth.SignIn1Fragment;
 import com.mobile.evocasa.auth.SignUp1Fragment;
+import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.UserSessionManager;
 
 import android.content.Intent;
@@ -164,6 +165,17 @@ public class ProfileFragment extends Fragment {
         recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
 
         suggestedProductsAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId(); // hoặc product.get_id()
+
+            // Ghi hành vi click
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "profile_page",
+                    null
+            );
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
