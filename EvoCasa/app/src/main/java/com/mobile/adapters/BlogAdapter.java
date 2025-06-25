@@ -1,6 +1,5 @@
 package com.mobile.adapters;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.mobile.evocasa.BlogDetailFragment;
 import com.mobile.evocasa.R;
 import com.mobile.models.Blog;
-import com.mobile.utils.ImageUtils;
 
 import java.util.List;
 
@@ -39,14 +38,13 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
         Blog blog = blogList.get(position);
         
-        // Resize image before setting it
-        Bitmap resizedBitmap = ImageUtils.getResizedBitmap(
-            holder.itemView.getContext(),
-            blog.getImageResId(),
-            80, // width in dp
-            100 // height in dp
-        );
-        holder.imgBlog.setImageBitmap(resizedBitmap);
+        // Load image with Glide for better quality and automatic caching
+        Glide.with(holder.itemView.getContext())
+                .load(blog.getImageResId())
+                .placeholder(R.mipmap.placeholder_image)
+                .error(R.mipmap.error_image)
+                .centerCrop()
+                .into(holder.imgBlog);
         
         holder.txtTitle.setText(blog.getTitle());
         holder.txtDate.setText(blog.getDate());

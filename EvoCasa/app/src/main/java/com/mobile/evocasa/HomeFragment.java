@@ -371,7 +371,7 @@ public class HomeFragment extends Fragment {
             FontUtils.setRegularFont(getContext(), edtSearch);
         }
 
-        TextView tvProductName = view.findViewById(R.id.tvProductName);
+        TextView tvProductName = view.findViewById(R.id.txtProductName);
         if (tvProductName != null) {
             FontUtils.setZregularFont(getContext(), tvProductName);
         }
@@ -413,7 +413,6 @@ public class HomeFragment extends Fragment {
             int id = textView.getId();
             // Bỏ qua các TextView đã được set font riêng
             if (id != R.id.txtProductName &&
-                    id != R.id.tvProductName &&
                     id != R.id.txtSeeAll &&
                     id != R.id.txtSeeAllHotProducts &&
                     id != R.id.txtSeeAllCollection &&

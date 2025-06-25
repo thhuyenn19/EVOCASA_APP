@@ -95,11 +95,11 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         public FlashSaleViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            tvProductName = itemView.findViewById(R.id.tvProductName);
-            tvOldPrice = itemView.findViewById(R.id.tvOldPrice);
+            tvProductName = itemView.findViewById(R.id.txtProductName);
+            tvOldPrice = itemView.findViewById(R.id.txtOldPrice);
             tvPrice = itemView.findViewById(R.id.tvPrice);
-            tvDiscount = itemView.findViewById(R.id.tvDiscount);
-            tvRating = itemView.findViewById(R.id.tvRating);
+            tvDiscount = itemView.findViewById(R.id.txtDiscount);
+            tvRating = itemView.findViewById(R.id.txtRating);
             tvTagDiscountTop = itemView.findViewById(R.id.tvTagDiscountTop);
             imgFavorite = itemView.findViewById(R.id.imgFavorite);
         }
