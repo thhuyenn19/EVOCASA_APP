@@ -44,18 +44,19 @@
 
                     <ImageButton
                         android:id="@+id/btnShare"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/share" />
+                        android:src="@drawable/share__1_" />
 
                     <ImageButton
                         android:id="@+id/btnFavorite"
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:background="@android:color/transparent"
-                        android:src="@drawable/favourite" />
+                        android:src="@drawable/ic_favourite" />
                 </LinearLayout>
 
                 <TextView
