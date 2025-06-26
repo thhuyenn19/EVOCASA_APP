@@ -79,24 +79,19 @@ public class FinishPaymentFragment extends Fragment {
         loadCustomerName();
         btnShop = view.findViewById(R.id.btnBackShop);
         btnShop.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new ShopFragment())
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(requireContext(), NarBarActivity.class);
+            intent.putExtra("tab_pos", 1);
+            intent.putExtra("from_direct", true); 
+            startActivity(intent);
+            requireActivity().finish();
         });
         btnTrackOrder = view.findViewById(R.id.btnTrackOrders);
         btnTrackOrder.setOnClickListener(v -> {
-            OrderDetailFragment orderDetailFragment = new OrderDetailFragment();
-            Bundle bundle = new Bundle();
-            bundle.putString("orderId", orderId); // Truyền orderId
-            orderDetailFragment.setArguments(bundle);
-
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, orderDetailFragment)
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(requireContext(), NarBarActivity.class);
+            intent.putExtra("tab_pos", 5);
+            intent.putExtra("orderId", orderId); // Truyền orderId để hiển thị chi tiết đơn hàng
+            intent.putExtra("from_direct", true);
+            startActivity(intent);
         });
 
 
