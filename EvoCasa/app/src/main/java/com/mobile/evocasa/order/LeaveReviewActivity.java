@@ -1,4 +1,4 @@
-package com.mobile.evocasa;
+package com.mobile.evocasa.order;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -14,23 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mobile.evocasa.CartActivity;
+import com.mobile.evocasa.R;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;

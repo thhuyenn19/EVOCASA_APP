@@ -52,13 +52,13 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".BuyAgainActivity"
+            android:name=".order.BuyAgainActivity"
             android:exported="false" />
         <activity
-            android:name=".LeaveReviewActivity"
+            android:name=".order.LeaveReviewActivity"
             android:exported="false" />
         <activity
-            android:name=".TrackOrderActivity"
+            android:name=".order.TrackOrderActivity"
             android:exported="false" />
         <activity
             android:name=".productdetails.ProductDetailsActivity"

@@ -1,4 +1,4 @@
-package com.mobile.evocasa;
+package com.mobile.evocasa.order;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -22,7 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.TimelineAdapter;
-import com.mobile.evocasa.productdetails.ProductDetailsActivity;
+import com.mobile.evocasa.CartActivity;
+import com.mobile.evocasa.R;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
 import com.mobile.models.TimelineItem;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;

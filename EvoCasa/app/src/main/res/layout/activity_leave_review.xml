@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/color_bg"
     android:scrollbars="none"
-    tools:context=".LeaveReviewActivity">
+    tools:context=".order.LeaveReviewActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

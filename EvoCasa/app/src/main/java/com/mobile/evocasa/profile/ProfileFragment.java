@@ -1,16 +1,12 @@
 package com.mobile.evocasa.profile;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.SettingFragment;
-import com.mobile.evocasa.auth.SignIn1Fragment;
-import com.mobile.evocasa.auth.SignUp1Fragment;
 import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.UserSessionManager;
 
@@ -37,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.BlogFragment;
 import com.mobile.evocasa.ChatActivity;
-import com.mobile.evocasa.OrdersFragment;
+import com.mobile.evocasa.order.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
 import com.mobile.evocasa.helpcenter.HelpCenterFragment;

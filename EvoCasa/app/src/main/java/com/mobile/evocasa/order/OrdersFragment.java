@@ -1,6 +1,4 @@
-package com.mobile.evocasa;
-
-import static androidx.recyclerview.widget.LinearSmoothScroller.SNAP_TO_START;
+package com.mobile.evocasa.order;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +27,8 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.adapters.OrderGroupAdapter;
 import com.mobile.adapters.OrderStatusAdapter;
+import com.mobile.evocasa.CartActivity;
+import com.mobile.evocasa.R;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.models.OrderStatus;

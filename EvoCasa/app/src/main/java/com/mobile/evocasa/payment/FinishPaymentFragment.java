@@ -20,6 +20,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.evocasa.BottomNavFragment;
 import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.WishlistFragment;
+import com.mobile.evocasa.category.ShopFragment;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -30,6 +32,7 @@ public class FinishPaymentFragment extends Fragment {
 
     private Typeface fontSelected, fontRegular;
     private TextView txtThanks;
+    Button btnShop, btnTrackOrder;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -70,6 +73,15 @@ public class FinishPaymentFragment extends Fragment {
         txtThanks = view.findViewById(R.id.txtPaymentSuccessfulThanks);
 
         loadCustomerName();
+        btnShop = view.findViewById(R.id.btnBackShop);
+        btnShop.setOnClickListener(v -> {
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, new ShopFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+        btnTrackOrder = view.findViewById(R.id.btnTrackOrders);
 
         return view;
     }
