@@ -210,16 +210,24 @@ public class NotificationFragment extends Fragment {
     private int getIconForType(String type) {
         if (type == null) return -1; // icon không hợp lệ
         switch (type) {
+            case "Pending":
+            return R.drawable.ic_pending_noti;
+            case "Pick Up":
+                return R.drawable.ic_pick_up_noti;
+            case "In Transit":
+                return R.drawable.ic_in_transit_noti;
             case "OrderDelivered":
                 return R.drawable.ic_order_delivered;
+            case "Review":
+                return R.drawable.ic_review_noti;
+            case "Cancelled":
+                return R.drawable.ic_order_cancelled;
             case "CompleteYourPayment":
                 return R.drawable.ic_complete_payment;
             case "PaymentConfirmed":
                 return R.drawable.ic_payment_confirmed;
-            case "OrderCancelled":
-                return R.drawable.ic_order_cancelled;
             default:
-                return -1; // icon không xác định, sẽ bị bỏ qua
+                return -1;
         }
     }
 

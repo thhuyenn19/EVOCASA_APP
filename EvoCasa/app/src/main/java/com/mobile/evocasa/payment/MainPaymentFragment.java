@@ -251,7 +251,7 @@ public class MainPaymentFragment extends Fragment {
         Button btnCheckout = view.findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
             if (selectedPaymentMethod == null) {
-                Toast.makeText(requireContext(), "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Please select payment method", Toast.LENGTH_SHORT).show();
                 return;
             }
             // Tạo ID cho order
@@ -360,11 +360,11 @@ public class MainPaymentFragment extends Fragment {
 
                         notification.put("NotificationId", notiId);
                         notification.put("CreatedAt", createdAt);
-                        notification.put("Title", "Payment Confirmed");
-                        notification.put("Content", "Your order " + orderId + " has been placed successfully.");
+                        notification.put("Title", "Order Pending Confirmation");
+                        notification.put("Content", "Order #" + orderId + " placed successfully and is now pending confirmation.");
                         notification.put("Image", "/images/Notification/OrderPlaced.jpg");  // bạn có thể đổi lại đường dẫn phù hợp
                         notification.put("Status", "Unread");
-                        notification.put("Type", "PaymentConfirmed");
+                        notification.put("Type", "Pending");
 
 // Đẩy vào danh sách Notifications của người dùng
                         FirebaseFirestore.getInstance()
