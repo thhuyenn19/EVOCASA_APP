@@ -81,7 +81,7 @@ public class FinishPaymentFragment extends Fragment {
         btnShop.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), NarBarActivity.class);
             intent.putExtra("tab_pos", 1);
-            intent.putExtra("from_direct", true); 
+            intent.putExtra("from_direct", true);
             startActivity(intent);
             requireActivity().finish();
         });

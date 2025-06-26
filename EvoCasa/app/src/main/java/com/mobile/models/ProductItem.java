@@ -178,4 +178,20 @@ public class ProductItem implements Serializable {
         public Double getPrice() { return price; }
         public void setPrice(Double price) { this.price = price; }
     }
+    public String getSubCategory() {
+        if (categoryId != null && categoryId.containsKey("SubCategoryId")) {
+            Object value = categoryId.get("SubCategoryId");
+            return value != null ? value.toString() : null;
+        }
+        return null;
+    }
+
+    public String getMainCategory() {
+        if (categoryId != null && categoryId.containsKey("MainCategoryId")) {
+            Object value = categoryId.get("MainCategoryId");
+            return value != null ? value.toString() : null;
+        }
+        return null;
+    }
+
 }

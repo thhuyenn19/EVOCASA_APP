@@ -5,663 +5,664 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_bg">
+
+    <!-- Overlay background (Semi-transparent, positioned BEFORE voucher layout) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-    <!-- Header -->
-    <include layout="@layout/topbar_payment" />
+        <!-- Header -->
+        <include layout="@layout/topbar_payment" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
-            android:paddingBottom="30dp"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <!-- Shipping Address -->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:background="@drawable/bg_border_rounded"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txtShippingAddress"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/title_shipping_address"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtEditInfor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/text_edit_underline"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/txtCustomerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="Thao Le"
-                    android:textStyle="bold"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/txtCustomerPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="0784 838 696"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/txtCustomerAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="275/15 Binh Duc, TP Long Xuyen, An Giang"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="14dp" />
-
-            </LinearLayout>
-
-            <!-- Product Item sử dụng item_order_product.xml -->
-            <!-- sau -->
-            <LinearLayout
-                android:id="@+id/productContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@drawable/bg_border_rounded"
-                android:paddingHorizontal="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="2dp"
-                android:layout_marginTop="12dp">
-                <!-- sẽ inflate từng item_payment_product vào đây -->
-            </LinearLayout>
+                android:paddingHorizontal="15dp"
+                android:paddingBottom="30dp">
 
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_rounded"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
-
-            <!-- Message for shop -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:textColor="@color/color_5E4C3E"
-                    android:paddingHorizontal="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imgMessageForShop"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_note" />
-
-                    <EditText
-                        android:id="@+id/edtMessageForShop"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:hint="@string/title_message_for_shop"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="14dp"
-                        android:background="@android:color/transparent"
-                        android:inputType="text"
-                        />
-
-<!--                    <ImageView-->
-<!--                        android:id="@+id/imgMoreMessageForShop"-->
-<!--                        android:layout_width="12dp"-->
-<!--                        android:layout_height="12dp"-->
-<!--                        android:src="@drawable/icon__1_" />-->
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E"
-                    android:layout_marginTop="5dp" />
-
-                <!-- Voucher -->
-                <LinearLayout
-                    android:id="@+id/layoutUseVoucher"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:paddingHorizontal="10dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/imgVoucher"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_discount" />
-
-                    <TextView
-                        android:id="@+id/txtVoucher"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:text="Voucher discount $50"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="14dp"
-                        android:textStyle="normal" />
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:src="@drawable/icon__1_" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <!-- Shipping Method -->
-            <LinearLayout
-                android:id="@+id/layoutShippingMethod"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_rounded"
-                android:padding="10dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
-
+                <!-- Shipping Address -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtShippingAddress"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/title_shipping_address"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtEditInfor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_edit_underline"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/txtShippingMethod"
-                        android:layout_width="0dp"
+                        android:id="@+id/txtCustomerName"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Shipping Method"
+                        android:layout_marginTop="5dp"
+                        android:text="Thao Le"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="16sp"
+                        android:textSize="14dp"
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtSeeAllShipping"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txtCustomerPhone"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/title_see_all"
+                        android:text="0784 838 696"
                         android:textColor="@color/color_5E4C3E"
-                        android:textSize="12dp"
-                        android:textStyle="italic" />
+                        android:textSize="14dp" />
 
-                    <ImageView
-                        android:id="@+id/imgSeeAllShipping"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_see_all" />
+                    <TextView
+                        android:id="@+id/txtCustomerAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="275/15 Binh Duc, TP Long Xuyen, An Giang"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="14dp" />
 
                 </LinearLayout>
+
+                <!-- Product Item sử dụng item_order_product.xml -->
+                <!-- sau -->
+                <LinearLayout
+                    android:id="@+id/productContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="2dp">
+                    <!-- sẽ inflate từng item_payment_product vào đây -->
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:id="@+id/imgShippingMethod"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_standard_delivery" />
-
+                    <!-- Message for shop -->
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="12dp"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp"
+                        android:textColor="@color/color_5E4C3E">
+
+                        <ImageView
+                            android:id="@+id/imgMessageForShop"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_note" />
+
+                        <EditText
+                            android:id="@+id/edtMessageForShop"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:hint="@string/title_message_for_shop"
+                            android:inputType="text"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14dp" />
+
+                        <!--                    <ImageView-->
+                        <!--                        android:id="@+id/imgMoreMessageForShop"-->
+                        <!--                        android:layout_width="12dp"-->
+                        <!--                        android:layout_height="12dp"-->
+                        <!--                        android:src="@drawable/icon__1_" />-->
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="5dp"
+                        android:background="#505E4C3E" />
+
+                    <!-- Voucher -->
+                    <LinearLayout
+                        android:id="@+id/layoutUseVoucher"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <ImageView
+                            android:id="@+id/imgVoucher"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_discount" />
 
                         <TextView
-                            android:id="@+id/txtShippingMethodName"
+                            android:id="@+id/txtVoucher"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:text="Voucher discount $50"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="14dp"
+                            android:textStyle="normal" />
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/icon__1_" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Shipping Method -->
+                <LinearLayout
+                    android:id="@+id/layoutShippingMethod"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtShippingMethod"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Shipping Method"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtSeeAllShipping"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_see_all"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="12dp"
+                            android:textStyle="italic" />
+
+                        <ImageView
+                            android:id="@+id/imgSeeAllShipping"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_see_all" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imgShippingMethod"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_standard_delivery" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/txtShippingMethodName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Express Delivery"
+                                android:textColor="@color/color_5E4C3E"
+                                android:textSize="15dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtShippingMethodDesc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Received on Thursday, May 15, 2025"
+                                android:textColor="@color/color_805E4C3E"
+                                android:textSize="14dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtShippingPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$50"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Payment Method -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical"
+                    android:paddingTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:id="@+id/txtPaymentMethod"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="2dp"
+                            android:text="@string/title_payment_method"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtSeeAllPayment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_see_all"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="12dp"
+                            android:textStyle="italic" />
+
+                        <ImageView
+                            android:id="@+id/imgSeeAllPayment"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_see_all" />
+
+                    </LinearLayout>
+
+                    <!-- Payment Options -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:background="#505E4C3E" />
+
+                    <LinearLayout
+                        android:id="@+id/optionCOD"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="22dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:id="@+id/txtCOD"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Express Delivery"
+                            android:text="@string/title_cod"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#505E4C3E" />
+
+                    <LinearLayout
+                        android:id="@+id/optionBanking"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="22dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:id="@+id/txtBanking"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_banking"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#505E4C3E" />
+
+                    <LinearLayout
+                        android:id="@+id/optionMomo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="22dp"
+                        android:paddingVertical="12dp">
+
+                        <TextView
+                            android:id="@+id/txtMomo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_momo"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#505E4C3E" />
+
+                    <LinearLayout
+                        android:id="@+id/optionCredit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="22dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="15dp">
+
+                        <TextView
+                            android:id="@+id/txtCredit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/title_card"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- Payment Details -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_border_rounded"
+                    android:orientation="vertical"
+                    android:paddingVertical="10dp">
+
+                    <TextView
+                        android:id="@+id/txtPaymentDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="10dp"
+                        android:text="Payment Details"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Price (2 items):"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/txtTotalPrice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$3,500"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/title_shipping_fee"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/txtShippingFee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$50"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Discount:"
+                            android:textColor="@color/color_5E4C3E"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/txtDiscount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-$50"
+                            android:textColor="@color/color_FF6600"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="#505E4C3E" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="10dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/title_total_payment"
                             android:textColor="@color/color_5E4C3E"
                             android:textSize="15dp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/txtShippingMethodDesc"
-                            android:layout_width="match_parent"
+                            android:id="@+id/txtTotalOrderValue"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Received on Thursday, May 15, 2025"
-                            android:textSize="14dp"
-                            android:textColor="@color/color_805E4C3E" />
+                            android:text="$3,500"
+                            android:textColor="@color/color_FF6600"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
 
                     </LinearLayout>
 
                     <TextView
-                        android:id="@+id/txtShippingPrice"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/txtTotalSaveValue"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="$50"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp"
-                        android:textStyle="bold" />
+                        android:layout_marginTop="4dp"
+                        android:paddingHorizontal="10dp"
+                        android:text="You save $50 on this order"
+                        android:textColor="@color/color_FF6600"
+                        android:textSize="14dp"
+                        android:textStyle="italic" />
 
                 </LinearLayout>
-
             </LinearLayout>
+        </ScrollView>
 
-            <!-- Payment Method -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_rounded"
-                android:paddingTop="10dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
-
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:id="@+id/txtPaymentMethod"
-                        android:layout_width="0dp"
-                        android:paddingTop="2dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/title_payment_method"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="16dp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/txtSeeAllPayment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_see_all"
-                        android:textStyle="italic"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="12dp" />
-
-                    <ImageView
-                        android:id="@+id/imgSeeAllPayment"
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
-                        android:layout_marginStart="4dp"
-                        android:src="@drawable/ic_see_all" />
-
-                </LinearLayout>
-
-                <!-- Payment Options -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E"
-                    android:layout_marginTop="12dp" />
-                <LinearLayout
-                    android:id="@+id/optionCOD"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="22dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/txtCOD"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_cod"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E" />
-
-                <LinearLayout
-                    android:id="@+id/optionBanking"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="22dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/txtBanking"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_banking"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E" />
-
-                <LinearLayout
-                    android:id="@+id/optionMomo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="12dp"
-                    android:paddingHorizontal="22dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/txtMomo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_momo"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E" />
-
-                <LinearLayout
-                    android:id="@+id/optionCredit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="22dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="15dp"
-                    android:gravity="center_vertical"
-                    android:clickable="true"
-                    android:focusable="true">
-
-                    <TextView
-                        android:id="@+id/txtCredit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_card"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- Payment Details -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_rounded"
-                android:paddingVertical="10dp"
-                android:layout_marginTop="12dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtPaymentDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:text="Payment Details"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Price (2 items):"
-                        android:textSize="15dp"
-                        android:textColor="@color/color_5E4C3E"
-                        />
-
-                    <TextView
-                        android:id="@+id/txtTotalPrice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$3,500"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingHorizontal="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/title_shipping_fee"
-                        android:textSize="15dp"
-                        android:textColor="@color/color_5E4C3E"
-                        />
-
-                    <TextView
-                        android:id="@+id/txtShippingFee"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$50"
-                        android:textColor="@color/color_5E4C3E"
-                        android:textSize="15dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:paddingHorizontal="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Discount:"
-                        android:textSize="15dp"
-                        android:textColor="@color/color_5E4C3E" />
-
-                    <TextView
-                        android:id="@+id/txtDiscount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="-$50"
-                        android:textSize="15dp"
-                        android:textColor="@color/color_FF6600" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#505E4C3E"
-                    android:layout_marginVertical="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/title_total_payment"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_5E4C3E" />
-
-                    <TextView
-                        android:id="@+id/txtTotalOrderValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="$3,500"
-                        android:textSize="15dp"
-                        android:textStyle="bold"
-                        android:textColor="@color/color_FF6600" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/txtTotalSaveValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:text="You save $50 on this order"
-                    android:textSize="14dp"
-                    android:textStyle="italic"
-                    android:textColor="@color/color_FF6600"
-                    android:layout_marginTop="4dp" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <!-- Bottom Section - Fixed at bottom -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/bg_rounded_button"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:elevation="8dp">
-
+        <!-- Bottom Section - Fixed at bottom -->
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="10dp"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
-
-                <TextView
-                    android:id="@+id/txtTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/title_total"
-                    android:textSize="20dp"
-                    android:textColor="@color/color_5E4C3E"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtTotalValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=" $3,500"
-                    android:textSize="20dp"
-                    android:textColor="@color/color_FF6600"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_rounded_button"
+            android:elevation="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingRight="10dp">
 
-                <TextView
-                    android:id="@+id/txtSaving"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_saving"
-                    android:textSize="15dp"
-                    android:textColor="@color/color_5E4C3E" />
+                    android:gravity="end"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtSavingValue"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/txtTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_total"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTotalValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" $3,500"
+                        android:textColor="@color/color_FF6600"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=" $50"
-                    android:textSize="15dp"
-                    android:textColor="@color/color_FF6600" />
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtSaving"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_saving"
+                        android:textColor="@color/color_5E4C3E"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/txtSavingValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" $50"
+                        android:textColor="@color/color_FF6600"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
             </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCheckout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/color_bg_btn_buynow"
+                android:insetLeft="0dp"
+                android:insetTop="0dp"
+                android:insetRight="0dp"
+                android:insetBottom="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="20dp"
+                android:text="@string/title_check_out"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:cornerRadius="0dp"
+                app:iconPadding="0dp"
+                app:strokeWidth="0dp" />
 
         </LinearLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCheckout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="20dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:minHeight="0dp"
-            android:textAlignment="center"
-            android:minWidth="0dp"
-            android:backgroundTint="@color/color_bg_btn_buynow"
-            android:text="@string/title_check_out"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:cornerRadius="0dp"
-            app:iconPadding="0dp"
-            app:strokeWidth="0dp" />
-
     </LinearLayout>
-    </LinearLayout>
-    <!-- Overlay background (Semi-transparent, positioned BEFORE voucher layout) -->
+
     <View
         android:id="@+id/overlayBackground"
         android:layout_width="match_parent"
