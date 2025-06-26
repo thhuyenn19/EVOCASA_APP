@@ -77,6 +77,7 @@ public class EditShippingFragment extends Fragment {
         }
 
         btnSave.setOnClickListener(v -> {
+            if (!validateInputFields()) return;
             if (originalAddress == null) {
                 saveNewShipping(); // Thêm mới
             } else {
@@ -91,7 +92,14 @@ public class EditShippingFragment extends Fragment {
                     .setNegativeButton("No", null)
                     .show();
         });
-        btnBack.setOnClickListener(v -> showExitDialog());
+        btnBack.setOnClickListener(v -> {
+            if (hasUnsavedChanges()) {
+                showExitDialog();
+            } else {
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
 
         // Mở fragment chọn địa chỉ nếu cần
         edtAddress.setOnClickListener(v -> {
@@ -187,6 +195,11 @@ public class EditShippingFragment extends Fragment {
                     List<Map<String, Object>> list = (List<Map<String, Object>>) doc.get("ShippingAddresses");
                     if (list == null) list = new ArrayList<>();
 
+                    if (switchDefault.isChecked()) {
+                        for (Map<String, Object> item : list) {
+                            item.put("IsDefault", false);
+                        }
+                    }
                     list.add(newAddress);
 
                     FirebaseFirestore.getInstance()
@@ -220,7 +233,11 @@ public class EditShippingFragment extends Fragment {
                 .addOnSuccessListener(doc -> {
                     List<Map<String, Object>> list = (List<Map<String, Object>>) doc.get("ShippingAddresses");
                     if (list == null) list = new ArrayList<>();
-
+                    if (switchDefault.isChecked()) {
+                        for (Map<String, Object> item : list) {
+                            item.put("IsDefault", false);
+                        }
+                    }
                     for (int i = 0; i < list.size(); i++) {
                         Map<String, Object> item = list.get(i);
                         if (item.get("Address").equals(originalAddress.getAddress())) {
@@ -235,8 +252,14 @@ public class EditShippingFragment extends Fragment {
                             .update("ShippingAddresses", list)
                             .addOnSuccessListener(unused -> {
                                 Toast.makeText(getContext(), "Address updated successfully", Toast.LENGTH_SHORT).show();
+
+                                if (switchDefault.isChecked()) {
+                                    unsetOtherDefaults(edtAddress.getText().toString().trim(), uid);
+                                }
+
                                 requireActivity().getSupportFragmentManager().popBackStack();
                             })
+
                             .addOnFailureListener(e -> {
                                 Toast.makeText(getContext(), "Failed to update address", Toast.LENGTH_SHORT).show();
                             });
@@ -258,10 +281,19 @@ public class EditShippingFragment extends Fragment {
         });
 
         btnSave.setOnClickListener(v -> {
-            saveUpdatedShipping();
-            saveNewShipping();
+            if (!validateInputFields()) {
+                dialog.dismiss();
+                return;
+            }
+
+            if (originalAddress == null) {
+                saveNewShipping();
+            } else {
+                saveUpdatedShipping();
+            }
             dialog.dismiss();
         });
+
 
         btnClose.setOnClickListener(v -> dialog.dismiss());
 
@@ -269,4 +301,73 @@ public class EditShippingFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
+    private boolean validateInputFields() {
+        String name = edtName.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+
+        if (name.isEmpty()) {
+            edtName.setError("Name cannot be empty");
+            edtName.requestFocus();
+            return false;
+        }
+
+        if (phone.isEmpty()) {
+            edtPhone.setError("Phone number cannot be empty");
+            edtPhone.requestFocus();
+            return false;
+        }
+
+        if (address.isEmpty()) {
+            edtAddress.setError("Address cannot be empty");
+            edtAddress.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+    private boolean hasUnsavedChanges() {
+        String name = edtName.getText().toString().trim();
+        String phone = edtPhone.getText().toString().trim();
+        String address = edtAddress.getText().toString().trim();
+        boolean isDefault = switchDefault.isChecked();
+
+        if (originalAddress == null) {
+            // Trường hợp thêm mới → nếu có field nào khác rỗng thì coi như có thay đổi
+            return !name.isEmpty() || !phone.isEmpty() || !address.isEmpty() || isDefault;
+        } else {
+            // Trường hợp chỉnh sửa → so sánh với dữ liệu gốc
+            return !name.equals(originalAddress.getName())
+                    || !phone.equals(originalAddress.getPhone())
+                    || !address.equals(originalAddress.getAddress())
+                    || isDefault != originalAddress.isDefault();
+        }
+    }
+    private void unsetOtherDefaults(String currentAddress, String uid) {
+        FirebaseFirestore.getInstance()
+                .collection("Customers")
+                .document(uid)
+                .get()
+                .addOnSuccessListener(doc -> {
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) doc.get("ShippingAddresses");
+                    if (list == null) return;
+
+                    boolean changed = false;
+                    for (Map<String, Object> item : list) {
+                        String address = (String) item.get("Address");
+                        if (!address.equals(currentAddress) && Boolean.TRUE.equals(item.get("IsDefault"))) {
+                            item.put("IsDefault", false);
+                            changed = true;
+                        }
+                    }
+
+                    if (changed) {
+                        FirebaseFirestore.getInstance()
+                                .collection("Customers")
+                                .document(uid)
+                                .update("ShippingAddresses", list);
+                    }
+                });
+    }
+
 }
