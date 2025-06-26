@@ -6,22 +6,32 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.mobile.models.Category;
 import com.mobile.evocasa.R;
 import com.mobile.utils.FontUtils;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
 
     private List<Category> categoryList;
-    private int imageResId;
+    private OnItemClickListener listener;
+
+    // Interface for click events
+    public interface OnItemClickListener {
+        void onItemClick(Category category);
+    }
 
     public CategoryAdapter(List<Category> categoryList) {
         this.categoryList = categoryList;
+    }
+
+    // Method to set the click listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,7 +39,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_category, parent, false);
-        return new CategoryViewHolder(view);
+        return new CategoryViewHolder(view, listener);
     }
 
     @Override
@@ -38,7 +48,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.txtCategoryName.setText(category.getName());
         holder.imgCategory.setImageResource(category.getImageResId());
 
-        // Gán font Zbold cho tên category
+        // Apply Zbold font to category name
         FontUtils.setZboldFont(holder.itemView.getContext(), holder.txtCategoryName);
     }
 
@@ -47,14 +57,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList.size();
     }
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+    public class CategoryViewHolder extends RecyclerView.ViewHolder {
         TextView txtCategoryName;
         ImageView imgCategory;
 
-        public CategoryViewHolder(@NonNull View itemView) {
+        public CategoryViewHolder(@NonNull View itemView, OnItemClickListener listener) {
             super(itemView);
             txtCategoryName = itemView.findViewById(R.id.txtCategoryName);
             imgCategory = itemView.findViewById(R.id.imgCategory);
+
+            // Set click listener on the entire item view
+            itemView.setOnClickListener(v -> {
+                if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(categoryList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 }
