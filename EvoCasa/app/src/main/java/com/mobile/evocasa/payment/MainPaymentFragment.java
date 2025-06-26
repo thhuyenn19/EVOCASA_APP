@@ -93,9 +93,6 @@ public class MainPaymentFragment extends Fragment {
     private boolean isDefault;
 
 
-
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -242,7 +239,13 @@ public class MainPaymentFragment extends Fragment {
         // Chuyển sang fragment chọn edit Shipping Address
         txtEditInfor.setOnClickListener(v -> {
             FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, new ShippingAddressFragment());
+            ShippingAddressFragment fragment = new ShippingAddressFragment();
+            if (selectedShipping != null) {
+                Bundle args = new Bundle();
+                args.putSerializable("selectedShipping", selectedShipping);
+                fragment.setArguments(args);
+            }
+            transaction.replace(R.id.fragment_container, fragment);
             transaction.addToBackStack(null);
             transaction.commit();
         });
@@ -251,7 +254,7 @@ public class MainPaymentFragment extends Fragment {
         Button btnCheckout = view.findViewById(R.id.btnCheckout);
         btnCheckout.setOnClickListener(v -> {
             if (selectedPaymentMethod == null) {
-                Toast.makeText(requireContext(), "Vui lòng chọn phương thức thanh toán", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Please select payment method", Toast.LENGTH_SHORT).show();
                 return;
             }
             // Tạo ID cho order
@@ -360,11 +363,11 @@ public class MainPaymentFragment extends Fragment {
 
                         notification.put("NotificationId", notiId);
                         notification.put("CreatedAt", createdAt);
-                        notification.put("Title", "Payment Confirmed");
-                        notification.put("Content", "Your order " + orderId + " has been placed successfully.");
+                        notification.put("Title", "Order Pending Confirmation");
+                        notification.put("Content", "Order #" + orderId + " placed successfully and is now pending confirmation.");
                         notification.put("Image", "/images/Notification/OrderPlaced.jpg");  // bạn có thể đổi lại đường dẫn phù hợp
                         notification.put("Status", "Unread");
-                        notification.put("Type", "PaymentConfirmed");
+                        notification.put("Type", "Pending");
 
 // Đẩy vào danh sách Notifications của người dùng
                         FirebaseFirestore.getInstance()
@@ -731,57 +734,102 @@ public class MainPaymentFragment extends Fragment {
         a.setText(addr.getAddress());
     }
     private void loadShippingInfoFromFirestore(View view) {
-        if (selectedShipping != null) {
-            updateShippingUI(view, selectedShipping);
-            return;  // ← bỏ qua load default
-        }
         String uid = new UserSessionManager(requireContext()).getUid();
         if (uid == null || uid.isEmpty()) {
             Log.e("MainPaymentFragment", "User not logged in");
             return;
         }
 
+        if (selectedShipping != null) {
+            // Kiểm tra xem selectedShipping còn tồn tại trong DB không
+            FirebaseFirestore.getInstance()
+                    .collection("Customers")
+                    .document(uid)
+                    .get()
+                    .addOnSuccessListener(docSnapshot -> {
+                        List<Map<String, Object>> addressList =
+                                (List<Map<String, Object>>) docSnapshot.get("ShippingAddresses");
+
+                        if (addressList != null) {
+                            for (Map<String, Object> m : addressList) {
+                                String name = (String) m.get("Name");
+                                String phone = (String) m.get("Phone");
+                                String address = (String) m.get("Address");
+
+                                if (name != null && phone != null && address != null &&
+                                        name.equals(selectedShipping.getName()) &&
+                                        phone.equals(selectedShipping.getPhone()) &&
+                                        address.equals(selectedShipping.getAddress())) {
+                                    // selectedShipping vẫn tồn tại → dùng luôn
+                                    updateShippingUI(view, selectedShipping);
+                                    return;
+                                }
+                            }
+                        }
+
+                        // Nếu selectedShipping không còn → reset và reload fallback
+                        selectedShipping = null;
+                        loadShippingInfoFromFirestore(view);
+                    });
+            return;
+        }
         FirebaseFirestore.getInstance()
                 .collection("Customers")
                 .document(uid)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        List<Map<String, Object>> addressList =
-                                (List<Map<String, Object>>) documentSnapshot.get("ShippingAddresses");
+                    if (!documentSnapshot.exists()) return;
 
-                        if (addressList != null && !addressList.isEmpty()) {
-                            for (Map<String, Object> addressMap : addressList) {
-                                Boolean isDefault = (Boolean) addressMap.get("IsDefault");
-                                if (isDefault != null && isDefault) {
-                                    String name = (String) addressMap.get("Name");
-                                    String phone = (String) addressMap.get("Phone");
-                                    String address = (String) addressMap.get("Address");
-                                    isDefault = (Boolean) addressMap.get("IsDefault");
+                    List<Map<String, Object>> addressList =
+                            (List<Map<String, Object>>) documentSnapshot.get("ShippingAddresses");
 
-                                    selectedShipping = new ShippingAddress(name, phone, address, isDefault != null && isDefault);
+                    TextView txtName = view.findViewById(R.id.txtCustomerName);
+                    TextView txtPhone = view.findViewById(R.id.txtCustomerPhone);
+                    TextView txtAddress = view.findViewById(R.id.txtCustomerAddress);
+                    TextView txtEditInfor = view.findViewById(R.id.txtEditInfor);
 
-                                    TextView txtName = view.findViewById(R.id.txtCustomerName);
-                                    TextView txtPhone = view.findViewById(R.id.txtCustomerPhone);
-                                    TextView txtAddress = view.findViewById(R.id.txtCustomerAddress);
+                    if (addressList != null && !addressList.isEmpty()) {
+                        // Ưu tiên tìm default
+                        for (Map<String, Object> addressMap : addressList) {
+                            Boolean isDefault = (Boolean) addressMap.get("IsDefault");
+                            if (isDefault != null && isDefault) {
+                                String name = (String) addressMap.get("Name");
+                                String phone = (String) addressMap.get("Phone");
+                                String address = (String) addressMap.get("Address");
 
-                                    if (txtName != null) txtName.setText(name != null ? name : "No Name");
-                                    if (txtPhone != null) txtPhone.setText(phone != null ? phone : "No Phone");
-                                    if (txtAddress != null) txtAddress.setText(address != null ? address : "No Address");
-
-                                    Log.d("MainPaymentFragment", "Loaded default shipping: " + name + " | " + phone + " | " + address);
-                                    return; // đã lấy được default → thoát
-                                }
+                                selectedShipping = new ShippingAddress(name, phone, address, true);
+                                updateShippingUI(view, selectedShipping);
+                                txtEditInfor.setText("Edit");
+                                return;
                             }
-                        } else {
-                            Log.w("MainPaymentFragment", "No ShippingAddresses found");
                         }
+
+                        // Không có default → dùng địa chỉ đầu tiên
+                        Map<String, Object> first = addressList.get(0);
+                        String name = (String) first.get("Name");
+                        String phone = (String) first.get("Phone");
+                        String address = (String) first.get("Address");
+
+                        selectedShipping = new ShippingAddress(name, phone, address, false);
+                        updateShippingUI(view, selectedShipping);
+                        txtEditInfor.setText("Edit");
                     } else {
-                        Log.w("MainPaymentFragment", "Customer document not found");
+                        // Không có địa chỉ nào
+                        txtName.setText("No shipping found");
+                        txtPhone.setText("");
+                        txtAddress.setText("");
+
+                        txtName.setGravity(Gravity.CENTER_HORIZONTAL);
+                        txtPhone.setGravity(Gravity.CENTER_HORIZONTAL);
+                        txtAddress.setGravity(Gravity.CENTER_HORIZONTAL);
+
+                        txtEditInfor.setText("Add");
                     }
                 })
                 .addOnFailureListener(e -> Log.e("MainPaymentFragment", "Error loading shipping address", e));
     }
+
+
 
 
     private void bindProductsToUI(List<CartProduct> productList) {

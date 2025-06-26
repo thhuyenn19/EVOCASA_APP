@@ -23,14 +23,15 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
     private final OnEditClickListener editClickListener;
     private final OnSelectClickListener selectClickListener;
     private int selectedPosition = -1;
-
+    private ShippingAddress selectedShipping;
     public ShippingAddressPaymentAdapter(
             List<ShippingAddress> list,
             OnEditClickListener editClickListener,
-            OnSelectClickListener selectClickListener) {
+            OnSelectClickListener selectClickListener,ShippingAddress selectedShipping) {
         this.list = list;
         this.editClickListener = editClickListener;
         this.selectClickListener = selectClickListener;
+        this.selectedShipping = selectedShipping;
     }
 
     public interface OnEditClickListener {
@@ -106,6 +107,13 @@ public class ShippingAddressPaymentAdapter extends RecyclerView.Adapter<Shipping
         FontUtils.setRegularFont(holder.itemView.getContext(), holder.txtAddress);
         FontUtils.setRegularFont(holder.itemView.getContext(), holder.txtDefaultTag);
         FontUtils.setZblackFont(holder.itemView.getContext(), holder.txtEditLabel);
+
+        boolean isSelected = selectedShipping != null
+                && selectedShipping.getAddress().equals(item.getAddress())
+                && selectedShipping.getPhone().equals(item.getPhone());
+
+        holder.radioSelect.setChecked(isSelected);
+
     }
 
     @Override

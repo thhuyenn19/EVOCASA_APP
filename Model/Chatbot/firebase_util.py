@@ -39,14 +39,14 @@ def get_all_documents_as_texts(collections: list[str]) -> list[str]:
                     if isinstance(parent, dict) and "$oid" in parent:
                         oid = parent["$oid"]
                         data["ParentCategory"] = category_map.get(oid, f"Unknown ID: {oid}")
-                    elif parent is None:
+                    elif parent is None or parent == "null":  # Xử lý cả None và "null"
                         data["ParentCategory"] = "None"
 
                 # Gộp toàn bộ field thành văn bản rõ ràng
-                text = "\n".join(f"{k}: {str(v)}" for k, v in data.items())
+                text = "\n".join(f"{k}: {str(v)}" for k, v in data.items() if k != "_id")  # Loại bỏ _id để gọn
                 all_texts.append(text)
 
         except Exception as e:
             print(f"❌ Lỗi khi đọc collection '{collection_name}': {e}")
 
-    return all_texts
+    return list(dict.fromkeys(all_texts))  # Loại bỏ trùng lặp

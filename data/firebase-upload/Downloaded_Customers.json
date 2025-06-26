@@ -11,16 +11,22 @@
     },
     "Address": "Hanoi, Vietnam",
     "Gender": "Female",
-    "Image": "",
+    "Image": "/images/profile/huyen.jpg",
     "CreatedAt": {
       "$date": "2024-02-28T00:00:00.000Z"
     },
     "Cart": [
       {
-        "ProductId": {
-          "$oid": "67c0b01cc5fec55b70d0fc9b"
-        },
-        "Quantity": 1
+        "productId": "67c0b73a46527d4bf49e486a",
+        "cartQuantity": 2
+      },
+      {
+        "productId": "67c0c878c5fec55b70d0fcca",
+        "cartQuantity": 3
+      },
+      {
+        "productId": "67c0b3bbc5fec55b70d0fca2",
+        "cartQuantity": 1
       }
     ],
     "HistoryBehavior": [
@@ -818,24 +824,24 @@
     "DOB": "05/06/2025",
     "Name": "Huyen Cute",
     "Address": "Tỉnh Bình Định, Vietnam",
-    "ShippingAddresses": [
+    "Voucher": [
       {
-        "IsDefault": true,
-        "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
-        "Phone": "0972 465 475",
-        "Name": "Le Van Anh"
+        "VoucherId": "6832ed3e9e02b2d459083d39"
       },
       {
-        "IsDefault": false,
-        "Address": "23 Lê Lợi, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
-        "Phone": "0892856985",
-        "Name": "Do Anh Dung"
+        "VoucherId": "6832b33d6ea7983009fbc2e6"
       },
       {
-        "IsDefault": false,
-        "Address": "123, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
-        "Phone": "0868347810",
-        "Name": "Nhung"
+        "VoucherId": "6832ebab9e02b2d459083d36"
+      },
+      {
+        "VoucherId": "VOUCHER_SAMPLE_1"
+      },
+      {
+        "VoucherId": "VOUCHER_SAMPLE_3"
+      },
+      {
+        "VoucherId": "6832ec999e02b2d459083d38"
       }
     ],
     "Notifications": [
@@ -856,55 +862,590 @@
         "CreatedAt": "2025-06-17T10:10:00Z",
         "Title": "Complete Your Payment",
         "Image": "/images/Notification/CompletePayment.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "OrderPlaced",
+        "NotificationId": "NOTI1750525348992",
+        "Content": "Your order 1750525348300 has been placed successfully.",
+        "CreatedAt": "2025-06-22T00:02:28Z",
+        "Title": "Order Placed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "CompleteYourPayment",
+        "NotificationId": "NOTI1750525632061",
+        "Content": "Your order 1750525631301 has been placed successfully.",
+        "CreatedAt": "2025-06-22T00:07:12Z",
+        "Title": "Order Placed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750526007632",
+        "Content": "Your order 1750526007258 has been placed successfully.",
+        "CreatedAt": "2025-06-22T00:13:27Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750560336632",
+        "Content": "Your order 1750560335841 has been placed successfully.",
+        "CreatedAt": "2025-06-22T09:45:36Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750568300687",
+        "Content": "Your order 1750568299868 has been placed successfully.",
+        "CreatedAt": "2025-06-22T11:58:20Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750568813770",
+        "Content": "Your order 1750568812984 has been placed successfully.",
+        "CreatedAt": "2025-06-22T12:06:53Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750569863243",
+        "Content": "Your order 1750569862396 has been placed successfully.",
+        "CreatedAt": "2025-06-22T12:24:23Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750572653782",
+        "Content": "Your order 1750572652700 has been placed successfully.",
+        "CreatedAt": "2025-06-22T13:10:53Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750572701957",
+        "Content": "Your order 1750572701149 has been placed successfully.",
+        "CreatedAt": "2025-06-22T13:11:41Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750572923152",
+        "Content": "Your order 1750572922283 has been placed successfully.",
+        "CreatedAt": "2025-06-22T13:15:23Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750575384192",
+        "Content": "Your order 1750575382960 has been placed successfully.",
+        "CreatedAt": "2025-06-22T13:56:24Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750575490006",
+        "Content": "Your order 1750575489248 has been placed successfully.",
+        "CreatedAt": "2025-06-22T13:58:10Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750575638152",
+        "Content": "Your order 1750575637276 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:00:38Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750575743387",
+        "Content": "Your order 1750575742450 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:02:23Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750575840290",
+        "Content": "Your order 1750575839122 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:04:00Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750576160376",
+        "Content": "Your order 1750576159311 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:09:20Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750576514305",
+        "Content": "Your order 1750576513433 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:15:14Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750576522103",
+        "Content": "Your order 1750576521494 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:15:22Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750576558419",
+        "Content": "Your order 1750576557779 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:15:58Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750576893359",
+        "Content": "Your order 1750576892487 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:21:33Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750577002749",
+        "Content": "Your order 1750577001805 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:23:22Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750577446059",
+        "Content": "Your order 1750577445702 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:30:46Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750577808220",
+        "Content": "Your order 1750577807050 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:36:48Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750578051004",
+        "Content": "Your order 1750578049824 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:40:51Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750578076083",
+        "Content": "Your order 1750578075651 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:41:16Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750578270984",
+        "Content": "Your order 1750578270137 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:44:30Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750578422216",
+        "Content": "Your order 1750578421481 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:47:02Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750578521511",
+        "Content": "Your order 1750578520714 has been placed successfully.",
+        "CreatedAt": "2025-06-22T14:48:41Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750585103003",
+        "Content": "Your order 1750585102567 has been placed successfully.",
+        "CreatedAt": "2025-06-22T16:38:23Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750597882440",
+        "Content": "Your order 1750597881630 has been placed successfully.",
+        "CreatedAt": "2025-06-22T20:11:22Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750597896864",
+        "Content": "Your order 1750597896487 has been placed successfully.",
+        "CreatedAt": "2025-06-22T20:11:36Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750691688474",
+        "Content": "Your order 1750691688178 has been placed successfully.",
+        "CreatedAt": "2025-06-23T22:14:48Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750700675934",
+        "Content": "Your order 1750700675332 has been placed successfully.",
+        "CreatedAt": "2025-06-24T00:44:35Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750744947241",
+        "Content": "Your order 1750744946476 has been placed successfully.",
+        "CreatedAt": "2025-06-24T13:02:27Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750744965657",
+        "Content": "Your order 1750744965265 has been placed successfully.",
+        "CreatedAt": "2025-06-24T13:02:45Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750819254956",
+        "Content": "Your order 1750819254551 has been placed successfully.",
+        "CreatedAt": "2025-06-25T09:40:54Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750820249750",
+        "Content": "Your order 1750820248746 has been placed successfully.",
+        "CreatedAt": "2025-06-25T09:57:29Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750899146172",
+        "Content": "Your order 1750899145495 has been placed successfully.",
+        "CreatedAt": "2025-06-26T07:52:26Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750899703949",
+        "Content": "Your order 1750899703164 has been placed successfully.",
+        "CreatedAt": "2025-06-26T08:01:43Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750900169156",
+        "Content": "Your order 1750900168510 has been placed successfully.",
+        "CreatedAt": "2025-06-26T08:09:29Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "Pending",
+        "NotificationId": "NOTI1750915206901",
+        "Content": "Order #1750915206216 placed successfully and is now pending confirmation.",
+        "CreatedAt": "2025-06-26T12:20:06Z",
+        "Title": "Order Pending Confirmation",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      }
+    ],
+    "ShippingAddresses": [
+      {
+        "IsDefault": true,
+        "Address": "13 Lê Lợi, Phường 3, Quận Tân Bình, Thành phố Hồ Chí Minh, Vietnam",
+        "Phone": "0972 465 475",
+        "Name": "Le Van Anh"
+      },
+      {
+        "IsDefault": true,
+        "Address": "23 Lê Lợi, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+        "Phone": "0892856985",
+        "Name": "Do Anh Dung"
+      },
+      {
+        "IsDefault": false,
+        "Address": "123, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+        "Phone": "0868347810",
+        "Name": "Nhung"
       }
     ],
     "Cart": [
       {
-        "productId": "67c0ad5046527d4bf49e4857",
-        "cartQuantity": 1
-      },
-      {
         "productId": "67c099e8ac22517ab6403a78",
-        "cartQuantity": 1
-      }
-    ],
-    "Voucher": [
-      {
-        "VoucherId": "6832ed3e9e02b2d459083d39"
-      },
-      {
-        "VoucherId": "6832b33d6ea7983009fbc2e6"
-      },
-      {
-        "VoucherId": "6832ebab9e02b2d459083d36"
-      },
-      {
-        "VoucherId": "VOUCHER_SAMPLE_1"
-      },
-      {
-        "VoucherId": "VOUCHER_SAMPLE_3"
-      },
-      {
-        "VoucherId": "6832ec999e02b2d459083d38"
+        "cartQuantity": 2
       }
     ]
   },
   {
     "_id": "Mg98H9tSn5SFepSAQ2qpcaFX3cx2",
     "Mail": "",
-    "Address": null,
     "Phone": "+84868347810",
-    "DOB": null,
     "Gender": "",
     "Image": "",
-    "Notification": [],
-    "Name": "User_tmpAt6",
-    "Cart": [],
     "Voucher": [],
     "CreatedAt": {
       "_seconds": 1750567063,
       "_nanoseconds": 678000000
-    }
+    },
+    "Notifications": [
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750906987185",
+        "Content": "Your order 1750906986392 has been placed successfully.",
+        "CreatedAt": "2025-06-26T10:03:07Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750907248501",
+        "Content": "Your order 1750907248074 has been placed successfully.",
+        "CreatedAt": "2025-06-26T10:07:28Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750910444270",
+        "Content": "Your order 1750910442913 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:00:44Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750910468597",
+        "Content": "Your order 1750910467872 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:01:08Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750910758641",
+        "Content": "Your order 1750910757783 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:05:58Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750910867594",
+        "Content": "Your order 1750910864027 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:07:47Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750910973010",
+        "Content": "Your order 1750910971473 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:09:33Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911106261",
+        "Content": "Your order 1750911105384 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:11:46Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911178301",
+        "Content": "Your order 1750911177451 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:12:58Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911283162",
+        "Content": "Your order 1750911282276 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:14:43Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911393560",
+        "Content": "Your order 1750911392717 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:16:33Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911478121",
+        "Content": "Your order 1750911477403 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:17:58Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911621604",
+        "Content": "Your order 1750911620779 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:20:21Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911737912",
+        "Content": "Your order 1750911737095 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:22:17Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911833631",
+        "Content": "Your order 1750911832593 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:23:53Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Unread",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750911919826",
+        "Content": "Your order 1750911918924 has been placed successfully.",
+        "CreatedAt": "2025-06-26T11:25:19Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      }
+    ],
+    "Cart": [
+      {
+        "productId": "67c0c878c5fec55b70d0fcca",
+        "cartQuantity": 1
+      }
+    ],
+    "Address": "",
+    "DOB": "",
+    "Name": "nhung",
+    "ShippingAddresses": [
+      {
+        "IsDefault": false,
+        "Address": "123, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+        "Phone": "123",
+        "Name": "Nhung"
+      },
+      {
+        "IsDefault": false,
+        "Address": "cfg, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+        "Phone": "65852",
+        "Name": "Bghh"
+      },
+      {
+        "IsDefault": true,
+        "Address": "gyu, Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội, Vietnam",
+        "Phone": "6698",
+        "Name": "Vvvv"
+      }
+    ]
   },
   {
     "_id": "TUM2AKfTToQNK3CQwnqU2AvObwi2",
@@ -916,11 +1457,71 @@
     "Image": "https://lh3.googleusercontent.com/a/ACg8ocJVL4dHjk35tQcwjxLqG6zyJ39uGy87iIQsYen6MNf0BXYWwthn=s96-c",
     "Notification": [],
     "Name": "Huyền Thanh",
-    "Cart": [],
-    "Voucher": [],
     "CreatedAt": {
       "_seconds": 1750613768,
       "_nanoseconds": 568000000
-    }
+    },
+    "Voucher": [
+      {
+        "VoucherId": "6832b33d6ea7983009fbc2e6"
+      }
+    ],
+    "Cart": [],
+    "Notifications": [
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750866318697",
+        "Content": "Your order 1750866318332 has been placed successfully.",
+        "CreatedAt": "2025-06-25T22:45:18Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750866326978",
+        "Content": "Your order 1750866326600 has been placed successfully.",
+        "CreatedAt": "2025-06-25T22:45:26Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750866447449",
+        "Content": "Your order 1750866446681 has been placed successfully.",
+        "CreatedAt": "2025-06-25T22:47:27Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750907613723",
+        "Content": "Your order 1750907612713 has been placed successfully.",
+        "CreatedAt": "2025-06-26T10:13:33Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750907662723",
+        "Content": "Your order 1750907662343 has been placed successfully.",
+        "CreatedAt": "2025-06-26T10:14:22Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      },
+      {
+        "Status": "Read",
+        "Type": "PaymentConfirmed",
+        "NotificationId": "NOTI1750907726279",
+        "Content": "Your order 1750907725537 has been placed successfully.",
+        "CreatedAt": "2025-06-26T10:15:26Z",
+        "Title": "Payment Confirmed",
+        "Image": "/images/Notification/OrderPlaced.jpg"
+      }
+    ]
   }
 ]

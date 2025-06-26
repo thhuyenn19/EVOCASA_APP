@@ -28,13 +28,15 @@ import java.util.Map;
 public class ShippingAddressFragment extends Fragment {
 
     public ShippingAddressFragment() {}
+    private ShippingAddress selectedShipping = null;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shipping_address, container, false);
-
+        
         RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
         rvShipping.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -45,6 +47,11 @@ public class ShippingAddressFragment extends Fragment {
         if (uid == null || uid.isEmpty()) {
             Log.e("ShippingAddressFrag", "User not logged in");
             return view;
+        }
+// Nhận địa chỉ đang chọn từ MainPaymentFragment (nếu có)
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("selectedShipping")) {
+            selectedShipping = (ShippingAddress) args.getSerializable("selectedShipping");
         }
 
         FirebaseFirestore.getInstance()
@@ -92,7 +99,8 @@ public class ShippingAddressFragment extends Fragment {
                                                 .setFragmentResult("select_shipping", result);
                                         // 2) Quay về MainPaymentFragment
                                         requireActivity().getSupportFragmentManager().popBackStack();
-                                    }
+                                    },
+                                    selectedShipping
                             );
                     rvShipping.setAdapter(adapter);
 

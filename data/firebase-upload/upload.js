@@ -10,21 +10,22 @@ admin.initializeApp({
 
 console.log("Firebase initialized, reading file...");
 const db = admin.firestore();
-const data = JSON.parse(fs.readFileSync('EvoCasa.CustomerBehavior.json', 'utf8'));
+const data = JSON.parse(fs.readFileSync('EvoCasa.Order.json', 'utf8'));
 
 console.log(`Data loaded: ${data.length} products found`);
 
 async function uploadProducts() {
   try {
     for (const item of data) {
-      const id = item.id; // Sử dụng trường id làm document ID
+      const id = item._id?.$oid;
+      if (!id) continue; // Sử dụng trường id làm document ID
       console.log(`Adding document ${id}...`);
       
       // Tạo một bản copy của item và xóa trường id để tránh trùng lặp
       const productData = { ...item };
-      delete productData.id;
+      delete productData._id;
       
-      await db.collection('CustomerBehavior').doc(id).set(productData);
+      await db.collection('Order').doc(id).set(productData);
       console.log(`Added document ${id} successfully`);
     }
     
