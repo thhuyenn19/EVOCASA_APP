@@ -1,7 +1,7 @@
 package com.mobile.adapters;
 
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mobile.evocasa.R;
-import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdapter.ViewHolder> {
 
     private final List<ProductItem> productList;
     private final Context context;
+    private OnItemClickListener onItemClickListener;
 
-    public SearchProductAdapter(List<ProductItem> productList) {
-        this.productList = productList;
-        this.context = null; // Nếu bạn cần context, hãy truyền vào từ constructor
+    // Interface để handle click events
+    public interface OnItemClickListener {
+        void onItemClick(ProductItem product);
     }
 
     public SearchProductAdapter(List<ProductItem> productList, Context context) {
@@ -33,50 +34,63 @@ public class SearchProductAdapter extends RecyclerView.Adapter<SearchProductAdap
         this.context = context;
     }
 
+    // Method để set click listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     @NonNull
     @Override
     public SearchProductAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_subcategory_product, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearchProductAdapter.ViewHolder holder, int position) {
         ProductItem product = productList.get(position);
-        holder.txtName.setText(product.getName());
-        holder.txtPrice.setText(String.format("%.0f₫", product.getPrice() != null ? product.getPrice() : 0));
 
-        if (product.getImage() != null && !product.getImage().isEmpty()) {
-            Glide.with(holder.itemView.getContext())
-                    .load(product.getImage())
-                    .placeholder(R.mipmap.ic_lighting_brasslamp)
-                    .into(holder.imgProduct);
+        holder.txtProductName.setText(product.getName());
+
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        holder.txtPrice.setText("$"+product.getPrice());
+
+        if (product.getRatings() != null && product.getRatings().getAverage() != null) {
+            holder.txtRating.setText(String.format("%.1f", product.getRatings().getAverage()));
         } else {
-            holder.imgProduct.setImageResource(R.mipmap.ic_lighting_brasslamp);
+            holder.txtRating.setText("5.0");
         }
 
+        Glide.with(context)
+                .load(product.getFirstImage())
+                .placeholder(R.mipmap.ic_lighting_brasslamp)
+                .error(R.mipmap.ic_lighting_brasslamp)
+                .into(holder.imgProduct);
+
+        // Set click listener cho item
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), ProductDetailsActivity.class);
-            intent.putExtra("productId", product.getId());
-            v.getContext().startActivity(intent);
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(product);
+            }
         });
     }
 
     @Override
     public int getItemCount() {
-        return productList != null ? productList.size() : 0;
+        return productList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgProduct;
-        TextView txtName, txtPrice;
+        ImageView imgProduct, imgFavorite;
+        TextView txtProductName, txtPrice, txtRating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imgProduct = itemView.findViewById(R.id.imgProduct);
-            txtName = itemView.findViewById(R.id.txtProductName);
-            txtPrice = itemView.findViewById(R.id.txtProductPrice);
+            imgFavorite = itemView.findViewById(R.id.imgFavorite);
+            txtProductName = itemView.findViewById(R.id.txtProductName);
+            txtPrice = itemView.findViewById(R.id.txtPrice);
+            txtRating = itemView.findViewById(R.id.txtRating);
         }
     }
 }

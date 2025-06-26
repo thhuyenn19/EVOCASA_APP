@@ -1,7 +1,9 @@
 package com.mobile.models;
 
 import com.google.firebase.firestore.PropertyName;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -178,20 +180,28 @@ public class ProductItem implements Serializable {
         public Double getPrice() { return price; }
         public void setPrice(Double price) { this.price = price; }
     }
+    @PropertyName("SubCategory")
     public String getSubCategory() {
-        if (categoryId != null && categoryId.containsKey("SubCategoryId")) {
-            Object value = categoryId.get("SubCategoryId");
-            return value != null ? value.toString() : null;
-        }
-        return null;
+        Object subCategoryObj = categoryId != null ? categoryId.get("SubCategory") : null;
+        return subCategoryObj != null ? subCategoryObj.toString() : null;
     }
 
+    @PropertyName("MainCategory")
     public String getMainCategory() {
-        if (categoryId != null && categoryId.containsKey("MainCategoryId")) {
-            Object value = categoryId.get("MainCategoryId");
-            return value != null ? value.toString() : null;
+        Object mainCategoryObj = categoryId != null ? categoryId.get("MainCategory") : null;
+        return mainCategoryObj != null ? mainCategoryObj.toString() : null;
+    }
+    // Convert chuỗi JSON thành danh sách ảnh
+    public List<String> getImageList() {
+        try {
+            return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        return null;
+    }
+    public String getFirstImage() {
+        List<String> list = getImageList();
+        return (list != null && !list.isEmpty()) ? list.get(0) : null;
     }
 
 }

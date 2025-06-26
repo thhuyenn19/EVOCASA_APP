@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,13 +26,17 @@ import com.mobile.models.ProductItem;
 import com.mobile.adapters.SearchProductAdapter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SearchResultFragment extends Fragment {
 
     private EditText edtSearch;
     private ImageView imgSearch, btnBack;
     private RecyclerView recyclerView;
+    private SearchProductAdapter adapter;
+    private List<ProductItem> matchedProducts = new ArrayList<>();
 
     public static SearchResultFragment newInstance(String keyword, boolean b) {
         SearchResultFragment fragment = new SearchResultFragment();
@@ -53,7 +58,7 @@ public class SearchResultFragment extends Fragment {
         edtSearch = view.findViewById(R.id.edtSearch);
         imgSearch = view.findViewById(R.id.imgSearch);
         recyclerView = view.findViewById(R.id.recyclerSearchProduct);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 👉 chuyển thành grid 2 cột
 
         if (getArguments() != null) {
             String keyword = getArguments().getString("keyword", "");
@@ -72,7 +77,7 @@ public class SearchResultFragment extends Fragment {
 
         edtSearch.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                v.performClick(); // ✅ thêm dòng này
+                v.performClick(); // thêm dòng này
 
                 // chuyển về SearchProgressFragment
                 String currentKeyword = edtSearch.getText().toString().trim();
@@ -91,18 +96,25 @@ public class SearchResultFragment extends Fragment {
             }
             return false;
         });
+        adapter = new SearchProductAdapter(matchedProducts, getContext());
+        recyclerView.setAdapter(adapter);
 
         return view;
     }
 
     private void searchSimilarProducts(String keyword) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<ProductItem> matchedProducts = new ArrayList<>();
+        matchedProducts.clear();
 
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
                     String lowerKeyword = keyword.toLowerCase();
+                    List<ProductItem> exactMatches = new ArrayList<>();
+                    List<ProductItem> partialMatches = new ArrayList<>();
+                    List<ProductItem> descriptionMatches = new ArrayList<>();
+                    List<ProductItem> fuzzyMatches = new ArrayList<>();
+                    List<ProductItem> remainingProducts = new ArrayList<>();
 
                     for (DocumentSnapshot doc : querySnapshot) {
                         ProductItem product = doc.toObject(ProductItem.class);
@@ -111,28 +123,75 @@ public class SearchResultFragment extends Fragment {
                         String name = product.getName() != null ? product.getName().toLowerCase() : "";
                         String subCat = product.getSubCategory() != null ? product.getSubCategory().toLowerCase() : "";
                         String mainCat = product.getMainCategory() != null ? product.getMainCategory().toLowerCase() : "";
+                        String description = product.getDescription() != null ? product.getDescription().toLowerCase() : "";
 
-                        // Mức độ khớp ưu tiên: tên chứa keyword → subcat khớp → maincat khớp
-                        boolean matchKeyword = name.contains(lowerKeyword);
-                        boolean matchSubCategory = subCat.contains(lowerKeyword) || lowerKeyword.contains(subCat);
-                        boolean matchMainCategory = mainCat.contains(lowerKeyword) || lowerKeyword.contains(mainCat);
+                        product.setId(doc.getId());
 
-                        if (matchKeyword || matchSubCategory || matchMainCategory) {
-                            product.setId(doc.getId());
-                            matchedProducts.add(product);
+                        // Mức 1: Khớp chính xác tên sản phẩm
+                        if (name.equals(lowerKeyword)) {
+                            exactMatches.add(product);
+                            continue;
+                        }
+
+                        // Mức 2: Khớp một phần tên, category
+                        if (name.contains(lowerKeyword) || subCat.contains(lowerKeyword) || mainCat.contains(lowerKeyword)) {
+                            partialMatches.add(product);
+                            continue;
+                        }
+
+                        // Mức 3: Khớp trong description
+                        if (description.contains(lowerKeyword)) {
+                            descriptionMatches.add(product);
+                            continue;
+                        }
+
+                        // Mức 4: Tìm kiếm mờ (fuzzy search) - khớp từng từ
+                        String[] keywordParts = lowerKeyword.split("\\s+");
+                        boolean hasFuzzyMatch = false;
+
+                        for (String part : keywordParts) {
+                            if (part.length() >= 2) { // Chỉ tìm từ có ít nhất 2 ký tự
+                                if (name.contains(part) || subCat.contains(part) ||
+                                        mainCat.contains(part) || description.contains(part)) {
+                                    hasFuzzyMatch = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (hasFuzzyMatch) {
+                            fuzzyMatches.add(product);
+                        } else {
+                            // Nếu không khớp với 4 mức độ trên thì thêm vào danh sách sản phẩm còn lại
+                            remainingProducts.add(product);
                         }
                     }
 
-                    if (matchedProducts.isEmpty()) {
-                        Toast.makeText(getContext(), "Không tìm thấy sản phẩm phù hợp", Toast.LENGTH_SHORT).show();
-                    }
+                    // Kết hợp kết quả theo thứ tự ưu tiên
+                    matchedProducts.addAll(exactMatches);
+                    matchedProducts.addAll(partialMatches);
+                    matchedProducts.addAll(descriptionMatches);
+                    matchedProducts.addAll(fuzzyMatches);
+                    // Thêm tất cả sản phẩm còn lại vào cuối
+                    matchedProducts.addAll(remainingProducts);
 
-                    recyclerView.setAdapter(new SearchProductAdapter(matchedProducts));
+                    // Loại bỏ duplicate nếu có
+                    Set<String> addedIds = new HashSet<>();
+                    List<ProductItem> uniqueProducts = new ArrayList<>();
+                    for (ProductItem product : matchedProducts) {
+                        if (!addedIds.contains(product.getId())) {
+                            addedIds.add(product.getId());
+                            uniqueProducts.add(product);
+                        }
+                    }
+                    matchedProducts.clear();
+                    matchedProducts.addAll(uniqueProducts);
+
+                    adapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(getContext(), "Lỗi khi tìm kiếm sản phẩm", Toast.LENGTH_SHORT).show();
                     Log.e("SearchResult", "Lỗi tìm kiếm: ", e);
                 });
     }
-
 }
