@@ -18,7 +18,7 @@
       </div>
 
       <!-- Loading state -->
-      <div *ngIf="loading" class="loading-state">Đang tải thông tin...</div>
+      <div *ngIf="loading" class="loading-state">Loading Information..</div>
 
       <!-- Error state -->
       <div *ngIf="error" class="error-message">
@@ -31,7 +31,10 @@
         <div class="left-content">
           <div class="order-id">
             <span class="info-label">Order ID:</span>
-            <span class="info-value">{{ orderId }}</span>
+            
+          </div>
+           <div class="order-id">
+          <span class="info-value">{{ orderId }}</span>
           </div>
 
           <div class="info-container">
@@ -139,7 +142,7 @@
               </div>
               <div class="price-row">
                 <span class="label">Discount:</span>
-                <span class="value">$0</span>
+                <span class="value">$0.00</span>
               </div>
             </div>
 
@@ -157,14 +160,12 @@
           <div class="status-buttons">
             <button
               [class.active]="order?.Status === 'Pending'"
-              (click)="updateOrderStatus('Pending')"
-            >
+              (click)="updateOrderStatus('Pending')">
               Pending
             </button>
             <button
               [class.active]="order?.Status === 'Pick Up'"
-              (click)="updateOrderStatus('Pick Up')"
-            >
+              (click)="updateOrderStatus('Pick Up')">
               Pick Up
             </button>
             <button
@@ -173,11 +174,26 @@
             >
               In Transit
             </button>
-            <button
+             <button
               [class.active]="order?.Status === 'Review'"
               (click)="updateOrderStatus('Review')"
             >
               Review
+            </button>
+            </div>
+             <div class="status-buttons">
+           
+            <button
+              [class.active]="order?.Status === 'Completed'"
+              (click)="updateOrderStatus('Completed')"
+            >
+              Completed
+            </button>
+            <button
+              [class.active]="order?.Status === 'Cancelled'"
+              (click)="updateOrderStatus('Cancelled')"
+            >
+              Cancelled
             </button>
           </div>
         </div>

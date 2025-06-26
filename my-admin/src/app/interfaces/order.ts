@@ -5,18 +5,16 @@ export interface Order {
   OrderDate: string;
   ShipDate: string;
   Status:
-    | 'Cancelled'
-    | 'In transit'
-    | 'In Transit'
-    | 'Pick Up'
-    | 'Delivered'
-    | 'Completed'
     | 'Pending'
-    | 'Review';
+    | 'Pick Up'
+    | 'In Transit'
+    | 'Review'
+    | 'Cancelled'
+    | 'Completed';
   Phone: string;
   Email: string;
   Address: string;
-  PaymentMethod: 'Cash on Delivery' | 'Credit Card' | 'Bank Transfer';
+  PaymentMethod: 'Cash on Delivery' | 'Credit/Debit Card' | 'Internet Banking' | 'Momo';
   TotalPrice: number;
   PrePrice: number;
   DeliveryFee: number;

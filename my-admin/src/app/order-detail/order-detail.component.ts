@@ -220,13 +220,11 @@ export class OrderDetailComponent implements OnInit {
   // Xử lý cập nhật trạng thái đơn hàng MỚI THÊM
   updateOrderStatus(
     newStatus:
-      | 'Pending'
+     | 'Pending'
       | 'Pick Up'
       | 'In Transit'
       | 'Review'
-      | 'In transit'
       | 'Cancelled'
-      | 'Delivered'
       | 'Completed'
   ) {
     if (!this.order) return;
@@ -301,11 +299,11 @@ export class OrderDetailComponent implements OnInit {
 
   // Format currency
   formatCurrency(amount: number): string {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(amount);
-  }
+  return '$' + amount
+    .toFixed(2)                                  // luôn 2 chữ số sau dấu .
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',');     // thêm dấu ngăn hàng nghìn
+}
+
 
   // Calculate total price of all products
   calculateTotalProductPrice(): number {

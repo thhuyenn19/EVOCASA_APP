@@ -138,14 +138,12 @@ export class OrderService {
   updateOrderStatus(
     orderId: string,
     status:
-      | 'Cancelled'
-      | 'In transit'
-      | 'Delivered'
-      | 'Completed'
       | 'Pending'
-      | 'Review'
       | 'Pick Up'
       | 'In Transit'
+      | 'Review'
+      | 'Cancelled'
+      | 'Completed'
   ): Observable<Order> {
     return this.updateOrder(orderId, { Status: status });
   }

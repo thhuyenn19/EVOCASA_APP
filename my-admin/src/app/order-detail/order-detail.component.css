@@ -114,7 +114,8 @@
 .left-content {
   display: flex;
   flex-direction: column;
-  width: 300px;
+  min-width: 300px;
+   width: auto;
   /* height: auto; */
   margin-top: 0px;
 }
@@ -368,4 +369,53 @@
 }
 .color-body {
   color: rgba(0, 0, 0, 0.7) !important;
+}
+/* 1) Tính luôn border vào kích thước nút */
+.status-buttons button {
+  box-sizing: border-box;     /* gồm padding và border trong width/height */
+  width: 140px;               /* độ rộng cố định cho tất cả */
+  height: 36px;               /* chiều cao cố định cho tất cả */
+  padding: 0;                 /* xóa padding, dùng line-height để canh chữ */
+  line-height: 36px;          /* canh chữ ra giữa theo chiều dọc */
+  margin: 15px 10px;          /* margin dọc 15px, ngang 10px để có khoảng cách đều */
+}
+
+/* 2) Border của nút active không làm tăng kích thước */
+.status-buttons button.active {
+  border: 2px solid #52331D;
+}
+
+/* 3) Căn giữa hàng nút thứ hai */
+.status-buttons + .status-buttons {
+  justify-content: center;    /* căn giữa thay vì space-between */
+}
+
+/* 1) Cho wrapper căn phải tất cả con */
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;  /* đẩy cả price-details và price-total sát phải */
+  margin-right: 5px;      /* nếu bạn vẫn muốn khoảng cách so với viền phải */
+}
+
+/* 2) Bỏ margin-left:auto và giữ cùng một width */
+.price-details,
+.price-total {
+  width: 200px;     /* tất cả đều rộng 200px */
+  margin-left: 0;   /* override margin-left:auto cũ */
+}
+
+/* 3) Giữ nguyên flex spacing của từng dòng */
+.price-details .price-row,
+.price-total {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* 4) Cho hr ngốn đầy toàn bộ width của price-details (200px) */
+.price-divider {
+  width: 200px;
+  margin: 10px 0;
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.3);
 }
