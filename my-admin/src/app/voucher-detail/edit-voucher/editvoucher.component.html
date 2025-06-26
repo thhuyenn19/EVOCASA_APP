@@ -6,148 +6,79 @@
     <title>Edit voucher</title>
   </head>
   <body>
-    <!-- EDIT VOUCHER -->
-    <div class="container">
-      <!-- Title -->
-      <div class="title">EDIT VOUCHER</div>
-
-      <!-- Button group -->
-      <div class="flex-container">
-        <!-- Save draft -->
-        <div class="button save-draft">
-          <img src="images/product-detail/save.png" alt="Save" />
-          <span>Save draft</span>
-        </div>
-
-        <!-- Update voucher -->
-        <div class="button update-voucher">
-          <img src="images/Edit_light.png" alt="Update" />
-          <span>Update voucher</span>
-        </div>
-
-        <!-- Cancel -->
-        <div class="button cancel" (click)="goBack()">
-          <img src="images/product-detail/cancel.png" alt="Cancel" />
-          <span>Cancel</span>
-        </div>
+    <!-- Header -->
+    <div class="header">
+      <h1>EDIT VOUCHER</h1>
+      <div class="header-buttons">
+        <button class="btn save-draft">Save draft</button>
+        <button class="btn save-changes">Save changes</button>
+        <button class="btn cancel">Cancel</button>
       </div>
     </div>
 
     <!-- Voucher ID -->
     <div class="voucher-id">
-      Voucher ID: <span class="id-value">665400000000000000000003</span>
+      <span class="label">Voucher ID:</span>
+      <span class="value">665400000000000000000003</span>
     </div>
 
-    <!-- Voucher Information section (same as add) -->
-    <div class="custom-container">
-      <div class="voucher-info-box">
-        <div class="voucher-info-content">
-          <div class="voucher-info-title">Voucher Information</div>
+    <!-- Form Container -->
+    <div class="form-container">
+      <!-- Voucher Information -->
+      <div class="form-section">
+        <h2>Voucher Information</h2>
 
-          <!-- Row 1 -->
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Voucher Code</div>
-              <input type="text" class="input-field" value="VC1234" />
-            </div>
+        <div class="form-group">
+          <label>Voucher Name</label>
+          <input type="text" class="form-control" />
+        </div>
 
-            <div class="input-container">
-              <div class="label">Campaign</div>
-              <input type="text" class="input-field" value="EvoCasa birthday" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label>Discount Percent</label>
+            <div class="input-with-suffix">
+              <input type="number" class="form-control" />
+              <span class="suffix">%</span>
             </div>
           </div>
+        </div>
 
-          <!-- Row 2 -->
-          <div class="inputs-container">
-            <div class="input-container" style="flex: 1">
-              <div class="label">Category</div>
-              <input type="text" class="input-field" value="Soft Goods" />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="all-cat" />
-              <label for="all-cat">All categories</label>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Maximum threshold</label>
+            <div class="input-with-suffix">
+              <input type="number" class="form-control" />
+              <span class="suffix">$</span>
             </div>
           </div>
-
-          <!-- Row 3 -->
-          <div class="inputs-container">
-            <div class="input-container" style="flex: 1">
-              <div class="label">Product</div>
-              <input
-                type="text"
-                class="input-field"
-                value="Blush Pillow, Garden Pillow, Folklore Pillow, Black Print Pillow, Amber Lumbar Pillow"
-              />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="all-prod" />
-              <label for="all-prod">All products</label>
-            </div>
-          </div>
-
-          <!-- Row 4 -->
-          <div class="inputs-container">
-            <div class="input-container" style="max-width: 160px">
-              <div class="label">Type</div>
-              <select class="input-field">
-                <option value="%" selected>%</option>
-                <option value="$">$</option>
-              </select>
-            </div>
-            <div class="input-container">
-              <div class="label">Discount Value</div>
-              <input type="number" class="input-field" value="20" />
-            </div>
-            <div class="input-container">
-              <div class="label">Quantity</div>
-              <input type="number" class="input-field" value="50" />
-            </div>
-            <div class="checkbox-container" style="margin-left: 8px">
-              <input type="checkbox" id="unlimit" />
-              <label for="unlimit">Unlimited</label>
-            </div>
-          </div>
-
-          <!-- Row 5 -->
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Minimum order amount</div>
-              <div class="input-box">
-                <input type="number" class="input-field" value="500" />
-                <div class="label2">$</div>
-              </div>
-            </div>
-            <div class="input-container" style="min-width: 200px">
-              <div class="label">Status</div>
-              <select class="input-field">
-                <option value="Active" selected>Active</option>
-                <option value="Expired">Expired</option>
-              </select>
+          <div class="form-group">
+            <label>Minimum order value</label>
+            <div class="input-with-suffix">
+              <input type="number" class="form-control" />
+              <span class="suffix">$</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Time section -->
-    <div class="custom-container">
-      <div class="voucher-info-box">
-        <div class="voucher-info-content">
-          <div class="voucher-info-title">Time</div>
+      <!-- Time -->
+      <div class="form-section">
+        <h2>Time</h2>
 
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Start date</div>
-              <input type="date" class="input-field" value="2025-05-20" />
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expire Date</label>
+            <div class="input-with-icon">
+              <input type="date" class="form-control" />
             </div>
-            <div class="input-container">
-              <div class="label">End date</div>
-              <input type="date" class="input-field" value="2025-06-20" />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="indef" />
-              <label for="indef">Indefinitely</label>
-            </div>
+          </div>
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="indefinitely" />
+            <label for="indefinitely">Indefinitely</label>
           </div>
         </div>
       </div>

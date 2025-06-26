@@ -38,23 +38,22 @@
         <tr>
           <th>No</th>
           <th>Voucher ID</th>
-          <th>Discount value</th>
-          <th>Creation Date</th>
-          <th>Quantity</th>
-          <th>Campaign</th>
-          <th>Status</th>
+          <th>Voucher Name</th>
+          <th>Discount Percent</th>
+          <th>Expire Date</th>
+          <th>Category</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let voucher of pagedVouchers; let i = index">
           <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-          <td>{{ voucher.code }}</td>
-          <td>{{ voucher.discount }}%</td>
-          <td>{{ voucher.startDate | date : "dd-MM-yyyy" }}</td>
-          <td>{{ voucher.quantity }}</td>
-          <td>{{ voucher.campaign }}</td>
-          <td>{{ voucher.active ? "Active" : "Expired" }}</td>
+          <td>{{ voucher.voucherId }}</td>
+          <td>{{ voucher.name }}</td>
+          <td>{{ voucher.discountPercent }}%</td>
+          <td>{{ voucher.expireDate | date : "dd-MM-yyyy" }}</td>
+          <td>{{ voucher.category }}</td>
+          <!-- <td>{{ voucher.active ? "Active" : "Expired" }}</td> -->
           <td>
             <button class="icon-btn" (click)="viewVoucher(voucher)">
               <img src="images/product/view.svg" alt="view" />

@@ -2,14 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface Voucher {
-  id: number;
-  code: string;
-  discount: number; // percentage
-  startDate: Date;
-  endDate: Date;
-  active: boolean;
-  quantity: number;
-  campaign: string;
+  id: number; // internal identifier for editing/navigation
+  voucherId: string; // public-facing voucher code / ID
+  name: string; // voucher name or title
+  discountPercent: number; // percentage discount (e.g., 10 for 10%)
+  expireDate: Date; // expiry date
+  category: string; // campaign/category label
 }
 
 @Component({
@@ -38,33 +36,27 @@ export class VoucherComponent implements OnInit {
     this.vouchers = [
       {
         id: 1,
-        code: 'WELCOME10',
-        discount: 10,
-        startDate: new Date('2024-06-01'),
-        endDate: new Date('2024-07-01'),
-        active: true,
-        quantity: 50,
-        campaign: 'EvoCasa Birthday',
+        voucherId: 'WELCOME10',
+        name: 'Welcome 10% Off',
+        discountPercent: 10,
+        expireDate: new Date('2024-07-01'),
+        category: 'EvoCasa Birthday',
       },
       {
         id: 2,
-        code: 'SUMMER20',
-        discount: 20,
-        startDate: new Date('2024-07-01'),
-        endDate: new Date('2024-08-15'),
-        active: true,
-        quantity: 30,
-        campaign: 'Summer Sale',
+        voucherId: 'SUMMER20',
+        name: 'Summer Sale 20%',
+        discountPercent: 20,
+        expireDate: new Date('2024-08-15'),
+        category: 'Summer Sale',
       },
       {
         id: 3,
-        code: 'BLACKFRIDAY50',
-        discount: 50,
-        startDate: new Date('2024-11-25'),
-        endDate: new Date('2024-12-01'),
-        active: false,
-        quantity: 100,
-        campaign: 'Black Friday',
+        voucherId: 'BLACKFRIDAY50',
+        name: 'Black Friday 50%',
+        discountPercent: 50,
+        expireDate: new Date('2024-12-01'),
+        category: 'Black Friday',
       },
     ];
 
@@ -73,10 +65,6 @@ export class VoucherComponent implements OnInit {
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
     this.updatePageNumbers();
     this.updatePagedVouchers();
-  }
-
-  toggleStatus(voucher: Voucher) {
-    voucher.active = !voucher.active;
   }
 
   deleteVoucher(id: number) {
@@ -136,7 +124,7 @@ export class VoucherComponent implements OnInit {
   }
 
   viewVoucher(voucher: Voucher) {
-    alert(`View voucher ${voucher.code}`);
+    alert(`View voucher ${voucher.voucherId}`);
   }
 
   editVoucher(voucher: Voucher) {

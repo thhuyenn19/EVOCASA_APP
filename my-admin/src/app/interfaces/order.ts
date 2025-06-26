@@ -14,7 +14,11 @@ export interface Order {
   Phone: string;
   Email: string;
   Address: string;
-  PaymentMethod: 'Cash on Delivery' | 'Credit/Debit Card' | 'Internet Banking' | 'Momo';
+  PaymentMethod:
+    | 'Cash on Delivery'
+    | 'Credit/Debit Card'
+    | 'Internet Banking'
+    | 'Momo';
   TotalPrice: number;
   PrePrice: number;
   DeliveryFee: number;

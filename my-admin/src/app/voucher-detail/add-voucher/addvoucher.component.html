@@ -1,184 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Add voucher</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0"
-    />
-  </head>
-  <body>
-    <!-- ADD VOUCHER -->
-    <div class="container">
-      <!-- Title -->
-      <div class="title">ADD VOUCHER</div>
+<!-- Header -->
+<div class="header">
+  <h1>ADD VOUCHER</h1>
+  <div class="header-buttons">
+    <button class="btn save-draft">
+      <!-- <img src="assets/icons/save.svg" alt="" /> -->
+      Save draft
+    </button>
+    <button class="btn add-voucher">
+      <!-- <img src="assets/icons/add.svg" alt="" /> -->
+      Add voucher
+    </button>
+    <button class="btn cancel">
+      <!-- <img src="assets/icons/cancel.svg" alt="" /> -->
+      Cancel
+    </button>
+  </div>
+</div>
 
-      <!-- Button group -->
-      <div class="flex-container">
-        <!-- Save draft -->
-        <div class="button save-draft">
-          <img src="images/product-detail/save.png" alt="Save" />
-          <span>Save draft</span>
-        </div>
+<!-- Voucher ID -->
+<div class="voucher-id">
+  <span class="label">Voucher ID:</span>
+  <span class="value">665400000000000000000003</span>
+</div>
 
-        <!-- Add voucher -->
-        <div class="button add-voucher">
-          <img src="images/product-detail/add.png" alt="Add" />
-          <span>Add voucher</span>
-        </div>
+<!-- Form Container -->
+<div class="form-container">
+  <!-- Voucher Information -->
+  <div class="form-section">
+    <h2>Voucher Information</h2>
 
-        <!-- Cancel -->
-        <div class="button cancel">
-          <img src="images/product-detail/cancel.png" alt="Cancel" />
-          <span>Cancel</span>
+    <div class="form-group">
+      <label>Voucher Name</label>
+      <input type="text" class="form-control" />
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Category</label>
+        <input type="text" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label>Discount Percent</label>
+        <div class="input-with-suffix">
+          <input type="number" class="form-control" />
+          <span class="suffix">%</span>
         </div>
       </div>
     </div>
 
-    <!-- Voucher ID -->
-    <div class="voucher-id">
-      Voucher ID: <span class="id-value">665400000000000000000003</span>
-    </div>
-
-    <!-- Voucher Information section -->
-    <div class="custom-container">
-      <div class="voucher-info-box">
-        <div class="voucher-info-content">
-          <div class="voucher-info-title">Voucher Information</div>
-
-          <!-- Row 1 -->
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Voucher Code</div>
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Enter voucher code"
-              />
-            </div>
-
-            <div class="input-container">
-              <div class="label">Campaign</div>
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Campaign name"
-              />
-            </div>
-          </div>
-
-          <!-- Row 2 -->
-          <div class="inputs-container">
-            <div class="input-container" style="flex: 1">
-              <div class="label">Category</div>
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Select category"
-              />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="all-cat" />
-              <label for="all-cat">All categories</label>
-            </div>
-          </div>
-
-          <!-- Row 3 -->
-          <div class="inputs-container">
-            <div class="input-container" style="flex: 1">
-              <div class="label">Product</div>
-              <input
-                type="text"
-                class="input-field"
-                placeholder="Select product"
-              />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="all-prod" />
-              <label for="all-prod">All products</label>
-            </div>
-          </div>
-
-          <!-- Row 4 -->
-          <div class="inputs-container">
-            <div class="input-container" style="flex: 1">
-              <div class="label">Type</div>
-              <select class="input-field">
-                <option value="%">%</option>
-                <option value="$">$</option>
-              </select>
-            </div>
-            <div class="input-container">
-              <div class="label">Discount Value</div>
-              <input type="number" class="input-field" placeholder="0" />
-            </div>
-            <div class="input-container">
-              <div class="label">Quantity</div>
-              <input type="number" class="input-field" placeholder="0" />
-            </div>
-            <div class="checkbox-container" style="margin-left: 8px">
-              <input type="checkbox" id="unlimit" />
-              <label for="unlimit">Unlimited</label>
-            </div>
-          </div>
-
-          <!-- Row 5 -->
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Minimum order amount</div>
-              <div class="input-box">
-                <input type="number" class="input-field" placeholder="0" />
-                <div class="label2">$</div>
-              </div>
-            </div>
-            <div class="input-container half-width">
-              <div class="label">Status</div>
-              <select class="input-field">
-                <option value="Active">Active</option>
-                <option value="Expired">Expired</option>
-              </select>
-            </div>
-          </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Maximum threshold</label>
+        <div class="input-with-suffix">
+          <input type="number" class="form-control" />
+          <span class="suffix">$</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Minimum order value</label>
+        <div class="input-with-suffix">
+          <input type="number" class="form-control" />
+          <span class="suffix">$</span>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Time section -->
-    <div class="custom-container">
-      <div class="voucher-info-box">
-        <div class="voucher-info-content">
-          <div class="voucher-info-title">Time</div>
+  <!-- Time -->
+  <div class="form-section">
+    <h2>Time</h2>
 
-          <div class="inputs-container">
-            <div class="input-container">
-              <div class="label">Start date</div>
-              <input type="date" class="input-field" />
-            </div>
-            <div class="input-container">
-              <div class="label">End date</div>
-              <input type="date" class="input-field" />
-            </div>
-            <div class="checkbox-container">
-              <input type="checkbox" id="indef" />
-              <label for="indef">Indefinitely</label>
-            </div>
-          </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Expire Date</label>
+        <div class="input-with-icon">
+          <input type="date" class="form-control" />
+          <!-- <img src="assets/icons/calendar.svg" alt="" class="calendar-icon" /> -->
         </div>
       </div>
+      <div class="form-group checkbox-group">
+        <input type="checkbox" id="indefinitely" />
+        <label for="indefinitely">Indefinitely</label>
+      </div>
     </div>
-  </body>
-</html>
+  </div>
+</div>

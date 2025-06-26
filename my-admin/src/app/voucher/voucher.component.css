@@ -279,29 +279,34 @@ h4 {
   width: 12%; /* Voucher ID */
 }
 
+/* Voucher Name */
 .voucher-table th:nth-child(3),
 .voucher-table td:nth-child(3) {
-  width: 12%; /* Discount value */
+  width: 15%; /* Voucher Name */
 }
 
+/* Discount Percent */
 .voucher-table th:nth-child(4),
 .voucher-table td:nth-child(4) {
-  width: 15%; /* Creation date */
+  width: 12%; /* Discount Percent */
 }
 
+/* Expire Date */
 .voucher-table th:nth-child(5),
 .voucher-table td:nth-child(5) {
-  width: 10%; /* Quantity */
+  width: 10%; /* Expire Date */
 }
 
+/* Category */
 .voucher-table th:nth-child(6),
 .voucher-table td:nth-child(6) {
-  width: 18%; /* Campaign */
+  width: 12%; /* Category */
 }
 
+/* Action */
 .voucher-table th:nth-child(7),
 .voucher-table td:nth-child(7) {
-  width: 8%; /* Status */
+  width: 8%; /* Action */
 }
 
 .voucher-table th {
