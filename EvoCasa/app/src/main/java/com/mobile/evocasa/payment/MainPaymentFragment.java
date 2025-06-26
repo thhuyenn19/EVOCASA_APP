@@ -556,10 +556,7 @@ public class MainPaymentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(requireContext(), CartActivity.class);
-            startActivity(intent);
-        });
+        btnBack.setOnClickListener(v -> getActivity().finish());
         Bundle args = getArguments();
         if (args != null) {
             String cartJson = args.getString("cartPayment");

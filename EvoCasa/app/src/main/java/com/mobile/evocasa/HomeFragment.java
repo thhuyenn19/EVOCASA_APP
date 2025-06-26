@@ -44,6 +44,7 @@ import com.mobile.adapters.CollectionAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.evocasa.category.CategoryFragment;
+import com.mobile.evocasa.search.SearchActivity;
 import com.mobile.models.Category;
 import com.mobile.models.Collection;
 import com.mobile.models.FlashSaleProduct;
@@ -107,6 +108,19 @@ public class HomeFragment extends Fragment {
         timerMinute = view.findViewById(R.id.timerMinute);
         timerSecond = view.findViewById(R.id.timerSecond);
         edtSearch = view.findViewById(R.id.edtSearch);
+        edtSearch.setFocusable(false);
+        edtSearch.setFocusableInTouchMode(false);
+        edtSearch.setCursorVisible(false);
+        edtSearch.setInputType(0);
+
+
+        edtSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra("openProgress", true);
+            intent.putExtra("voiceKeyword", edtSearch.getText().toString());
+            startActivity(intent);
+        });
+
         imgMic = view.findViewById(R.id.imgMic);
         imgMic.setOnClickListener(v -> startVoiceInput());
 
@@ -347,47 +361,62 @@ public class HomeFragment extends Fragment {
     }
 
     private void startVoiceInput() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.RECORD_AUDIO}, 1);
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.RECORD_AUDIO}, 1);
             return;
         }
+
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Please speak the product name...");
 
+
         try {
             startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "Your device does not support speech recognition", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "The device does not support voice"
+                    , Toast.LENGTH_SHORT).show();
         }
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == Activity.RESULT_OK && data != null) {
             ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (result != null && !result.isEmpty()) {
                 String voiceText = result.get(0);
-                edtSearch.setText(voiceText);
+
+
+                // Chuyển sang SearchActivity và truyền keyword
+                Intent intent = new Intent(getContext(), SearchActivity.class);
+                intent.putExtra("openProgress", true);
+                intent.putExtra("voiceKeyword", voiceText);
+                startActivity(intent);
             }
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                startVoiceInput();
+                startVoiceInput(); // Retry after permission granted
             } else {
                 Toast.makeText(getContext(), "You need to grant microphone access to use this feature", Toast.LENGTH_SHORT).show();
             }
         }
     }
+
 
     @Override
     public void onPause() {
