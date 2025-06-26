@@ -139,13 +139,23 @@ public class ShopFragment extends Fragment {
                     }
                     Log.d(TAG, "Category ID mapping: " + categoryNameToIdMap.toString());
                     // Setup RecyclerView after IDs are fetched
-                    handler.post(this::setupRecyclerView);
-                })
+                    handler.post(() -> {
+                        if (!isAdded()) {
+                            Log.w(TAG, "Fragment not attached, skip setting up RecyclerView");
+                            return;
+                        }
+                        setupRecyclerView();
+                    });                })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Failed to fetch category IDs: ", e);
                     // Setup RecyclerView even if query fails to ensure UI loads
-                    handler.post(this::setupRecyclerView);
-                });
+                    handler.post(() -> {
+                        if (!isAdded()) {
+                            Log.w(TAG, "Fragment not attached, skip setting up RecyclerView");
+                            return;
+                        }
+                        setupRecyclerView();
+                    });                });
     }
 
     private void applyCustomFonts() {
