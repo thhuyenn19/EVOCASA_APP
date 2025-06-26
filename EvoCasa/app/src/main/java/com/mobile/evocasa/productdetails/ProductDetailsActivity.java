@@ -1,6 +1,7 @@
 package com.mobile.evocasa.productdetails;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -30,6 +31,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,7 +51,9 @@ import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
@@ -77,7 +82,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private Button btnBuyNow;
     private ViewPager2 imageViewPager;
     private List<String> imageUrls;
-    private ImageButton btnFavorite;
+    private ImageButton btnFavorite, btnShare;
     private LinearLayout ratingLayout;
     private UserSessionManager sessionManager;
     private String productId;
@@ -130,6 +135,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         btnAddToCart = findViewById(R.id.btnAddToCart);
         btnBuyNow = findViewById(R.id.btnBuyNow);
         btnBack = findViewById(R.id.btnBack);
+        btnShare = findViewById(R.id.btnShare);
         imageViewPager = findViewById(R.id.imgProductViewPager);
 
         btnAddToCart.setOnClickListener(v -> showAddToCartBottomSheet());
@@ -155,6 +161,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
             setResult(RESULT_OK, resultIntent);
             finish();
         });
+        btnShare.setOnClickListener(v -> shareProductWithNameLink());
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             String title = "";
@@ -374,6 +381,41 @@ public class ProductDetailsActivity extends AppCompatActivity {
         loadSuggestedProducts();
     }
 
+    private void shareProductWithNameLink() {
+        if (productItem == null || productItem.getName() == null) {
+            Toast.makeText(this, "Product data not available", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            String encodedName = URLEncoder.encode(productItem.getName(), "UTF-8");
+
+            FirebaseDynamicLinks.getInstance().createDynamicLink()
+                    .setLink(Uri.parse("https://evocasa.com/product?name=" + encodedName)) // dùng tên
+                    .setDomainUriPrefix("https://evocasa.page.link")
+                    .setAndroidParameters(new DynamicLink.AndroidParameters.Builder().build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener(shortLink -> {
+                        Uri shortUri = shortLink.getShortLink();
+                        String shareText = productItem.getName() + "\n" + shortUri;
+
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+                        startActivity(Intent.createChooser(shareIntent, "Share product via"));
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(this, "Failed to generate link", Toast.LENGTH_SHORT).show();
+                        Log.e("DynamicLink", "Error: " + e.getMessage());
+                    });
+
+        } catch (UnsupportedEncodingException e) {
+            Toast.makeText(this, "Encoding error", Toast.LENGTH_SHORT).show();
+            Log.e("DynamicLink", "Encoding error: " + e.getMessage());
+        }
+    }
+
+
     @Override
     public void onBackPressed() {
         Intent resultIntent = new Intent();
@@ -462,6 +504,12 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void showBuyNowBottomSheet() {
+        String customerId = sessionManager.getUid();
+        if (customerId == null || customerId.isEmpty()) {
+            Toast.makeText(this, "Please sign in to purchase", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
         View view = LayoutInflater.from(this).inflate(R.layout.product_buy_now, null);
         bottomSheetDialog.setContentView(view);
@@ -494,13 +542,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
             try {
                 CartProduct cartProduct = new CartProduct();
-
                 cartProduct.setId(productItem.getId() != null ? productItem.getId() : "");
                 cartProduct.setName(productItem.getName() != null ? productItem.getName() : "Sản phẩm không tên");
                 cartProduct.setPrice(productItem.getPrice() != null ? productItem.getPrice() : 0.0);
                 cartProduct.setQuantity(quantity[0]);
 
-                // Parse image URLs
                 List<String> imageUrls = new ArrayList<>();
                 String imageRaw = productItem.getImage();
                 if (imageRaw != null && !imageRaw.isEmpty()) {
@@ -513,7 +559,6 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 }
                 cartProduct.setImageUrls(imageUrls);
 
-                // Chuyển sang PaymentActivity
                 List<CartProduct> cartList = new ArrayList<>();
                 cartList.add(cartProduct);
                 String cartJson = new Gson().toJson(cartList);
@@ -533,6 +578,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
 
         bottomSheetDialog.show();
     }
+
 
 
     private void showAddToCartBottomSheet() {
@@ -845,10 +891,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to retrieve wishlist", Toast.LENGTH_SHORT).show();
                 });
     }
-    // CartBadge
-    /**
-     * Start listening for cart changes and update badge
-     */
+
     private void startCartBadgeListener() {
         String uid = sessionManager.getUid();
 
