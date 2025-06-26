@@ -385,11 +385,18 @@ public class MainPaymentFragment extends Fragment {
 
 
                         // Chuyển sang trang finish khi thành công
-                        requireActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragment_container, new FinishPaymentFragment())
+                        FinishPaymentFragment finishPaymentFragment = new FinishPaymentFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("orderId", orderId); // Truyền orderId
+                        finishPaymentFragment.setArguments(bundle);
+
+                        getParentFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, finishPaymentFragment)
                                 .addToBackStack(null)
                                 .commit();
-                        
+
+
                         FirebaseFirestore db = FirebaseFirestore.getInstance();
                         DocumentReference customerRef = db.collection("Customers").document(uid);
 

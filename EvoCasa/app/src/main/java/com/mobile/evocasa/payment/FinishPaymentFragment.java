@@ -22,6 +22,7 @@ import com.mobile.evocasa.NarBarActivity;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
 import com.mobile.evocasa.category.ShopFragment;
+import com.mobile.evocasa.order.OrderDetailFragment;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -33,12 +34,15 @@ public class FinishPaymentFragment extends Fragment {
     private Typeface fontSelected, fontRegular;
     private TextView txtThanks;
     Button btnShop, btnTrackOrder;
+    private String orderId;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_finish_payment, container, false);
-
+        if (getArguments() != null) {
+            orderId = getArguments().getString("orderId");
+        }
         // Inflate bottom nav layout vào container trong layout
 
         // Set custom fonts
@@ -82,6 +86,19 @@ public class FinishPaymentFragment extends Fragment {
                     .commit();
         });
         btnTrackOrder = view.findViewById(R.id.btnTrackOrders);
+        btnTrackOrder.setOnClickListener(v -> {
+            OrderDetailFragment orderDetailFragment = new OrderDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", orderId); // Truyền orderId
+            orderDetailFragment.setArguments(bundle);
+
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, orderDetailFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
+
 
         return view;
     }

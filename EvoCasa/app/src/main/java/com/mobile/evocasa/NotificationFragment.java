@@ -257,9 +257,12 @@ public class NotificationFragment extends Fragment {
 
     private String formatTime(Timestamp ts) {
         Date date = ts.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(date);
     }
+
 
     private void applyCustomFonts(View view) {
 
