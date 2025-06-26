@@ -36,9 +36,7 @@ public class ShippingAddressFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shipping_address, container, false);
-
-
-
+        
         RecyclerView rvShipping = view.findViewById(R.id.rv_shipping_address);
         rvShipping.setLayoutManager(new LinearLayoutManager(getContext()));
 

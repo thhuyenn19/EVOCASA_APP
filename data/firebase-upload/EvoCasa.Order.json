@@ -1,183 +1,4518 @@
 [
   {
     "_id": {
-      "$oid": "665400000000000000000000"
+      "$oid": "1750931317113718"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK365407",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cc00c5fec55b70d0fcd3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-24T09:48:37.113328Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-21T09:48:37.113328Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
     },
     "Customer_id": {
-      "$oid": "65c0b01cc5fec55b70d0fa01"
-    },
-    "TrackingNumber": "TRK922032",
-    "OrderDate": {
-      "$date": "2025-05-26T14:51:00.203Z"
-    },
-    "ShipDate": {
-      "$date": "2025-05-28T14:51:00.203Z"
-    },
-    "Status": "pending",
-    "Phone": "0987654321",
-    "Address": "Hà Nội, Việt Nam",
-    "PaymentMethod": "Credit / Debit Card",
-    "TotalPrice": 28475,
-    "PrePrice": 28350,
-    "DeliveryFee": 200,
-    "OrderProduct": {
-      "id": {
-        "$oid": "67c0a04a46527d4bf49e483c"
-      },
-      "Quantity": 3,
-      "Customize": null
+      "$oid": "fa86ca1afa7c48489680f60e"
     },
     "Note": "",
-    "Voucher": {
-      "VoucherName": "Mid-Year Big Sale",
-      "DiscountPercent": 25,
-      "DiscountAmount": 75
-    }
+    "TotalPrice": 281,
+    "DeliveryFee": 30,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0973783730",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 271,
+    "Status": "Completed"
   },
   {
     "_id": {
-      "$oid": "665400000000000000000001"
+      "$oid": "1750931317113966"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK185389",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d233c5fec55b70d0fce6"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c354c5fec55b70d0fcbf"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.113372Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113372Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
     },
     "Customer_id": {
-      "$oid": "65c0b01cc5fec55b70d0fa02"
+      "$oid": "b2b5a0592a1640049e6511d2"
     },
-    "TrackingNumber": "TRK584633",
-    "OrderDate": {
-      "$date": "2025-05-26T14:51:00.203Z"
-    },
-    "ShipDate": {
-      "$date": "2025-05-28T14:51:00.203Z"
-    },
-    "Status": "completed",
-    "Phone": "0978123456",
-    "Address": "Hồ Chí Minh, Việt Nam",
+    "Note": "",
+    "TotalPrice": 283,
+    "DeliveryFee": 30,
     "PaymentMethod": "COD",
-    "TotalPrice": 44475,
-    "PrePrice": 44250,
-    "DeliveryFee": 300,
-    "OrderProduct": {
-      "id": {
-        "$oid": "67c0a14646527d4bf49e483d"
-      },
-      "Quantity": 3,
-      "Customize": {
-        "Type": "Sand",
-        "Image": "/images/custom/sand.jpg"
-      }
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0959190640",
+      "Name": "Nguyen Van A"
     },
-    "Note": "Call before delivery",
-    "Voucher": {
-      "VoucherName": "Mid-Year Big Sale",
-      "DiscountPercent": 25,
-      "DiscountAmount": 75
-    }
+    "PrePrice": 273,
+    "Status": "Pending"
   },
   {
     "_id": {
-      "$oid": "665400000000000000000002"
+      "$oid": "1750931317113279"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK151011",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b882c5fec55b70d0fcaa"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-05T09:48:37.113404Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-31T09:48:37.113404Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "563a48106d644650baf9a2f6"
+    },
+    "Note": "",
+    "TotalPrice": 481,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0917847876",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 491,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113634"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK786451",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c07bc5fec55b70d0fcb9"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c03dc5fec55b70d0fcb8"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-05-31T09:48:37.113426Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-29T09:48:37.113426Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "9312a67848a244eda657b6a2"
+    },
+    "Note": "",
+    "TotalPrice": 288,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0950436733",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 278,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113900"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK194227",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ab7446527d4bf49e484f"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-10T09:48:37.113468Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-07T09:48:37.113468Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "3e43d032de774bd787a5318b"
+    },
+    "Note": "",
+    "TotalPrice": 513,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0988589872",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 473,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113404"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK722923",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c878c5fec55b70d0fcca"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-14T09:48:37.113488Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-10T09:48:37.113488Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
     },
     "Customer_id": {
       "$oid": "65c0b01cc5fec55b70d0fa03"
     },
-    "TrackingNumber": "TRK621792",
-    "OrderDate": {
-      "$date": "2025-05-26T14:51:00.203Z"
+    "Note": "",
+    "TotalPrice": 387,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0962282428",
+      "Name": "Pham Thi D"
     },
-    "ShipDate": {
-      "$date": "2025-05-28T14:51:00.203Z"
-    },
-    "Status": "completed",
-    "Phone": "0965234789",
-    "Address": "Đà Nẵng, Việt Nam",
-    "PaymentMethod": "COD",
-    "TotalPrice": 6225,
-    "PrePrice": 6000,
-    "DeliveryFee": 300,
-    "OrderProduct": {
-      "id": {
-        "$oid": "67c0a32346527d4bf49e483e"
-      },
-      "Quantity": 1,
-      "Customize": null
-    },
-    "Note": "Leave at front door",
-    "Voucher": {
-      "VoucherName": "Mid-Year Big Sale",
-      "DiscountPercent": 25,
-      "DiscountAmount": 75
-    }
+    "PrePrice": 387,
+    "Status": "Pick Up"
   },
   {
     "_id": {
-      "$oid": "665400000000000000000003"
+      "$oid": "1750931317113607"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK894581",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b91e46527d4bf49e4872"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ca12c5fec55b70d0fcce"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b300c5fec55b70d0fca0"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.113509Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-11T09:48:37.113509Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "a5118cb6233d44c5b5b48b52"
+    },
+    "Note": "",
+    "TotalPrice": 277,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0936897222",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 247,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113652"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK151921",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b7d2c5fec55b70d0fca9"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ba1846527d4bf49e4877"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113533Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113533Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "62272a705e3b42848541ef1c"
+    },
+    "Note": "",
+    "TotalPrice": 485,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0914096716",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 475,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113920"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK355427",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ac9a46527d4bf49e4854"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-15T09:48:37.113554Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-12T09:48:37.113554Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "693337ff6cab4870ac3d339f"
+    },
+    "Note": "",
+    "TotalPrice": 454,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0952517118",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 454,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113963"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK340492",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ba8846527d4bf49e4879"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cf25c5fec55b70d0fcdc"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-21T09:48:37.113574Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-19T09:48:37.113574Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "3a1fbc264ed84dbe890da9a7"
+    },
+    "Note": "",
+    "TotalPrice": 299,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0986722298",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 259,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113721"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK891804",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-26T09:48:37.113596Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T09:48:37.113596Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "9e292a6376a14200943c4e8d"
+    },
+    "Note": "",
+    "TotalPrice": 368,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0919962245",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 368,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113301"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK458187",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b19b46527d4bf49e485a"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-16T09:48:37.113632Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113632Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "2d5354e056464b39b6698e67"
+    },
+    "Note": "",
+    "TotalPrice": 272,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0912120138",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 262,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113583"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK815532",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b38c46527d4bf49e4860"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-08T09:48:37.113656Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-04T09:48:37.113656Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "2e8378aa47d548d9b4b47335"
+    },
+    "Note": "",
+    "TotalPrice": 417,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0941498131",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 417,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113709"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK331822",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bc0e46527d4bf49e4880"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.113675Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-07T09:48:37.113675Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "3e43d032de774bd787a5318b"
+    },
+    "Note": "",
+    "TotalPrice": 501,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0985731235",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 461,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113740"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK641799",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b9aac5fec55b70d0fcae"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d233c5fec55b70d0fce6"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113694Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-16T09:48:37.113694Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa03"
+    },
+    "Note": "",
+    "TotalPrice": 292,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0933418131",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 292,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113569"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK892193",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c78ec5fec55b70d0fcc9"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.113714Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.113714Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "9e292a6376a14200943c4e8d"
+    },
+    "Note": "",
+    "TotalPrice": 505,
+    "DeliveryFee": 30,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0968408098",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 485,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113834"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK360813",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b43a46527d4bf49e4862"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a04a46527d4bf49e483c"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113733Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113733Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "9e292a6376a14200943c4e8d"
+    },
+    "Note": "",
+    "TotalPrice": 347,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0961333342",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 357,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113693"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK142572",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b4f1c5fec55b70d0fca5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-05-30T09:48:37.113753Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-27T09:48:37.113753Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "6108b1a1c4bf42ffb4d29208"
+    },
+    "Note": "",
+    "TotalPrice": 289,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0934880183",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 279,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113701"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK312733",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b8eb46527d4bf49e4871"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.113775Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-12T09:48:37.113775Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa06"
+    },
+    "Note": "",
+    "TotalPrice": 435,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0958488405",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 395,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113609"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK288304",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b33646527d4bf49e485f"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b01cc5fec55b70d0fc9b"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b4f1c5fec55b70d0fca5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-19T09:48:37.113796Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113796Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "9078cacf7f75455e811958dc"
+    },
+    "Note": "",
+    "TotalPrice": 488,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0912074177",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 478,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113712"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK420851",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b3bbc5fec55b70d0fca2"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c78ec5fec55b70d0fcc9"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0ca12c5fec55b70d0fcce"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.113818Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-10T09:48:37.113818Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "62272a705e3b42848541ef1c"
+    },
+    "Note": "",
+    "TotalPrice": 480,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0927425750",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 470,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113944"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK423664",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cb3ac5fec55b70d0fcd1"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0caebc5fec55b70d0fcd0"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cceac5fec55b70d0fcd5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-05-30T09:48:37.113840Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-28T09:48:37.113840Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "9078cacf7f75455e811958dc"
+    },
+    "Note": "",
+    "TotalPrice": 351,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0920469703",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 331,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113770"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK768982",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b9aac5fec55b70d0fcae"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-14T09:48:37.113867Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-13T09:48:37.113867Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "6a1acc93f33d487481dd54d0"
+    },
+    "Note": "",
+    "TotalPrice": 356,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0913839741",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 356,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113362"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK473522",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a40d46527d4bf49e4841"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c878c5fec55b70d0fcca"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-06T09:48:37.113896Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-05T09:48:37.113896Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "1c1617963e764b8095c385ce"
+    },
+    "Note": "",
+    "TotalPrice": 243,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0972132783",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 233,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113303"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK957057",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b46f46527d4bf49e4863"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b33646527d4bf49e485f"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113917Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-19T09:48:37.113917Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa02"
+    },
+    "Note": "",
+    "TotalPrice": 270,
+    "DeliveryFee": 30,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0963993829",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 270,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113405"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK226432",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cef1c5fec55b70d0fcdb"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113937Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.113937Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "15220e85cba14d259ff36c5b"
+    },
+    "Note": "",
+    "TotalPrice": 254,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0974208282",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 264,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113902"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK964916",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.113958Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-08T09:48:37.113958Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "6a1acc93f33d487481dd54d0"
+    },
+    "Note": "",
+    "TotalPrice": 382,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0979855499",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 362,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113880"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK898471",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0aa2146527d4bf49e484d"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b300c5fec55b70d0fca0"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.113977Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-16T09:48:37.113977Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "0813357db70b45199f880560"
+    },
+    "Note": "",
+    "TotalPrice": 327,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0975911811",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 337,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317113519"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK440891",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bf1ac5fec55b70d0fcb5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-26T09:48:37.114002Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T09:48:37.114002Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "607e9080c1354cd6a59f9ec0"
+    },
+    "Note": "",
+    "TotalPrice": 393,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0947488694",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 363,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114935"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK655983",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cc00c5fec55b70d0fcd3"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c54dc5fec55b70d0fcc4"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-16T09:48:37.114043Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-11T09:48:37.114043Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "0813357db70b45199f880560"
+    },
+    "Note": "",
+    "TotalPrice": 302,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0966569311",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 282,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114924"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK489739",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b87546527d4bf49e486f"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d16fc5fec55b70d0fce3"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c878c5fec55b70d0fcca"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-06T09:48:37.114064Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-02T09:48:37.114064Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "cdb16697a6884b28b95f1155"
+    },
+    "Note": "",
+    "TotalPrice": 257,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0935821582",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 227,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114487"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK970366",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b9b346527d4bf49e4875"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d0b4c5fec55b70d0fce0"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c07bc5fec55b70d0fcb9"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-04T09:48:37.114088Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-01T09:48:37.114088Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "1c1617963e764b8095c385ce"
+    },
+    "Note": "",
+    "TotalPrice": 233,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0992126806",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 223,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114433"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK960611",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b77246527d4bf49e486b"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a5e246527d4bf49e4846"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-05T09:48:37.114111Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-02T09:48:37.114111Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "8ddef91ceb924076a1215455"
+    },
+    "Note": "",
+    "TotalPrice": 474,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0936775760",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 454,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114848"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK389628",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b9b346527d4bf49e4875"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b8a846527d4bf49e4870"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b33646527d4bf49e485f"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.114133Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114133Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "67d52724e8a5de782663fcec"
+    },
+    "Note": "",
+    "TotalPrice": 213,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0910170973",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 203,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114590"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK124712",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b495c5fec55b70d0fca4"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ac5846527d4bf49e4853"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b278c5fec55b70d0fc9e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.114166Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-19T09:48:37.114166Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "34b44c31e047408dbae52cd1"
+    },
+    "Note": "",
+    "TotalPrice": 519,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0938258704",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 499,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114580"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK238558",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b278c5fec55b70d0fc9e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.114197Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114197Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "2d5354e056464b39b6698e67"
+    },
+    "Note": "",
+    "TotalPrice": 481,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0921916605",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 451,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114992"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK894295",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a40d46527d4bf49e4841"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-02T09:48:37.114216Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-31T09:48:37.114216Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "a282ba671ad247d7a9bdf9cd"
+    },
+    "Note": "",
+    "TotalPrice": 192,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0917619636",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 202,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114392"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK189381",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0caebc5fec55b70d0fcd0"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b73a46527d4bf49e486a"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-04T09:48:37.114235Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-01T09:48:37.114235Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "8eb4a2ec38054bcaa4c4d3ad"
+    },
+    "Note": "",
+    "TotalPrice": 446,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0928610335",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 416,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114903"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK596848",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a04a46527d4bf49e483c"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-10T09:48:37.114257Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.114257Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "2d5354e056464b39b6698e67"
+    },
+    "Note": "",
+    "TotalPrice": 395,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0979557749",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 365,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114887"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK427372",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b18cc5fec55b70d0fc9c"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-14T09:48:37.114277Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114277Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "15220e85cba14d259ff36c5b"
+    },
+    "Note": "",
+    "TotalPrice": 449,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0926209717",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 429,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114962"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK901415",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cb90c5fec55b70d0fcd2"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a6c946527d4bf49e4849"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-28T09:48:37.114296Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-23T09:48:37.114296Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "d9745ccff8f24affafac5080"
+    },
+    "Note": "",
+    "TotalPrice": 329,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0949254161",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 329,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114762"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK637715",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a32346527d4bf49e483e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-03T09:48:37.114318Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-02T09:48:37.114318Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "4c75afe42a0e405298563d9a"
+    },
+    "Note": "",
+    "TotalPrice": 403,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0962181391",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 413,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114722"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK311606",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b5a446527d4bf49e4866"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cf80c5fec55b70d0fcdd"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-09T09:48:37.114337Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.114337Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "bd32e2c1bf1144379d552cb1"
+    },
+    "Note": "",
+    "TotalPrice": 371,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0958746363",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 351,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114702"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK192750",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0ba1846527d4bf49e4877"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-27T09:48:37.114357Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-25T09:48:37.114357Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "607e9080c1354cd6a59f9ec0"
+    },
+    "Note": "",
+    "TotalPrice": 307,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0915375901",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 287,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114117"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK114525",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b4f1c5fec55b70d0fca5"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b8eb46527d4bf49e4871"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c156c5fec55b70d0fcbb"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.114375Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114375Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "67d52724e8a5de782663fcec"
+    },
+    "Note": "",
+    "TotalPrice": 424,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0919596687",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 394,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114376"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK384962",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b7fb46527d4bf49e486d"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bb1e46527d4bf49e487c"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-28T09:48:37.114396Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-24T09:48:37.114396Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "6a1acc93f33d487481dd54d0"
+    },
+    "Note": "",
+    "TotalPrice": 361,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0971601804",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 361,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114215"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK560848",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0cef1c5fec55b70d0fcdb"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b7bb46527d4bf49e486c"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a5e246527d4bf49e4846"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-15T09:48:37.114419Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-14T09:48:37.114419Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "c30b057eb5d24fe09517c62a"
+    },
+    "Note": "",
+    "TotalPrice": 403,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0973391199",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 393,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114799"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK926423",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ce89c5fec55b70d0fcda"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.114443Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114443Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "1d0c3e8df34d4e1780af654e"
+    },
+    "Note": "",
+    "TotalPrice": 362,
+    "DeliveryFee": 30,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0937618274",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 342,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114546"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK542493",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b8a846527d4bf49e4870"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-29T09:48:37.114471Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-25T09:48:37.114471Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa03"
+    },
+    "Note": "",
+    "TotalPrice": 281,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0925612023",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 251,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114882"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK630078",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0d0b4c5fec55b70d0fce0"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d0b4c5fec55b70d0fce0"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.114491Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-12T09:48:37.114491Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "a46820b0731f4f94b542b828"
+    },
+    "Note": "",
+    "TotalPrice": 363,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0971797732",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 333,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114572"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK889664",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b73a46527d4bf49e486a"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b20046527d4bf49e485b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.114533Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-17T09:48:37.114533Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "7260d7881523415184971913"
+    },
+    "Note": "",
+    "TotalPrice": 239,
+    "DeliveryFee": 30,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0943469713",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 229,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114308"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK189704",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c6bbc5fec55b70d0fcc8"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b278c5fec55b70d0fc9e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-23T09:48:37.114553Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-20T09:48:37.114553Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "0813357db70b45199f880560"
+    },
+    "Note": "",
+    "TotalPrice": 386,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0978945794",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 396,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114870"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK119289",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c5b2c5fec55b70d0fcc5"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d0b4c5fec55b70d0fce0"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-01T09:48:37.114573Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-31T09:48:37.114573Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "ada838c7207442439c3de004"
+    },
+    "Note": "",
+    "TotalPrice": 271,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0961961545",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 271,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114181"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK856534",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bc7d46527d4bf49e4882"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-03T09:48:37.114594Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-31T09:48:37.114594Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "67d52724e8a5de782663fcec"
+    },
+    "Note": "",
+    "TotalPrice": 254,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0959588023",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 254,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114761"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK334135",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b3bbc5fec55b70d0fca2"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-07T09:48:37.114614Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-05T09:48:37.114614Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "9bc13516adfe43a180f4ad25"
+    },
+    "Note": "",
+    "TotalPrice": 428,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0960073602",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 398,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114549"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK696313",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bdc5c5fec55b70d0fcb0"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-08T09:48:37.114634Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-03T09:48:37.114634Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "fa86ca1afa7c48489680f60e"
+    },
+    "Note": "",
+    "TotalPrice": 362,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0921224014",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 362,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114793"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK302548",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b2bac5fec55b70d0fc9f"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.114652Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-14T09:48:37.114652Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
     },
     "Customer_id": {
       "$oid": "65c0b01cc5fec55b70d0fa04"
     },
-    "TrackingNumber": "TRK838245",
-    "OrderDate": {
-      "$date": "2025-05-26T14:51:00.203Z"
-    },
-    "ShipDate": {
-      "$date": "2025-05-28T14:51:00.203Z"
-    },
-    "Status": "in transit",
-    "Phone": "0954678912",
-    "Address": "Hải Phòng, Việt Nam",
-    "PaymentMethod": "Credit / Debit Card",
-    "TotalPrice": 49625,
-    "PrePrice": 49500,
-    "DeliveryFee": 200,
-    "OrderProduct": {
-      "id": {
-        "$oid": "67c0a3a946527d4bf49e4840"
-      },
-      "Quantity": 3,
-      "Customize": {
-        "Type": "Slate",
-        "Image": "/images/custom/slate.jpg"
-      }
-    },
     "Note": "",
-    "Voucher": {
-      "VoucherName": "Mid-Year Big Sale",
-      "DiscountPercent": 25,
-      "DiscountAmount": 75
-    }
+    "TotalPrice": 303,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0946721363",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 273,
+    "Status": "In Transit"
   },
   {
     "_id": {
-      "$oid": "665400000000000000000004"
+      "$oid": "1750931317114463"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK134143",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0ba5946527d4bf49e4878"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-10T09:48:37.114671Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.114671Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "62272a705e3b42848541ef1c"
+    },
+    "Note": "",
+    "TotalPrice": 246,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0945971368",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 236,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114749"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK332316",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a32346527d4bf49e483e"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ac9a46527d4bf49e4854"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-15T09:48:37.114702Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-12T09:48:37.114702Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "693337ff6cab4870ac3d339f"
+    },
+    "Note": "",
+    "TotalPrice": 325,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0999884334",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 325,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114260"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK677891",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b8eb46527d4bf49e4871"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bb9f46527d4bf49e487e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-23T09:48:37.114729Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-19T09:48:37.114729Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "6a1acc93f33d487481dd54d0"
+    },
+    "Note": "",
+    "TotalPrice": 203,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0924100387",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 203,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114884"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK519009",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b43a46527d4bf49e4862"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b20046527d4bf49e485b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-28T09:48:37.114748Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-23T09:48:37.114748Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "1c1617963e764b8095c385ce"
+    },
+    "Note": "",
+    "TotalPrice": 500,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0942976107",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 490,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114348"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK206335",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c99ac5fec55b70d0fccd"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b7fb46527d4bf49e486d"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-01T09:48:37.114770Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-29T09:48:37.114770Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "f57ceb31d8bf4fa1bb315299"
+    },
+    "Note": "",
+    "TotalPrice": 448,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0997074110",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 448,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114166"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK660484",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bed0c5fec55b70d0fcb4"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cb3ac5fec55b70d0fcd1"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b363c5fec55b70d0fca1"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-05-30T09:48:37.114791Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-27T09:48:37.114791Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa01"
+    },
+    "Note": "",
+    "TotalPrice": 430,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0985675841",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 430,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114303"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK245025",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0be8cc5fec55b70d0fcb3"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c354c5fec55b70d0fcbf"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cc00c5fec55b70d0fcd3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-14T09:48:37.114814Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-13T09:48:37.114814Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "40d72b17f24c4cfe93c30ef9"
+    },
+    "Note": "",
+    "TotalPrice": 256,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0957474174",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 256,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114389"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK535557",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b53046527d4bf49e4864"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0d16fc5fec55b70d0fce3"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-02T09:48:37.114835Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-01T09:48:37.114835Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "TUM2AKfTToQNK3CQwnqU2AvObwi2"
+    },
+    "Note": "",
+    "TotalPrice": 395,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0968277837",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 355,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114808"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK156978",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b77246527d4bf49e486b"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b56b46527d4bf49e4865"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.114856Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-12T09:48:37.114856Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa02"
+    },
+    "Note": "",
+    "TotalPrice": 418,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0942293250",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 398,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114910"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK909531",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d06fc5fec55b70d0fcdf"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bb6c46527d4bf49e487d"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.114876Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114876Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "67d4505f242758bd00b20065"
+    },
+    "Note": "",
+    "TotalPrice": 251,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0914610367",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 251,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114819"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK884653",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a3a946527d4bf49e4840"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b1e9c5fec55b70d0fc9d"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cef1c5fec55b70d0fcdb"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-03T09:48:37.114897Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-31T09:48:37.114897Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "bd32e2c1bf1144379d552cb1"
+    },
+    "Note": "",
+    "TotalPrice": 443,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0960098699",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 433,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114132"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK427756",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ad5046527d4bf49e4857"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-06T09:48:37.114919Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-03T09:48:37.114919Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "f57ceb31d8bf4fa1bb315299"
+    },
+    "Note": "",
+    "TotalPrice": 357,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0968269286",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 357,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114670"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK535472",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d233c5fec55b70d0fce6"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.114947Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-17T09:48:37.114947Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "EcVbs6rCk0eG1WyEfJNUhlwAWla2"
+    },
+    "Note": "",
+    "TotalPrice": 443,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0956387450",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 453,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114645"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK613211",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0bd8bc5fec55b70d0fcaf"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c54dc5fec55b70d0fcc4"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c78ec5fec55b70d0fcc9"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-13T09:48:37.114976Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-09T09:48:37.114976Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "e093ec006c2e41db8855af5b"
+    },
+    "Note": "",
+    "TotalPrice": 236,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0966459049",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 236,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317114332"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK535179",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b73a46527d4bf49e486a"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c354c5fec55b70d0fcbf"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-10T09:48:37.114999Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.114999Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "9078cacf7f75455e811958dc"
+    },
+    "Note": "",
+    "TotalPrice": 339,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0940864778",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 349,
+    "Status": "Review"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115902"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK206270",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b663c5fec55b70d0fca7"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-18T09:48:37.115019Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-16T09:48:37.115019Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "a46820b0731f4f94b542b828"
+    },
+    "Note": "",
+    "TotalPrice": 338,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0932522694",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 328,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115241"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK699095",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c237c5fec55b70d0fcbd"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ad1b46527d4bf49e4856"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-27T09:48:37.115039Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T09:48:37.115039Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa06"
+    },
+    "Note": "",
+    "TotalPrice": 507,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0933086315",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 467,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115531"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK780417",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c6bbc5fec55b70d0fcc8"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a14646527d4bf49e483d"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c99ac5fec55b70d0fccd"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-18T09:48:37.115138Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-14T09:48:37.115138Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "b6fd0e31fb664cbcbda5de13"
+    },
+    "Note": "",
+    "TotalPrice": 490,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0919882907",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 480,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115350"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK884276",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b01cc5fec55b70d0fc9b"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-09T09:48:37.115161Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-08T09:48:37.115161Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "a282ba671ad247d7a9bdf9cd"
+    },
+    "Note": "",
+    "TotalPrice": 226,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0928594120",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 226,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115295"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK843231",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b9b346527d4bf49e4875"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b8eb46527d4bf49e4871"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0add446527d4bf49e4858"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.115180Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-18T09:48:37.115180Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "e414fd7b8dac4e59affe7d3d"
+    },
+    "Note": "",
+    "TotalPrice": 481,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0950204946",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 461,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115896"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK443466",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c07bc5fec55b70d0fcb9"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-25T09:48:37.115203Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-21T09:48:37.115203Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa04"
+    },
+    "Note": "",
+    "TotalPrice": 221,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0977841930",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 201,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115970"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK539309",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b926c5fec55b70d0fcac"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.115226Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.115226Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "7260d7881523415184971913"
+    },
+    "Note": "",
+    "TotalPrice": 260,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0945120435",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 230,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115659"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK517381",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d0b4c5fec55b70d0fce0"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a4b946527d4bf49e4843"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b278c5fec55b70d0fc9e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.115258Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-17T09:48:37.115258Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "6330a248a3804a868089fe04"
+    },
+    "Note": "",
+    "TotalPrice": 450,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0982373374",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 440,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115501"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK695039",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c2bdc5fec55b70d0fcbe"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c156c5fec55b70d0fcbb"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-29T09:48:37.115282Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-25T09:48:37.115282Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa06"
+    },
+    "Note": "",
+    "TotalPrice": 272,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0952362169",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 242,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115845"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK963830",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a4b946527d4bf49e4843"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b01cc5fec55b70d0fc9b"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-28T09:48:37.115302Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-24T09:48:37.115302Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
     },
     "Customer_id": {
       "$oid": "65c0b01cc5fec55b70d0fa05"
     },
-    "TrackingNumber": "TRK337926",
-    "OrderDate": {
-      "$date": "2025-05-26T14:51:00.203Z"
+    "Note": "",
+    "TotalPrice": 537,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "45 Tran Hung Dao, Quan 5, TP HCM",
+      "Phone": "0983046005",
+      "Name": "Le Van C"
     },
-    "ShipDate": {
-      "$date": "2025-05-28T14:51:00.203Z"
+    "PrePrice": 497,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115867"
     },
-    "Status": "completed",
-    "Phone": "0945789123",
-    "Address": "Cần Thơ, Việt Nam",
-    "PaymentMethod": "Internet Banking",
-    "TotalPrice": 2625,
-    "PrePrice": 2450,
-    "DeliveryFee": 250,
-    "OrderProduct": {
-      "id": {
-        "$oid": "67c0a62f46527d4bf49e4847"
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK623601",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b882c5fec55b70d0fcaa"
+        }
       },
-      "Quantity": 1,
-      "Customize": null
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b8eb46527d4bf49e4871"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d19bc5fec55b70d0fce4"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-23T09:48:37.115323Z"
     },
-    "Note": "Leave at front door",
+    "OrderDate": {
+      "$date": "2025-06-18T09:48:37.115323Z"
+    },
     "Voucher": {
-      "VoucherName": "Mid-Year Big Sale",
-      "DiscountPercent": 25,
-      "DiscountAmount": 75
-    }
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "4c75afe42a0e405298563d9a"
+    },
+    "Note": "",
+    "TotalPrice": 378,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0913262230",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 378,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115929"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK723892",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c2bdc5fec55b70d0fcbe"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-10T09:48:37.115344Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-08T09:48:37.115344Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "7260d7881523415184971913"
+    },
+    "Note": "",
+    "TotalPrice": 520,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0989573405",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 490,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115328"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK286223",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a04a46527d4bf49e483c"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-14T09:48:37.115363Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-10T09:48:37.115363Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "8c2143e7dde248b3a935d1c5"
+    },
+    "Note": "",
+    "TotalPrice": 473,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0989254708",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 443,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115673"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK153619",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0ac5846527d4bf49e4853"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.115383Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.115383Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "7d57f5c0fc574a938ba5d8e2"
+    },
+    "Note": "",
+    "TotalPrice": 245,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Internet Banking",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0976584279",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 235,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115810"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK382726",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0cceac5fec55b70d0fcd5"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bd5e46527d4bf49e4886"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-24T09:48:37.115402Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-23T09:48:37.115402Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "d55f17fb3957468b9f4fffa1"
+    },
+    "Note": "",
+    "TotalPrice": 281,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "123 Le Loi, Quan 1, TP Ho Chi Minh",
+      "Phone": "0926084987",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 271,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115220"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK996767",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b43a46527d4bf49e4862"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b2ff46527d4bf49e485e"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bb9f46527d4bf49e487e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-20T09:48:37.115423Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.115423Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "7b8e8a35a025479d9d3927a9"
+    },
+    "Note": "",
+    "TotalPrice": 262,
+    "DeliveryFee": 50,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0987327839",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 242,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115509"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK683053",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b43a46527d4bf49e4862"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-27T09:48:37.115444Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-22T09:48:37.115444Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "b5e28e7de5b14799bab80686"
+    },
+    "Note": "",
+    "TotalPrice": 394,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0945838720",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 384,
+    "Status": "In Transit"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115517"
+    },
+    "ShippingMethod": "Weekend Delivery",
+    "TrackingNumber": "TRK199253",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b8a846527d4bf49e4870"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bf1ac5fec55b70d0fcb5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-12T09:48:37.115463Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-08T09:48:37.115463Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "4c75afe42a0e405298563d9a"
+    },
+    "Note": "",
+    "TotalPrice": 356,
+    "DeliveryFee": 30,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0997937214",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 346,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115135"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK725486",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0baf246527d4bf49e487b"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b46f46527d4bf49e4863"
+        }
+      },
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0a40d46527d4bf49e4841"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-07T09:48:37.115483Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-03T09:48:37.115483Z"
+    },
+    "Voucher": {
+      "VoucherName": "Summer Sale",
+      "DiscountAmount": 20,
+      "DiscountPercent": 15
+    },
+    "Customer_id": {
+      "$oid": "607e9080c1354cd6a59f9ec0"
+    },
+    "Note": "",
+    "TotalPrice": 251,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0953314678",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 251,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115381"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK738755",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c07bc5fec55b70d0fcb9"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-21T09:48:37.115505Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-18T09:48:37.115505Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "b2b5a0592a1640049e6511d2"
+    },
+    "Note": "",
+    "TotalPrice": 467,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "18 Ly Thuong Kiet, Quan 10, TP HCM",
+      "Phone": "0980163826",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 447,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115230"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK842795",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0a4b946527d4bf49e4843"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.115535Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-16T09:48:37.115535Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "8eb4a2ec38054bcaa4c4d3ad"
+    },
+    "Note": "",
+    "TotalPrice": 316,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0940940435",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 326,
+    "Status": "Cancelled"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115677"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK673598",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ac5846527d4bf49e4853"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-16T09:48:37.115555Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-14T09:48:37.115555Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "b5e28e7de5b14799bab80686"
+    },
+    "Note": "",
+    "TotalPrice": 263,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "9A Le Van Luong, Quan Thanh Xuan, Ha Noi",
+      "Phone": "0918430739",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 223,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115372"
+    },
+    "ShippingMethod": "Express Delivery",
+    "TrackingNumber": "TRK102183",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0c445c5fec55b70d0fcc1"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0ab3746527d4bf49e484e"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c878c5fec55b70d0fcca"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-23T09:48:37.115578Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-21T09:48:37.115578Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "15220e85cba14d259ff36c5b"
+    },
+    "Note": "",
+    "TotalPrice": 363,
+    "DeliveryFee": 50,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0952967580",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 323,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115377"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK504183",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0ace146527d4bf49e4855"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-05-28T09:48:37.115611Z"
+    },
+    "OrderDate": {
+      "$date": "2025-05-27T09:48:37.115611Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "e093ec006c2e41db8855af5b"
+    },
+    "Note": "",
+    "TotalPrice": 212,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0977306186",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 222,
+    "Status": "Pick Up"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317115928"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK924638",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b2bac5fec55b70d0fc9f"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0c5b2c5fec55b70d0fcc5"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-17T09:48:37.115631Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-15T09:48:37.115631Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "e414fd7b8dac4e59affe7d3d"
+    },
+    "Note": "",
+    "TotalPrice": 416,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "72 Pham Van Dong, Quan Cau Giay, Ha Noi",
+      "Phone": "0919907223",
+      "Name": "Tran Thi B"
+    },
+    "PrePrice": 406,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317116506"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK921215",
+    "OrderProduct": [
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b2bac5fec55b70d0fc9f"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0d19bc5fec55b70d0fce4"
+        }
+      },
+      {
+        "Quantity": 2,
+        "id": {
+          "$oid": "67c0b53046527d4bf49e4864"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-11T09:48:37.116033Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-06T09:48:37.116033Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "65c0b01cc5fec55b70d0fa01"
+    },
+    "Note": "",
+    "TotalPrice": 470,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Momo",
+    "ShippingAddresses": {
+      "Address": "66 Hoang Van Thu, Quan Tan Binh, TP HCM",
+      "Phone": "0948286782",
+      "Name": "Le Van C"
+    },
+    "PrePrice": 480,
+    "Status": "Completed"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317116892"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK769436",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0b83c46527d4bf49e486e"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-12T09:48:37.116089Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-10T09:48:37.116089Z"
+    },
+    "Voucher": {
+      "VoucherName": "Flash Deal",
+      "DiscountAmount": 30,
+      "DiscountPercent": 20
+    },
+    "Customer_id": {
+      "$oid": "ada838c7207442439c3de004"
+    },
+    "Note": "",
+    "TotalPrice": 315,
+    "DeliveryFee": 20,
+    "PaymentMethod": "COD",
+    "ShippingAddresses": {
+      "Address": "55 Nguyen Van Linh, Quan Thanh Khe, Da Nang",
+      "Phone": "0949037796",
+      "Name": "Pham Thi D"
+    },
+    "PrePrice": 325,
+    "Status": "Pending"
+  },
+  {
+    "_id": {
+      "$oid": "1750931317116324"
+    },
+    "ShippingMethod": "Standard Delivery",
+    "TrackingNumber": "TRK799322",
+    "OrderProduct": [
+      {
+        "Quantity": 1,
+        "id": {
+          "$oid": "67c0bed0c5fec55b70d0fcb4"
+        }
+      }
+    ],
+    "ShipDate": {
+      "$date": "2025-06-25T09:48:37.116200Z"
+    },
+    "OrderDate": {
+      "$date": "2025-06-21T09:48:37.116200Z"
+    },
+    "Voucher": {
+      "VoucherName": "New User",
+      "DiscountAmount": 10,
+      "DiscountPercent": 5
+    },
+    "Customer_id": {
+      "$oid": "dbd759e60da04a7785f8bf2e"
+    },
+    "Note": "",
+    "TotalPrice": 426,
+    "DeliveryFee": 20,
+    "PaymentMethod": "Credit/Debit card",
+    "ShippingAddresses": {
+      "Address": "88 Truong Chinh, Quan Dong Da, Ha Noi",
+      "Phone": "0950728644",
+      "Name": "Nguyen Van A"
+    },
+    "PrePrice": 416,
+    "Status": "In Transit"
   }
 ]
