@@ -126,6 +126,39 @@ export class VoucherService {
   }
 
   /**
+ * Tạo voucher mới
+ * @param voucherData Dữ liệu voucher cần tạo
+ * @returns Promise<void>
+ */
+async createVoucher(voucherData: Partial<Voucher>): Promise<string> {
+  try {
+    const vouchersCollection = collection(db, this.collectionName);
+    const newDocRef = doc(vouchersCollection);
+
+    const firestoreData: any = {
+      Name: voucherData.name || '',
+      DiscountPercent: voucherData.discountPercent || 0,
+      ExpireDate: voucherData.expireDate || new Date(),
+      Category: voucherData.category || '',
+      'Maximum threshold': voucherData.maximumThreshold || 0,
+      'Minimum order value': voucherData.minimumOrderValue || 0,
+      voucherId: newDocRef.id // save document ID as voucherId
+    };
+
+    await setDoc(newDocRef, firestoreData);
+
+    console.log('✅ Voucher created successfully with ID:', newDocRef.id);
+    return newDocRef.id;
+
+  } catch (error) {
+    console.error('❌ Error creating voucher:', error);
+    throw error;
+  }
+}
+
+
+
+  /**
    * Xóa voucher theo ID
    * @param voucherId Document ID của voucher
    * @returns Promise<void>
