@@ -228,5 +228,21 @@
     <string name="no_internet_icon">Biểu tượng mất kết nối</string>
     <string name="open_network_settings">Cài đặt mạng</string>
 
+    <string name="shipping_policy_detail_title">Chính Sách Giao Hàng</string>
+    <string name="shipping_policy_detail_description">"Chính sách giao hàng áp dụng cho khách hàng mua sắm và thanh toán trực tiếp tại hệ thống cửa hàng EvoCasa hoặc qua ứng dụng EvoCasa. "</string>
+    <string name="shipping_policy_general_provisions_title">Quy định chung</string>
+    <string name="shipping_policy_general_provisions_content_1">Đơn vị vận chuyển sẽ không giải quyết khiếu nại bồi thường nếu bạn đã nhận hàng và ký nhận. Vui lòng kiểm tra kiện hàng trước khi xác nhận. Nếu có dấu hiệu hư hỏng (rách, móp, thủng hoặc thấm nước), xin từ chối nhận và thông báo ngay cho chúng tôi.</string>
+    <string name="shipping_policy_general_provisions_content_2">Đơn hàng sẽ được giao đến tận nơi trừ trường hợp khu vực hạn chế (như văn phòng, chung cư), khi đó hàng sẽ được giao tại sảnh chính.</string>
+    <string name="shipping_policy_general_provisions_content_3">Khách hàng nên quay video mở hộp để lưu lại tình trạng sản phẩm và kiện hàng, hỗ trợ giải quyết khiếu nại nếu có.</string>
+    <string name="shipping_policy_general_provisions_content_4">Khi khiếu nại, vui lòng cung cấp đầy đủ thông tin đơn hàng và hình ảnh gói hàng, sản phẩm để được hỗ trợ nhanh chóng.</string>
+    <string name="shipping_policy_delivery_coverage_title">Phạm vi giao hàng</string>
+    <string name="shipping_policy_delivery_coverage_content_1">EvoCasa giao hàng toàn quốc. Đối với đơn hàng quốc tế, vui lòng liên hệ bộ phận CSKH trước khi đặt.</string>
+    <string name="shipping_policy_delivery_coverage_content_2">Trong thời gian dịch bệnh hoặc sự kiện bất khả kháng, phạm vi giao hàng có thể thay đổi theo quy định của Nhà nước.</string>
+    <string name="shipping_policy_delivery_time_title">Thời gian giao hàng</string>
+    <string name="shipping_policy_delivery_time_content">Giao hàng trong giờ hành chính, thứ Hai đến thứ Bảy (trừ Chủ nhật và ngày lễ).\n• Giao hàng nhanh: 2–5 ngày làm việc\n• Nhận tại cửa hàng: 24–72 giờ\nLưu ý: Khu vực xa có thể cộng thêm 1–3 ngày. Chúng tôi sẽ thông báo nếu có thay đổi.\n</string>
+    <string name="shipping_policy_shipping_fee_title">Phí giao hàng</string>
+    <string name="shipping_policy_shipping_fee_content">Từ ngày 28/01/2025, EvoCasa miễn phí giao hàng toàn quốc cho đơn đặt qua website (không áp dụng giao nhanh).\nPhí giao hàng phụ thuộc vào khoảng cách và trọng lượng sản phẩm. Phí sẽ hiển thị tại bước thanh toán sau khi nhập địa chỉ nhận hàng.\n</string>
+    <string name="shipping_policy_contact_title">Thông tin liên hệ</string>
+
 
 </resources>

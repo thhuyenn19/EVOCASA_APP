@@ -33,15 +33,6 @@
                 android:layout_marginVertical="12dp"
                 android:layout_marginHorizontal="16dp">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imgBanner2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:layout_marginTop="1dp"
-                    android:src="@mipmap/ic_banner2"
-                    app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -56,6 +47,15 @@
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgBanner2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/ic_banner2"
+                        app:shapeAppearanceOverlay="@style/FullyRoundedImage" />
                 </LinearLayout>
             </FrameLayout>
 

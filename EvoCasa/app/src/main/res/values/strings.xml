@@ -232,6 +232,22 @@
     <string name="title_profile_detail">Profile Detail</string>
     <string name="title_chat_with_employee">Chat with employee</string>
     <string name="title_type_message">Type message here...</string>
+    <string name="shipping_policy_detail_title">Shipping Policy</string>
+    <string name="shipping_policy_detail_description">Shipping policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa app.</string>
+    <string name="shipping_policy_general_provisions_title">General Provisions</string>
+    <string name="shipping_policy_general_provisions_content_1">Shipping carriers will not resolve compensation claims if you accept the package and sign the delivery receipt. Please inspect packaging before confirming receipt. If there are signs of damage (tears, dents, holes, or water damage), kindly refuse to accept and notify us immediately.</string>
+    <string name="shipping_policy_general_provisions_content_2">Orders will be delivered to your doorstep unless there is restricted access (e.g., offices or apartments), in which case delivery will be made to the main entrance only.</string>
+    <string name="shipping_policy_general_provisions_content_3">Customers are encouraged to record an unboxing video to document the condition of the package and its contents. This will help with complaint handling if needed.</string>
+    <string name="shipping_policy_general_provisions_content_4">For complaints, please provide full order details, along with photos of the package and product, to ensure prompt resolution.</string>
+    <string name="shipping_policy_delivery_coverage_title">Delivery Coverage</string>
+    <string name="shipping_policy_delivery_coverage_content_1">EvoCasa offers nationwide shipping within Vietnam. For international shipping, please contact Customer Support before ordering.</string>
+    <string name="shipping_policy_delivery_coverage_content_2">During pandemics or unforeseen events, shipping areas may be adjusted according to government regulations.</string>
+    <string name="shipping_policy_delivery_time_title">Delivery Time</string>
+    <string name="shipping_policy_delivery_time_content">Deliveries occur during business hours, Monday to Saturday (excluding Sundays and public holidays). \n• Express Delivery: 2–5 business days \n• Store Pickup: 24–72 hours \nNote: Remote areas may need 1–3 additional days. Customers will be notified of any changes.</string>
+    <string name="shipping_policy_shipping_fee_title">Shipping Fees</string>
+    <string name="shipping_policy_shipping_fee_content">From January 28, 2025, EvoCasa offers free nationwide shipping for website orders (excluding express delivery).  \nShipping fees depend on distance and product weight. Fees will be shown at checkout after entering the delivery address.</string>
+    <string name="shipping_policy_contact_title">Contact Information</string>
+    <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961\nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
 
 
 </resources>
