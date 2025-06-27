@@ -27,6 +27,7 @@ import { MessageComponent } from './message/message.component';
 import { VoucherComponent } from './voucher/voucher.component';
 import { AddVoucherComponent } from './voucher-detail/add-voucher/addvoucher.component';
 import { EditVoucherComponent } from './voucher-detail/edit-voucher/editvoucher.component';
+import { ViewVoucherComponent } from './voucher-detail/view-voucher/viewvoucher.component';
 
 @NgModule({
   declarations: [

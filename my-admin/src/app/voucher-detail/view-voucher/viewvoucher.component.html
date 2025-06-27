@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>View voucher</title>
+  </head>
+  <body>
+    <!-- Loading Overlay -->
+    <div *ngIf="isLoading" class="loading-overlay">
+      <div class="loading-spinner">Loading...</div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+      <h1>VIEW VOUCHER</h1>
+      <div class="header-buttons">
+        <button 
+          class="btn cancel" 
+          (click)="onBack()"
+          [disabled]="isLoading">
+          Back
+        </button>
+      </div>
+    </div>
+
+    <!-- Voucher ID -->
+    <div class="voucher-id">
+      <span class="label">Voucher ID:</span>
+      <span class="value">{{ voucherId || 'Loading...' }}</span>
+    </div>
+
+    <!-- Main Content -->
+    <div *ngIf="!isLoading && voucher" class="form-container">
+      <div class="form-section">
+        <h2>Voucher Information</h2>
+
+        <div class="form-group">
+          <label>Voucher Name</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="voucherName"
+            readonly />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <input 
+              type="text" 
+              class="form-control"
+              [(ngModel)]="category"
+              readonly />
+          </div>
+          <div class="form-group">
+            <label>Discount Percent</label>
+            <div class="input-with-suffix">
+              <input 
+                type="number" 
+                class="form-control"
+                [(ngModel)]="discountPercent"
+                readonly />
+              <span class="suffix">%</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Maximum threshold</label>
+            <div class="input-with-suffix">
+              <input 
+                type="number" 
+                class="form-control"
+                [(ngModel)]="maximumThreshold"
+                readonly />
+              <span class="suffix">$</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Minimum order value</label>
+            <div class="input-with-suffix">
+              <input 
+                type="number" 
+                class="form-control"
+                [(ngModel)]="minimumOrderValue"
+                readonly />
+              <span class="suffix">$</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Time</h2>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Expire Date</label>
+            <div class="input-with-icon">
+              <input 
+                type="date" 
+                class="form-control"
+                [(ngModel)]="expireDate"
+                [disabled]="true" />
+            </div>
+          </div>
+          <div class="form-group checkbox-group">
+            <input 
+              type="checkbox" 
+              id="indefinitely"/>
+            <label for="indefinitely">Indefinitely</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="!isLoading && !voucher" class="error-container">
+      <h2>Voucher Not Found</h2>
+      <p>The voucher you're looking for could not be found.</p>
+      <button class="btn cancel" (click)="onBack()">Go Back</button>
+    </div>
+  </body>
+</html>

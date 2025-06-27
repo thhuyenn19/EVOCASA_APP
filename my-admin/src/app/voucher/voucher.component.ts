@@ -140,8 +140,8 @@ export class VoucherComponent implements OnInit {
   }
 
   viewVoucher(voucher: Voucher) {
-    alert(`View voucher ${voucher.voucherId}`);
-  }
+    this.router.navigate(['/admin-voucher-view', voucher.id]);
+}
 
   editVoucher(voucher: Voucher) {
     this.router.navigate(['/admin-voucher-edit', voucher.id]);
