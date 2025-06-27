@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { collection, getDocs, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, query, orderBy, updateDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 
 export interface Voucher {
@@ -62,6 +62,47 @@ export class VoucherService {
   }
 
   /**
+   * Cập nhật voucher theo ID
+   * @param voucherId Document ID của voucher
+   * @param voucherData Dữ liệu voucher cần cập nhật
+   * @returns Promise<void>
+   */
+  async updateVoucher(voucherId: string, voucherData: Partial<Voucher>): Promise<void> {
+    try {
+      const voucherDocRef = doc(db, this.collectionName, voucherId);
+      
+      // Chuyển đổi dữ liệu từ Voucher interface sang Firestore format
+      const firestoreData: any = {};
+      
+      if (voucherData.name !== undefined) {
+        firestoreData['Name'] = voucherData.name;
+      }
+      if (voucherData.category !== undefined) {
+        firestoreData['Category'] = voucherData.category;
+      }
+      if (voucherData.discountPercent !== undefined) {
+        firestoreData['DiscountPercent'] = voucherData.discountPercent;
+      }
+      if (voucherData.expireDate !== undefined) {
+        firestoreData['ExpireDate'] = voucherData.expireDate;
+      }
+      if (voucherData.maximumThreshold !== undefined) {
+        firestoreData['Maximum threshold'] = voucherData.maximumThreshold;
+      }
+      if (voucherData.minimumOrderValue !== undefined) {
+        firestoreData['Minimum order value'] = voucherData.minimumOrderValue;
+      }
+      
+      await updateDoc(voucherDocRef, firestoreData);
+      console.log('✅ Voucher updated successfully:', voucherId, firestoreData);
+      
+    } catch (error) {
+      console.error('❌ Error updating voucher:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Xóa voucher theo ID
    * @param voucherId Document ID của voucher
    * @returns Promise<void>
@@ -73,6 +114,21 @@ export class VoucherService {
       console.log('✅ Voucher deleted successfully:', voucherId);
     } catch (error) {
       console.error('❌ Error deleting voucher:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Lấy một voucher theo ID
+   * @param voucherId Document ID của voucher
+   * @returns Promise<Voucher | null>
+   */
+  async getVoucherById(voucherId: string): Promise<Voucher | null> {
+    try {
+      const vouchers = await this.getAllVouchers();
+      return vouchers.find(voucher => voucher.id === voucherId) || null;
+    } catch (error) {
+      console.error('❌ Error getting voucher by ID:', error);
       throw error;
     }
   }
