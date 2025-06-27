@@ -49,7 +49,7 @@
             android:value="@string/facebook_client_token" />
 
         <activity
-            android:name=".ChatActivity2"
+            android:name=".chat.ChatActivity2"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -71,7 +71,7 @@
             android:name=".CartActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".chat.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".onboarding.Onboarding1Activity"

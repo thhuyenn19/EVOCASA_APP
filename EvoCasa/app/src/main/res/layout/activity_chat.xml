@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/color_bg"
-    tools:context=".ChatActivity">
+    tools:context=".chat.ChatActivity">
 
     <include layout="@layout/topbar_chat"
         android:layout_width="match_parent"

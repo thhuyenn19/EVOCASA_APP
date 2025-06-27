@@ -32,7 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.BlogFragment;
-import com.mobile.evocasa.ChatActivity;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.evocasa.order.OrdersFragment;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.WishlistFragment;
