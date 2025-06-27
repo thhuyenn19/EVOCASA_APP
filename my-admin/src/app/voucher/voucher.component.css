@@ -282,7 +282,7 @@ h4 {
 /* Voucher Name */
 .voucher-table th:nth-child(3),
 .voucher-table td:nth-child(3) {
-  width: 10%; /* Voucher Name */
+  width: 15%; /* Voucher Name */
 }
 
 /* Discount Percent */
@@ -294,19 +294,19 @@ h4 {
 /* Expire Date */
 .voucher-table th:nth-child(5),
 .voucher-table td:nth-child(5) {
-  width: 8%; /* Expire Date */
+  width: 10%; /* Expire Date */
 }
 
 /* Category */
 .voucher-table th:nth-child(6),
 .voucher-table td:nth-child(6) {
-  width: 8%; /* Category */
+  width: 10%; /* Category */
 }
 
 /* Action */
 .voucher-table th:nth-child(7),
 .voucher-table td:nth-child(7) {
-  width: 12%; /* Action */
+  width: 10%; /* Action */
 }
 
 .voucher-table th {
