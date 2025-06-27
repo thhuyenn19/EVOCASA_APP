@@ -47,9 +47,8 @@ export class EditVoucherComponent implements OnInit {
     try {
       this.isLoading = true;
       
-      // Lấy tất cả vouchers và tìm voucher theo ID
-      const vouchers = await this.voucherService.getAllVouchers();
-      this.voucher = vouchers.find(v => v.id === this.voucherId) || null;
+      // Sử dụng getVoucherById để lấy trực tiếp voucher theo ID
+      this.voucher = await this.voucherService.getVoucherById(this.voucherId);
       
       if (this.voucher) {
         // Populate form fields with voucher data
@@ -62,6 +61,9 @@ export class EditVoucherComponent implements OnInit {
         // Convert Date to string format for input[type="date"]
         if (this.voucher.expireDate) {
           this.expireDate = this.formatDateForInput(this.voucher.expireDate);
+          // Check if expire date is far in future (indefinitely)
+          const farFuture = new Date(2099, 0, 1);
+          this.indefinitely = this.voucher.expireDate >= farFuture;
         }
         
         console.log('✅ Voucher data loaded:', this.voucher);
@@ -101,7 +103,10 @@ export class EditVoucherComponent implements OnInit {
    */
   private parseInputDate(dateString: string): Date {
     if (!dateString) return new Date();
-    return new Date(dateString);
+    const date = new Date(dateString);
+    // Set time to end of day to avoid timezone issues
+    date.setHours(23, 59, 59, 999);
+    return date;
   }
 
   /**
@@ -125,6 +130,16 @@ export class EditVoucherComponent implements OnInit {
     
     if (!this.indefinitely && !this.expireDate) {
       alert('Please select expire date or check indefinitely');
+      return false;
+    }
+    
+    if (this.maximumThreshold < 0) {
+      alert('Maximum threshold cannot be negative');
+      return false;
+    }
+
+    if (this.minimumOrderValue < 0) {
+      alert('Minimum order value cannot be negative');
       return false;
     }
     
@@ -160,31 +175,50 @@ export class EditVoucherComponent implements OnInit {
       return;
     }
 
+    // Hiển thị confirmation dialog
+    const confirmed = confirm('Are you sure you want to save changes to this voucher?');
+    if (!confirmed) {
+      return;
+    }
+
     try {
       this.isLoading = true;
+      
+      console.log('🔄 Preparing to save voucher changes...');
       
       // Prepare updated voucher data
       const updatedVoucher: Partial<Voucher> = {
         name: this.voucherName.trim(),
         category: this.category.trim(),
-        discountPercent: this.discountPercent,
-        maximumThreshold: this.maximumThreshold,
-        minimumOrderValue: this.minimumOrderValue,
-        expireDate: this.indefinitely ? new Date(2099, 11, 31) : this.parseInputDate(this.expireDate)
+        discountPercent: Number(this.discountPercent),
+        maximumThreshold: Number(this.maximumThreshold),
+        minimumOrderValue: Number(this.minimumOrderValue),
+        expireDate: this.indefinitely 
+          ? new Date(2099, 11, 31, 23, 59, 59, 999) // Far future date for indefinitely
+          : this.parseInputDate(this.expireDate)
       };
       
-      // TODO: Implement update voucher in service
-      // await this.voucherService.updateVoucher(this.voucherId, updatedVoucher);
+      console.log('📤 Sending update data:', updatedVoucher);
       
-      console.log('Updated voucher data:', updatedVoucher);
+      // Update voucher in Firestore
+      await this.voucherService.updateVoucher(this.voucherId, updatedVoucher);
+      
+      console.log('✅ Voucher updated successfully');
       alert('Voucher updated successfully!');
       
-      // Navigate back to voucher list
-      this.router.navigate(['/admin-voucher']);
+      // Reload the current voucher data instead of navigating away
+      await this.loadVoucherData();
       
     } catch (error) {
       console.error('❌ Error saving voucher:', error);
-      alert('Error saving voucher. Please try again.');
+      
+      // Hiển thị error message chi tiết hơn
+      let errorMessage = 'Error saving voucher. Please try again.';
+      if (error instanceof Error) {
+        errorMessage = `Error: ${error.message}`;
+      }
+      
+      alert(errorMessage);
     } finally {
       this.isLoading = false;
     }
@@ -207,13 +241,17 @@ export class EditVoucherComponent implements OnInit {
   private hasFormChanges(): boolean {
     if (!this.voucher) return false;
     
+    const currentExpireDate = this.indefinitely 
+      ? new Date(2099, 11, 31) 
+      : this.parseInputDate(this.expireDate);
+    
     return (
-      this.voucherName !== this.voucher.name ||
-      this.category !== this.voucher.category ||
-      this.discountPercent !== this.voucher.discountPercent ||
-      this.maximumThreshold !== (this.voucher.maximumThreshold || 0) ||
-      this.minimumOrderValue !== (this.voucher.minimumOrderValue || 0) ||
-      this.expireDate !== this.formatDateForInput(this.voucher.expireDate)
+      this.voucherName.trim() !== this.voucher.name ||
+      this.category.trim() !== this.voucher.category ||
+      Number(this.discountPercent) !== this.voucher.discountPercent ||
+      Number(this.maximumThreshold) !== (this.voucher.maximumThreshold || 0) ||
+      Number(this.minimumOrderValue) !== (this.voucher.minimumOrderValue || 0) ||
+      Math.abs(currentExpireDate.getTime() - this.voucher.expireDate.getTime()) > 24 * 60 * 60 * 1000 // Allow 1 day difference
     );
   }
 }

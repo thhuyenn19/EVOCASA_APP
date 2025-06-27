@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { collection, getDocs, doc, deleteDoc, query, orderBy, updateDoc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, doc, deleteDoc, query, orderBy, updateDoc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
 
 export interface Voucher {
@@ -69,11 +69,20 @@ export class VoucherService {
    */
   async updateVoucher(voucherId: string, voucherData: Partial<Voucher>): Promise<void> {
     try {
+      console.log('🔄 Updating voucher with ID:', voucherId);
+      console.log('📝 Voucher data to update:', voucherData);
+
       const voucherDocRef = doc(db, this.collectionName, voucherId);
-      
-      // Chuyển đổi dữ liệu từ Voucher interface sang Firestore format
+
+      // Kiểm tra xem document có tồn tại không
+      const docSnapshot = await getDoc(voucherDocRef);
+      if (!docSnapshot.exists()) {
+        throw new Error(`Voucher with ID ${voucherId} does not exist`);
+      }
+
+      // Chuyển đổi dữ liệu sang Firestore field mapping
       const firestoreData: any = {};
-      
+
       if (voucherData.name !== undefined) {
         firestoreData['Name'] = voucherData.name;
       }
@@ -84,7 +93,11 @@ export class VoucherService {
         firestoreData['DiscountPercent'] = voucherData.discountPercent;
       }
       if (voucherData.expireDate !== undefined) {
-        firestoreData['ExpireDate'] = voucherData.expireDate;
+        // Đảm bảo expireDate là Date object hợp lệ
+        const expireDate = voucherData.expireDate instanceof Date 
+          ? voucherData.expireDate 
+          : new Date(voucherData.expireDate);
+        firestoreData['ExpireDate'] = expireDate;
       }
       if (voucherData.maximumThreshold !== undefined) {
         firestoreData['Maximum threshold'] = voucherData.maximumThreshold;
@@ -92,10 +105,20 @@ export class VoucherService {
       if (voucherData.minimumOrderValue !== undefined) {
         firestoreData['Minimum order value'] = voucherData.minimumOrderValue;
       }
-      
+
+      console.log('🔥 Firestore data to save:', firestoreData);
+
+      // Thực hiện cập nhật
       await updateDoc(voucherDocRef, firestoreData);
-      console.log('✅ Voucher updated successfully:', voucherId, firestoreData);
       
+      console.log('✅ Voucher updated successfully in Firestore');
+
+      // Verify update bằng cách đọc lại document
+      const updatedDoc = await getDoc(voucherDocRef);
+      if (updatedDoc.exists()) {
+        console.log('✅ Verified updated document:', updatedDoc.data());
+      }
+
     } catch (error) {
       console.error('❌ Error updating voucher:', error);
       throw error;
@@ -119,14 +142,35 @@ export class VoucherService {
   }
 
   /**
-   * Lấy một voucher theo ID
+   * Lấy một voucher theo ID trực tiếp từ Firestore
    * @param voucherId Document ID của voucher
    * @returns Promise<Voucher | null>
    */
   async getVoucherById(voucherId: string): Promise<Voucher | null> {
     try {
-      const vouchers = await this.getAllVouchers();
-      return vouchers.find(voucher => voucher.id === voucherId) || null;
+      const voucherDocRef = doc(db, this.collectionName, voucherId);
+      const docSnapshot = await getDoc(voucherDocRef);
+      
+      if (!docSnapshot.exists()) {
+        console.log('❌ Voucher not found with ID:', voucherId);
+        return null;
+      }
+
+      const data = docSnapshot.data();
+      const voucher: Voucher = {
+        id: docSnapshot.id,
+        voucherId: docSnapshot.id,
+        name: data['Name'] || '',
+        discountPercent: data['DiscountPercent'] || 0,
+        expireDate: this.convertFirestoreTimestamp(data['ExpireDate']),
+        category: data['Category'] || '',
+        maximumThreshold: data['Maximum threshold'] || 0,
+        minimumOrderValue: data['Minimum order value'] || 0
+      };
+
+      console.log('✅ Voucher found:', voucher);
+      return voucher;
+
     } catch (error) {
       console.error('❌ Error getting voucher by ID:', error);
       throw error;
