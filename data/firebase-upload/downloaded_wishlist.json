@@ -1,0 +1,73 @@
+[
+    {
+    "_id": "7ctQtpIJiTm68RUFG6K2",
+    "Customer_id": "EcVbs6rCk0eG1WyEfJNUhlwAWla2",
+    "CreatedAt": {
+      "_seconds": 1750409829,
+      "_nanoseconds": 693000000
+    },
+    "Productid": [
+      "67c0a32346527d4bf49e483e",
+      "67c0a04a46527d4bf49e483c",
+      "67c099e8ac22517ab6403a78"
+    ]
+  },
+  {
+    "_id": "czfulO1uK3fp955O1tNF",
+    "Customer_id": "TUM2AKfTToQNK3CQwnqU2AvObwi2",
+    "CreatedAt": {
+      "_seconds": 1750735343,
+      "_nanoseconds": 750000000
+    },
+    "Productid": [
+      "67c099e8ac22517ab6403a78",
+      "67c0bd5e46527d4bf49e4886",
+      "67c0b363c5fec55b70d0fca1",
+      "67c0b1e9c5fec55b70d0fc9d"
+    ]
+  },
+  {
+    "_id": "n5a5stggnJkDQnxTesMF",
+    "Customer_id": "IPtOgpOrLjZSirOM4AARlBBgkZT2",
+    "CreatedAt": {
+      "_seconds": 1749660268,
+      "_nanoseconds": 957000000
+    },
+    "Productid": [
+      "67c0abe646527d4bf49e4851",
+      "67c0b61ac5fec55b70d0fca6",
+      "67c0bf1ac5fec55b70d0fcb5",
+      "67c0a5e246527d4bf49e4846",
+      "67c0b7d2c5fec55b70d0fca9",
+      "67c0b278c5fec55b70d0fc9e",
+      "67c0cfe1c5fec55b70d0fcde",
+      "67c0ad1b46527d4bf49e4856",
+      "67c099e8ac22517ab6403a78",
+      "67c0b8ddc5fec55b70d0fcab",
+      "67c0babf46527d4bf49e487a",
+      "67c0a14646527d4bf49e483d",
+      "67c0b3bbc5fec55b70d0fca2",
+      "67c0ac5846527d4bf49e4853",
+      "67c0b5fa46527d4bf49e4867",
+      "67c0c1e1c5fec55b70d0fcbc",
+      "67c0bd5e46527d4bf49e4886",
+      "67c0b882c5fec55b70d0fcaa"
+    ]
+  },
+  {
+    "_id": "xCtA9zJbaeei6KJWrJmC",
+    "Customer_id": "Mg98H9tSn5SFepSAQ2qpcaFX3cx2",
+    "CreatedAt": {
+      "_seconds": 1750907383,
+      "_nanoseconds": 31000000
+    },
+    "Productid": [
+      "67c0a04a46527d4bf49e483c",
+      "67c099e8ac22517ab6403a78",
+      "67c0c946c5fec55b70d0fccc",
+      "67c0d0b4c5fec55b70d0fce0",
+      "67c0ace146527d4bf49e4855",
+      "67c0ac9a46527d4bf49e4854"
+    ]
+  }
+]

@@ -25,7 +25,7 @@ async function downloadCollection(collectionName, outputFileName) {
 
 // 📦 Danh sách collections cần tải
 const collectionsToDownload = [
-  { name: "Order", output: "downloaded_orders.json" }
+  { name: "Wishlist", output: "downloaded_wishlist.json" }
 
 ];
 

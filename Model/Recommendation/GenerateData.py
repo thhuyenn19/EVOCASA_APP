@@ -1,44 +1,90 @@
 import json
 import random
-import pandas as pd
 from datetime import datetime, timedelta
-import os
-base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "firebase-upload"))
-customer_file = os.path.join(base_path, "EvoCasa.Customers.json")
-product_file = os.path.join(base_path, "EvoCasa.Product.json")
 
-with open(customer_file, "r", encoding="utf-8") as f:
+# Load customer, product, order, wishlist, review data
+with open("data/firebase-upload/EvoCasa.Customers.json", "r", encoding="utf-8") as f:
     customers = json.load(f)
 
-with open(product_file, "r", encoding="utf-8") as f:
+with open("data/firebase-upload/Downloaded_Products.json", "r", encoding="utf-8") as f:
     products = json.load(f)
 
+with open("data/firebase-upload/EvoCasa.Order.json", "r", encoding="utf-8") as f:
+    orders = json.load(f)
 
-# Lấy danh sách user_id và product_id
-customer_ids = [c["_id"]["$oid"] for c in customers if "_id" in c and "$oid" in c["_id"]]
-product_ids = [p["_id"]["$oid"] for p in products if "_id" in p and "$oid" in p["_id"]]
+with open("data/firebase-upload/downloaded_wishlist.json", "r", encoding="utf-8") as f:
+    wishlists = json.load(f)
 
-# Tạo dữ liệu tương tác
-interactions = []
-for _ in range(1000):
-    user_id = random.choice(customer_ids)
-    product_id = random.choice(product_ids)
-    rating = random.randint(1, 5)
-    has_ordered = random.choice([0, 1])
-    is_in_wishlist = random.choice([0, 1])
-    timestamp = datetime.now() - timedelta(days=random.randint(0, 365))
+with open("data/firebase-upload/downloaded_review.json", "r", encoding="utf-8") as f:
+    reviews = json.load(f)
 
-    interactions.append({
-        "user_id": user_id,
-        "product_id": product_id,
-        "rating": rating,
-        "has_ordered": has_ordered,
-        "is_in_wishlist": is_in_wishlist,
-        "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S")
-    })
+# Initialize lists
+product_ids = [p["_id"]["$oid"] for p in products]
+customer_ids = [c["_id"]["$oid"] for c in customers]
 
-# Chuyển sang DataFrame và lưu file
-df = pd.DataFrame(interactions)
-df.to_csv("synthetic_interactions.csv", index=False)
+# Define behaviors
+behavior_types = ["click", "wishlist", "order", "review"]
+customer_behavior = []
 
-print("✅ Đã tạo xong 1000 dòng dữ liệu giả và lưu vào file synthetic_interactions.csv")
+# Simulate customer behavior for each customer
+for customer in customers:
+    customer_id = customer["_id"]["$oid"]
+
+    # Simulate "click" behavior
+    for _ in range(random.randint(2, 5)):
+        product_id = random.choice(product_ids)
+        behavior = {
+            "customer_id": {"$oid": customer_id},
+            "product_id": {"$oid": product_id},
+            "action_type": "click",
+            "source": "category_page",
+            "timestamp": {"$date": (datetime.now() - timedelta(days=random.randint(1, 10))).isoformat() + "Z"}
+        }
+        customer_behavior.append(behavior)
+
+    # Simulate "wishlist" behavior
+    wishlist = next((w for w in wishlists if w["Customer_id"] == customer_id), None)
+    if wishlist:
+        for product_id in wishlist["Productid"]:
+            behavior = {
+                "customer_id": {"$oid": customer_id},
+                "product_id": {"$oid": product_id},
+                "action_type": "wishlist",
+                "source": "wishlist_page",
+                "timestamp": {"$date": (datetime.now() - timedelta(days=random.randint(1, 10))).isoformat() + "Z"}
+            }
+            customer_behavior.append(behavior)
+
+    # Simulate "order" behavior
+    customer_orders = [order for order in orders if order["Customer_id"]["$oid"] == customer_id]
+    for order in customer_orders:
+        for product in order["OrderProduct"]:
+            product_id = product["id"]["$oid"]
+            behavior = {
+                "customer_id": {"$oid": customer_id},
+                "product_id": {"$oid": product_id},
+                "action_type": "order",
+                "source": "order_page",
+                "timestamp": {"$date": order["OrderDate"]["$date"]}
+            }
+            customer_behavior.append(behavior)
+
+    # Simulate "review" behavior
+    customer_reviews = [r for r in reviews if r["Customer_id"]["$oid"] == customer_id]
+    for review in customer_reviews:
+        behavior = {
+            "customer_id": {"$oid": customer_id},
+            "product_id": {"$oid": review["Product_id"]["$oid"]},
+            "action_type": "review",
+            "rating": review["Rating"]["$numberLong"],
+            "source": "product_detail",
+            "timestamp": {"$date": review["CreatedAt"]["$date"]}
+        }
+        customer_behavior.append(behavior)
+
+# Save to file
+output_path = "Generated_CustomerBehavior.json"
+with open(output_path, "w", encoding="utf-8") as f:
+    json.dump(customer_behavior, f, indent=2)
+
+output_path

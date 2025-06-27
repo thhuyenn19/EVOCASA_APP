@@ -384,6 +384,25 @@ public class MainPaymentFragment extends Fragment {
                             }
                         }
                         sendOrderPlacedNotification();
+                        // After the order has been successfully placed
+                        // After the order has been successfully placed
+                        for (CartProduct p : selectedProducts) {
+                            // Get the current product's quantity in the database
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference productRef = db.collection("Product").document(p.getId());
+
+                            // Update the product's quantity in Firestore
+                            productRef.update("Quantity", FieldValue.increment(-p.getQuantity()))
+                                    .addOnSuccessListener(success -> {
+                                        // Log success if needed
+                                        Log.d("MainPaymentFragment", "Product quantity updated successfully for " + p.getName());
+                                    })
+                                    .addOnFailureListener(error -> {
+                                        // Handle any errors that occur during the update
+                                        Log.e("MainPaymentFragment", "Error updating product quantity for " + p.getName(), error);
+                                    });
+                        }
+
 
 
 
