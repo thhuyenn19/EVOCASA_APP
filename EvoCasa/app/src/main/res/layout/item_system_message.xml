@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="8dp"
+    android:paddingHorizontal="16dp">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/txtSuggestedForYou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:text="A support agent has joined the conversation"
+        android:textColor="@color/color_5E4C3E"
+        android:textSize="14sp"
+        android:fontFamily="@font/zen_old_mincho" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray" />
+
+</LinearLayout>

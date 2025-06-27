@@ -29,7 +29,6 @@ import java.util.Date;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
-    private LinearLayout agentNotification;
     private FirebaseFirestore db;
     private String userId;
     private String adminId = null;
@@ -40,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<ChatMessage> messages;
     private EditText edtTypeMessage;
     private ImageView imgSend;
+    private boolean isFirstTimeChat = true; // Flag để kiểm tra lần đầu chat
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class ChatActivity extends AppCompatActivity {
         userId = sessionManager.getUid();
         if (userId == null) {
             Log.w(TAG, "User not logged in, userId is null");
-            finish(); // Hoặc chuyển hướng đến màn hình đăng nhập
+            finish();
         } else {
             Log.d(TAG, "User logged in with userId: " + userId);
         }
@@ -70,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
         messages = new ArrayList<>();
         chatAdapter = new ChatAdapter(messages, userId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true); // Thiết lập stackFromEnd trong mã
+        layoutManager.setStackFromEnd(true); // Cuộn đến tin nhắn mới nhất
         recyclerViewChat.setLayoutManager(layoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
 
@@ -92,14 +92,17 @@ public class ChatActivity extends AppCompatActivity {
 
         // Handle click for txtChatEmployee
         TextView txtChatEmployee = findViewById(R.id.txtChatEmployee);
-        agentNotification = findViewById(R.id.agent_notification);
         if (txtChatEmployee != null) {
             txtChatEmployee.setOnClickListener(v -> {
-                Log.d(TAG, "txtChatEmployee clicked, showing agent notification");
+                Log.d(TAG, "txtChatEmployee clicked");
                 if (userId != null) {
-                    agentNotification.setVisibility(View.VISIBLE);
                     chatId = "chat_" + userId + "_admin";
                     startChatWithEmployee();
+                    // Hiển thị thông báo support agent joined
+                    if (isFirstTimeChat) {
+                        showSupportAgentJoinedMessage();
+                        isFirstTimeChat = false;
+                    }
                     listenForMessages();
                 } else {
                     Log.e(TAG, "Cannot start chat, userId is null");
@@ -110,13 +113,15 @@ public class ChatActivity extends AppCompatActivity {
         // Handle send button
         edtTypeMessage = findViewById(R.id.edtTypeMessage);
         imgSend = findViewById(R.id.imgSend);
-        imgSend.setOnClickListener(v -> {
-            String messageText = edtTypeMessage.getText().toString().trim();
-            if (!messageText.isEmpty() && userId != null && chatId != null) {
-                sendMessage(messageText, userId);
-                edtTypeMessage.setText("");
-            }
-        });
+        if (imgSend != null) {
+            imgSend.setOnClickListener(v -> {
+                String messageText = edtTypeMessage.getText().toString().trim();
+                if (!messageText.isEmpty() && userId != null && chatId != null) {
+                    sendMessage(messageText, userId);
+                    edtTypeMessage.setText("");
+                }
+            });
+        }
     }
 
     private void startChatWithEmployee() {
@@ -132,12 +137,10 @@ public class ChatActivity extends AppCompatActivity {
             if (!documentSnapshot.exists()) {
                 chatRef.set(new java.util.HashMap<String, Object>() {{
                     put("participants", participants);
-                    put("lastMessage", "A support agent has joined the conversation");
+                    put("lastMessage", "");
                     put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
                 }}).addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Chat document created");
-                    // Gửi tin nhắn ban đầu chỉ khi chat mới được tạo
-                    sendMessage("A support agent has joined the conversation", adminId != null ? adminId : "admin");
                 }).addOnFailureListener(e -> Log.e(TAG, "Error creating chat document", e));
             } else {
                 Log.d(TAG, "Chat already exists, skipping creation");
@@ -156,12 +159,8 @@ public class ChatActivity extends AppCompatActivity {
             put("isRead", false);
         }}).addOnSuccessListener(documentReference -> {
             Log.d(TAG, "Message sent");
-            // Chỉ thêm tin nhắn vào RecyclerView nếu là tin nhắn của user
-            if (senderId.equals(userId)) {
-                ChatMessage chatMessage = new ChatMessage(messageText, senderId, new Date(), false);
-                chatAdapter.addMessage(chatMessage);
-                recyclerViewChat.scrollToPosition(messages.size() - 1);
-            }
+            // Xóa phần thêm tin nhắn trực tiếp vào adapter để tránh duplicate
+            // Tin nhắn sẽ được thêm thông qua listenForMessages()
         }).addOnFailureListener(e -> Log.e(TAG, "Error sending message", e));
     }
 
@@ -179,16 +178,27 @@ public class ChatActivity extends AppCompatActivity {
                             String message = dc.getDocument().getString("message");
                             String senderId = dc.getDocument().getString("senderId");
                             Date timestamp = dc.getDocument().getDate("timestamp");
-                            boolean isRead = dc.getDocument().getBoolean("isRead");
+                            Boolean isReadObj = dc.getDocument().getBoolean("isRead");
+                            boolean isRead = isReadObj != null ? isReadObj : false;
+
                             ChatMessage chatMessage = new ChatMessage(message, senderId, timestamp, isRead);
-                            // Chỉ thêm tin nhắn mới từ admin, tránh duplicate từ user
-                            if (!senderId.equals(userId)) {
-                                chatAdapter.addMessage(chatMessage);
-                                recyclerViewChat.scrollToPosition(messages.size() - 1);
-                            }
+                            chatAdapter.addMessage(chatMessage);
+                            recyclerViewChat.scrollToPosition(messages.size() - 1);
                         }
                     }
                 });
+    }
+
+    private void showSupportAgentJoinedMessage() {
+        // Tạo một tin nhắn hệ thống
+        ChatMessage systemMessage = new ChatMessage(
+                "A support agent has joined the conversation",
+                "system",
+                new Date(),
+                true
+        );
+        chatAdapter.addMessage(systemMessage);
+        recyclerViewChat.scrollToPosition(messages.size() - 1);
     }
 
     public void updateAdminId(String newAdminId) {
