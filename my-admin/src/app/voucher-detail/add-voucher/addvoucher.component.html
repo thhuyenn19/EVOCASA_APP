@@ -3,24 +3,15 @@
   <h1>ADD VOUCHER</h1>
   <div class="header-buttons">
     <button class="btn save-draft">
-      <!-- <img src="assets/icons/save.svg" alt="" /> -->
       Save draft
     </button>
-    <button class="btn add-voucher">
-      <!-- <img src="assets/icons/add.svg" alt="" /> -->
+    <button class="btn add-voucher" (click)="onAddVoucher()">
       Add voucher
     </button>
-    <button class="btn cancel">
-      <!-- <img src="assets/icons/cancel.svg" alt="" /> -->
+    <button class="btn cancel" (click)="onCancel()">
       Cancel
     </button>
   </div>
-</div>
-
-<!-- Voucher ID -->
-<div class="voucher-id">
-  <span class="label">Voucher ID:</span>
-  <span class="value">665400000000000000000003</span>
 </div>
 
 <!-- Form Container -->
@@ -31,18 +22,30 @@
 
     <div class="form-group">
       <label>Voucher Name</label>
-      <input type="text" class="form-control" />
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="voucherName"
+      />
     </div>
 
     <div class="form-row">
       <div class="form-group">
         <label>Category</label>
-        <input type="text" class="form-control" />
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="category"
+        />
       </div>
       <div class="form-group">
         <label>Discount Percent</label>
         <div class="input-with-suffix">
-          <input type="number" class="form-control" />
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="discountPercent"
+          />
           <span class="suffix">%</span>
         </div>
       </div>
@@ -52,14 +55,22 @@
       <div class="form-group">
         <label>Maximum threshold</label>
         <div class="input-with-suffix">
-          <input type="number" class="form-control" />
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="maximumThreshold"
+          />
           <span class="suffix">$</span>
         </div>
       </div>
       <div class="form-group">
         <label>Minimum order value</label>
         <div class="input-with-suffix">
-          <input type="number" class="form-control" />
+          <input
+            type="number"
+            class="form-control"
+            [(ngModel)]="minimumOrderValue"
+          />
           <span class="suffix">$</span>
         </div>
       </div>
@@ -74,12 +85,21 @@
       <div class="form-group">
         <label>Expire Date</label>
         <div class="input-with-icon">
-          <input type="date" class="form-control" />
-          <!-- <img src="assets/icons/calendar.svg" alt="" class="calendar-icon" /> -->
+          <input
+            type="date"
+            class="form-control"
+            [(ngModel)]="expireDate"
+            (change)="onExpireDateChange()"
+          />
         </div>
       </div>
       <div class="form-group checkbox-group">
-        <input type="checkbox" id="indefinitely" />
+        <input
+          type="checkbox"
+          id="indefinitely"
+          [(ngModel)]="indefinitely"
+          (change)="onIndefinitelyChange()"
+        />
         <label for="indefinitely">Indefinitely</label>
       </div>
     </div>
