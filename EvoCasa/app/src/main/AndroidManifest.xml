@@ -72,7 +72,8 @@
             android:exported="false" />
         <activity
             android:name=".chat.ChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"/>
         <activity
             android:name=".onboarding.Onboarding1Activity"
             android:exported="true" />

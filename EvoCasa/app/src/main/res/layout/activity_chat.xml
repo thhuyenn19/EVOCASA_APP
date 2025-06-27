@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/color_bg"
     tools:context=".chat.ChatActivity">
 
@@ -14,220 +13,197 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"/>
 
-    <!-- Placeholder for chat content -->
-    <RelativeLayout
+    <!-- Notification layout for agent join -->
+    <LinearLayout
+        android:id="@+id/agent_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="8dp"
+        android:paddingHorizontal="16dp"
+        android:visibility="gone">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/txtSuggestedForYou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:text="A support agent has joined the conversation"
+            android:textColor="@color/color_5E4C3E"
+            android:textSize="14sp"
+            android:fontFamily="@font/zen_old_mincho" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <!-- Content within NestedScrollView -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- Bot message bubble -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_chatbot"
-                android:layout_gravity="center"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:scrollbars="vertical" />
 
+            <!-- Bottom action buttons -->
             <LinearLayout
-                android:id="@+id/bot_message_container"
+                android:id="@+id/reply_options_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="60dp"
-                android:layout_marginVertical="8dp"
-                android:background="@drawable/bg_chat_bubble_bot"
-                android:padding="12dp"
-                android:elevation="3dp">
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <TextView
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_chat_bubble_user_border"
+                    android:paddingStart="8dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="I\'d like to know the delivery status of my order"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="12sp"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_chat_bubble_user_border"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="I need to confirm the delivery address"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="12sp"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_chat_bubble_user_border"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="10dp"
+                    android:text="How can I return or exchange the product if there\'s an issue?"
+                    android:textColor="@color/color_5E4C3E"
+                    android:textSize="12sp"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:scrollbars="none">
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hello! I can help you find the perfect piece for your home. What are you looking for?"
-                    android:textColor="#333333"
-                    android:textSize="12sp" />
-            </LinearLayout>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtChatEmployee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded_button_chat"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/title_chat_with_employee"
+                        android:textColor="#333333"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtTrackOrder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded_button_chat"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/Title_track_orders"
+                        android:textColor="#333333"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtRecommend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded_button_chat"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/title_recommend"
+                        android:textColor="#333333"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtFAQ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_rounded_button_chat"
+                        android:paddingStart="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/title_faq"
+                        android:textColor="#333333"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </HorizontalScrollView>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <!-- Notification layout for agent join (initially hidden) -->
-        <LinearLayout
-            android:id="@+id/agent_notification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="8dp"
-            android:paddingHorizontal="16dp"
-            android:visibility="gone">
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
-
-            <TextView
-                android:id="@+id/txtSuggestedForYou"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"
-                android:text="A support agent has joined the conversation"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="14sp"
-                android:fontFamily="@font/zen_old_mincho" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1"
-                android:background="@android:color/darker_gray" />
-        </LinearLayout>
-
-        <!-- Placeholder for reply options -->
-    </RelativeLayout>
-
-    <!-- Bottom action buttons -->
-    <LinearLayout
-        android:id="@+id/reply_options_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
-
-        <!-- Reply option 1 -->
-        <TextView
-            android:layout_width="310dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_chat_bubble_user_border"
-            android:paddingStart="8dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
-            android:text="I\'d like to know the delivery status of my order"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp"
-            android:textAlignment="center" />
-
-        <!-- Reply option 2 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_chat_bubble_user_border"
-            android:paddingStart="16dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
-            android:text="I need to confirm the delivery address"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp"
-            android:textAlignment="center" />
-
-        <!-- Reply option 3 -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/bg_chat_bubble_user_border"
-            android:paddingStart="16dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="10dp"
-            android:text="How can I return or exchange the product if there\'s an issue?"
-            android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp"
-            android:textAlignment="center" />
-    </LinearLayout>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:scrollbars="none">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtChatEmployee"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_rounded_button_chat"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/title_chat_with_employee"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtTrackOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_rounded_button_chat"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/Title_track_orders"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtRecommend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_rounded_button_chat"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/title_recommend"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/txtFAQ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_rounded_button_chat"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/title_faq"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <!-- Message input and send button -->
+    <!-- Message input and send button, pinned to bottom -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:background="#F2EAD3">
+        android:background="#F2EAD3"
+        app:layout_anchor="@id/main"
+        app:layout_anchorGravity="bottom">
 
         <ImageView
             android:id="@+id/imgCamera"
@@ -255,4 +231,4 @@
             android:src="@drawable/ic_send" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
