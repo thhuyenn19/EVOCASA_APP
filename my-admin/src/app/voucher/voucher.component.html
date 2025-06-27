@@ -48,7 +48,7 @@
       <tbody>
         <tr *ngFor="let voucher of pagedVouchers; let i = index">
           <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-          <td>{{ voucher.voucherId }}</td>
+          <td>{{ voucher.id }}</td>
           <td>{{ voucher.name }}</td>
           <td>{{ voucher.discountPercent }}%</td>
           <td>{{ voucher.expireDate | date : "dd-MM-yyyy" }}</td>

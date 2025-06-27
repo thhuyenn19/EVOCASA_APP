@@ -5,7 +5,7 @@ import { db } from '../firebase-config';
 
 export interface Voucher {
   id: string; // Firestore document ID
-  voucherId?: string; // Voucher code (sẽ sử dụng Name field từ Firestore)
+  voucherId: string; // Voucher ID (sử dụng document ID từ Firestore)
   name: string; // Name field từ Firestore
   discountPercent: number; // DiscountPercent field từ Firestore
   expireDate: Date; // ExpireDate field từ Firestore
@@ -40,7 +40,7 @@ export class VoucherService {
         // Chuyển đổi dữ liệu từ Firestore sang interface Voucher
         const voucher: Voucher = {
           id: doc.id, // Sử dụng document ID từ Firestore
-          voucherId: data['Name'] || '', // Sử dụng Name làm voucherId
+          voucherId: doc.id, // Sử dụng document ID làm voucherId
           name: data['Name'] || '',
           discountPercent: data['DiscountPercent'] || 0,
           expireDate: this.convertFirestoreTimestamp(data['ExpireDate']),

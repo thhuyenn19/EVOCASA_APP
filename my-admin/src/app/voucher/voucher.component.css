@@ -276,37 +276,37 @@ h4 {
 
 .voucher-table th:nth-child(2),
 .voucher-table td:nth-child(2) {
-  width: 12%; /* Voucher ID */
+  width: 25%; /* Voucher ID */
 }
 
 /* Voucher Name */
 .voucher-table th:nth-child(3),
 .voucher-table td:nth-child(3) {
-  width: 15%; /* Voucher Name */
+  width: 10%; /* Voucher Name */
 }
 
 /* Discount Percent */
 .voucher-table th:nth-child(4),
 .voucher-table td:nth-child(4) {
-  width: 12%; /* Discount Percent */
+  width: 8%; /* Discount Percent */
 }
 
 /* Expire Date */
 .voucher-table th:nth-child(5),
 .voucher-table td:nth-child(5) {
-  width: 10%; /* Expire Date */
+  width: 8%; /* Expire Date */
 }
 
 /* Category */
 .voucher-table th:nth-child(6),
 .voucher-table td:nth-child(6) {
-  width: 12%; /* Category */
+  width: 8%; /* Category */
 }
 
 /* Action */
 .voucher-table th:nth-child(7),
 .voucher-table td:nth-child(7) {
-  width: 8%; /* Action */
+  width: 12%; /* Action */
 }
 
 .voucher-table th {
