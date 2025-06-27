@@ -1,14 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-interface Voucher {
-  id: number; // internal identifier for editing/navigation
-  voucherId: string; // public-facing voucher code / ID
-  name: string; // voucher name or title
-  discountPercent: number; // percentage discount (e.g., 10 for 10%)
-  expireDate: Date; // expiry date
-  category: string; // campaign/category label
-}
+import { VoucherService, Voucher } from '../services/voucher.service'; // Import service và interface
 
 @Component({
   selector: 'app-voucher',
@@ -21,6 +13,7 @@ export class VoucherComponent implements OnInit {
   filteredVouchers: Voucher[] = [];
   pagedVouchers: Voucher[] = [];
   showFilter: boolean = false;
+  isLoading: boolean = false; // Thêm loading state
 
   // Pagination
   currentPage: number = 1;
@@ -29,57 +22,80 @@ export class VoucherComponent implements OnInit {
   totalPages: number = 0;
   pageNumbers: number[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private voucherService: VoucherService // Inject service
+  ) {}
 
-  ngOnInit() {
-    // 📝 Fake data – replace with real API later
-    this.vouchers = [
-      {
-        id: 1,
-        voucherId: 'WELCOME10',
-        name: 'Welcome 10% Off',
-        discountPercent: 10,
-        expireDate: new Date('2024-07-01'),
-        category: 'EvoCasa Birthday',
-      },
-      {
-        id: 2,
-        voucherId: 'SUMMER20',
-        name: 'Summer Sale 20%',
-        discountPercent: 20,
-        expireDate: new Date('2024-08-15'),
-        category: 'Summer Sale',
-      },
-      {
-        id: 3,
-        voucherId: 'BLACKFRIDAY50',
-        name: 'Black Friday 50%',
-        discountPercent: 50,
-        expireDate: new Date('2024-12-01'),
-        category: 'Black Friday',
-      },
-    ];
-
-    this.filteredVouchers = [...this.vouchers];
-    this.totalItems = this.filteredVouchers.length;
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    this.updatePageNumbers();
-    this.updatePagedVouchers();
+  async ngOnInit() {
+    await this.loadVouchers();
   }
 
-  deleteVoucher(id: number) {
-    this.vouchers = this.vouchers.filter((v) => v.id !== id);
-    this.filteredVouchers = this.filteredVouchers.filter((v) => v.id !== id);
-    this.totalItems = this.filteredVouchers.length;
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = this.totalPages || 1;
+  /**
+   * Load vouchers from Firestore
+   */
+  async loadVouchers() {
+    try {
+      this.isLoading = true;
+      
+      // Lấy dữ liệu từ Firestore thông qua service
+      this.vouchers = await this.voucherService.getAllVouchers();
+      
+      // Cập nhật filtered vouchers và pagination
+      this.filteredVouchers = [...this.vouchers];
+      this.totalItems = this.filteredVouchers.length;
+      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+      this.updatePageNumbers();
+      this.updatePagedVouchers();
+      
+    } catch (error) {
+      console.error('❌ Error loading vouchers:', error);
+      alert('Error loading vouchers from Firestore. Please check your connection and try again.');
+      
+      // Khởi tạo arrays rỗng nếu có lỗi
+      this.vouchers = [];
+      this.filteredVouchers = [];
+      this.pagedVouchers = [];
+      this.totalItems = 0;
+      this.totalPages = 0;
+      this.pageNumbers = [];
+      
+    } finally {
+      this.isLoading = false;
     }
-    this.updatePageNumbers();
-    this.updatePagedVouchers();
   }
 
-  /* ===== Pagination helpers ===== */
+  async deleteVoucher(id: string) {
+    try {
+      const confirmed = confirm('Are you sure you want to delete this voucher?');
+      if (!confirmed) return;
+
+      this.isLoading = true;
+      
+      // Xóa từ Firestore
+      await this.voucherService.deleteVoucher(id);
+      
+      // Reload lại dữ liệu từ Firestore để đảm bảo đồng bộ
+      await this.loadVouchers();
+      
+      alert('Voucher deleted successfully!');
+      
+    } catch (error) {
+      console.error('❌ Error deleting voucher:', error);
+      alert('Error deleting voucher. Please try again.');
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /**
+   * Refresh data from Firestore
+   */
+  async refreshData() {
+    await this.loadVouchers();
+  }
+
+  /* ===== Pagination helpers (giữ nguyên logic cũ) ===== */
   updatePageNumbers() {
     this.pageNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
@@ -110,7 +126,7 @@ export class VoucherComponent implements OnInit {
     }
   }
 
-  /* ===== Placeholder actions ===== */
+  /* ===== Placeholder actions (giữ nguyên logic cũ) ===== */
   toggleFilter() {
     this.showFilter = !this.showFilter;
   }

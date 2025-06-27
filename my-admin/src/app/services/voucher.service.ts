@@ -1,0 +1,113 @@
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { collection, getDocs, doc, deleteDoc, query, orderBy } from 'firebase/firestore';
+import { db } from '../firebase-config';
+
+export interface Voucher {
+  id: string; // Firestore document ID
+  voucherId?: string; // Voucher code (sẽ sử dụng Name field từ Firestore)
+  name: string; // Name field từ Firestore
+  discountPercent: number; // DiscountPercent field từ Firestore
+  expireDate: Date; // ExpireDate field từ Firestore
+  category: string; // Category field từ Firestore
+  maximumThreshold?: number; // Maximum threshold field từ Firestore
+  minimumOrderValue?: number; // Minimum order value field từ Firestore
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class VoucherService {
+  private collectionName = 'Voucher';
+
+  constructor() { }
+
+  /**
+   * Lấy tất cả vouchers từ Firestore
+   * @returns Promise<Voucher[]>
+   */
+  async getAllVouchers(): Promise<Voucher[]> {
+    try {
+      const vouchersCollection = collection(db, this.collectionName);
+      const vouchersQuery = query(vouchersCollection, orderBy('Name', 'asc'));
+      const querySnapshot = await getDocs(vouchersQuery);
+      
+      const vouchers: Voucher[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        
+        // Chuyển đổi dữ liệu từ Firestore sang interface Voucher
+        const voucher: Voucher = {
+          id: doc.id, // Sử dụng document ID từ Firestore
+          voucherId: data['Name'] || '', // Sử dụng Name làm voucherId
+          name: data['Name'] || '',
+          discountPercent: data['DiscountPercent'] || 0,
+          expireDate: this.convertFirestoreTimestamp(data['ExpireDate']),
+          category: data['Category'] || '',
+          maximumThreshold: data['Maximum threshold'] || 0,
+          minimumOrderValue: data['Minimum order value'] || 0
+        };
+        
+        vouchers.push(voucher);
+      });
+      
+      console.log('✅ Vouchers loaded from Firestore:', vouchers);
+      return vouchers;
+      
+    } catch (error) {
+      console.error('❌ Error loading vouchers from Firestore:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Xóa voucher theo ID
+   * @param voucherId Document ID của voucher
+   * @returns Promise<void>
+   */
+  async deleteVoucher(voucherId: string): Promise<void> {
+    try {
+      const voucherDocRef = doc(db, this.collectionName, voucherId);
+      await deleteDoc(voucherDocRef);
+      console.log('✅ Voucher deleted successfully:', voucherId);
+    } catch (error) {
+      console.error('❌ Error deleting voucher:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Chuyển đổi Firestore Timestamp sang Date
+   * @param timestamp Firestore timestamp
+   * @returns Date object
+   */
+  private convertFirestoreTimestamp(timestamp: any): Date {
+    if (!timestamp) {
+      return new Date();
+    }
+    
+    // Nếu timestamp có method toDate() (Firestore Timestamp)
+    if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+      return timestamp.toDate();
+    }
+    
+    // Nếu timestamp là string
+    if (typeof timestamp === 'string') {
+      return new Date(timestamp);
+    }
+    
+    // Nếu timestamp là số (milliseconds)
+    if (typeof timestamp === 'number') {
+      return new Date(timestamp);
+    }
+    
+    // Nếu timestamp đã là Date object
+    if (timestamp instanceof Date) {
+      return timestamp;
+    }
+    
+    // Fallback
+    return new Date();
+  }
+}
