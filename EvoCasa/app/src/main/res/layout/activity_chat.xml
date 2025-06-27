@@ -39,7 +39,6 @@
                 android:id="@+id/bot_message_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginEnd="60dp"
                 android:layout_marginVertical="8dp"
                 android:background="@drawable/bg_chat_bubble_bot"
@@ -53,6 +52,41 @@
                     android:textColor="#333333"
                     android:textSize="12sp" />
             </LinearLayout>
+        </LinearLayout>
+
+        <!-- Notification layout for agent join (initially hidden) -->
+        <LinearLayout
+            android:id="@+id/agent_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:paddingHorizontal="16dp"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/txtSuggestedForYou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:text="A support agent has joined the conversation"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="14sp"
+                android:fontFamily="@font/zen_old_mincho" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="@android:color/darker_gray" />
         </LinearLayout>
 
         <!-- Placeholder for reply options -->
@@ -129,6 +163,21 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/txtChatEmployee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_rounded_button_chat"
+                android:paddingStart="16dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="10dp"
+                android:text="@string/title_chat_with_employee"
+                android:textColor="#333333"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtTrackOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -138,19 +187,6 @@
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
                 android:text="@string/Title_track_orders"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_rounded_button_chat"
-                android:paddingStart="16dp"
-                android:paddingTop="10dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="10dp"
-                android:text="@string/title_cancel_orders"
                 android:textColor="#333333"
                 android:textSize="12sp" />
 
@@ -169,6 +205,7 @@
                 android:textSize="12sp" />
 
             <TextView
+                android:id="@+id/txtFAQ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -177,7 +214,7 @@
                 android:paddingTop="10dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="10dp"
-                android:text="@string/title_shipping_time"
+                android:text="@string/title_faq"
                 android:textColor="#333333"
                 android:textSize="12sp" />
         </LinearLayout>
@@ -193,26 +230,29 @@
         android:background="#F2EAD3">
 
         <ImageView
+            android:id="@+id/imgCamera"
             android:layout_width="26dp"
             android:layout_height="26dp"
-            android:src="@drawable/ic_chat_camera"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_chat_camera" />
 
         <EditText
+            android:id="@+id/edtTypeMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#F2EAD3"
-            android:hint="Type message here..."
+            android:hint="@string/title_type_message"
             android:padding="8dp"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <ImageView
+            android:id="@+id/imgSend"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_send"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_send" />
     </LinearLayout>
 
 </LinearLayout>
