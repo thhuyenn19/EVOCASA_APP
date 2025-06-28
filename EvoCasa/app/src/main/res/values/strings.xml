@@ -263,6 +263,22 @@
     <string name="warranty_policy_period_title">Warranty Period</string>
     <string name="warranty_policy_title">Warranty Policy</string>
     <string name="warranty_policy_intro">This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa website.</string>
+    <string name="return_policy_title">Return Policy</string>
+    <string name="return_policy_intro">The return policy applies to customers who shop and make payments on the EvoCasa website. For store purchases, contact the original store. For website orders, email support@evocasa.com or call 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays and Tet).</string>
+    <string name="return_policy_conditions_title">Conditions for Return</string>
+    <string name="return_policy_conditions_content">Products sold are non-returnable unless a defect is identified at the time of purchase.</string>
+    <string name="return_policy_time_frame_title">Return Time Frame</string>
+    <string name="return_policy_time_frame_content">• In-store orders: 1-time return for full-priced items within 7 days from receipt date.  \n• Website orders: \n- Full-priced and ≤30% discounted: within 14 days of receipt. \n- >30% discounted: within 5 days. Only size changes allowed.  \nNote: Return window is based on courier system. Request must be made within the time frame.</string>
+    <string name="return_policy_receipt_title">Receipt Requirement</string>
+    <string name="return_policy_receipt_content">Original receipt (or copy for partial return) must be provided.</string>
+    <string name="return_policy_product_condition_title">Product Condition</string>
+    <string name="return_policy_product_condition_content">Returned items must be unused and include original packaging, tags, inserts, boxes, bags, and gifts (if any).</string>
+    <string name="return_policy_value_adjustment_title">Value Adjustment</string>
+    <string name="return_policy_value_adjustment_content">Returns allowed only for items of equal or higher value. Customers pay the difference if higher. No refund if lower.  \nCustom-made orders are non-returnable.</string>
+    <string name="return_policy_note_title">Important Note</string>
+    <string name="return_policy_note_content">Non-eligible returns will be refused and returned at customer\'s cost. Please check the condition before submitting a request.</string>
+    <string name="return_policy_contact_title">Contact</string>
+    <string name="return_policy_contact_content">Hotline: 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays) \nEmail: support@evocasa.com</string>
 
 
 </resources>

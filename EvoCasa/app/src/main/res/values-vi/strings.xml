@@ -262,5 +262,23 @@
     <string name="warranty_policy_title">Chính sách bảo hành</string>
     <string name="warranty_policy_intro">Chính sách bảo hành áp dụng cho khách hàng mua sắm và thanh toán trực tiếp tại hệ thống cửa hàng EvoCasa hoặc trên website EvoCasa.</string>
 
+    <!--Return Policy-->
+    <string name="return_policy_title">Chính sách đổi trả</string>
+    <string name="return_policy_intro">Chính sách đổi trả áp dụng cho khách hàng mua sắm và thanh toán trên website EvoCasa. Với đơn hàng tại cửa hàng, vui lòng liên hệ cửa hàng mua ban đầu. Với đơn hàng online, vui lòng email support@evocasa.com hoặc gọi 19008386 / 0961 961 961 (9h – 21h hàng ngày, trừ lễ Tết).</string>
+    <string name="return_policy_conditions_title">Điều kiện đổi trả</string>
+    <string name="return_policy_conditions_content">Sản phẩm đã bán không được đổi trả trừ khi phát hiện lỗi khi nhận hàng.</string>
+    <string name="return_policy_time_frame_title">Thời gian đổi trả</string>
+    <string name="return_policy_time_frame_content">• Đơn hàng tại cửa hàng: Đổi 1 lần cho sản phẩm giá gốc trong 7 ngày kể từ ngày nhận.\n• Đơn hàng online:\n- Giá gốc và giảm ≤30%: trong 14 ngày từ ngày nhận.\n- Giảm >30%: trong 5 ngày, chỉ đổi size.\nLưu ý: Thời gian tính theo hệ thống vận chuyển. Yêu cầu đổi phải thực hiện trong thời hạn này.</string>
+    <string name="return_policy_receipt_title">Yêu cầu hóa đơn</string>
+    <string name="return_policy_receipt_content">Phải cung cấp hóa đơn gốc (hoặc bản sao nếu đổi trả một phần).</string>
+    <string name="return_policy_product_condition_title">Tình trạng sản phẩm</string>
+    <string name="return_policy_product_condition_content">Sản phẩm đổi trả phải còn mới, chưa qua sử dụng, kèm bao bì, nhãn, phụ kiện, hộp, túi và quà tặng (nếu có).</string>
+    <string name="return_policy_value_adjustment_title">Điều chỉnh giá trị</string>
+    <string name="return_policy_value_adjustment_content">Chỉ đổi sản phẩm cùng giá hoặc cao hơn (khách hàng bù phần chênh lệch). Không hoàn tiền nếu sản phẩm mới có giá thấp hơn.\nĐơn đặt sản xuất riêng không được đổi trả.</string>
+    <string name="return_policy_note_title">Lưu ý quan trọng</string>
+    <string name="return_policy_note_content">Đơn đổi trả không đủ điều kiện sẽ bị từ chối và trả lại cho khách hàng. Vui lòng kiểm tra kỹ trước khi gửi yêu cầu.</string>
+    <string name="return_policy_contact_title">Liên hệ</string>
+    <string name="return_policy_contact_content">Hotline: 19008386 / 0961 961 961 (9h – 21h hàng ngày, trừ ngày lễ)\nEmail: support@evocasa.com</string>
+
 
 </resources>
