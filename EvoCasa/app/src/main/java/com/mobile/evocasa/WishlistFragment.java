@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mobile.adapters.MightLikeAdapter;
+import com.mobile.models.MightLike;
+
 public class WishlistFragment extends Fragment {
 
     private RecyclerView recyclerView;
@@ -46,6 +49,10 @@ public class WishlistFragment extends Fragment {
     private RecyclerView recyclerViewHotProducts;
     private String currentCustomerId;
     private String currentFilter = "all";
+
+    private List<MightLike> mightLikeList;
+    private MightLikeAdapter mightLikeAdapter;
+    private RecyclerView recyclerViewMightLike;
 
     // Lưu trữ trạng thái sản phẩm cho từng tab
     private Map<String, List<WishProduct>> tabProductsMap = new HashMap<>();
@@ -80,7 +87,7 @@ public class WishlistFragment extends Fragment {
                 tabProductsMap.put(currentFilter, new ArrayList<>(wishProductList));
 
                 // Reload Hot Products vì có thể có sản phẩm mới available
-                loadHotProducts();
+                loadMightLike();
             });
         });
 
@@ -144,31 +151,29 @@ public class WishlistFragment extends Fragment {
                     .commit();
         });
 
-        /* Hot Products */
-        recyclerViewHotProducts = view.findViewById(R.id.recyclerViewHotProducts);
-        recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        /* MightLike */
+        recyclerViewMightLike = view.findViewById(R.id.recyclerViewHotProducts);
+        recyclerViewMightLike.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        hotProductList = new ArrayList<>();
-        hotProductsAdapter = new HotProductsAdapter(hotProductList, (product, position) -> {
+        mightLikeList = new ArrayList<>();
+        mightLikeAdapter = new MightLikeAdapter(mightLikeList, (product, position) -> {
             // Thêm vào Wishlist trong Firestore
             addProductToWishlist(product, () -> {
                 // Callback sau khi add thành công
-                // Remove từ Hot Products UI
-                hotProductList.remove(product);
-                hotProductsAdapter.notifyDataSetChanged();
+                mightLikeList.remove(product);
+                mightLikeAdapter.notifyDataSetChanged();
 
                 // Add a new product to replace the removed one
-                addNewProductToHotProducts();
+                addNewProductToMightLike();
 
                 // Reset tab data để load lại từ Firestore
                 isTabDataLoaded = false;
                 initializeTabProductsMap();
-
             });
         });
 
-        hotProductsAdapter.setOnItemClickListener(product -> {
-            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+        mightLikeAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid();
             String productId = product.getId();
             BehaviorLogger.record(
                     uid,
@@ -182,8 +187,8 @@ public class WishlistFragment extends Fragment {
             startActivity(intent);
         });
 
-        recyclerViewHotProducts.setAdapter(hotProductsAdapter);
-        loadHotProducts();
+        recyclerViewMightLike.setAdapter(mightLikeAdapter);
+        loadMightLike();
 
         return view;
     }
@@ -298,7 +303,7 @@ public class WishlistFragment extends Fragment {
                 });
     }
 
-    private void addProductToWishlist(HotProducts product, Runnable onSuccess) {
+    private void addProductToWishlist(MightLike product, Runnable onSuccess) {
         String uid = new UserSessionManager(requireContext()).getUid();
         String product_Id = product.getId();
         BehaviorLogger.record(
@@ -410,8 +415,8 @@ public class WishlistFragment extends Fragment {
         }
     }
 
-    // Method to load Hot Products from Firestore
-    private void loadHotProducts() {
+    // Method to load MightLike from Firestore
+    private void loadMightLike() {
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
@@ -436,32 +441,32 @@ public class WishlistFragment extends Fragment {
                                     }
                                 }
 
-                                hotProductList.clear();
+                                mightLikeList.clear();
                                 Collections.shuffle(availableDocs);
 
                                 int limit = Math.min(4, availableDocs.size());
                                 for (int i = 0; i < limit; i++) {
-                                    HotProducts product = availableDocs.get(i).toObject(HotProducts.class);
+                                    MightLike product = availableDocs.get(i).toObject(MightLike.class);
                                     if (product != null) {
                                         product.setId(availableDocs.get(i).getId());
-                                        hotProductList.add(product);
+                                        mightLikeList.add(product);
                                     }
                                 }
 
-                                hotProductsAdapter.notifyDataSetChanged();
-                                recyclerViewHotProducts.setVisibility(hotProductList.isEmpty() ? View.GONE : View.VISIBLE);
+                                mightLikeAdapter.notifyDataSetChanged();
+                                recyclerViewMightLike.setVisibility(mightLikeList.isEmpty() ? View.GONE : View.VISIBLE);
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("Firestore", "Error loading wishlist for hot products", e);
+                                Log.e("Firestore", "Error loading wishlist for mightlike", e);
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error loading Hot Products", e);
+                    Log.e("Firestore", "Error loading MightLike", e);
                 });
     }
 
-    // Method to add a new product to Hot Products after one is removed
-    private void addNewProductToHotProducts() {
+    // Method to add a new product to MightLike after one is removed
+    private void addNewProductToMightLike() {
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(querySnapshots -> {
@@ -479,13 +484,12 @@ public class WishlistFragment extends Fragment {
                                     }
                                 }
 
-                                // List of products that are already in Hot Products and Wishlist
+                                // List of products that are already in MightLike and Wishlist
                                 List<String> allExcludedIds = new ArrayList<>(wishlistProductIds);
-                                for (HotProducts product : hotProductList) {
-                                    allExcludedIds.add(product.getId()); // Exclude hot products from new ones
+                                for (MightLike product : mightLikeList) {
+                                    allExcludedIds.add(product.getId());
                                 }
 
-                                // Filter out products that are already in Hot Products or Wishlist
                                 List<DocumentSnapshot> availableDocs = new ArrayList<>();
                                 for (DocumentSnapshot doc : allDocs) {
                                     if (!allExcludedIds.contains(doc.getId())) {
@@ -493,24 +497,23 @@ public class WishlistFragment extends Fragment {
                                     }
                                 }
 
-                                // If there are available products, add a new one
                                 if (!availableDocs.isEmpty()) {
-                                    HotProducts newProduct = availableDocs.get(0).toObject(HotProducts.class);
+                                    MightLike newProduct = availableDocs.get(0).toObject(MightLike.class);
                                     if (newProduct != null) {
                                         newProduct.setId(availableDocs.get(0).getId());
-                                        hotProductList.add(newProduct);
+                                        mightLikeList.add(newProduct);
                                     }
                                 }
 
-                                hotProductsAdapter.notifyDataSetChanged();
-                                recyclerViewHotProducts.setVisibility(hotProductList.isEmpty() ? View.GONE : View.VISIBLE);
+                                mightLikeAdapter.notifyDataSetChanged();
+                                recyclerViewMightLike.setVisibility(mightLikeList.isEmpty() ? View.GONE : View.VISIBLE);
                             })
                             .addOnFailureListener(e -> {
-                                Log.e("Firestore", "Error loading wishlist for hot products", e);
+                                Log.e("Firestore", "Error loading wishlist for mightlike", e);
                             });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e("Firestore", "Error loading Hot Products", e);
+                    Log.e("Firestore", "Error loading MightLike", e);
                 });
     }
 
