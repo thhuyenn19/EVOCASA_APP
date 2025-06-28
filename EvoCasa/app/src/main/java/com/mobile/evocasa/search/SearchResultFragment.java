@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,6 +35,7 @@ import java.util.Set;
 public class SearchResultFragment extends Fragment {
 
     private EditText edtSearch;
+    private TextView txtNoMatch;
     private ImageView imgSearch, btnBack;
     private RecyclerView recyclerView;
     private SearchProductAdapter adapter;
@@ -59,7 +61,9 @@ public class SearchResultFragment extends Fragment {
         edtSearch = view.findViewById(R.id.edtSearch);
         imgSearch = view.findViewById(R.id.imgSearch);
         recyclerView = view.findViewById(R.id.recyclerSearchProduct);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // 👉 chuyển thành grid 2 cột
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // chuyển thành grid 2 cột
+        txtNoMatch = view.findViewById(R.id.txtNoMatch);
+        txtNoMatch.setVisibility(View.GONE);
 
         if (getArguments() != null) {
             String keyword = getArguments().getString("keyword", "");
@@ -99,7 +103,6 @@ public class SearchResultFragment extends Fragment {
         });
         adapter = new SearchProductAdapter(matchedProducts, getContext());
         recyclerView.setAdapter(adapter);
-
         return view;
     }
 
@@ -188,6 +191,12 @@ public class SearchResultFragment extends Fragment {
                     }
                     matchedProducts.clear();
                     matchedProducts.addAll(uniqueProducts);
+
+                    if (matchedProducts.isEmpty()) {
+                        txtNoMatch.setVisibility(View.VISIBLE);
+                    } else {
+                        txtNoMatch.setVisibility(View.GONE);
+                    }
 
                     adapter.notifyDataSetChanged();
                 })

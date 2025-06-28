@@ -248,6 +248,7 @@
     <string name="shipping_policy_shipping_fee_content">From January 28, 2025, EvoCasa offers free nationwide shipping for website orders (excluding express delivery).  \nShipping fees depend on distance and product weight. Fees will be shown at checkout after entering the delivery address.</string>
     <string name="shipping_policy_contact_title">Contact Information</string>
     <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961\nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
+    <string name="title_no_matching">No matching product found</string>
 
 
 </resources>
