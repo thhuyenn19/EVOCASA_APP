@@ -260,6 +260,8 @@
     <string name="warranty_policy_process_content">1. Bring product + valid receipt to EvoCasa.  \n2. Product inspection:  \n- If under warranty: repair/replace/exchange.  \n- If not repairable and out of stock: replace with equivalent value.  \n- Out of warranty: repair service offered with consent.   \n3. Inspection within 2 working days; customer will be notified.</string>
     <string name="warranty_policy_note_title">Important Note</string>
     <string name="warranty_policy_note_content">If conditions are not met, the warranty will be denied and the product returned at customer\'s expense. Please check the product’s condition before submitting.</string>
+    <string name="warranty_policy_title">Warranty Policy</string>
+    <string name="warranty_policy_intro">This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa website.</string>
 
 
 </resources>
