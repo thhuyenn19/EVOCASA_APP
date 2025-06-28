@@ -20,6 +20,7 @@ import com.mobile.models.CartProduct;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.CartViewHolder> {
@@ -52,7 +53,8 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         CartProduct product = productList.get(position);
 
         holder.tvTitle.setText(product.getName());
-        holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
+        holder.tvPrice.setText("$" + String.format(Locale.US, "%.0f", product.getPrice()));
+//        holder.tvPrice.setText("$" + String.format("%.2f", product.getPrice()));
         holder.tvQuantity.setText(String.valueOf(product.getQuantity()));
         String imageUrl = product.getFirstImageUrl();
         if (imageUrl != null && !imageUrl.isEmpty()) {

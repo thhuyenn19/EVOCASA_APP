@@ -247,25 +247,8 @@
     <string name="shipping_policy_shipping_fee_title">Shipping Fees</string>
     <string name="shipping_policy_shipping_fee_content">From January 28, 2025, EvoCasa offers free nationwide shipping for website orders (excluding express delivery).  \nShipping fees depend on distance and product weight. Fees will be shown at checkout after entering the delivery address.</string>
     <string name="shipping_policy_contact_title">Contact Information</string>
-    <string name="">Hotline: 1900 8386 or 0961 961 961\nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
-    <string name="">Hotline: 1900 8386 or 0961 961 961 Hours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
-    <string name="">Hotline: 1900 8386 or 0961 961 961 \nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
-    <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961 Hours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
-    <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961 \nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
-    <string name="warranty_policy_title">Warranty Policy</string>
-    <string name="warranty_policy_intro">This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa website.</string>
-    <string name="warranty_policy_period_title">Warranty Period</string>
-    <string name="warranty_policy_period_content">The warranty period is calculated from the purchase date (based on the purchase receipt). \n- Home decor items: 12 months \n- Furniture: 24 months</string>
-    <string name="warranty_policy_conditions_title">Warranty Conditions</string>
-    <string name="warranty_policy_conditions_content">• Product must still be within the warranty period. \n• A valid purchase receipt must be presented, containing complete information and undamaged.</string>
-    <string name="warranty_policy_exclusions_title">Warranty Exclusions</string>
-    <string name="warranty_policy_exclusions_content">• No valid purchase receipt. \n• Expired warranty period. \n• Discounted products per EvoCasa’s policy. \n• Scratches/damages caused during use. \n• Improper use against guidelines. \n• Repairs by unauthorized personnel. \n• Insect or animal damage. \n• Force majeure (natural disasters, fires, etc.). \n• Natural wear and tear.</string>
-    <string name="warranty_policy_scope_title">Warranty Scope</string>
-    <string name="warranty_policy_scope_content">Applies only to manufacturing or material defects. \n- Home decor: visible issues like misaligned joints, discoloration, oxidation, or accessory detachment due to technical faults.</string>
-    <string name="warranty_policy_process_title">Warranty Process</string>
-    <string name="warranty_policy_process_content">1. Bring product + valid receipt to EvoCasa. \n2. Product inspection: \n- If under warranty: repair/replace/exchange. \n- If not repairable and out of stock: replace with equivalent value.\n - Out of warranty: repair service offered with consent. \n 3. Inspection within 2 working days; customer will be notified.</string>
-    <string name="warranty_policy_note_title">Important Note</string>
-    <string name="warranty_policy_note_content">If conditions are not met, the warranty will be denied and the product returned at customer\'s expense. Please check the product’s condition before submitting.</string>
+    <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961\nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
+    <string name="title_no_matching">No matching product found</string>
 
 
 </resources>

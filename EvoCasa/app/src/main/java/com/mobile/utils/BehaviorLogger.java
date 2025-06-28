@@ -19,17 +19,30 @@ public class BehaviorLogger {
         String behaviorId = UUID.randomUUID().toString();
 
         Map<String, Object> data = new HashMap<>();
+
+        // Lưu customer_id dưới dạng $oid
         Map<String, Object> customerOid = new HashMap<>();
         customerOid.put("$oid", customerId);
         data.put("customer_id", customerOid);
-        data.put("product_id", productId);
+
+        // Lưu product_id dưới dạng $oid
+        Map<String, Object> productOid = new HashMap<>();
+        productOid.put("$oid", productId);
+        data.put("product_id", productOid);
+
         data.put("action_type", actionType);
-        data.put("timestamp", new Date());
+
+        // Lưu timestamp dưới dạng $date
+        Map<String, Object> timestamp = new HashMap<>();
+        timestamp.put("$date", new Date());
+        data.put("timestamp", timestamp);
+
         data.put("source", source);
 
         if (rating != null && actionType.equals("review")) {
             data.put("rating", rating);
         }
+
 
         db.collection("CustomerBehavior")
                 .document(behaviorId)
