@@ -34,7 +34,7 @@ html, body {
 
 .container {
     max-width: 100%;
-    margin: 0 30px;
+    margin: 0;
     height: 90vh; /* này thì vừa vào là fit màn hình nhưng vẫn có thành sroll + đi chung với heiight của html,body */
     /* height: 100vh;  này là ban đầu*/
     display: flex;
@@ -44,7 +44,7 @@ html, body {
 
 /* Header */
 .header {
-    padding: 20px 0;
+    padding:0;
     border-bottom: 1px solid rgba(196, 181, 166, 0.3);
 }
 
@@ -664,4 +664,33 @@ html, body {
 .chat-messages::-webkit-scrollbar-thumb:hover,
 .sidebar-right::-webkit-scrollbar-thumb:hover {
     background: rgba(94, 76, 62, 0.6);
+}
+.message-item.awaiting-reply {
+  border-left: 4px solid #ff9800;
+  background-color: #fff8e1;
+}
+.chat-messages {
+    scroll-behavior: smooth;
+}
+/* Optional: Add scroll to bottom button */
+.scroll-to-bottom {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background-color: #5E4C3E;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.scroll-to-bottom:hover {
+    background-color: #3F2305;
 }

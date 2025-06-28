@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.ChatAdapter;
 import com.mobile.models.ChatMessage;
 import com.mobile.utils.UserSessionManager;
@@ -39,7 +40,15 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<ChatMessage> messages;
     private EditText edtTypeMessage;
     private ImageView imgSend;
-    private boolean isFirstTimeChat = true; // Flag để kiểm tra lần đầu chat
+    private boolean isFirstTimeChat = true;
+    private boolean isChatWithEmployeeActive = false; // Trạng thái chat với nhân viên
+    private ListenerRegistration messageListener; // Để quản lý listener
+    private long chatSessionId; // ID phiên chat để tạo chatId unique
+
+    // UI elements
+    private TextView txtChatEmployee;
+    private LinearLayout replyOptionsContainer;
+    private LinearLayout inputContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +74,38 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "User logged in with userId: " + userId);
         }
 
+        // Khởi tạo UI elements
+        initializeViews();
+
         // Khởi tạo RecyclerView
+        initializeRecyclerView();
+
+        // Setup click listeners
+        setupClickListeners();
+
+        // Hiển thị giao diện ban đầu
+        showInitialInterface();
+    }
+
+    private void initializeViews() {
         recyclerViewChat = findViewById(R.id.recyclerViewChat);
+        edtTypeMessage = findViewById(R.id.edtTypeMessage);
+        imgSend = findViewById(R.id.imgSend);
+        txtChatEmployee = findViewById(R.id.txtChatEmployee);
+        replyOptionsContainer = findViewById(R.id.reply_options_container);
+        inputContainer = findViewById(R.id.input_container);
+    }
+
+    private void initializeRecyclerView() {
         messages = new ArrayList<>();
         chatAdapter = new ChatAdapter(messages, userId);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setStackFromEnd(true); // Cuộn đến tin nhắn mới nhất
+        layoutManager.setStackFromEnd(true);
         recyclerViewChat.setLayoutManager(layoutManager);
         recyclerViewChat.setAdapter(chatAdapter);
+    }
 
+    private void setupClickListeners() {
         // Handle back button click
         LinearLayout btnCartBack = findViewById(R.id.btnCartBack);
         if (btnCartBack != null) {
@@ -91,32 +123,23 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         // Handle click for txtChatEmployee
-        TextView txtChatEmployee = findViewById(R.id.txtChatEmployee);
         if (txtChatEmployee != null) {
             txtChatEmployee.setOnClickListener(v -> {
-                Log.d(TAG, "txtChatEmployee clicked");
-                if (userId != null) {
-                    chatId = "chat_" + userId + "_admin";
-                    startChatWithEmployee();
-                    // Hiển thị thông báo support agent joined
-                    if (isFirstTimeChat) {
-                        showSupportAgentJoinedMessage();
-                        isFirstTimeChat = false;
-                    }
-                    listenForMessages();
+                if (isChatWithEmployeeActive) {
+                    // Kết thúc chat và quay về giao diện ban đầu
+                    endChatWithEmployee();
                 } else {
-                    Log.e(TAG, "Cannot start chat, userId is null");
+                    // Bắt đầu chat với nhân viên
+                    startChatWithEmployee();
                 }
             });
         }
 
         // Handle send button
-        edtTypeMessage = findViewById(R.id.edtTypeMessage);
-        imgSend = findViewById(R.id.imgSend);
         if (imgSend != null) {
             imgSend.setOnClickListener(v -> {
                 String messageText = edtTypeMessage.getText().toString().trim();
-                if (!messageText.isEmpty() && userId != null && chatId != null) {
+                if (!messageText.isEmpty() && userId != null && chatId != null && isChatWithEmployeeActive) {
                     sendMessage(messageText, userId);
                     edtTypeMessage.setText("");
                 }
@@ -124,28 +147,99 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private void showInitialInterface() {
+        // Hiển thị giao diện ban đầu với các tùy chọn
+        if (replyOptionsContainer != null) {
+            replyOptionsContainer.setVisibility(View.VISIBLE);
+        }
+        // Input container vẫn hiển thị nhưng không hoạt động
+        if (inputContainer != null) {
+            inputContainer.setVisibility(View.VISIBLE);
+        }
+        if (txtChatEmployee != null) {
+            txtChatEmployee.setText(R.string.title_chat_with_employee);
+        }
+
+        // Clear messages
+        messages.clear();
+        if (chatAdapter != null) {
+            chatAdapter.notifyDataSetChanged();
+        }
+
+        isChatWithEmployeeActive = false;
+    }
+
+    private void showChatInterface() {
+        // Hiển thị giao diện chat - ẩn reply options
+        if (replyOptionsContainer != null) {
+            replyOptionsContainer.setVisibility(View.GONE);
+        }
+        // Input container vẫn hiển thị và hoạt động
+        if (inputContainer != null) {
+            inputContainer.setVisibility(View.VISIBLE);
+        }
+        if (txtChatEmployee != null) {
+            txtChatEmployee.setText("End Chat");
+        }
+
+        isChatWithEmployeeActive = true;
+    }
+
     private void startChatWithEmployee() {
         if (userId == null) return;
 
-        com.google.firebase.firestore.DocumentReference chatRef = db.collection("chats").document(chatId);
+        Log.d(TAG, "Starting chat with employee");
+
+        // Tạo session ID unique cho mỗi lần chat
+        chatSessionId = System.currentTimeMillis();
+        chatId = "chat_" + userId + "_admin_" + chatSessionId;
+
+        // Chuyển sang giao diện chat
+        showChatInterface();
+
+        // Tạo chat document trong Firestore
+        createChatDocument();
+
+        // Hiển thị thông báo support agent joined
+        showSupportAgentJoinedMessage();
+
+        // Bắt đầu lắng nghe tin nhắn
+        listenForMessages();
+
+        isFirstTimeChat = false;
+    }
+
+    private void endChatWithEmployee() {
+        Log.d(TAG, "Ending chat with employee");
+
+        // Dừng lắng nghe tin nhắn
+        if (messageListener != null) {
+            messageListener.remove();
+            messageListener = null;
+        }
+
+        // Quay về giao diện ban đầu
+        showInitialInterface();
+
+        // Reset chat variables
+        chatId = null;
+        chatSessionId = 0;
+    }
+
+    private void createChatDocument() {
+        com.google.firebase.firestore.DocumentReference chatRef = db.collection("Chats").document(chatId);
         ArrayList<String> participants = new ArrayList<>();
         participants.add(userId);
         participants.add(adminId != null ? adminId : "admin");
 
-        // Kiểm tra nếu chat đã tồn tại, chỉ tạo nếu chưa có
-        chatRef.get().addOnSuccessListener(documentSnapshot -> {
-            if (!documentSnapshot.exists()) {
-                chatRef.set(new java.util.HashMap<String, Object>() {{
-                    put("participants", participants);
-                    put("lastMessage", "");
-                    put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
-                }}).addOnSuccessListener(aVoid -> {
-                    Log.d(TAG, "Chat document created");
-                }).addOnFailureListener(e -> Log.e(TAG, "Error creating chat document", e));
-            } else {
-                Log.d(TAG, "Chat already exists, skipping creation");
-            }
-        }).addOnFailureListener(e -> Log.e(TAG, "Error checking chat document", e));
+        chatRef.set(new java.util.HashMap<String, Object>() {{
+            put("participants", participants);
+            put("lastMessage", "");
+            put("sessionId", chatSessionId);
+            put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
+        }}).addOnSuccessListener(aVoid -> {
+            Log.d(TAG, "Chat document created with session ID: " + chatSessionId);
+        }).addOnFailureListener(e -> Log.e(TAG, "Error creating chat document", e));
     }
 
     private void sendMessage(String messageText, String senderId) {
@@ -159,14 +253,18 @@ public class ChatActivity extends AppCompatActivity {
             put("isRead", false);
         }}).addOnSuccessListener(documentReference -> {
             Log.d(TAG, "Message sent");
-            // Xóa phần thêm tin nhắn trực tiếp vào adapter để tránh duplicate
-            // Tin nhắn sẽ được thêm thông qua listenForMessages()
         }).addOnFailureListener(e -> Log.e(TAG, "Error sending message", e));
     }
 
     private void listenForMessages() {
         if (chatId == null) return;
-        db.collection("chats").document(chatId).collection("messages")
+
+        // Remove existing listener if any
+        if (messageListener != null) {
+            messageListener.remove();
+        }
+
+        messageListener = db.collection("chats").document(chatId).collection("messages")
                 .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
@@ -190,7 +288,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void showSupportAgentJoinedMessage() {
-        // Tạo một tin nhắn hệ thống
         ChatMessage systemMessage = new ChatMessage(
                 "A support agent has joined the conversation",
                 "system",
@@ -205,8 +302,8 @@ public class ChatActivity extends AppCompatActivity {
         if (newAdminId != null && !newAdminId.isEmpty()) {
             adminId = newAdminId;
             Log.d(TAG, "Admin ID updated to: " + adminId);
-            if (chatId != null) {
-                chatId = "chat_" + userId + "_" + adminId;
+            if (chatId != null && isChatWithEmployeeActive) {
+                // Update the current chat session with new admin ID
                 com.google.firebase.firestore.DocumentReference chatRef = db.collection("chats").document(chatId);
                 ArrayList<String> updatedParticipants = new ArrayList<>();
                 updatedParticipants.add(userId);
@@ -215,6 +312,15 @@ public class ChatActivity extends AppCompatActivity {
                         .addOnSuccessListener(aVoid -> Log.d(TAG, "Chat participants updated"))
                         .addOnFailureListener(e -> Log.e(TAG, "Error updating chat participants", e));
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Cleanup listener when activity is destroyed
+        if (messageListener != null) {
+            messageListener.remove();
         }
     }
 }

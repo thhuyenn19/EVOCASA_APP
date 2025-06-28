@@ -28,6 +28,7 @@ import { VoucherComponent } from './voucher/voucher.component';
 import { AddVoucherComponent } from './voucher-detail/add-voucher/addvoucher.component';
 import { EditVoucherComponent } from './voucher-detail/edit-voucher/editvoucher.component';
 import { ViewVoucherComponent } from './voucher-detail/view-voucher/viewvoucher.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { ViewVoucherComponent } from './voucher-detail/view-voucher/viewvoucher.
     VoucherComponent,
     AddVoucherComponent,
     EditVoucherComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +61,9 @@ import { ViewVoucherComponent } from './voucher-detail/view-voucher/viewvoucher.
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    CommonModule,
+    DatePipe
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

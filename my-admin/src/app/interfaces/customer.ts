@@ -32,4 +32,5 @@ export class Customer {
     Image: string;
     CreatedAt: Date | string;
     Cart: CartItem1[];
+    id?: string;
   }

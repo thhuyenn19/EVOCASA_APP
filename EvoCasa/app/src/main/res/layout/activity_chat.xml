@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"/>
 
-    <!-- RecyclerView -->
+    <!-- RecyclerView for chat messages -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChat"
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
         android:padding="16dp"
         android:scrollbars="vertical" />
 
-    <!-- Reply options container -->
+    <!-- Reply options container - Initially visible -->
     <LinearLayout
         android:id="@+id/reply_options_container"
         android:layout_width="wrap_content"
@@ -33,7 +33,8 @@
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="310dp"
@@ -44,7 +45,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="16dp"
             android:paddingBottom="10dp"
-            android:text="I\'d like to know the delivery status of my order"
+            android:text="I'd like to know the delivery status of my order"
             android:textColor="@color/color_5E4C3E"
             android:textSize="12sp"
             android:textAlignment="center" />
@@ -72,13 +73,13 @@
             android:paddingTop="10dp"
             android:paddingEnd="16dp"
             android:paddingBottom="10dp"
-            android:text="How can I return or exchange the product if there\'s an issue?"
+            android:text="How can I return or exchange the product if there's an issue?"
             android:textColor="@color/color_5E4C3E"
             android:textSize="12sp"
             android:textAlignment="center" />
     </LinearLayout>
 
-    <!-- Horizontal scroll view for options -->
+    <!-- Horizontal scroll view for chat options -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -151,7 +152,7 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <!-- Message input and send button, pinned to bottom -->
+    <!-- Message input container - Always visible -->
     <LinearLayout
         android:id="@+id/input_container"
         android:layout_width="match_parent"
@@ -159,7 +160,8 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:background="#F2EAD3">
+        android:background="#F2EAD3"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imgCamera"

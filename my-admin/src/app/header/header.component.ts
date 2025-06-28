@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AdminService } from '../services/admin.service';
 import { Admin } from '../interfaces/admin';
 
-
 @Component({
   selector: 'app-header',
   standalone: false,
@@ -19,10 +18,11 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.adminService.currentAdmin$.subscribe(admin => {
+    this.adminService.currentAdmin$.subscribe(({ admin }) => {
       this.currentAdmin = admin;
     });
   }
+
   getLastNameUppercase(): string {
     if (!this.currentAdmin?.FullName) {
       return 'GUEST';
@@ -32,6 +32,7 @@ export class HeaderComponent implements OnInit {
     const lastName = nameParts[nameParts.length - 1];
     return lastName.toUpperCase();
   }
+
   logout(): void {
     this.adminService.logout();
     this.router.navigate(['/']);
