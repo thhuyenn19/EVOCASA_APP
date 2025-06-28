@@ -74,20 +74,20 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/zen_old_mincho_black" />
 
+            <!-- Nếu item FAQ ít thì vẫn có thể dùng RecyclerView trong ScrollView -->
             <TextView
                 android:id="@+id/txtFAQDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/title_faq_description"
-                android:textColor="@color/color_5E4C3E"
-                android:textSize="12sp"
-                android:gravity="center"
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="5dp"
-                android:fontFamily="@font/inter_tight_italic" />
+                android:fontFamily="@font/inter_tight_italic"
+                android:gravity="center"
+                android:text="@string/title_faq_description"
+                android:textColor="@color/color_5E4C3E"
+                android:textSize="12sp" />
 
-            <!-- Nếu item FAQ ít thì vẫn có thể dùng RecyclerView trong ScrollView -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
