@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "408656799826-a2a25pgjq9lc40urg9d8183an1atti42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "fac8dd9b2f7078d9aa267521d0185641bf489bae"
+          }
+        },
+        {
           "client_id": "408656799826-sv1hf4u8e5fgd4e6o5i062qbnk79015f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
