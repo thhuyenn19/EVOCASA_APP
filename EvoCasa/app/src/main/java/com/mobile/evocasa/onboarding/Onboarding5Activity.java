@@ -29,6 +29,9 @@ public class Onboarding5Activity extends AppCompatActivity {
     private static final String PREFS_NAME = "AppSettings";
     private static final String KEY_ONBOARDING = "hasShownOnboarding";
 
+    private TextView tvSkip;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,8 @@ public class Onboarding5Activity extends AppCompatActivity {
         txtHaveAccount = findViewById(R.id.txtHaveAccount);
         btnCreateAccountOnboarding5 = findViewById(R.id.btnCreateAccountOnboarding5);
         btnLogIn = findViewById(R.id.btnLogIn);
+        tvSkip = findViewById(R.id.tvSkip);
+
 
         // Gán font
         FontUtils.setZblackFont(this, txtViewOnboarding5);
@@ -47,6 +52,8 @@ public class Onboarding5Activity extends AppCompatActivity {
         FontUtils.setRegularFont(this, txtHaveAccount);
         FontUtils.setBoldFont(this, btnCreateAccountOnboarding5);
         FontUtils.setMediumFont(this, btnLogIn);
+        FontUtils.setRegularFont(this, tvSkip);
+
 
         // Xử lý nút Create Account
         btnCreateAccountOnboarding5.setOnClickListener(v -> {
@@ -79,5 +86,20 @@ public class Onboarding5Activity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        tvSkip.setOnClickListener(v -> {
+            // Lưu trạng thái đã xem onboarding
+            SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean(KEY_ONBOARDING, true);
+            editor.apply();
+
+            // Chuyển về MainActivity (activity_main layout)
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+
     }
 }
