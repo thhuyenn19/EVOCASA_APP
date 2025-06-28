@@ -28,6 +28,7 @@ import com.mobile.adapters.SearchProductAdapter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class SearchResultFragment extends Fragment {
@@ -172,8 +173,9 @@ public class SearchResultFragment extends Fragment {
                     matchedProducts.addAll(partialMatches);
                     matchedProducts.addAll(descriptionMatches);
                     matchedProducts.addAll(fuzzyMatches);
+//                    matchedProducts.addAll(categoryMatches);
                     // Thêm tất cả sản phẩm còn lại vào cuối
-                    matchedProducts.addAll(remainingProducts);
+//                    matchedProducts.addAll(remainingProducts);
 
                     // Loại bỏ duplicate nếu có
                     Set<String> addedIds = new HashSet<>();
