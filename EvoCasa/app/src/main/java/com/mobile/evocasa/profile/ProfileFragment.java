@@ -53,7 +53,7 @@ public class ProfileFragment extends Fragment {
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
     private FirebaseFirestore db;
-    private LinearLayout containerLoginRegister;
+    private LinearLayout containerLoginRegister,containerLogOut;
     private TextView badgePending, badgePickUp, badgeTransit, badgeReview;
 
     @Nullable
@@ -81,6 +81,7 @@ public class ProfileFragment extends Fragment {
         txtLogin = view.findViewById(R.id.txtLogin);
         txtRegister = view.findViewById(R.id.txtRegister);
         containerLoginRegister = view.findViewById(R.id.containerLoginRegister);
+        containerLogOut = view.findViewById(R.id.containerLogOut);
 
         loadCustomerInformation();
         setupSuggestedProducts();
@@ -476,6 +477,7 @@ public class ProfileFragment extends Fragment {
         if (imgAvatar != null) imgAvatar.setVisibility(View.VISIBLE);
         if (btnEditAvatar != null) btnEditAvatar.setVisibility(View.GONE);
         if (containerLoginRegister != null) containerLoginRegister.setVisibility(View.VISIBLE);
+        if (containerLogOut != null) containerLogOut.setVisibility(View.GONE);
     }
 
     private void showUserInfo() {
@@ -483,6 +485,7 @@ public class ProfileFragment extends Fragment {
         if (imgAvatar != null) imgAvatar.setVisibility(View.VISIBLE);
         if (btnEditAvatar != null) btnEditAvatar.setVisibility(View.VISIBLE);
         if (containerLoginRegister != null) containerLoginRegister.setVisibility(View.GONE);
+        if (containerLogOut != null) containerLogOut.setVisibility(View.VISIBLE);
     }
 
     private void applyCustomFonts(View view) {
