@@ -280,6 +280,16 @@
     <string name="return_policy_note_content">Non-eligible returns will be refused and returned at customer\'s cost. Please check the condition before submitting a request.</string>
     <string name="return_policy_contact_title">Contact</string>
     <string name="return_policy_contact_content">Hotline: 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays)\nEmail: support@evocasa.com</string>
+    <string name="faq_question_1">How can I place an order on EvoCasa?</string>
+    <string name="faq_answer_1">You can browse products, select your preferred size/color, and tap “Add to Cart” or “Buy Now.” Then, fill in your delivery details and choose a payment method to complete your order.</string>
+    <string name="faq_question_2">Does EvoCasa support returns and exchanges?</string>
+    <string name="faq_answer_2">Yes. EvoCasa accepts returns or exchanges within 7 days from the delivery date for items that are defective, incorrect, or damaged during shipping.</string>
+    <string name="faq_question_3">Are there any fees for returns or exchanges?</string>
+    <string name="faq_answer_3">Returns or exchanges are free of charge if the issue is on EvoCasa’s end. For personal reasons, customers will cover the round-trip shipping fee.</string>
+    <string name="faq_question_4">Does EvoCasa protect my personal information?</string>
+    <string name="faq_answer_4">Absolutely. We do not share any personal data with third parties without your consent.</string>
+    <string name="faq_question_5">How long does delivery take?</string>
+    <string name="faq_answer_5">In-stock: 2–5 business days. Made-to-order: 7–14 business days.</string>
 
 
 </resources>

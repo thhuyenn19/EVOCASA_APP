@@ -88,16 +88,11 @@ public class HelpCenterFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         List<FaqItem> faqList = new ArrayList<>();
-        faqList.add(new FaqItem("How can I place an order on EvoCasa?",
-                "You can browse products, select your preferred size/color, and tap “Add to Cart” or “Buy Now.” Then, fill in your delivery details and choose a payment method to complete your order."));
-        faqList.add(new FaqItem("Does EvoCasa support returns and exchanges?",
-                "Yes. EvoCasa accepts returns or exchanges within 7 days from the delivery date for items that are defective, incorrect, or damaged during shipping."));
-        faqList.add(new FaqItem("Are there any fees for returns or exchanges?",
-                "Returns or exchanges are free of charge if the issue is on EvoCasa’s end. For personal reasons, customers will cover the round-trip shipping fee."));
-        faqList.add(new FaqItem("Does EvoCasa protect my personal information?",
-                "Absolutely. We do not share any personal data with third parties without your consent."));
-        faqList.add(new FaqItem("How long does delivery take?",
-                "In-stock: 2–5 business days. Made-to-order: 7–14 business days."));
+        faqList.add(new FaqItem(getString(R.string.faq_question_1), getString(R.string.faq_answer_1)));
+        faqList.add(new FaqItem(getString(R.string.faq_question_2), getString(R.string.faq_answer_2)));
+        faqList.add(new FaqItem(getString(R.string.faq_question_3), getString(R.string.faq_answer_3)));
+        faqList.add(new FaqItem(getString(R.string.faq_question_4), getString(R.string.faq_answer_4)));
+        faqList.add(new FaqItem(getString(R.string.faq_question_5), getString(R.string.faq_answer_5)));
 
         faqAdapter = new FaqAdapter(requireContext(), faqList);
         recyclerView.setAdapter(faqAdapter);

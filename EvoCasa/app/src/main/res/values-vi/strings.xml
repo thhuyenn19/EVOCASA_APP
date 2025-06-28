@@ -279,6 +279,16 @@
     <string name="return_policy_note_content">Đơn đổi trả không đủ điều kiện sẽ bị từ chối và trả lại cho khách hàng. Vui lòng kiểm tra kỹ trước khi gửi yêu cầu.</string>
     <string name="return_policy_contact_title">Liên hệ</string>
     <string name="return_policy_contact_content">Hotline: 19008386 / 0961 961 961 (9h – 21h hàng ngày, trừ ngày lễ)\nEmail: support@evocasa.com</string>
+    <string name="faq_question_1">Làm thế nào để đặt hàng trên EvoCasa?</string>
+    <string name="faq_answer_1">Bạn có thể duyệt sản phẩm, chọn kích thước/màu sắc mong muốn và nhấn “Thêm vào giỏ” hoặc “Mua ngay”. Sau đó, điền thông tin giao hàng và chọn phương thức thanh toán để hoàn tất đơn hàng.</string>
+    <string name="faq_question_2">EvoCasa có hỗ trợ đổi trả không?</string>
+    <string name="faq_answer_2">Có. EvoCasa chấp nhận đổi trả trong vòng 7 ngày kể từ ngày nhận hàng đối với sản phẩm bị lỗi, giao sai hoặc hư hỏng trong quá trình vận chuyển.</string>
+    <string name="faq_question_3">Việc đổi trả có tốn phí không?</string>
+    <string name="faq_answer_3">Đổi trả sẽ miễn phí nếu lỗi thuộc về EvoCasa. Trường hợp đổi trả do nhu cầu cá nhân, khách hàng sẽ chịu phí vận chuyển hai chiều.</string>
+    <string name="faq_question_4">EvoCasa có bảo mật thông tin cá nhân của tôi không?</string>
+    <string name="faq_answer_4">Chắc chắn. Chúng tôi không chia sẻ bất kỳ thông tin cá nhân nào với bên thứ ba nếu không có sự đồng ý của bạn.</string>
+    <string name="faq_question_5">Thời gian giao hàng mất bao lâu?</string>
+    <string name="faq_answer_5">Hàng có sẵn: 2–5 ngày làm việc. Hàng đặt sản xuất: 7–14 ngày làm việc.</string>
 
 
 </resources>
