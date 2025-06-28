@@ -38,6 +38,7 @@ import com.mobile.adapters.SubCategoryProductAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
 import com.mobile.evocasa.productdetails.ProductDetailsActivity;
+import com.mobile.evocasa.search.SearchActivity;
 import com.mobile.models.ProductItem;
 import com.mobile.models.SubCategory;
 import com.mobile.utils.BehaviorLogger;
@@ -85,7 +86,7 @@ public class CategoryFragment extends Fragment {
     private float[] alphaLookupTable;
     private boolean isLookupTableInitialized = false;
     private TextView txtCartBadge;
-    private ImageView imgCart;
+    private ImageView imgCart, imgSearch;
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
 
@@ -117,6 +118,7 @@ public class CategoryFragment extends Fragment {
         btnBack = view.findViewById(R.id.btnBack);
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
+        imgSearch = view.findViewById(R.id.imgSearch);
         sessionManager = new UserSessionManager(requireContext());
 
         Bundle args = getArguments();
@@ -131,6 +133,12 @@ public class CategoryFragment extends Fragment {
                 txtCollapsedTitle.setText(selectedCategory);
             }
         }
+        imgSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra("openProgress", true);
+            startActivity(intent);
+        });
+
         if (imgCart != null) {
             imgCart.setOnClickListener(v -> {
                 if (isAdded() && getActivity() != null) {
