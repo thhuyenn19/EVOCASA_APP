@@ -34,8 +34,10 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.BannerPagerAdapter;
@@ -147,7 +149,7 @@ public class HomeFragment extends Fragment {
         recyclerViewFlashSale.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
-        FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList);
+        FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList, requireContext());
         flashSaleAdapter.setOnItemClickListener(product -> {
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
@@ -205,7 +207,7 @@ public class HomeFragment extends Fragment {
         recyclerViewHotProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         hotProductList = new ArrayList<>();
-        hotProductsAdapter = new HotProductsAdapter(hotProductList);
+        hotProductsAdapter = new HotProductsAdapter(hotProductList, requireContext());
         hotProductsAdapter.setOnItemClickListener(product -> {
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
