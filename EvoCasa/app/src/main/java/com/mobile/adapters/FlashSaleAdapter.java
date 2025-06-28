@@ -77,12 +77,19 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
         FlashSaleProduct product = flashSaleList.get(position);
 
         holder.tvProductName.setText(product.getName());
-        holder.tvOldPrice.setText("$" + String.format("%.2f", product.getPrice()));
+        double originalPrice = product.getPrice();
+        String formattedOldPrice = originalPrice % 1 == 0 ? 
+            String.format("$%.0f", originalPrice) : 
+            String.format("$%.1f", originalPrice);
+        holder.tvOldPrice.setText(formattedOldPrice);
         holder.tvOldPrice.setPaintFlags(holder.tvOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         // Calculate discounted price (30% off for flash sale)
         double discountedPrice = product.getPrice() * 0.7;
-        holder.tvPrice.setText("$" + String.format("%.2f", discountedPrice));
+        String formattedPrice = discountedPrice % 1 == 0 ? 
+            String.format("$%.0f", discountedPrice) : 
+            String.format("$%.1f", discountedPrice);
+        holder.tvPrice.setText(formattedPrice);
         holder.tvDiscount.setText("-30%");
         holder.tvTagDiscountTop.setText("-30%");
 

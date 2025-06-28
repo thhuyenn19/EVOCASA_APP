@@ -88,10 +88,16 @@ public class HotProductsAdapter extends RecyclerView.Adapter<HotProductsAdapter.
 
         // Format và hiển thị
         holder.txtProductName.setText(product.getName());
-        holder.txtOldPrice.setText("$" + String.format("%.2f", oldPrice));
+        String formattedOldPrice = oldPrice % 1 == 0 ? 
+            String.format("$%.0f", oldPrice) : 
+            String.format("$%.1f", oldPrice);
+        holder.txtOldPrice.setText(formattedOldPrice);
         holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.txtDiscount.setText("-" + discount + "%");
-        holder.txtPrice.setText("$" + String.format("%.2f", newPrice));
+        String formattedPrice = newPrice % 1 == 0 ? 
+            String.format("$%.0f", newPrice) : 
+            String.format("$%.1f", newPrice);
+        holder.txtPrice.setText(formattedPrice);
 
         List<String> images = product.getImageList();
         if (images != null && !images.isEmpty()) {
