@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EvoCasa</string>
     <string name="title_hint_Search">Search</string>
     <string name="title_evocasa">EvoCasa</string>
@@ -248,9 +248,7 @@
     <string name="shipping_policy_contact_content">Hotline: 1900 8386 or 0961 961 961 \nHours: 9:00 AM – 9:00 PM, Monday to Sunday (excluding public holidays)</string>
 
     <!-- Warranty Policy -->
-    <string name="warranty_policy_title">Warranty Policy</string>
-    <string name="warranty_policy_intro">This warranty policy applies to customers shopping and making payments directly at EvoCasa store systems or via the EvoCasa website.</string>
-    <string name="warranty_policy_period_title">Warranty Period</string>
+    <string name="warranty_policy_period_title">Warranty Policy</string>
     <string name="warranty_policy_period_content">The warranty period is calculated from the purchase date (based on the purchase receipt).\n- Home decor items: 12 months \n- Furniture: 24 months</string>
     <string name="warranty_policy_conditions_title">Warranty Conditions</string>
     <string name="warranty_policy_conditions_content">• Product must still be within the warranty period.\n• A valid purchase receipt must be presented, containing complete information and undamaged.</string>
@@ -259,7 +257,7 @@
     <string name="warranty_policy_scope_title">Warranty Scope</string>
     <string name="warranty_policy_scope_content">Applies only to manufacturing or material defects.\n- Home decor: visible issues like misaligned joints, discoloration, oxidation, or accessory detachment due to technical faults.</string>
     <string name="warranty_policy_process_title">Warranty Process</string>
-    <string name="warranty_policy_process_content">1. Bring product + valid receipt to EvoCasa. \n2. Product inspection: \n- If under warranty: repair/replace/exchange. \n- If not repairable and out of stock: replace with equivalent value.\n - Out of warranty: repair service offered with consent. \n 3. Inspection within 2 working days; customer will be notified.</string>
+    <string name="warranty_policy_process_content">1. Bring product + valid receipt to EvoCasa.  \n2. Product inspection:  \n- If under warranty: repair/replace/exchange.  \n- If not repairable and out of stock: replace with equivalent value.  \n- Out of warranty: repair service offered with consent.   \n3. Inspection within 2 working days; customer will be notified.</string>
     <string name="warranty_policy_note_title">Important Note</string>
     <string name="warranty_policy_note_content">If conditions are not met, the warranty will be denied and the product returned at customer\'s expense. Please check the product’s condition before submitting.</string>
 

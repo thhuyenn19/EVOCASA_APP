@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">EvoCasa</string>
     <string name="title_hint_Search">Tìm kiếm</string>
     <string name="title_evocasa">EvoCasa</string>
@@ -247,8 +247,7 @@
     <string name="shipping_policy_contact_content">Hotline: 1900 8386 hoặc 0961 961 961 \nGiờ làm việc: 9:00 – 21:00, Thứ Hai đến Chủ Nhật (trừ ngày lễ)</string>
 
     <!-- Warranty Policy   -->
-    <string name="warranty_policy_title">Chính sách bảo hành</string>
-    <string name="warranty_policy_intro">Chính sách bảo hành áp dụng cho khách hàng mua sắm và thanh toán trực tiếp tại hệ thống cửa hàng EvoCasa hoặc trên website EvoCasa.</string>
+    
     <string name="warranty_policy_period_title">Thời hạn bảo hành</string>
     <string name="warranty_policy_period_content">Thời hạn bảo hành được tính từ ngày mua hàng (theo hóa đơn).\n- Đồ trang trí nhà: 12 tháng\n- Nội thất: 24 tháng</string>
     <string name="warranty_policy_conditions_title">Điều kiện bảo hành</string>
