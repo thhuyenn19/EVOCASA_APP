@@ -1,0 +1,92 @@
+{
+  "project_info": {
+    "project_number": "408656799826",
+    "project_id": "evocasa-da7f2",
+    "storage_bucket": "evocasa-da7f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408656799826:android:35e9e655ecb1b34bee578b",
+        "android_client_info": {
+          "package_name": "com.mobile.evocasa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408656799826-a2a25pgjq9lc40urg9d8183an1atti42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "fac8dd9b2f7078d9aa267521d0185641bf489bae"
+          }
+        },
+        {
+          "client_id": "408656799826-sv1hf4u8e5fgd4e6o5i062qbnk79015f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "8e87d3321e8a4603f6e3be9e626d0959e677050d"
+          }
+        },
+        {
+          "client_id": "408656799826-va72rte43fjrqosh708d8o5r3pa4eva1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "eab2477f32fae1322df028fc5b494f9beddfbb95"
+          }
+        },
+        {
+          "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RXAAeZzunRp4eWJhKPZJ8Y_A70WtLOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408656799826:android:1e975cacb505eb00ee578b",
+        "android_client_info": {
+          "package_name": "com.thanhhuyen.evocasaadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RXAAeZzunRp4eWJhKPZJ8Y_A70WtLOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
