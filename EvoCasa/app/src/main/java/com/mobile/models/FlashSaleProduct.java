@@ -15,12 +15,12 @@ public class FlashSaleProduct {
     private double price;
 
     @PropertyName("Image")
-    private String image;  // là JSON String từ Firebase
+    private String image;  // JSON String from Firebase
 
     @com.google.firebase.firestore.Exclude
     private String id;
 
-    // constructor rỗng cần có cho Firebase
+    // Empty constructor required for Firebase
     public FlashSaleProduct() {}
 
     @PropertyName("Name")
@@ -28,9 +28,19 @@ public class FlashSaleProduct {
         return name;
     }
 
+    @PropertyName("Name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @PropertyName("Price")
     public double getPrice() {
         return price;
+    }
+
+    @PropertyName("Price")
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @PropertyName("Image")
@@ -44,10 +54,21 @@ public class FlashSaleProduct {
     }
 
     public List<String> getImageList() {
+        if (image == null) return new ArrayList<>();
         try {
-            return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
+            if (image.startsWith("[")) {
+                // If it's a JSON array string
+                return new Gson().fromJson(image, new TypeToken<List<String>>() {}.getType());
+            } else {
+                // If it's a single URL
+                List<String> list = new ArrayList<>();
+                list.add(image);
+                return list;
+            }
         } catch (Exception e) {
-            return new ArrayList<>();
+            List<String> list = new ArrayList<>();
+            list.add(image); // Add as single URL if parsing fails
+            return list;
         }
     }
 
