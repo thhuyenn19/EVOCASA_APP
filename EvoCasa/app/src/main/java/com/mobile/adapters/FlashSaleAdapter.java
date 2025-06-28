@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.R;
 import com.mobile.models.FlashSaleProduct;
+import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -183,6 +184,14 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
                 .addOnFailureListener(e -> {
                     Toast.makeText(holder.itemView.getContext(), "Failed to check wishlist", Toast.LENGTH_SHORT).show();
                 });
+        String uid = new UserSessionManager(holder.itemView.getContext()).getUid();
+        BehaviorLogger.record(
+                uid,
+                productId,
+                "wishlist",      // Action type: "wishlist"
+                "home_page",     // Page: "home_page"
+                null              // No additional data
+        );
     }
 
     private void createWishlistAndAddProduct(String customerId, String productId, FlashSaleViewHolder holder) {
@@ -211,6 +220,14 @@ public class FlashSaleAdapter extends RecyclerView.Adapter<FlashSaleAdapter.Flas
                 .addOnSuccessListener(aVoid -> {
                     holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
                     Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
+                    String uid = new UserSessionManager(holder.itemView.getContext()).getUid();
+                    BehaviorLogger.record(
+                            uid,
+                            productId,
+                            "wishlist",      // Action type: "wishlist"
+                            "home_page",     // Page: "home_page"
+                            null              // No additional data
+                    );
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(holder.itemView.getContext(), "Failed to add to wishlist", Toast.LENGTH_SHORT).show();

@@ -49,6 +49,7 @@ import com.mobile.models.Category;
 import com.mobile.models.Collection;
 import com.mobile.models.FlashSaleProduct;
 import com.mobile.models.HotProducts;
+import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
@@ -148,6 +149,15 @@ public class HomeFragment extends Fragment {
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList, requireContext());
         flashSaleAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId();
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "home_page",
+                    null
+            );
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
@@ -206,6 +216,15 @@ public class HomeFragment extends Fragment {
         hotProductList = new ArrayList<>();
         hotProductsAdapter = new HotProductsAdapter(hotProductList, requireContext());
         hotProductsAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId();
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "home_page",
+                    null
+            );
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);

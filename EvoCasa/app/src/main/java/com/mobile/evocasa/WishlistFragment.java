@@ -21,6 +21,7 @@ import com.mobile.adapters.WishProductAdapter;
 import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.HotProducts;
 import com.mobile.models.WishProduct;
+import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 import java.util.ArrayList;
@@ -85,11 +86,19 @@ public class WishlistFragment extends Fragment {
 
         // Add the OnProductItemClickListener to open Product Details Activity
         wishProductAdapter.setOnProductItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId();
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "wishlist_page",
+                    null
+            );
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());  // Pass the productId to the details activity
             startActivity(intent);
         });
-
         recyclerViewWishProduct.setAdapter(wishProductAdapter);
 
         // Khởi tạo tab products map
@@ -159,6 +168,15 @@ public class WishlistFragment extends Fragment {
         });
 
         hotProductsAdapter.setOnItemClickListener(product -> {
+            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String productId = product.getId();
+            BehaviorLogger.record(
+                    uid,
+                    productId,
+                    "click",
+                    "wishlist_page",
+                    null
+            );
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
@@ -281,6 +299,16 @@ public class WishlistFragment extends Fragment {
     }
 
     private void addProductToWishlist(HotProducts product, Runnable onSuccess) {
+        String uid = new UserSessionManager(requireContext()).getUid();
+        String product_Id = product.getId();
+        BehaviorLogger.record(
+                uid,
+                product_Id,
+                "wishlist",
+                "wishlist_page",
+                null
+        );
+
         // Tìm product ID từ Firestore
         db.collection("Product")
                 .whereEqualTo("Name", product.getName())
