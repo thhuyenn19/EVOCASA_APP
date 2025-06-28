@@ -23,6 +23,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.CategoryShopAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.search.SearchActivity;
 import com.mobile.models.Category;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.GridSpacingItemDecoration;
@@ -43,7 +44,7 @@ public class ShopFragment extends Fragment {
     private Map<String, String> categoryNameToIdMap;
     private Handler handler;
     private TextView txtCartBadge;
-    private ImageView imgCart;
+    private ImageView imgCart, imgSearch;
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
 
@@ -56,6 +57,7 @@ public class ShopFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
+        imgSearch = view.findViewById(R.id.imgSearch);
         sessionManager = new UserSessionManager(requireContext());
         categoryNameToIdMap = new HashMap<>();
         handler = new Handler(Looper.getMainLooper());
@@ -70,6 +72,11 @@ public class ShopFragment extends Fragment {
                 }
             });
         }
+        imgSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra("openProgress", true);
+            startActivity(intent);
+        });
         return view;
     }
 
