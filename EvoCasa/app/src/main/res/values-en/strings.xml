@@ -280,6 +280,8 @@
     <string name="return_policy_note_content">Non-eligible returns will be refused and returned at customer\'s cost. Please check the condition before submitting a request.</string>
     <string name="return_policy_contact_title">Contact</string>
     <string name="return_policy_contact_content">Hotline: 19008386 / 0961 961 961 (9AM - 9PM daily, excluding holidays)\nEmail: support@evocasa.com</string>
+
+    <!--FAQ-->
     <string name="faq_question_1">How can I place an order on EvoCasa?</string>
     <string name="faq_answer_1">You can browse products, select your preferred size/color, and tap “Add to Cart” or “Buy Now.” Then, fill in your delivery details and choose a payment method to complete your order.</string>
     <string name="faq_question_2">Does EvoCasa support returns and exchanges?</string>
