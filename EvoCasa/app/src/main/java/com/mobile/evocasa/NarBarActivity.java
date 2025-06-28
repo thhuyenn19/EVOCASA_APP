@@ -2,16 +2,30 @@ package com.mobile.evocasa;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.mobile.adapters.CategoryShopAdapter;
+import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.evocasa.category.ShopFragment;
 import com.mobile.evocasa.order.OrderDetailFragment;
 import com.mobile.evocasa.payment.FinishPaymentFragment;
 import com.mobile.evocasa.profile.ProfileFragment;
+import com.mobile.models.Category;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class NarBarActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavSelectedListener {
+    public static List<Category> preloadedCategories = new ArrayList<>();
+    public static CategoryShopAdapter categoryAdapter;
 
     private BottomNavFragment bottomNavFragment; // Khai báo như instance variable
 
@@ -19,6 +33,7 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nar_bar);
+        preloadProductDataInBackground();
 
         int tabPos = getIntent().getIntExtra("tab_pos", 0);
 
@@ -54,17 +69,15 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.bottom_nav_container, bottomNavFragment)
                 .commit();
+    }
 
-//        // Tạo và hiển thị popup với callback
-//        PopupDialog popupDialog = new PopupDialog();
-//        popupDialog.setOnShopClickListener(new PopupDialog.OnShopClickListener() {
-//            @Override
-//            public void onShopClick() {
-//                // Chuyển đến tab Shop (position 1)
-//                navigateToShop();
-//            }
-//        });
-//        popupDialog.show(getSupportFragmentManager(), "popup");
+    private void preloadProductDataInBackground() {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+            preloadManager.preloadAllCategoryDataBlocking(); // ← preload toàn bộ categories
+            Log.d("NarBarActivity", "Preload toàn bộ category xong");
+        });
     }
 
     private void navigateToShop() {

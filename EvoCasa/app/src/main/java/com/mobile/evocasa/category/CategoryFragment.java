@@ -89,15 +89,26 @@ public class CategoryFragment extends Fragment {
     private ImageView imgCart, imgSearch;
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
+    private Map<String, List<ProductItem>> productCache;
 
-
+    private Map<String, String> preloadedSubCategoryIds = null;
+    private List<ProductItem> preloadedCategoryProducts = null;
     public CategoryFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getArguments() != null && getArguments().containsKey("productCache")) {
+            productCache = (Map<String, List<ProductItem>>) getArguments().getSerializable("productCache");
+        }
+        if (productCache == null) {
+            productCache = new HashMap<>();
+        }
         return inflater.inflate(R.layout.fragment_category, container, false);
     }
-
+    public void setPreloadedData(Map<String, String> subCategoryIds, List<ProductItem> categoryProducts) {
+        this.preloadedSubCategoryIds = subCategoryIds;
+        this.preloadedCategoryProducts = categoryProducts;
+    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -133,6 +144,24 @@ public class CategoryFragment extends Fragment {
                 txtCollapsedTitle.setText(selectedCategory);
             }
         }
+        ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+
+        if (preloadManager != null && selectedCategory != null && !selectedCategory.isEmpty()) {
+            Map<String, String> subcategories = preloadManager.getSubCategories(selectedCategory);
+            List<ProductItem> categoryProducts = preloadManager.getCategoryProducts(selectedCategory);
+
+            if (subcategories != null && !subcategories.isEmpty()) {
+                subCategoryIds.clear();
+                subCategoryIds.putAll(subcategories);
+            }
+
+            if (categoryProducts != null && !categoryProducts.isEmpty()) {
+                currentProductList = new ArrayList<>(categoryProducts);
+                productAdapter = new SubCategoryProductAdapter(currentProductList, requireContext());
+                recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                recyclerViewProducts.setAdapter(productAdapter);
+            }
+        }
         imgSearch.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra("openProgress", true);
@@ -155,6 +184,33 @@ public class CategoryFragment extends Fragment {
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
         params.setBehavior(new FlingBehavior(getContext(), null));
         appBarLayout.setLayoutParams(params);
+
+        if (getArguments() != null) {
+            selectedCategory = getArguments().getString("selectedCategory", "");
+            categoryId = getArguments().getString("categoryId", null);
+            Log.d(TAG, "Received category: " + selectedCategory + ", ID: " + categoryId);
+            if (txtSubCategoryShop != null) {
+                txtSubCategoryShop.setText(selectedCategory);
+            }
+            if (txtCollapsedTitle != null) {
+                txtCollapsedTitle.setText(selectedCategory);
+            }
+        }
+
+        // ✅ Nếu có productCache chứa sẵn dữ liệu thì load ngay thay vì Firestore
+        if (productCache != null && categoryId != null && productCache.containsKey(categoryId)) {
+            Log.d(TAG, "✅ Loaded from productCache for categoryId: " + categoryId);
+            currentProductList = new ArrayList<>(productCache.get(categoryId));
+            productAdapter = new SubCategoryProductAdapter(currentProductList, requireContext());
+            recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
+            recyclerViewProducts.setAdapter(productAdapter);
+            setupSubCategories();
+            setupCollapsingEffect();
+            optimizeScrolling();
+            initializeLookupTable();
+            setupBackButton();
+            return;
+        }
 
         // Setup methods
         setupProducts();
@@ -214,11 +270,23 @@ public class CategoryFragment extends Fragment {
         }
         isFetchingProducts = true;
         currentProductList.clear();
-        Log.d(TAG, "Fetching all products for Shop All");
+
+        // ✅ Ưu tiên lấy từ preload cache
+        ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+        List<ProductItem> cachedProducts = preloadManager.getShopAllProducts();
+        if (cachedProducts != null && !cachedProducts.isEmpty()) {
+            currentProductList.addAll(cachedProducts);
+            productAdapter.notifyDataSetChanged();
+            isFetchingProducts = false;
+            Log.d(TAG, "✅ Loaded Shop All products from cache: " + cachedProducts.size());
+            return;
+        }
+
+        // ⛔ Fallback: load từ Firestore nếu cache rỗng
+        Log.d(TAG, "Fetching all products for Shop All from Firestore");
         db.collection("Product")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         try {
                             ProductItem product = new ProductItem();
@@ -230,7 +298,7 @@ public class CategoryFragment extends Fragment {
                             product.setDimensions(doc.getString("Dimensions"));
                             product.setCustomizeImage(doc.getString("CustomizeImage"));
 
-                            // Khởi tạo ratings mặc định
+                            // Ratings
                             ProductItem.Ratings ratings = new ProductItem.Ratings();
                             Object ratingsObj = doc.get("Ratings");
                             if (ratingsObj instanceof Map) {
@@ -243,7 +311,7 @@ public class CategoryFragment extends Fragment {
                             }
                             product.setRatings(ratings);
 
-                            // Lấy categoryId
+                            // CategoryId
                             Object categoryIdObj = doc.get("category_id");
                             if (categoryIdObj instanceof Map) {
                                 @SuppressWarnings("unchecked")
@@ -252,7 +320,6 @@ public class CategoryFragment extends Fragment {
                             }
 
                             currentProductList.add(product);
-                            Log.d(TAG, "Added product: " + product.getName());
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing product: " + doc.getId(), e);
                         }
@@ -274,117 +341,122 @@ public class CategoryFragment extends Fragment {
         }
         isFetchingProducts = true;
         currentProductList.clear();
-        Log.d(TAG, "Filtering products for: " + selectedSubCategory);
 
+        ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+
+        // Trường hợp: All products của 1 category
         if (selectedSubCategory.equals("All products") && categoryId != null) {
-            Log.d(TAG, "Fetching all products for category: " + selectedCategory + " with ID: " + categoryId);
+            List<ProductItem> cachedProducts = preloadManager.getCategoryProducts(selectedCategory);
+            if (cachedProducts != null && !cachedProducts.isEmpty()) {
+                currentProductList.addAll(cachedProducts);
+                productAdapter.notifyDataSetChanged();
+                isFetchingProducts = false;
+                Log.d(TAG, "✅ Loaded category products from cache: " + cachedProducts.size());
+                return;
+            }
+
+            // Fallback Firestore nếu cache rỗng
+            Log.d(TAG, "⛔ Fallback: Fetching all products from Firestore for category: " + selectedCategory);
             db.collection("Product")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
-                        Log.d(TAG, "Product query returned " + queryDocumentSnapshots.size() + " documents");
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
                             String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
                             if (productCategoryId != null && subCategoryIds.containsValue(productCategoryId)) {
-                                ProductItem product = new ProductItem();
-                                product.setId(doc.getId());
-                                product.setName(doc.getString("Name"));
-                                product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                                product.setImage(doc.getString("Image"));
-                                product.setDescription(doc.getString("Description"));
-                                product.setDimensions(doc.getString("Dimensions"));
-                                product.setCustomizeImage(doc.getString("CustomizeImage"));
-
-                                // Khởi tạo ratings mặc định
-                                ProductItem.Ratings ratings = new ProductItem.Ratings();
-                                Object ratingsObj = doc.get("Ratings");
-                                if (ratingsObj instanceof Map) {
-                                    @SuppressWarnings("unchecked")
-                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                    Object averageObj = ratingsMap.get("Average");
-                                    if (averageObj instanceof Number) {
-                                        ratings.setAverage(((Number) averageObj).doubleValue());
-                                    }
+                                ProductItem product = parseProductFromDocument(doc);
+                                if (product != null) {
+                                    currentProductList.add(product);
                                 }
-                                product.setRatings(ratings);
-
-                                // Lấy categoryId
-                                Object categoryIdMapObj = doc.get("category_id");
-                                if (categoryIdMapObj instanceof Map) {
-                                    @SuppressWarnings("unchecked")
-                                    Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdMapObj;
-                                    product.setCategoryId(categoryIdMap);
-                                }
-
-                                currentProductList.add(product);
-                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + productCategoryId);
                             }
                         }
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "Failed to fetch all products for category: " + selectedCategory, e);
+                        Log.e(TAG, "❌ Firestore error fetching category products", e);
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     });
-        } else if (subCategoryIds.containsKey(selectedSubCategory)) {
-            Log.d(TAG, "Filtering products for subcategory: " + selectedSubCategory);
+
+        }
+
+        // Trường hợp: Subcategory cụ thể
+        else if (subCategoryIds.containsKey(selectedSubCategory)) {
+            List<ProductItem> cachedSubProducts = preloadManager.getSubCategoryProducts(selectedSubCategory);
+            if (cachedSubProducts != null && !cachedSubProducts.isEmpty()) {
+                currentProductList.addAll(cachedSubProducts);
+                productAdapter.notifyDataSetChanged();
+                isFetchingProducts = false;
+                Log.d(TAG, "✅ Loaded subcategory products from cache: " + cachedSubProducts.size());
+                return;
+            }
+
+            // Fallback Firestore nếu cache rỗng
+            Log.d(TAG, "⛔ Fallback: Fetching products for subcategory: " + selectedSubCategory);
             String subCategoryId = subCategoryIds.get(selectedSubCategory);
             db.collection("Product")
                     .get()
                     .addOnSuccessListener(productSnapshots -> {
-                        Log.d(TAG, "Subcategory product query returned " + productSnapshots.size() + " documents");
                         for (QueryDocumentSnapshot doc : productSnapshots) {
                             Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
                             String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
                             if (productCategoryId != null && productCategoryId.equals(subCategoryId)) {
-                                ProductItem product = new ProductItem();
-                                product.setId(doc.getId());
-                                product.setName(doc.getString("Name"));
-                                product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                                product.setImage(doc.getString("Image"));
-                                product.setDescription(doc.getString("Description"));
-                                product.setDimensions(doc.getString("Dimensions"));
-                                product.setCustomizeImage(doc.getString("CustomizeImage"));
-
-                                // Khởi tạo ratings mặc định
-                                ProductItem.Ratings ratings = new ProductItem.Ratings();
-                                Object ratingsObj = doc.get("Ratings");
-                                if (ratingsObj instanceof Map) {
-                                    @SuppressWarnings("unchecked")
-                                    Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                    Object averageObj = ratingsMap.get("Average");
-                                    if (averageObj instanceof Number) {
-                                        ratings.setAverage(((Number) averageObj).doubleValue());
-                                    }
+                                ProductItem product = parseProductFromDocument(doc);
+                                if (product != null) {
+                                    currentProductList.add(product);
                                 }
-                                product.setRatings(ratings);
-
-                                // Lấy categoryId
-                                Object categoryIdMapObj = doc.get("category_id");
-                                if (categoryIdMapObj instanceof Map) {
-                                    @SuppressWarnings("unchecked")
-                                    Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdMapObj;
-                                    product.setCategoryId(categoryIdMap);
-                                }
-
-                                currentProductList.add(product);
-                                Log.d(TAG, "Added product: " + product.getName() + " for subcategory ID: " + subCategoryId);
                             }
                         }
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "Failed to fetch products for subcategory: " + selectedSubCategory, e);
+                        Log.e(TAG, "❌ Firestore error fetching subcategory products", e);
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     });
+
         } else {
-            Log.w(TAG, "No valid subcategory or category found for: " + selectedSubCategory);
+            Log.w(TAG, "⚠️ Unknown subcategory: " + selectedSubCategory);
             productAdapter.notifyDataSetChanged();
             isFetchingProducts = false;
+        }
+    }
+
+    private ProductItem parseProductFromDocument(QueryDocumentSnapshot doc) {
+        try {
+            ProductItem product = new ProductItem();
+            product.setId(doc.getId());
+            product.setName(doc.getString("Name"));
+            product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+            product.setImage(doc.getString("Image"));
+            product.setDescription(doc.getString("Description"));
+            product.setDimensions(doc.getString("Dimensions"));
+            product.setCustomizeImage(doc.getString("CustomizeImage"));
+
+            ProductItem.Ratings ratings = new ProductItem.Ratings();
+            Object ratingsObj = doc.get("Ratings");
+            if (ratingsObj instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+                Object avg = ratingsMap.get("Average");
+                if (avg instanceof Number) ratings.setAverage(((Number) avg).doubleValue());
+            }
+            product.setRatings(ratings);
+
+            Object categoryIdMapObj = doc.get("category_id");
+            if (categoryIdMapObj instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdMapObj;
+                product.setCategoryId(categoryIdMap);
+            }
+
+            return product;
+
+        } catch (Exception e) {
+            Log.e(TAG, "❌ Error parsing product: " + doc.getId(), e);
+            return null;
         }
     }
 
@@ -392,7 +464,6 @@ public class CategoryFragment extends Fragment {
         subCategoryList = new ArrayList<>();
         subCategoryList.add(new SubCategory("All products", true));
 
-        // ✅ SỬA: Truyền callback xử lý cả filter products VÀ scroll
         subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::onSubCategorySelected);
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
@@ -404,6 +475,26 @@ public class CategoryFragment extends Fragment {
             return;
         }
 
+        // ✅ Nếu có preload từ ShopFragment
+        if (preloadedSubCategoryIds != null && preloadedCategoryProducts != null) {
+            Log.d(TAG, "✅ Using preloaded subcategories & products");
+
+            subCategoryIds.clear();
+            subCategoryIds.putAll(preloadedSubCategoryIds);
+
+            for (String name : preloadedSubCategoryIds.keySet()) {
+                subCategoryList.add(new SubCategory(name, false));
+            }
+
+            subCategoryAdapter.notifyDataSetChanged();
+
+            currentProductList.clear();
+            currentProductList.addAll(preloadedCategoryProducts);
+            productAdapter.notifyDataSetChanged();
+            return;
+        }
+
+        // ⛔ Nếu không có preload → truy vấn Firestore như bình thường
         if (categoryId != null) {
             Log.d(TAG, "Fetching subcategories for category ID: " + categoryId);
             db.collection("Category")
@@ -413,6 +504,7 @@ public class CategoryFragment extends Fragment {
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             Object parentCategoryObj = doc.get("ParentCategory");
                             String parentCategoryId = null;
+
                             if (parentCategoryObj instanceof Map) {
                                 @SuppressWarnings("unchecked")
                                 Map<String, Object> parentCategory = (Map<String, Object>) parentCategoryObj;
@@ -420,28 +512,40 @@ public class CategoryFragment extends Fragment {
                             } else if (parentCategoryObj instanceof String) {
                                 parentCategoryId = (String) parentCategoryObj;
                             }
+
                             if (parentCategoryId != null && parentCategoryId.equals(categoryId)) {
                                 String name = doc.getString("Name");
                                 String id = doc.getId();
                                 if (name != null) {
                                     subCategoryList.add(new SubCategory(name, false));
                                     subCategoryIds.put(name, id);
-                                    Log.d(TAG, "Added subcategory: " + name + " with ID: " + id);
+                                    Log.d(TAG, "➕ Added subcategory: " + name + " with ID: " + id);
                                 }
                             }
                         }
+
                         subCategoryAdapter.notifyDataSetChanged();
+
+                        // ✅ Dùng cache nếu có
+                        ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+                        List<ProductItem> cached = preloadManager.getCategoryProducts(selectedCategory);
+                        if (cached != null && !cached.isEmpty()) {
+                            Log.d(TAG, "✅ Using cached products after loading subcategories");
+                            currentProductList.clear();
+                            currentProductList.addAll(cached);
+                            productAdapter.notifyDataSetChanged();
+                            return;
+                        }
+
+                        // ⏳ Nếu chưa có cache → gọi Firestore
+                        Log.d(TAG, "⏳ No cache found, triggering filterProductsBySubCategory");
+                        filterProductsBySubCategory("All products");
+
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "Failed to fetch subcategories for ID: " + categoryId, e);
+                        Log.e(TAG, "❌ Failed to fetch subcategories for ID: " + categoryId, e);
                         subCategoryAdapter.notifyDataSetChanged();
                     });
-        }
-
-        // ❌ BỎ ĐOẠN CODE CŨ setOnSubCategoryClickListener VÌ KHÔNG CẦN THIẾT NỮA
-
-        if (!selectedCategory.equals("Shop All") && !subCategoryList.isEmpty()) {
-            filterProductsBySubCategory("All products");
         }
     }
 
@@ -451,7 +555,12 @@ public class CategoryFragment extends Fragment {
             Log.d(TAG, "Fetch in progress, ignoring subcategory click");
             return;
         }
-
+        // ✅ Bỏ qua gọi lại filter nếu là "All products" và đã load từ cache
+        if (selectedSubCategory.equals("All products") &&
+                productCache != null && productCache.containsKey(categoryId)) {
+            Log.d(TAG, "Skip re-fetching 'All products' – already cached");
+            return;
+        }
         // Tìm vị trí của subcategory được chọn
         int selectedPosition = -1;
         for (int i = 0; i < subCategoryList.size(); i++) {
@@ -532,6 +641,7 @@ public class CategoryFragment extends Fragment {
         if (recyclerViewProducts != null) {
             recyclerViewProducts.setHasFixedSize(true);
             recyclerViewProducts.setItemAnimator(null);
+            recyclerViewProducts.setItemViewCacheSize(20);
             recyclerViewProducts.setDrawingCacheEnabled(true);
             recyclerViewProducts.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
             recyclerViewProducts.setNestedScrollingEnabled(true);
