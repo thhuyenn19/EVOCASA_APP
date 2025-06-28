@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,10 +33,8 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.BannerPagerAdapter;
@@ -46,6 +43,7 @@ import com.mobile.adapters.CollectionAdapter;
 import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.evocasa.category.CategoryFragment;
+import com.mobile.evocasa.category.ShopFragment;
 import com.mobile.evocasa.search.SearchActivity;
 import com.mobile.models.Category;
 import com.mobile.models.Collection;
@@ -55,7 +53,6 @@ import com.mobile.utils.FontUtils;
 import com.mobile.utils.UserSessionManager;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -263,6 +260,31 @@ public class HomeFragment extends Fragment {
         sessionManager = new UserSessionManager(requireContext());
         startCartBadgeListener();
 
+        TextView txtCategorySeeAll = view.findViewById(R.id.txtCategorySeeAll);
+        ImageView icCategorySeeAll = view.findViewById(R.id.icCategorySeeAll);
+
+        View.OnClickListener navigateToShop = v -> {
+            if (!isAdded() || getContext() == null || getActivity() == null) {
+                Log.w("HomeFragment", "Fragment not attached, cannot navigate");
+                return;
+            }
+
+            ShopFragment shopFragment = new ShopFragment();
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, shopFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
+        };
+
+        if (txtCategorySeeAll != null) {
+            FontUtils.setRegularFont(getContext(), txtCategorySeeAll);
+            txtCategorySeeAll.setOnClickListener(navigateToShop);
+        }
+
+        if (icCategorySeeAll != null) {
+            icCategorySeeAll.setOnClickListener(navigateToShop);
+        }
+
         return view;
     }
 
@@ -451,7 +473,7 @@ public class HomeFragment extends Fragment {
         if (tvProductName != null) {
             FontUtils.setZregularFont(getContext(), tvProductName);
         }
-        TextView txtSeeAll = view.findViewById(R.id.txtSeeAll);
+        TextView txtSeeAll = view.findViewById(R.id.txtCategorySeeAll);
         if (txtSeeAll != null) {
             FontUtils.setRegularFont(getContext(), txtSeeAll);
         }
@@ -480,7 +502,7 @@ public class HomeFragment extends Fragment {
             TextView textView = (TextView) view;
             int id = textView.getId();
             if (id != R.id.txtProductName &&
-                    id != R.id.txtSeeAll &&
+                    id != R.id.txtCategorySeeAll &&
                     id != R.id.txtSeeAllHotProducts &&
                     id != R.id.txtSeeAllCollection &&
                     id != R.id.txtCollectionName &&
