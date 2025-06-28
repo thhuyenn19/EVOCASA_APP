@@ -57,6 +57,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408656799826:android:1e975cacb505eb00ee578b",
+        "android_client_info": {
+          "package_name": "com.thanhhuyen.evocasaadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0RXAAeZzunRp4eWJhKPZJ8Y_A70WtLOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408656799826-k95jgsqs0kmsj0g372e4eigmm00gp2pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
