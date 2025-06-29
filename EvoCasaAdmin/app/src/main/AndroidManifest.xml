@@ -13,7 +13,7 @@
         android:theme="@style/Theme.EvoCasaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".evocasaadmin.MainActivity"
+            android:name=".admin.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

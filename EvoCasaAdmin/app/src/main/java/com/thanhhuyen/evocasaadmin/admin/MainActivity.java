@@ -1,4 +1,4 @@
-package com.thanhhuyen.evocasaadmin.evocasaadmin;
+package com.thanhhuyen.evocasaadmin.admin;
 
 import android.os.Bundle;
 
