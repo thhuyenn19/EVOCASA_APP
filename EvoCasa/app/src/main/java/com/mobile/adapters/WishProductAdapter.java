@@ -110,14 +110,14 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
             }
         });
 
-        // ✅ Xử lý Flash Sale badge theo tab
+        // Xử lý Flash Sale badge theo tab
         if ("sale".equalsIgnoreCase(currentTab)) {
             holder.tvFlashSale.setVisibility(View.VISIBLE);
         } else {
             holder.tvFlashSale.setVisibility(View.GONE);
         }
 
-        // ✅ Xử lý lớp phủ "Out of Stock" theo tab
+        // Xử lý lớp phủ "Out of Stock" theo tab
         if ("outOfStock".equalsIgnoreCase(currentTab)) {
             holder.overlayOutOfStock.setVisibility(View.VISIBLE);
         } else {

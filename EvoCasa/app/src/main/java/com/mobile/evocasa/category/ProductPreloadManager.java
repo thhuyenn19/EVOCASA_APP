@@ -1,6 +1,9 @@
 package com.mobile.evocasa.category;
 
 import android.util.Log;
+
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.models.ProductItem;
@@ -16,6 +19,7 @@ import java.util.concurrent.Executors;
 public class ProductPreloadManager {
     private static final String TAG = "ProductPreloadManager";
     private static ProductPreloadManager instance;
+    private List<String> cachedWishlist = new ArrayList<>();
 
     private final ExecutorService preloadExecutor;
     private final FirebaseFirestore db;
@@ -32,12 +36,11 @@ public class ProductPreloadManager {
     // Trạng thái loading
     private final ConcurrentHashMap<String, Boolean> loadingStatus;
 
+
     // Callbacks cho khi preload hoàn thành
     private final ConcurrentHashMap<String, List<PreloadCallback>> preloadCallbacks;
 
     public void preloadAllCategoryDataBlocking() {
-        Log.d(TAG, "🔁 Blocking preload all category data...");
-
         try {
             // Lấy toàn bộ Category
             CompletableFuture<Void> future = new CompletableFuture<>();
@@ -78,7 +81,7 @@ public class ProductPreloadManager {
 
                                 @Override
                                 public void onPreloadError(String catName, Exception error) {
-                                    Log.e(TAG, "❌ Preload failed for " + catName, error);
+                                    Log.e(TAG, "Preload failed for " + catName, error);
                                     catFuture.complete(null); // vẫn cho qua lỗi để không block
                                 }
                             });
@@ -87,14 +90,14 @@ public class ProductPreloadManager {
                         // Khi tất cả category preload xong
                         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                                 .thenRun(() -> {
-                                    Log.d(TAG, "✅ All categories preloaded (blocking)");
+                                    Log.d(TAG, "All categories preloaded (blocking)");
                                     preloadShopAllProducts();
                                     future.complete(null);
                                 });
 
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "❌ Failed to load categories for blocking preload", e);
+                        Log.e(TAG, "Failed to load categories for blocking preload", e);
                         future.complete(null);
                     });
 
@@ -102,36 +105,30 @@ public class ProductPreloadManager {
             future.get(); // Wait until complete
 
         } catch (Exception e) {
-            Log.e(TAG, "❌ Exception in preloadAllCategoryDataBlocking", e);
+            Log.e(TAG, "Exception in preloadAllCategoryDataBlocking", e);
         }
     }
-    private List<String> cachedWishlist = new ArrayList<>();
 
-    public void preloadWishlistForUser(String userId) {
+    public void preloadWishlistForUser(String userId, Runnable onComplete) {
         db.collection("Wishlist")
-                .whereEqualTo("UserId", userId)
+                .whereEqualTo("Customer_id", userId)
                 .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addOnSuccessListener(querySnapshot -> {
                     cachedWishlist.clear();
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        String productId = doc.getString("ProductId");
-                        if (productId != null) {
-                            cachedWishlist.add(productId);
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        List<String> productIds = (List<String>) doc.get("Productid");
+                        if (productIds != null) {
+                            cachedWishlist.addAll(productIds);
                         }
                     }
-                    Log.d(TAG, "✅ Wishlist preloaded: " + cachedWishlist.size());
+                    if (onComplete != null) onComplete.run();
                 })
-                .addOnFailureListener(e -> Log.e(TAG, "❌ Failed to preload wishlist", e));
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Failed to preload wishlist", e);
+                    if (onComplete != null) onComplete.run();
+                });
     }
 
-    public void addToWishlist(String productId) {
-        if (!cachedWishlist.contains(productId)) {
-            cachedWishlist.add(productId);
-        }
-    }
-    public void removeFromWishlist(String productId) {
-        cachedWishlist.remove(productId);
-    }
 
     public interface PreloadCallback {
         void onPreloadComplete(String categoryName);
@@ -459,6 +456,15 @@ public class ProductPreloadManager {
     // ===== GETTER METHODS =====
     public List<String> getCachedWishlist() {
         return cachedWishlist;
+    }
+    public void addToWishlistCache(String productId) {
+        if (!cachedWishlist.contains(productId)) {
+            cachedWishlist.add(productId);
+        }
+    }
+
+    public void removeFromWishlistCache(String productId) {
+        cachedWishlist.remove(productId);
     }
     /**
      * Lấy Shop All products từ cache

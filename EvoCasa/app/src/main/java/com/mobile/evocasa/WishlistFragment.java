@@ -5,6 +5,9 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +21,10 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.adapters.WishProductAdapter;
+import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.HotProducts;
+import com.mobile.models.ProductItem;
 import com.mobile.models.WishProduct;
 import com.mobile.utils.BehaviorLogger;
 import com.mobile.utils.FontUtils;
@@ -30,6 +35,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.mobile.adapters.MightLikeAdapter;
 import com.mobile.models.MightLike;
@@ -195,7 +202,56 @@ public class WishlistFragment extends Fragment {
 
     private void initializeTabProductsMap() {
         if (!isTabDataLoaded) {
-            loadWishProductFromFirestore();
+            // Load từ cache bằng đa tiến trình
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            executor.execute(() -> {
+                List<String> wishlistIds = ProductPreloadManager.getInstance().getCachedWishlist();
+                List<ProductItem> allProducts = ProductPreloadManager.getInstance().getShopAllProducts();
+
+                List<WishProduct> allProductsList = new ArrayList<>();
+                for (ProductItem item : allProducts) {
+                    if (wishlistIds.contains(item.getId())) {
+                        WishProduct wish = new WishProduct();
+                        wish.setId(item.getId());
+                        wish.setName(item.getName());
+                        wish.setImage(item.getImage());
+                        wish.setPrice(item.getPrice());
+//                        wish.setRating(item.getRatings().getAverage());
+                        allProductsList.add(wish);
+                    }
+                }
+
+                Collections.shuffle(allProductsList); // giống load từ Firestore
+
+                handler.post(() -> {
+                    // Phân chia như bên Firestore
+                    tabProductsMap.put("all", new ArrayList<>(allProductsList));
+
+                    int saleCount = Math.min(4, allProductsList.size());
+                    tabProductsMap.put("sale", new ArrayList<>(allProductsList.subList(0, saleCount)));
+
+                    int lowStockStart = Math.min(saleCount, allProductsList.size());
+                    int lowStockEnd = Math.min(lowStockStart + 3, allProductsList.size());
+                    if (lowStockStart >= allProductsList.size()) {
+                        lowStockStart = 0;
+                        lowStockEnd = Math.min(3, allProductsList.size());
+                    }
+                    tabProductsMap.put("lowStock", new ArrayList<>(allProductsList.subList(lowStockStart, lowStockEnd)));
+
+                    int outStart = Math.min(lowStockEnd, allProductsList.size());
+                    int outEnd = Math.min(outStart + 2, allProductsList.size());
+                    if (outStart >= allProductsList.size()) {
+                        outStart = 0;
+                        outEnd = Math.min(2, allProductsList.size());
+                    }
+                    tabProductsMap.put("outOfStock", new ArrayList<>(allProductsList.subList(outStart, outEnd)));
+
+                    isTabDataLoaded = true;
+                    displayTabProducts(currentFilter);
+                });
+            });
         } else {
             displayTabProducts(currentFilter);
         }
@@ -332,8 +388,10 @@ public class WishlistFragment extends Fragment {
                                         String wishlistDocId = wishlistQuery.getDocuments().get(0).getId();
                                         db.collection("Wishlist").document(wishlistDocId)
                                                 .update("Productid", FieldValue.arrayUnion(productId))
+
                                                 .addOnSuccessListener(aVoid -> {
                                                     Log.d("Wishlist", "Product added to existing wishlist");
+                                                    ProductPreloadManager.getInstance().addToWishlistCache(productId);
                                                     if (onSuccess != null) {
                                                         onSuccess.run();
                                                     }
@@ -354,6 +412,7 @@ public class WishlistFragment extends Fragment {
                                                 .add(newWishlist)
                                                 .addOnSuccessListener(documentReference -> {
                                                     Log.d("Wishlist", "New wishlist created");
+                                                    ProductPreloadManager.getInstance().addToWishlistCache(productId);
                                                     if (onSuccess != null) {
                                                         onSuccess.run();
                                                     }
@@ -390,6 +449,7 @@ public class WishlistFragment extends Fragment {
                                                 .update("Productid", FieldValue.arrayRemove(productId))
                                                 .addOnSuccessListener(aVoid -> {
                                                     Log.d("Wishlist", "Product removed from wishlist");
+                                                    ProductPreloadManager.getInstance().removeFromWishlistCache(productId);
                                                     if (onSuccess != null) {
                                                         onSuccess.run();
                                                     }
