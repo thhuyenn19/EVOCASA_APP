@@ -18,6 +18,9 @@
             android:name=".CustomerManagementActivity"
             android:exported="false" />
         <activity
+            android:name=".CustomerDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
