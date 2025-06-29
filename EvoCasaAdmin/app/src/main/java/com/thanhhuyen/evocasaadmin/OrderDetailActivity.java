@@ -87,7 +87,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvProductPrice = findViewById(R.id.tv_product_price);
         tvShippingAddress = findViewById(R.id.tv_shipping_address);
         tvShippingMethod = findViewById(R.id.tv_shipping_method);
-        tvShippingDate = findViewById(R.id.tv_shipping_date);
+//        tvShippingDate = findViewById(R.id.tv_shipping_date);
         tvTrackingNumber = findViewById(R.id.tv_tracking_number);
         tvDeliveryFee = findViewById(R.id.tv_delivery_fee);
         tvVoucherName = findViewById(R.id.tv_voucher_name);
@@ -152,7 +152,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Order Header - với fallback từ raw document
         tvOrderId.setText("Order ID: " + currentOrder.getOrderId());
-        tvOrderDate.setText("Order Date: " + getOrderDateSafe());
+        tvOrderDate.setText("Order Date: " + currentOrder.getFormattedOrderDate());  // Hiển thị Order Date
         tvOrderStatus.setText("Status: " + currentOrder.getStatus());
 
         // Customer Information
@@ -168,7 +168,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         // Shipping Information
         tvShippingAddress.setText("Address: " + currentOrder.getShippingAddress());
         tvShippingMethod.setText("Shipping Method: " + currentOrder.getShippingMethod());
-        tvShippingDate.setText("Ship Date: " + getShipDateSafe());
+//        tvShippingDate.setText("Ship Date: " + currentOrder.getFormattedShipDate());  // Hiển thị Ship Date
         tvTrackingNumber.setText("Tracking Number: " + currentOrder.getTrackingNumber());
         tvDeliveryFee.setText("Delivery Fee: " + currentOrder.getFormattedDeliveryFee());
 
@@ -190,36 +190,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         Log.d(TAG, "Quantity from getQuantity(): " + currentOrder.getQuantity());
         Log.d(TAG, "ShipDate from getFormattedShipDate(): " + currentOrder.getFormattedShipDate());
         Log.d(TAG, "=========================");
-    }
-
-    // Safe getters với fallback từ raw document
-    private String getOrderDateSafe() {
-        // Thử từ parsed order trước
-        String orderDate = currentOrder.getFormattedOrderDate();
-        if (orderDate != null && !orderDate.equals("N/A") && !orderDate.isEmpty()) {
-            return orderDate;
-        }
-
-        // Fallback: đọc trực tiếp từ raw document
-        if (rawDocument != null && rawDocument.getData() != null) {
-            Map<String, Object> data = rawDocument.getData();
-
-            // Thử các field name khác nhau
-            String[] possibleFields = {"OrderDate", "orderDate", "order_date", "createdAt", "created_at"};
-
-            for (String field : possibleFields) {
-                if (data.containsKey(field)) {
-                    Object dateValue = data.get(field);
-                    String formattedDate = formatDateFromRaw(dateValue);
-                    if (!formattedDate.equals("N/A")) {
-                        Log.d(TAG, "Found OrderDate in field: " + field);
-                        return formattedDate;
-                    }
-                }
-            }
-        }
-
-        return "N/A";
     }
 
     private String getProductIdSafe() {
@@ -278,34 +248,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         return "0";
     }
 
-    private String getShipDateSafe() {
-        // Thử từ parsed order trước
-        String shipDate = currentOrder.getFormattedShipDate();
-        if (shipDate != null && !shipDate.equals("N/A") && !shipDate.isEmpty()) {
-            return shipDate;
-        }
-
-        // Fallback: đọc trực tiếp từ raw document
-        if (rawDocument != null && rawDocument.getData() != null) {
-            Map<String, Object> data = rawDocument.getData();
-
-            // Thử các field name khác nhau
-            String[] possibleFields = {"ShipDate", "shipDate", "ship_date", "shippingDate", "shipping_date", "deliveryDate", "delivery_date"};
-
-            for (String field : possibleFields) {
-                if (data.containsKey(field)) {
-                    Object dateValue = data.get(field);
-                    String formattedDate = formatDateFromRaw(dateValue);
-                    if (!formattedDate.equals("N/A")) {
-                        Log.d(TAG, "Found ShipDate in field: " + field);
-                        return formattedDate;
-                    }
-                }
-            }
-        }
-
-        return "N/A";
-    }
 
     private String getCustomerIdSafe() {
         // Thử từ parsed order trước

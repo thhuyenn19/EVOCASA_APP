@@ -249,14 +249,14 @@
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/tv_shipping_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:text="Ship Date: 2025-06-05"
-                android:textColor="#5E4C3E"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_shipping_date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:text="Ship Date: 2025-06-05"-->
+<!--                android:textColor="#5E4C3E"-->
+<!--                android:textSize="14sp" />-->
 
             <TextView
                 android:id="@+id/tv_tracking_number"
@@ -324,7 +324,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Total Price:"
                     android:textColor="#3F2305"
                     android:textSize="18sp"
                     android:textStyle="bold" />

@@ -15,10 +15,13 @@
         android:theme="@style/Theme.EvoCasaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".OrderManagementActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".CustomerDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OrderDetailActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -32,7 +35,7 @@
             android:label="Products"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".OrderManagementActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

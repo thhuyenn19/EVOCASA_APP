@@ -1,6 +1,7 @@
 package com.thanhhuyen.models;
 
 import com.google.firebase.firestore.PropertyName;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -300,76 +301,56 @@ public class Order {
         return "N/A";
     }
 
-    // Formatted date methods
     public String getFormattedOrderDate() {
-        if (OrderDate != null) {
-            // Handle Firestore Timestamp format
-            if (OrderDate.containsKey("_seconds")) {
+        if (OrderDate != null && OrderDate.containsKey("$date")) {
+            Object dateValue = OrderDate.get("$date");
+
+            // Kiểm tra kiểu dữ liệu và xử lý
+            if (dateValue instanceof String) {
                 try {
-                    long seconds = Long.parseLong(OrderDate.get("_seconds").toString());
-                    Date date = new Date(seconds * 1000);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    return sdf.format(date);
+                    String dateStr = (String) dateValue;
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                    Date date = sdf.parse(dateStr); // Chuyển đổi String thành Date
+                    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Định dạng lại ngày
+                    return outputFormat.format(date);  // Trả về ngày đã được định dạng
                 } catch (Exception e) {
-                    // Ignore and try other formats
-                }
-            }
-            // Handle other timestamp formats
-            if (OrderDate.containsKey("$date")) {
-                Object dateValue = OrderDate.get("$date");
-                if (dateValue instanceof Number) {
-                    Date date = new Date(((Number) dateValue).longValue());
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    return sdf.format(date);
+                    e.printStackTrace();
                 }
             }
         }
-        return "N/A";
+        return "-";  // Fallback nếu không có dữ liệu
     }
 
     public String getFormattedShipDate() {
-        // Try Firestore field first
-        if (ShipDate != null) {
-            if (ShipDate instanceof Date) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return sdf.format((Date) ShipDate);
-            } else if (ShipDate instanceof Map) {
-                Map<?, ?> dateMap = (Map<?, ?>) ShipDate;
-                // Handle Firestore Timestamp format
-                if (dateMap.containsKey("_seconds")) {
-                    try {
-                        long seconds = Long.parseLong(dateMap.get("_seconds").toString());
-                        Date date = new Date(seconds * 1000);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        return sdf.format(date);
-                    } catch (Exception e) {
-                        // Ignore and try other formats
-                    }
-                }
-                // Handle other timestamp formats
-                if (dateMap.containsKey("$date")) {
-                    Object dateValue = dateMap.get("$date");
-                    if (dateValue instanceof Number) {
-                        Date date = new Date(((Number) dateValue).longValue());
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        return sdf.format(date);
-                    }
-                }
-            } else if (ShipDate instanceof Number) {
-                Date date = new Date(((Number) ShipDate).longValue());
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return sdf.format(date);
+        // Kiểm tra nếu ShipDate là String
+        if (ShipDate != null && ShipDate instanceof String) {
+            try {
+                String dateStr = (String) ShipDate;
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());  // Định dạng cho ISO 8601
+                Date date = sdf.parse(dateStr);  // Chuyển đổi từ String thành Date
+                SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()); // Định dạng lại
+                return outputFormat.format(date);  // Trả về ngày đã được định dạng
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "N/A";  // Trả về N/A nếu có lỗi
             }
         }
 
-        // Fallback to legacy field
-        if (shipDate != null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            return sdf.format(shipDate);
+        // Kiểm tra nếu ShipDate là Map (ví dụ: Firestore Timestamp)
+        if (ShipDate instanceof Map) {
+            Map<?, ?> dateMap = (Map<?, ?>) ShipDate;
+            if (dateMap.containsKey("_seconds")) {
+                long seconds = Long.parseLong(dateMap.get("_seconds").toString());
+                Date date = new Date(seconds * 1000);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                return sdf.format(date);  // Trả về ngày đã được định dạng
+            }
         }
 
-        return "N/A";
+        return "N/A";  // Trả về N/A nếu không có dữ liệu
     }
+
+
 
     // Formatted price methods
     public String getFormattedPrePrice() {
