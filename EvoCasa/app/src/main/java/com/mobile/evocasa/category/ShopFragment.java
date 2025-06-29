@@ -32,7 +32,6 @@ import com.mobile.models.Category;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 import com.mobile.utils.GridSpacingItemDecoration;
-import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.utils.UserSessionManager;
 
 import java.util.ArrayList;
@@ -44,8 +43,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ShopFragment extends Fragment {
     private static final String TAG = "ShopFragment";
-    private static final int PRELOAD_DELAY_MS = 1000; // Delay to avoid overwhelming Firebase
-    private static final int CACHE_STATUS_LOG_DELAY_MS = 5000;
 
     // UI Components
     private RecyclerView recyclerViewCategories;
@@ -53,7 +50,6 @@ public class ShopFragment extends Fragment {
     private View view;
     private TextView txtCartBadge;
     private ImageView imgCart, imgSearch;
-    private ProgressBar progressBar;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     // Data & Firebase
@@ -63,7 +59,6 @@ public class ShopFragment extends Fragment {
     private ListenerRegistration cartListener;
     private UserSessionManager sessionManager;
     private List<Category> preloadedCategories;
-
 
     // Threading & Caching
     private final ExecutorService executor = Executors.newFixedThreadPool(4);
@@ -86,13 +81,10 @@ public class ShopFragment extends Fragment {
                 categoryList = preloadedCategories;
             }
         }
-
-
         initializeComponents();
         setupClickListeners();
         applyCustomFonts();
         loadInitialData();  // không override lại categoryList trong đây
-
         showLoading(false); // Ẩn loading nếu đã có data
 
         return view;
@@ -103,8 +95,6 @@ public class ShopFragment extends Fragment {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         imgSearch = view.findViewById(R.id.imgSearch);
-        progressBar = view.findViewById(R.id.progressBar); // Add to layout if needed
-//        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout); // Add to layout if needed
 
         sessionManager = new UserSessionManager(requireContext());
         categoryNameToIdMap = new HashMap<>();
@@ -144,16 +134,12 @@ public class ShopFragment extends Fragment {
         showLoading(true);
         // Nếu đã có preloaded thì không cần fetch lại
         if (preloadedCategories != null && !preloadedCategories.isEmpty()) {
-            Log.d(TAG, "✅ Using preloaded categories, skipping fetch");
             return;
         }
-
-        // Tiếp tục gọi Firebase để lấy ID phục vụ việc điều hướng sau
         fetchCategoryIds(); // nhưng không cần chờ xong mới render
     }
 
     private void refreshData() {
-        Log.d(TAG, "Refreshing data...");
         isPreloadStarted.set(false);
         preloadManager.clearCache(); // Add this method to ProductPreloadManager
         loadInitialData();
@@ -194,11 +180,9 @@ public class ShopFragment extends Fragment {
             adapter = new CategoryShopAdapter(getContext(), categoryList, this::onCategorySelected);
             recyclerViewCategories.setAdapter(adapter);
         } else {
-            adapter.notifyDataSetChanged(); // hoặc .notifyDataSetChanged() nếu không có hàm setData
+            adapter.notifyDataSetChanged();
         }
 
-        // ❌ Không delay preload nữa — vì đã preload xong từ NarBarActivity
-        // mainHandler.postDelayed(this::startPreloadingData, PRELOAD_DELAY_MS);
     }
 
     private List<Category> createCategoryList() {
@@ -256,10 +240,8 @@ public class ShopFragment extends Fragment {
                         String id = doc.getId();
                         if (name != null) {
                             categoryNameToIdMap.put(name.toLowerCase(), id);
-                            Log.d(TAG, "Mapped category: " + name + " to ID: " + id);
                         }
                     }
-                    Log.d(TAG, "Category ID mapping completed: " + categoryNameToIdMap.size() + " categories");
 
                     mainHandler.post(() -> {
                         if (isFragmentSafe()) {
@@ -269,7 +251,6 @@ public class ShopFragment extends Fragment {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Failed to fetch category IDs: ", e);
                     mainHandler.post(() -> {
                         if (isFragmentSafe()) {
                             setupRecyclerView(); // Setup UI even if query fails
@@ -280,79 +261,6 @@ public class ShopFragment extends Fragment {
                 });
     }
 
-    private void startPreloadingData() {
-        if (!isPreloadStarted.compareAndSet(false, true) ||
-                categoryNameToIdMap.isEmpty() ||
-                !isFragmentSafe()) {
-            Log.d(TAG, "Preload conditions not met");
-            return;
-        }
-
-        Log.d(TAG, "Starting preload for " + categoryNameToIdMap.size() + " categories");
-
-        executor.execute(() -> {
-            try {
-                preloadManager.preloadAllCategoryData(categoryNameToIdMap);
-                Log.d(TAG, "Preload initiated successfully");
-
-                // Log cache status after delay
-                mainHandler.postDelayed(this::logCacheStatus, CACHE_STATUS_LOG_DELAY_MS);
-
-            } catch (Exception e) {
-                Log.e(TAG, "Error during preload", e);
-                isPreloadStarted.set(false); // Reset flag on error
-            }
-        });
-    }
-
-    private void logCacheStatus() {
-        if (!isFragmentSafe()) return;
-
-        Log.d(TAG, "=== CACHE STATUS ===");
-        Log.d(TAG, "Shop All cached: " + preloadManager.isShopAllCached());
-
-        int cachedCount = 0;
-        for (String categoryName : categoryNameToIdMap.keySet()) {
-            boolean isCached = preloadManager.isCategoryCached(categoryName);
-            if (isCached) cachedCount++;
-
-            Log.d(TAG, "Category '" + categoryName + "' cached: " + isCached);
-
-            if (isCached) {
-                List<ProductItem> products = preloadManager.getCategoryProducts(categoryName);
-                Map<String, String> subCategories = preloadManager.getSubCategories(categoryName);
-                Log.d(TAG, "  - Products: " + (products != null ? products.size() : 0));
-                Log.d(TAG, "  - Subcategories: " + (subCategories != null ? subCategories.size() : 0));
-            }
-        }
-        Log.d(TAG, "Total cached: " + cachedCount + "/" + categoryNameToIdMap.size());
-        Log.d(TAG, "==================");
-    }
-
-    // Static methods for accessing cached data
-    public static List<ProductItem> getCachedShopAllProducts() {
-        return ProductPreloadManager.getInstance().getShopAllProducts();
-    }
-
-    public static List<ProductItem> getCachedCategoryProducts(String categoryName) {
-        return ProductPreloadManager.getInstance().getCategoryProducts(categoryName);
-    }
-
-    public static Map<String, String> getCachedSubCategories(String categoryName) {
-        return ProductPreloadManager.getInstance().getSubCategories(categoryName);
-    }
-
-    public static List<ProductItem> getCachedSubCategoryProducts(String subCategoryName) {
-        return ProductPreloadManager.getInstance().getSubCategoryProducts(subCategoryName);
-    }
-
-    public static boolean isCategoryCached(String categoryName) {
-        return ProductPreloadManager.getInstance().isCategoryCached(categoryName);
-    }
-
-    public static boolean isShopAllCached() {
-        return ProductPreloadManager.getInstance().isShopAllCached();
-    }
 
     // Utility methods
     private boolean isFragmentSafe() {
@@ -360,9 +268,6 @@ public class ShopFragment extends Fragment {
     }
 
     private void showLoading(boolean show) {
-        if (progressBar != null && isFragmentSafe()) {
-            progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        }
         if (swipeRefreshLayout != null && !show) {
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -370,8 +275,6 @@ public class ShopFragment extends Fragment {
 
     private void showError(String message) {
         if (isFragmentSafe()) {
-            // Implement your error showing mechanism (Toast, Snackbar, etc.)
-            Log.e(TAG, "Error to show user: " + message);
         }
     }
 
@@ -407,9 +310,7 @@ public class ShopFragment extends Fragment {
     // Cart Badge Management
     private void startCartBadgeListener() {
         String uid = sessionManager.getUid();
-
         if (uid == null || uid.isEmpty()) {
-            Log.d("CartBadge", "User not logged in, hiding badge");
             safeUpdateCartBadge(0);
             return;
         }
@@ -421,12 +322,10 @@ public class ShopFragment extends Fragment {
                 .document(uid)
                 .addSnapshotListener((documentSnapshot, e) -> {
                     if (!isFragmentSafe()) {
-                        Log.d("CartBadge", "Fragment not safe, ignoring listener callback");
                         return;
                     }
 
                     if (e != null) {
-                        Log.w("CartBadge", "Listen failed.", e);
                         safeUpdateCartBadge(0);
                         return;
                     }
@@ -458,13 +357,11 @@ public class ShopFragment extends Fragment {
 
     private void safeUpdateCartBadge(int totalQuantity) {
         if (!isFragmentSafe() || txtCartBadge == null) {
-            Log.w("CartBadge", "Cannot update badge - fragment not safe or view null");
             return;
         }
 
         mainHandler.post(() -> {
             if (!isFragmentSafe() || txtCartBadge == null) {
-                Log.w("CartBadge", "Fragment detached during handler execution, skip update");
                 return;
             }
 
@@ -473,31 +370,25 @@ public class ShopFragment extends Fragment {
                     txtCartBadge.setVisibility(View.VISIBLE);
                     String displayText = totalQuantity >= 100 ? "99+" : String.valueOf(totalQuantity);
                     txtCartBadge.setText(displayText);
-                    Log.d("CartBadge", "Badge updated: " + displayText);
                 } else {
                     txtCartBadge.setVisibility(View.GONE);
-                    Log.d("CartBadge", "Badge hidden (quantity = 0)");
                 }
             } catch (Exception ex) {
-                Log.e("CartBadge", "Error updating cart badge UI", ex);
             }
         });
     }
 
     public void refreshCartBadge() {
         if (!isFragmentSafe()) {
-            Log.d("CartBadge", "Cannot refresh badge - fragment not safe");
             return;
         }
 
         String uid = sessionManager.getUid();
         if (uid == null || uid.isEmpty()) {
-            Log.d("CartBadge", "Cannot refresh badge - user not logged in");
             safeUpdateCartBadge(0);
             return;
         }
 
-        Log.d("CartBadge", "Manually refreshing cart badge");
 
         FirebaseFirestore.getInstance()
                 .collection("Customers")
@@ -505,7 +396,6 @@ public class ShopFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (!isFragmentSafe()) {
-                        Log.d("CartBadge", "Fragment detached during refresh, ignoring result");
                         return;
                     }
 
@@ -514,17 +404,14 @@ public class ShopFragment extends Fragment {
                 })
                 .addOnFailureListener(e -> {
                     if (!isFragmentSafe()) {
-                        Log.d("CartBadge", "Fragment detached during refresh error, ignoring");
                         return;
                     }
-                    Log.e("CartBadge", "Error refreshing cart badge", e);
                     safeUpdateCartBadge(0);
                 });
     }
 
     private void cleanupCartListener() {
         if (cartListener != null) {
-            Log.d("CartBadge", "Removing cart listener");
             cartListener.remove();
             cartListener = null;
         }

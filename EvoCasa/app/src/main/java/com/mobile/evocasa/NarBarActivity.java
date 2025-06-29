@@ -83,6 +83,14 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
             preloadManager.preloadAllCategoryDataBlocking(); // ← preload toàn bộ categories
             Log.d("NarBarActivity", "Preload toàn bộ category xong");
         });
+        executor.execute(() -> {
+            String userId = new UserSessionManager(this).getUid();
+            if (userId != null) {
+                ProductPreloadManager.getInstance().preloadWishlistForUser(userId, () -> {
+                    Log.d("Wishlist", "Wishlist cache loaded: " + ProductPreloadManager.getInstance().getCachedWishlist().size());
+                });
+            }
+        });
     }
     public static List<Category> getStaticCategoryList() {
         List<Category> categories = new ArrayList<>();

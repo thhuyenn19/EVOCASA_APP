@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.evocasa.productdetails.ProductDetailsActivity;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
@@ -109,9 +110,12 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
         // Kiểm tra xem sản phẩm đã trong wishlist chưa
         String customerId = sessionManager.getUid();
         if (customerId != null) {
-            checkWishlistStatus(customerId, product.getId(), holder);
-        } else {
-            holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+            List<String> wishlist = ProductPreloadManager.getInstance().getCachedWishlist();
+            if (wishlist != null && wishlist.contains(product.getId())) {
+                holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+            } else {
+                holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+            }
         }
 
         // Xử lý sự kiện nhấn vào icon yêu thích - Toggle wishlist
@@ -232,6 +236,7 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
                                     .update(updates)
                                     .addOnSuccessListener(aVoid -> {
                                         holder.imgFavorite.setImageResource(R.drawable.ic_wishlist_heart);
+                                        ProductPreloadManager.getInstance().addToWishlistCache(productId);
                                         Toast.makeText(holder.itemView.getContext(), "Added to wishlist", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
@@ -260,6 +265,7 @@ public class SubCategoryProductAdapter extends RecyclerView.Adapter<SubCategoryP
                                     .update(updates)
                                     .addOnSuccessListener(aVoid -> {
                                         holder.imgFavorite.setImageResource(R.drawable.ic_favourite);
+                                        ProductPreloadManager.getInstance().removeFromWishlistCache(productId);
                                         Toast.makeText(holder.itemView.getContext(), "Removed from wishlist", Toast.LENGTH_SHORT).show();
                                     })
                                     .addOnFailureListener(e -> {
