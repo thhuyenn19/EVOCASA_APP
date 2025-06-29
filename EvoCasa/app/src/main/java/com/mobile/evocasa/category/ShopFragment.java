@@ -77,19 +77,24 @@ public class ShopFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_shop, container, false);
+
+        initializeComponents();
+
         if (getArguments() != null) {
             preloadedCategories = (List<Category>) getArguments().getSerializable("preloadedCategories");
+            if (preloadedCategories != null && !preloadedCategories.isEmpty()) {
+                categoryList = preloadedCategories;
+            }
         }
+
+
         initializeComponents();
         setupClickListeners();
         applyCustomFonts();
+        loadInitialData();  // không override lại categoryList trong đây
 
-        // Start data loading with proper error handling
-        loadInitialData();
-        if (preloadedCategories != null && !preloadedCategories.isEmpty()) {
-            setupRecyclerView(); // ← Gọi ngay lập tức để hiển thị luôn
-            showLoading(false);
-        }
+        showLoading(false); // Ẩn loading nếu đã có data
+
         return view;
     }
 
@@ -159,15 +164,17 @@ public class ShopFragment extends Fragment {
 
         recyclerViewCategories = view.findViewById(R.id.recyclerViewCategories);
 
-        // Nếu categoryList đã được gán trước thì không gán lại nữa
-        if (categoryList == null || categoryList.isEmpty()) {
-            if (preloadedCategories != null && !preloadedCategories.isEmpty()) {
-                categoryList = preloadedCategories;
-            } else {
-                categoryList = createCategoryList(); // fallback nếu preload null
-            }
+        // Gán categoryList từ preload nếu có
+        if ((categoryList == null || categoryList.isEmpty()) && preloadedCategories != null && !preloadedCategories.isEmpty()) {
+            categoryList = preloadedCategories;
         }
 
+        // Nếu vẫn chưa có, fallback danh sách thủ công
+        if (categoryList == null || categoryList.isEmpty()) {
+            categoryList = createCategoryList();
+        }
+
+        // Setup layout
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
@@ -179,19 +186,19 @@ public class ShopFragment extends Fragment {
 
         int spacingInPixels = (int) (17 * getResources().getDisplayMetrics().density);
         recyclerViewCategories.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
-
         recyclerViewCategories.setClipToPadding(false);
         recyclerViewCategories.setHasFixedSize(true);
 
+        // Gán adapter NGAY LẬP TỨC nếu có data
         if (adapter == null) {
             adapter = new CategoryShopAdapter(getContext(), categoryList, this::onCategorySelected);
             recyclerViewCategories.setAdapter(adapter);
         } else {
-            adapter.notifyDataSetChanged(); // nếu adapter đã có thì chỉ cần update
+            adapter.notifyDataSetChanged(); // hoặc .notifyDataSetChanged() nếu không có hàm setData
         }
 
-        // Bắt đầu preload data (nếu chưa preload)
-        mainHandler.postDelayed(this::startPreloadingData, PRELOAD_DELAY_MS);
+        // ❌ Không delay preload nữa — vì đã preload xong từ NarBarActivity
+        // mainHandler.postDelayed(this::startPreloadingData, PRELOAD_DELAY_MS);
     }
 
     private List<Category> createCategoryList() {
@@ -532,6 +539,8 @@ public class ShopFragment extends Fragment {
         if (sessionManager != null && txtCartBadge != null && isFragmentSafe()) {
             startCartBadgeListener();
         }
+        setupRecyclerView(); // <== gọi ngay sau khi gán categoryList
+
     }
 
     @Override

@@ -88,6 +88,7 @@ public class ProductPreloadManager {
                         CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
                                 .thenRun(() -> {
                                     Log.d(TAG, "✅ All categories preloaded (blocking)");
+                                    preloadShopAllProducts();
                                     future.complete(null);
                                 });
 
@@ -103,6 +104,33 @@ public class ProductPreloadManager {
         } catch (Exception e) {
             Log.e(TAG, "❌ Exception in preloadAllCategoryDataBlocking", e);
         }
+    }
+    private List<String> cachedWishlist = new ArrayList<>();
+
+    public void preloadWishlistForUser(String userId) {
+        db.collection("Wishlist")
+                .whereEqualTo("UserId", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    cachedWishlist.clear();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        String productId = doc.getString("ProductId");
+                        if (productId != null) {
+                            cachedWishlist.add(productId);
+                        }
+                    }
+                    Log.d(TAG, "✅ Wishlist preloaded: " + cachedWishlist.size());
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "❌ Failed to preload wishlist", e));
+    }
+
+    public void addToWishlist(String productId) {
+        if (!cachedWishlist.contains(productId)) {
+            cachedWishlist.add(productId);
+        }
+    }
+    public void removeFromWishlist(String productId) {
+        cachedWishlist.remove(productId);
     }
 
     public interface PreloadCallback {
@@ -429,7 +457,9 @@ public class ProductPreloadManager {
     }
 
     // ===== GETTER METHODS =====
-
+    public List<String> getCachedWishlist() {
+        return cachedWishlist;
+    }
     /**
      * Lấy Shop All products từ cache
      */
@@ -438,6 +468,7 @@ public class ProductPreloadManager {
             return new ArrayList<>(allProductsCache);
         }
     }
+
 
     /**
      * Lấy subcategories cho một category từ cache

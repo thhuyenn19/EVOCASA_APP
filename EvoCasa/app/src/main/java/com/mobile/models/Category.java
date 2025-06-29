@@ -1,6 +1,8 @@
 package com.mobile.models;
 
-public class Category {
+import java.io.Serializable;
+
+public class Category implements Serializable {
     private String id;
     private String name;
     private String parentCategoryId; // Added to match the query

@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.adapters.CategoryShopAdapter;
@@ -16,6 +17,7 @@ import com.mobile.evocasa.order.OrderDetailFragment;
 import com.mobile.evocasa.payment.FinishPaymentFragment;
 import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.Category;
+import com.mobile.utils.UserSessionManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.concurrent.Executors;
 public class NarBarActivity extends AppCompatActivity implements BottomNavFragment.OnBottomNavSelectedListener {
     public static List<Category> preloadedCategories = new ArrayList<>();
     public static CategoryShopAdapter categoryAdapter;
+
 
     private BottomNavFragment bottomNavFragment; // Khai báo như instance variable
 
@@ -69,6 +72,8 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.bottom_nav_container, bottomNavFragment)
                 .commit();
+
+
     }
 
     private void preloadProductDataInBackground() {
@@ -78,6 +83,17 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
             preloadManager.preloadAllCategoryDataBlocking(); // ← preload toàn bộ categories
             Log.d("NarBarActivity", "Preload toàn bộ category xong");
         });
+    }
+    public static List<Category> getStaticCategoryList() {
+        List<Category> categories = new ArrayList<>();
+        categories.add(new Category(R.mipmap.ic_category_furniture, "Shop All"));
+        categories.add(new Category(R.mipmap.ic_category_furniture_shop, "Furniture"));
+        categories.add(new Category(R.mipmap.ic_category_decor, "Decor"));
+        categories.add(new Category(R.mipmap.ic_category_softgoods, "Soft Goods"));
+        categories.add(new Category(R.mipmap.ic_category_lighting, "Lighting"));
+        categories.add(new Category(R.mipmap.ic_category_art, "Art"));
+        categories.add(new Category(R.mipmap.ic_category_dining, "Dining & Entertaining"));
+        return categories;
     }
 
     private void navigateToShop() {
@@ -99,7 +115,11 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
         Fragment frag;
         switch (pos) {
             case 1:
-                frag = new ShopFragment();
+                ShopFragment shopFragment = new ShopFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("preloadedCategories", new ArrayList<>(getStaticCategoryList())); // truyền list vào
+                shopFragment.setArguments(bundle);
+                frag = shopFragment;
                 break;
             case 2:
                 frag = new NotificationFragment();

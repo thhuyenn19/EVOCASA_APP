@@ -271,18 +271,18 @@ public class CategoryFragment extends Fragment {
         isFetchingProducts = true;
         currentProductList.clear();
 
-        // ✅ Ưu tiên lấy từ preload cache
+        // Ưu tiên lấy từ preload cache
         ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
         List<ProductItem> cachedProducts = preloadManager.getShopAllProducts();
         if (cachedProducts != null && !cachedProducts.isEmpty()) {
             currentProductList.addAll(cachedProducts);
             productAdapter.notifyDataSetChanged();
             isFetchingProducts = false;
-            Log.d(TAG, "✅ Loaded Shop All products from cache: " + cachedProducts.size());
+            Log.d(TAG, "Loaded Shop All products from cache: " + cachedProducts.size());
             return;
         }
 
-        // ⛔ Fallback: load từ Firestore nếu cache rỗng
+        // Fallback: load từ Firestore nếu cache rỗng
         Log.d(TAG, "Fetching all products for Shop All from Firestore");
         db.collection("Product")
                 .get()
@@ -344,8 +344,8 @@ public class CategoryFragment extends Fragment {
 
         ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
 
-        // Trường hợp: All products của 1 category
-        if (selectedSubCategory.equals("All products") && categoryId != null) {
+        // ✅ Trường hợp: All products của 1 category (không phải là subcategory)
+        if (selectedSubCategory.equals("All products")) {
             List<ProductItem> cachedProducts = preloadManager.getCategoryProducts(selectedCategory);
             if (cachedProducts != null && !cachedProducts.isEmpty()) {
                 currentProductList.addAll(cachedProducts);
@@ -355,15 +355,15 @@ public class CategoryFragment extends Fragment {
                 return;
             }
 
-            // Fallback Firestore nếu cache rỗng
-            Log.d(TAG, "⛔ Fallback: Fetching all products from Firestore for category: " + selectedCategory);
+            Log.d(TAG, "Fallback: Fetching all products from Firestore for category: " + selectedCategory);
             db.collection("Product")
                     .get()
                     .addOnSuccessListener(queryDocumentSnapshots -> {
                         for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                             Map<String, Object> categoryIdObj = (Map<String, Object>) doc.get("category_id");
                             String productCategoryId = categoryIdObj != null ? (String) categoryIdObj.get("$oid") : null;
-                            if (productCategoryId != null && subCategoryIds.containsValue(productCategoryId)) {
+
+                            if (productCategoryId != null && productCategoryId.equals(categoryId)) {
                                 ProductItem product = parseProductFromDocument(doc);
                                 if (product != null) {
                                     currentProductList.add(product);
@@ -372,6 +372,7 @@ public class CategoryFragment extends Fragment {
                         }
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
+                        Log.d(TAG, "✅ Loaded from Firestore: " + currentProductList.size());
                     })
                     .addOnFailureListener(e -> {
                         Log.e(TAG, "❌ Firestore error fetching category products", e);
@@ -379,10 +380,11 @@ public class CategoryFragment extends Fragment {
                         isFetchingProducts = false;
                     });
 
+            return; // ⚠️ THÊM return tại đây để không rơi xuống else
         }
 
-        // Trường hợp: Subcategory cụ thể
-        else if (subCategoryIds.containsKey(selectedSubCategory)) {
+        // ✅ Trường hợp: Subcategory cụ thể
+        if (subCategoryIds.containsKey(selectedSubCategory)) {
             List<ProductItem> cachedSubProducts = preloadManager.getSubCategoryProducts(selectedSubCategory);
             if (cachedSubProducts != null && !cachedSubProducts.isEmpty()) {
                 currentProductList.addAll(cachedSubProducts);
@@ -392,8 +394,7 @@ public class CategoryFragment extends Fragment {
                 return;
             }
 
-            // Fallback Firestore nếu cache rỗng
-            Log.d(TAG, "⛔ Fallback: Fetching products for subcategory: " + selectedSubCategory);
+            Log.d(TAG, "Fallback: Fetching products for subcategory: " + selectedSubCategory);
             String subCategoryId = subCategoryIds.get(selectedSubCategory);
             db.collection("Product")
                     .get()
@@ -416,7 +417,6 @@ public class CategoryFragment extends Fragment {
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     });
-
         } else {
             Log.w(TAG, "⚠️ Unknown subcategory: " + selectedSubCategory);
             productAdapter.notifyDataSetChanged();
@@ -463,6 +463,7 @@ public class CategoryFragment extends Fragment {
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
         subCategoryList.add(new SubCategory("All products", true));
+        subCategoryIds.put("All products", categoryId);  // ✅ fix chính tại đây
 
         subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::onSubCategorySelected);
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
@@ -555,13 +556,14 @@ public class CategoryFragment extends Fragment {
             Log.d(TAG, "Fetch in progress, ignoring subcategory click");
             return;
         }
-        // ✅ Bỏ qua gọi lại filter nếu là "All products" và đã load từ cache
-        if (selectedSubCategory.equals("All products") &&
-                productCache != null && productCache.containsKey(categoryId)) {
-            Log.d(TAG, "Skip re-fetching 'All products' – already cached");
-            return;
+
+        // ✅ Cập nhật trạng thái selected cho UI
+        for (SubCategory sub : subCategoryList) {
+            sub.setSelected(sub.getName().equals(selectedSubCategory));
         }
-        // Tìm vị trí của subcategory được chọn
+        subCategoryAdapter.notifyDataSetChanged();
+
+        // ✅ Scroll đến vị trí được chọn
         int selectedPosition = -1;
         for (int i = 0; i < subCategoryList.size(); i++) {
             if (subCategoryList.get(i).getName().equals(selectedSubCategory)) {
@@ -569,17 +571,24 @@ public class CategoryFragment extends Fragment {
                 break;
             }
         }
-
         if (selectedPosition != -1) {
             final int position = selectedPosition;
             recyclerViewSubCategory.postDelayed(() -> smoothScrollToSubCategoryPosition(position), 100);
         }
 
-        // Filter products
-        if (selectedCategory.equals("Shop All")) {
-            fetchAllProductsForShopAll();
+        // ✅ Xử lý lọc sản phẩm
+        if (selectedSubCategory.equals("All products")) {
+            if (selectedCategory.equals("Shop All")) {
+                fetchAllProductsForShopAll();
+            } else {
+                filterProductsBySubCategory("All products");
+            }
         } else {
-            filterProductsBySubCategory(selectedSubCategory);
+            if (selectedCategory.equals("Shop All")) {
+                fetchAllProductsForShopAll(); // Shop All luôn dùng 1 danh sách
+            } else {
+                filterProductsBySubCategory(selectedSubCategory); // Category thường lọc theo sub
+            }
         }
     }
 
