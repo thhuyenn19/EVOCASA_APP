@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">EvoCasaAdmin</string>
+    <string name="title_customer_management">Customer Management</string>
+    <string name="title_hint_Search">Search</string>
 </resources>

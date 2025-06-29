@@ -2,4 +2,29 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="color_button_nabar">#50F2EAD3</color>
+    <color name="color_5E4C3E">#5E4C3E</color>
+    <color name="color_3F2305">#3F2305</color>
+    <color name="color_bg">#FFFCF3</color>
+    <color name="color_FF6600">#FF6600</color>
+    <color name="color_tab_active">#B34F0B</color>
+    <color name="color_category">#F9E9CE</color>
+    <color name="green">#525B4A</color>
+    <color name="gray_light">#CCCCCC</color>
+    <color name="color_F2EAD3">#F2EAD3</color>
+    <color name="color_80F2EAD3">#80F2EAD3</color>
+    <color name="color_50F2EAD3">#50F2EAD3</color>
+    <color name="color_bg_btn_addtocart">#C5B6A7</color>
+    <color name="color_bg_btn_buynow">#525B4A</color>
+    <color name="color_cmt_rv">#888888</color>
+    <color name="color_333333">#333333</color>
+    <color name="orange_active">#B3FF6600</color>
+    <color name="gray_inactive">#B3000000</color>
+    <color name="color_E24747">#E24747</color>
+    <color name="color_525B4A">#525B4A</color>
+    <color name="color_805E4C3E">#805E4C3E</color>
+    <color name="color_yellow">#FFD64F</color>
+    <color name="gray">#C0C0C0</color>
+    <color name="color_active">#3F2305</color>
+    <color name="color_inactive">#D6CFC7</color>
 </resources>
