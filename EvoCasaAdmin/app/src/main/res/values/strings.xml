@@ -12,7 +12,6 @@
     <string name="total_orders_value">10</string>
     <string name="total_orders">Total Orders</string>
     <string name="total_orders_percent">+5%</string>
-    <string name="customer_name">Name</string>
     <string name="customer_id">ID</string>
     <string name="customer_gender">Gender</string>
     <string name="customer_mail">Mail</string>

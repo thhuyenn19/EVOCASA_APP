@@ -28,7 +28,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     public void onBindViewHolder(CustomerViewHolder holder, int position) {
         Customer customer = customerList.get(position);
         holder.txtCustomerId.setText("ID: " + customer.getId());
-        holder.txtCustomerName.setText("Name: " + customer.getName());
+        holder.txtCustomerName.setText(customer.getName());
         holder.txtCustomerGender.setText("Gender: " + customer.getGender());
         holder.txtCustomerMail.setText("Mail: " + customer.getMail());
         holder.txtCustomerPhone.setText("Phone: " + customer.getPhone());
