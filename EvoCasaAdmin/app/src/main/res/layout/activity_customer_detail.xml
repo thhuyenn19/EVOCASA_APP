@@ -59,7 +59,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="Huyen"
                             android:textColor="@color/color_3F2305"
                             android:textSize="22sp"
                             android:textStyle="bold" />
@@ -69,7 +68,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
-                            android:text="Gender: Female"
                             android:textColor="#666666"
                             android:textSize="14sp"/>
 
@@ -78,7 +76,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
-                            android:text="Email: huyenntt@gmail.com"
                             android:textColor="#666666"
                             android:textSize="14sp"/>
 
@@ -87,7 +84,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
-                            android:text="Phone: 0987654321"
                             android:textColor="#666666"
                             android:textSize="14sp"/>
 
@@ -95,7 +91,6 @@
                             android:id="@+id/tv_customer_address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Address: Hanoi, Vietnam"
                             android:textColor="#666666"
                             android:textSize="14sp" />
 

@@ -11,12 +11,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.thanhhuyen.untils.FontUtils;
 
 public class CustomerDetailActivity extends AppCompatActivity {
 
     private TextView txtTitle;
     private ImageView imgBack;
+    private TextView tv_customer_name, tv_customer_gender, tv_customer_email, tv_customer_phone, tv_customer_address;
+
+    private FirebaseFirestore db;
+    private String customerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +35,18 @@ public class CustomerDetailActivity extends AppCompatActivity {
 //            return insets;
 //        });
 
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+
+        // Get customerId from Intent
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("customerId")) {
+            customerId = intent.getStringExtra("customerId");
+        }
+
         initViews();
+
+        loadCustomerDetails();
     }
 
     private void initViews() {
@@ -48,5 +65,32 @@ public class CustomerDetailActivity extends AppCompatActivity {
         if (txtTitle != null) {
             FontUtils.setZboldFont(this, txtTitle);
         }
+
+        tv_customer_name = findViewById(R.id.tv_customer_name);
+        tv_customer_gender = findViewById(R.id.tv_customer_gender);
+        tv_customer_email = findViewById(R.id.tv_customer_email);
+        tv_customer_phone = findViewById(R.id.tv_customer_phone);
+        tv_customer_address = findViewById(R.id.tv_customer_address);
+    }
+
+    private void loadCustomerDetails() {
+        if (customerId == null) return;
+
+        DocumentReference customerRef = db.collection("Customers").document(customerId);
+        customerRef.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String name = documentSnapshot.getString("Name");
+                String gender = documentSnapshot.getString("Gender");
+                String email = documentSnapshot.getString("Mail");
+                String phone = documentSnapshot.getString("Phone");
+                String address = documentSnapshot.getString("Address");
+
+                tv_customer_name.setText(name);
+                tv_customer_gender.setText("Gender: " + gender);
+                tv_customer_email.setText("Email: " + email);
+                tv_customer_phone.setText("Phone: " + phone);
+                tv_customer_address.setText("Address: " + address);
+            }
+        });
     }
 }
