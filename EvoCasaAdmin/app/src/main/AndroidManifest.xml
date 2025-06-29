@@ -15,7 +15,7 @@
         android:theme="@style/Theme.EvoCasaAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".CustomerManagementActivity"
+            android:name=".OrderManagementActivity"
             android:exported="false" />
         <activity
             android:name=".CustomerDetailActivity"
@@ -24,7 +24,7 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".OrderManagementActivity"
+            android:name=".CustomerManagementActivity"
             android:exported="false" />
         <activity
             android:name=".ProductActivity"

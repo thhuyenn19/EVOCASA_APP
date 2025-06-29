@@ -57,9 +57,16 @@ public class CustomerManagementActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        // Back button trong topbar
+// Back button in topbar -> navigate to MainActivity
         imgBack = findViewById(R.id.imgBack);
-        if (imgBack != null) imgBack.setOnClickListener(v -> finish());
+        if (imgBack != null) {
+            imgBack.setOnClickListener(v -> {
+                Intent intent = new Intent(CustomerManagementActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        }
 
         // Font setup
         txtTitle = findViewById(R.id.txtTitle);
