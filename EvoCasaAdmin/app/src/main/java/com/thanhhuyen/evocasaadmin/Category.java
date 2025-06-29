@@ -1,6 +1,7 @@
 package com.thanhhuyen.evocasaadmin;
 
 import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.PropertyName;
 
 public class Category {
     @Exclude
@@ -17,6 +18,16 @@ public class Category {
         // Required empty constructor for Firestore
     }
 
+    @PropertyName("Name")
+    public String getName() {
+        return name;
+    }
+
+    @PropertyName("Name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Exclude
     public String getId() {
         return id;
@@ -25,14 +36,6 @@ public class Category {
     @Exclude
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {

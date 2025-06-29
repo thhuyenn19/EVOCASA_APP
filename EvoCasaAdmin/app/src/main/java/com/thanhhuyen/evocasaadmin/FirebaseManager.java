@@ -4,8 +4,10 @@ import android.util.Log;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +16,9 @@ public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     private static FirebaseManager instance;
     private final FirebaseFirestore db;
+
+    // List of sample category names to be removed
+    private final List<String> SAMPLE_CATEGORY_NAMES = Arrays.asList("Nhà phố", "Chung cư", "Biệt thự");
 
     private FirebaseManager() {
         db = FirebaseFirestore.getInstance();
@@ -31,141 +36,131 @@ public class FirebaseManager {
         void onError(String error);
     }
 
+    public interface OnCategoriesLoadedListener {
+        void onCategoriesLoaded(List<Category> categories);
+        void onError(String error);
+    }
+
+    private void deleteSampleCategories(Runnable onComplete) {
+        db.collection("Category")
+                .whereIn("name", SAMPLE_CATEGORY_NAMES)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (!querySnapshot.isEmpty()) {
+                        int[] deletedCount = {0};
+                        int totalToDelete = querySnapshot.size();
+
+                        for (QueryDocumentSnapshot document : querySnapshot) {
+                            db.collection("Category")
+                                    .document(document.getId())
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
+                                        deletedCount[0]++;
+                                        Log.d(TAG, "deleteSampleCategories: Deleted sample category: " + document.get("name"));
+                                        if (deletedCount[0] == totalToDelete) {
+                                            Log.d(TAG, "deleteSampleCategories: All sample categories deleted");
+                                            onComplete.run();
+                                        }
+                                    })
+                                    .addOnFailureListener(e -> Log.e(TAG, "deleteSampleCategories: Error deleting category", e));
+                        }
+                    } else {
+                        onComplete.run();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "deleteSampleCategories: Error querying sample categories", e);
+                    onComplete.run();
+                });
+    }
+
     public void loadProducts(OnProductsLoadedListener listener) {
         Log.d(TAG, "loadProducts: Starting to load products");
-        
-        // First check if we have any categories
-        db.collection("Category")
-            .get()
-            .addOnSuccessListener(categoryQuerySnapshot -> {
-                Log.d(TAG, "loadProducts: Total categories found: " + categoryQuerySnapshot.size());
-                
-                if (categoryQuerySnapshot.isEmpty()) {
-                    // No categories exist, create sample categories
-                    createSampleCategories(() -> {
-                        // Retry loading after creating samples
-                        loadProductsWithCategories(listener);
-                    });
-                } else {
-                    // Categories exist, proceed with normal loading
-                    loadProductsWithCategories(listener);
-                }
-            })
-            .addOnFailureListener(e -> {
-                Log.e(TAG, "loadProducts: Error checking categories", e);
-                listener.onError("Failed to check categories: " + e.getMessage());
-            });
+        loadProductsWithCategories(listener);
     }
 
     private void loadProductsWithCategories(OnProductsLoadedListener listener) {
         db.collection("Category")
-            .orderBy("order")
-            .get()
-            .addOnSuccessListener(categoryQuerySnapshot -> {
-                Log.d(TAG, "loadProductsWithCategories: Categories loaded, count: " + categoryQuerySnapshot.size());
-                
-                Map<String, List<Product>> productsByCategory = new HashMap<>();
-                List<Category> categories = new ArrayList<>();
+                .orderBy("order")
+                .get()
+                .addOnSuccessListener(categoryQuerySnapshot -> {
+                    Log.d(TAG, "loadProductsWithCategories: Categories loaded, count: " + categoryQuerySnapshot.size());
 
-                // Process all categories
-                for (QueryDocumentSnapshot document : categoryQuerySnapshot) {
-                    Category category = document.toObject(Category.class);
-                    category.setId(document.getId());
-                    categories.add(category);
-                    productsByCategory.put(category.getId(), new ArrayList<>());
-                    Log.d(TAG, "loadProductsWithCategories: Added category: " + category.getName() + 
-                        " (ID: " + category.getId() + ")");
-                }
+                    Map<String, List<Product>> productsByCategory = new HashMap<>();
+                    List<Category> categories = new ArrayList<>();
 
-                // Then load all products
-                db.collection("Product")
-                    .whereEqualTo("isActive", true)
-                    .get()
-                    .addOnSuccessListener(productQuerySnapshot -> {
-                        Log.d(TAG, "loadProductsWithCategories: Products loaded, count: " + 
-                            productQuerySnapshot.size());
+                    for (QueryDocumentSnapshot document : categoryQuerySnapshot) {
+                        Category category = document.toObject(Category.class);
+                        category.setId(document.getId());
+                        categories.add(category);
+                        productsByCategory.put(category.getId(), new ArrayList<>());
+                        Log.d(TAG, "loadProductsWithCategories: Added category: " + category.getName() +
+                                " (ID: " + category.getId() + ")");
+                    }
 
-                        for (QueryDocumentSnapshot document : productQuerySnapshot) {
-                            try {
-                                Product product = document.toObject(Product.class);
-                                product.setId(document.getId());
-                                
-                                String categoryId = product.getCategoryId();
-                                if (categoryId != null && productsByCategory.containsKey(categoryId)) {
-                                    productsByCategory.get(categoryId).add(product);
-                                    Log.d(TAG, "loadProductsWithCategories: Added product " + 
-                                        product.getName() + " to category " + categoryId);
+                    db.collection("Product")
+                            .whereEqualTo("isActive", true)
+                            .get()
+                            .addOnSuccessListener(productQuerySnapshot -> {
+                                Log.d(TAG, "loadProductsWithCategories: Products loaded, count: " +
+                                        productQuerySnapshot.size());
+
+                                for (QueryDocumentSnapshot document : productQuerySnapshot) {
+                                    try {
+                                        Product product = document.toObject(Product.class);
+                                        product.setId(document.getId());
+
+                                        String categoryId = product.getCategoryId();
+                                        if (categoryId != null && productsByCategory.containsKey(categoryId)) {
+                                            productsByCategory.get(categoryId).add(product);
+                                            Log.d(TAG, "loadProductsWithCategories: Added product " +
+                                                    product.getName() + " to category " + categoryId);
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e(TAG, "loadProductsWithCategories: Error processing product", e);
+                                    }
                                 }
-                            } catch (Exception e) {
-                                Log.e(TAG, "loadProductsWithCategories: Error processing product", e);
+
+                                listener.onProductsLoaded(productsByCategory);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e(TAG, "loadProductsWithCategories: Error loading products", e);
+                                listener.onError("Failed to load products: " + e.getMessage());
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "loadProductsWithCategories: Error loading categories", e);
+                    listener.onError("Failed to load categories: " + e.getMessage());
+                });
+    }
+
+    public void loadCategories(OnCategoriesLoadedListener listener) {
+        deleteSampleCategories(() -> {
+            db.collection("Category")
+//                    .orderBy("order")  // Sort by order field
+                    .get()
+                    .addOnSuccessListener(querySnapshot -> {
+                        List<Category> categories = new ArrayList<>();
+
+                        Log.d(TAG, "Checking raw data from Firestore:");
+                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                            Log.d(TAG, "Raw data: " + doc.getData());  // ✅ Kiểm tra dữ liệu gốc
+
+                            Category category = doc.toObject(Category.class);
+                            if (category != null) {
+                                category.setId(doc.getId());
+                                categories.add(category);
+                                Log.d(TAG, "loadCategories: Loaded category: " + category.getName());
                             }
                         }
 
-                        listener.onProductsLoaded(productsByCategory);
+                        Log.d(TAG, "loadCategories: Total categories loaded: " + categories.size());
+                        listener.onCategoriesLoaded(categories);
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "loadProductsWithCategories: Error loading products", e);
-                        listener.onError("Failed to load products: " + e.getMessage());
+                        Log.e(TAG, "loadCategories: Error loading categories", e);
+                        listener.onError(e.getMessage());
                     });
-            })
-            .addOnFailureListener(e -> {
-                Log.e(TAG, "loadProductsWithCategories: Error loading categories", e);
-                listener.onError("Failed to load categories: " + e.getMessage());
-            });
+        });
     }
-
-    private void createSampleCategories(Runnable onComplete) {
-        Log.d(TAG, "createSampleCategories: Creating sample categories");
-
-        List<Category> sampleCategories = new ArrayList<>();
-        
-        // Create sample categories
-        Category cat1 = new Category();
-        cat1.setName("Nhà phố");
-        cat1.setDescription("Các dự án nhà phố");
-        cat1.setOrder(1);
-        cat1.setActive(true);
-        cat1.setCreatedAt(System.currentTimeMillis());
-        cat1.setUpdatedAt(System.currentTimeMillis());
-        sampleCategories.add(cat1);
-
-        Category cat2 = new Category();
-        cat2.setName("Chung cư");
-        cat2.setDescription("Các dự án chung cư");
-        cat2.setOrder(2);
-        cat2.setActive(true);
-        cat2.setCreatedAt(System.currentTimeMillis());
-        cat2.setUpdatedAt(System.currentTimeMillis());
-        sampleCategories.add(cat2);
-
-        Category cat3 = new Category();
-        cat3.setName("Biệt thự");
-        cat3.setDescription("Các dự án biệt thự");
-        cat3.setOrder(3);
-        cat3.setActive(true);
-        cat3.setCreatedAt(System.currentTimeMillis());
-        cat3.setUpdatedAt(System.currentTimeMillis());
-        sampleCategories.add(cat3);
-
-        // Counter for tracking completion
-        final int[] completedCount = {0};
-        final int totalCategories = sampleCategories.size();
-
-        // Add categories to Firestore
-        for (Category category : sampleCategories) {
-            db.collection("Category")
-                .add(category)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d(TAG, "createSampleCategories: Added category: " + category.getName());
-                    completedCount[0]++;
-                    if (completedCount[0] == totalCategories) {
-                        Log.d(TAG, "createSampleCategories: All sample categories created");
-                        onComplete.run();
-                    }
-                })
-                .addOnFailureListener(e -> 
-                    Log.e(TAG, "createSampleCategories: Error adding category: " + 
-                        category.getName(), e));
-        }
-    }
-} 
+}

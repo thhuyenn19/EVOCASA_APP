@@ -3,7 +3,6 @@ package com.thanhhuyen.evocasaadmin;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ProductActivity extends AppCompatActivity {
     private static final String TAG = "ProductActivity";
@@ -59,31 +57,31 @@ public class ProductActivity extends AppCompatActivity {
         Log.d(TAG, "loadData: Starting to load data");
         loadingIndicator.setVisibility(View.VISIBLE);
 
-        firebaseManager.loadProducts(new FirebaseManager.OnProductsLoadedListener() {
+        firebaseManager.loadCategories(new FirebaseManager.OnCategoriesLoadedListener() {
             @Override
-            public void onProductsLoaded(Map<String, List<Product>> productsByCategory) {
-                Log.d(TAG, "onProductsLoaded: Products loaded successfully. Categories count: " 
-                    + productsByCategory.size());
+            public void onCategoriesLoaded(List<Category> categories) {
+                Log.d(TAG, "onCategoriesLoaded: Categories loaded successfully. Count: " 
+                    + categories.size());
                 
                 runOnUiThread(() -> {
                     loadingIndicator.setVisibility(View.GONE);
-                    if (productsByCategory.isEmpty()) {
-                        Log.d(TAG, "onProductsLoaded: No products found");
+                    if (categories.isEmpty()) {
+                        Log.d(TAG, "onCategoriesLoaded: No categories found");
                         Toast.makeText(ProductActivity.this, 
-                            "No products found", Toast.LENGTH_SHORT).show();
+                            "No categories found", Toast.LENGTH_SHORT).show();
                     } else {
-                        categoryAdapter.updateData(productsByCategory);
+                        categoryAdapter.setCategories(categories);
                     }
                 });
             }
 
             @Override
             public void onError(String error) {
-                Log.e(TAG, "onError: Failed to load products: " + error);
+                Log.e(TAG, "onError: Failed to load categories: " + error);
                 runOnUiThread(() -> {
                     loadingIndicator.setVisibility(View.GONE);
                     Toast.makeText(ProductActivity.this, 
-                        "Error loading products: " + error, Toast.LENGTH_SHORT).show();
+                        "Error loading categories: " + error, Toast.LENGTH_SHORT).show();
                 });
             }
         });
