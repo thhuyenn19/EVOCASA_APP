@@ -1,5 +1,6 @@
 package com.thanhhuyen.evocasaadmin;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,8 +23,12 @@ import com.thanhhuyen.adapters.CustomerAdapter;
 import com.thanhhuyen.models.Customer;
 import com.thanhhuyen.untils.FontUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class CustomerManagementActivity extends AppCompatActivity {
@@ -37,7 +42,6 @@ public class CustomerManagementActivity extends AppCompatActivity {
             txtTotalOrdersTitle, txtTotalOrdersPercent;
     private ImageView imgBack;
     private EditText edtSearch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,39 +67,36 @@ public class CustomerManagementActivity extends AppCompatActivity {
             FontUtils.setZboldFont(this, txtTitle);
         }
         edtSearch = findViewById(R.id.edtSearch);
-         if (edtSearch != null) {
-             FontUtils.setRegularFont(this, edtSearch);
-         }edtSearch = findViewById(R.id.edtSearch);
         if (edtSearch != null) {
             FontUtils.setRegularFont(this, edtSearch);
         }
 
-        TextView txtTotalCustomersValue = findViewById(R.id.txtTotalCustomersValue);
+        txtTotalCustomersValue = findViewById(R.id.txtTotalCustomersValue);
         if (txtTotalCustomersValue != null) {
             FontUtils.setBoldFont(this, txtTotalCustomersValue);
         }
 
-        TextView txtTotalCustomersTitle = findViewById(R.id.txtTotalCustomersTitle);
+        txtTotalCustomersTitle = findViewById(R.id.txtTotalCustomersTitle);
         if (txtTotalCustomersTitle != null) {
             FontUtils.setRegularFont(this, txtTotalCustomersTitle);
         }
 
-        TextView txtTotalCustomersPercent = findViewById(R.id.txtTotalCustomersPercent);
+        txtTotalCustomersPercent = findViewById(R.id.txtTotalCustomersPercent);
         if (txtTotalCustomersPercent != null) {
             FontUtils.setBoldFont(this, txtTotalCustomersPercent);
         }
 
-        TextView txtNewCustomersValue = findViewById(R.id.txtNewCustomersValue);
+        txtNewCustomersValue = findViewById(R.id.txtNewCustomersValue);
         if (txtNewCustomersValue != null) {
             FontUtils.setBoldFont(this, txtNewCustomersValue);
         }
 
-        TextView txtNewCustomersTitle = findViewById(R.id.txtNewCustomersTitle);
+        txtNewCustomersTitle = findViewById(R.id.txtNewCustomersTitle);
         if (txtNewCustomersTitle != null) {
             FontUtils.setRegularFont(this, txtNewCustomersTitle);
         }
 
-        TextView txtNewCustomersPercent = findViewById(R.id.txtNewCustomersPercent);
+        txtNewCustomersPercent = findViewById(R.id.txtNewCustomersPercent);
         if (txtNewCustomersPercent != null) {
             FontUtils.setBoldFont(this, txtNewCustomersPercent);
         }
@@ -143,16 +144,36 @@ public class CustomerManagementActivity extends AppCompatActivity {
                             String dob = "";
                             if (document.get("DOB") instanceof Map) {
                                 Map<String, Object> dobMap = (Map<String, Object>) document.get("DOB");
-                                dob = (String) dobMap.get("$date");
+                                String dobRaw = (String) dobMap.get("$date");
+                                dob = formatDob(dobRaw);
                             }
 
                             customerList.add(new Customer(id, name, gender, mail, phone, dob));
                         }
                         adapter.notifyDataSetChanged();
+
+                        // Hiển thị tổng số lượng customer
+                        if (txtTotalCustomersValue != null) {
+                            txtTotalCustomersValue.setText(String.valueOf(customerList.size()));
+                        }
+
                     } else {
                         Log.e("Firestore", "Error getting customers", task.getException());
                     }
                 });
+    }
+
+    private String formatDob(String dobRaw) {
+        if (dobRaw == null || dobRaw.isEmpty()) return "";
+        SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        try {
+            Date date = isoFormat.parse(dobRaw);
+            return outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return dobRaw; // return raw if parsing fails
+        }
     }
 
 }

@@ -7,17 +7,41 @@
     android:layout_marginBottom="8dp"
     android:padding="15dp">
 
-    <!-- Name -->
-    <TextView
-        android:id="@+id/txtCustomerName"
+    <!-- Name + View Icon + View Text -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/customer_name"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#3F2305" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-    <!-- ID (under Name) -->
+        <TextView
+            android:id="@+id/txtCustomerName"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#3F2305" />
+
+        <ImageView
+            android:id="@+id/btnView"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:src="@drawable/ic_view"
+            android:layout_marginStart="8dp"/>
+
+        <TextView
+            android:id="@+id/txtViewLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_view"
+            android:textStyle="italic"
+            android:textSize="14sp"
+            android:textColor="@color/color_5E4C3E"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
+
+    <!-- ID -->
     <TextView
         android:id="@+id/txtCustomerId"
         android:layout_width="match_parent"
