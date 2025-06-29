@@ -7,18 +7,25 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Product {
     @Exclude
     private String id;
     private String name;
     private String description;
-    private String categoryId;
-    private List<String> images;
+    private Map<String, Object> category_id;
+    private String imageJson;
     private double price;
     private boolean isActive;
-    private long createdAt;
-    private long updatedAt;
+    private String origin;
+    private List<String> customize;
+    private String uses;
+    private Map<String, Object> create_date;
+    private String store;
+    private int quantity;
+    private String dimension;
+    private Object ratings;
 
     public Product() {
         // Required empty constructor for Firestore
@@ -34,89 +41,145 @@ public class Product {
         this.id = id;
     }
 
+    @PropertyName("Name")
     public String getName() {
         return name;
     }
 
+    @PropertyName("Name")
     public void setName(String name) {
         this.name = name;
     }
 
+    @PropertyName("Description")
     public String getDescription() {
         return description;
     }
 
+    @PropertyName("Description")
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @PropertyName("category_id")
     public String getCategoryId() {
-        return categoryId;
+        if (category_id != null && category_id.containsKey("$oid")) {
+            return category_id.get("$oid").toString();
+        }
+        return null;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    @PropertyName("category_id")
+    public void setCategoryId(Map<String, Object> categoryId) {
+        this.category_id = categoryId;
     }
 
+    @PropertyName("Image")
     public List<String> getImages() {
-        return images != null ? images : new ArrayList<>();
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
-
-    @PropertyName("image")
-    public void setImageFromString(String imageJson) {
         if (imageJson == null || imageJson.isEmpty()) {
-            this.images = new ArrayList<>();
-            return;
+            return new ArrayList<>();
         }
-        
         try {
-            if (imageJson.startsWith("[")) {
-                // If it's a JSON array string
-                this.images = new Gson().fromJson(imageJson, new TypeToken<List<String>>(){}.getType());
-            } else {
-                // If it's a single image URL
-                this.images = new ArrayList<>();
-                this.images.add(imageJson);
-            }
+            return new Gson().fromJson(imageJson, new TypeToken<List<String>>(){}.getType());
         } catch (Exception e) {
-            this.images = new ArrayList<>();
-            this.images.add(imageJson); // Treat as single URL if JSON parsing fails
+            List<String> result = new ArrayList<>();
+            result.add(imageJson);
+            return result;
         }
     }
 
+    @PropertyName("Image")
+    public void setImages(String imageJson) {
+        this.imageJson = imageJson;
+    }
+
+    @PropertyName("Price")
     public double getPrice() {
         return price;
     }
 
+    @PropertyName("Price")
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public boolean isActive() {
-        return isActive;
+    @PropertyName("Origin")
+    public String getOrigin() {
+        return origin;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    @PropertyName("Origin")
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
+    @PropertyName("Customize")
+    public List<String> getCustomize() {
+        return customize != null ? customize : new ArrayList<>();
     }
 
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
+    @PropertyName("Customize")
+    public void setCustomize(List<String> customize) {
+        this.customize = customize;
     }
 
-    public long getUpdatedAt() {
-        return updatedAt;
+    @PropertyName("Uses")
+    public String getUses() {
+        return uses;
     }
 
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
+    @PropertyName("Uses")
+    public void setUses(String uses) {
+        this.uses = uses;
+    }
+
+    @PropertyName("Create_date")
+    public Map<String, Object> getCreateDate() {
+        return create_date;
+    }
+
+    @PropertyName("Create_date")
+    public void setCreateDate(Map<String, Object> createDate) {
+        this.create_date = createDate;
+    }
+
+    @PropertyName("Store")
+    public String getStore() {
+        return store;
+    }
+
+    @PropertyName("Store")
+    public void setStore(String store) {
+        this.store = store;
+    }
+
+    @PropertyName("Quantity")
+    public int getQuantity() {
+        return quantity;
+    }
+
+    @PropertyName("Quantity")
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    @PropertyName("Dimension")
+    public String getDimension() {
+        return dimension;
+    }
+
+    @PropertyName("Dimension")
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
+    }
+
+    @PropertyName("Ratings")
+    public Object getRatings() {
+        return ratings;
+    }
+
+    @PropertyName("Ratings")
+    public void setRatings(Object ratings) {
+        this.ratings = ratings;
     }
 } 
