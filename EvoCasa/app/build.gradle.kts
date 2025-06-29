@@ -71,8 +71,9 @@ dependencies {
     implementation ("androidx.activity:activity:1.7.2")
     implementation ("com.google.firebase:firebase-dynamic-links:21.1.0")
 
-    implementation ("org.tensorflow:tensorflow-lite:2.10.0")  // Chỉnh phiên bản nếu cần
-    implementation ("org.tensorflow:tensorflow-lite-support:2.10.0")
-   
+    implementation ("org.tensorflow:tensorflow-lite:2.10.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.2")
+    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.2")
+
 
 }

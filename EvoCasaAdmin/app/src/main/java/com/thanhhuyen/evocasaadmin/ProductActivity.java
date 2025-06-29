@@ -44,7 +44,7 @@ public class ProductActivity extends AppCompatActivity {
         // Find views
         categoriesRecyclerView = findViewById(R.id.categoriesRecyclerView);
         loadingIndicator = findViewById(R.id.loadingIndicator);
-        ImageButton backButton = findViewById(R.id.backButton);
+        View btnBack = findViewById(R.id.btnBack);
 
         // Setup RecyclerView
         categoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -52,7 +52,7 @@ public class ProductActivity extends AppCompatActivity {
         categoriesRecyclerView.setAdapter(categoryAdapter);
 
         // Setup back button
-        backButton.setOnClickListener(v -> finish());
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void loadData() {
