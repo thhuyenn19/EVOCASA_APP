@@ -59,6 +59,15 @@
                 android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/imgClearText"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_close"
+                android:padding="2dp"
+                android:visibility="gone" />
+
+            <ImageView
                 android:id="@+id/imgMic"
                 android:layout_width="24dp"
                 android:layout_height="24dp"

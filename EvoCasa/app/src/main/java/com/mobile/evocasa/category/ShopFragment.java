@@ -423,11 +423,15 @@ public class ShopFragment extends Fragment {
         super.onStart();
         isFragmentActive.set(true);
         Log.d("CartBadge", "Fragment onStart()");
+
         if (sessionManager != null && txtCartBadge != null && isFragmentSafe()) {
             startCartBadgeListener();
         }
-        setupRecyclerView(); // <== gọi ngay sau khi gán categoryList
 
+        // KHÔNG GỌI LẠI SETUP RECYCLERVIEW NẾU ĐÃ TỒN TẠI
+        if (adapter == null || recyclerViewCategories.getAdapter() == null) {
+            setupRecyclerView();
+        }
     }
 
     @Override

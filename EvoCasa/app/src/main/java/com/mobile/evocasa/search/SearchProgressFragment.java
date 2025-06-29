@@ -45,9 +45,8 @@ import java.util.Locale;
 import java.util.Set;
 
 public class SearchProgressFragment extends Fragment {
-    private ImageView imgClearText; // Nút xóa text
     private EditText edtSearch;
-    private ImageView imgSearch, imgMic, btnBack;
+    private ImageView imgSearch, imgMic, btnBack, imgClearText;
     private TextView txtClearHistory;
     private RecyclerView recyclerView;
 
@@ -90,6 +89,7 @@ public class SearchProgressFragment extends Fragment {
         txtClearHistory = view.findViewById(R.id.txtClearHistory);
         recyclerView = view.findViewById(R.id.recyclerHistory);
         layoutSearchHistory = view.findViewById(R.id.layoutSearchHistory);
+        imgClearText = view.findViewById(R.id.imgClearText);
 
         // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -105,11 +105,16 @@ public class SearchProgressFragment extends Fragment {
         recyclerSuggestions.setAdapter(suggestionAdapter);
         recyclerSuggestions.setVisibility(View.GONE);
 
-        // ✅ TextWatcher được cải thiện hơn nữa
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString().trim();
+
+                if (s.length() > 0) {
+                    imgClearText.setVisibility(View.VISIBLE);
+                } else {
+                    imgClearText.setVisibility(View.GONE);
+                }
 
                 // Xóa debounce cũ
                 if (searchRunnable != null) {
@@ -120,26 +125,29 @@ public class SearchProgressFragment extends Fragment {
                     // Khi chưa nhập gì -> hiện lịch sử
                     showSearchHistory();
                     recyclerSuggestions.setVisibility(View.GONE);
-                } else if (query.length() >= 1) { // Bắt đầu gợi ý từ 1 ký tự
+                } else if (query.length() >= 1) {
                     // Khi bắt đầu nhập -> ẩn lịch sử
                     hideSearchHistory();
 
-                    // Debounce search với delay ngắn hơn cho responsive
+                    // Debounce search
                     searchRunnable = () -> {
-                        // Kiểm tra lại query hiện tại để tránh race condition
                         String currentQuery = edtSearch.getText().toString().trim();
                         if (currentQuery.equals(query) && !currentQuery.isEmpty()) {
                             fetchSuggestionsFromFirestore(currentQuery.toLowerCase());
                         }
                     };
-                    handler.postDelayed(searchRunnable, 200); // Giảm delay từ 300ms xuống 200ms
+                    handler.postDelayed(searchRunnable, 200);
                 }
             }
 
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
         });
-
+        imgClearText.setOnClickListener(v -> {
+            edtSearch.setText("");
+            edtSearch.requestFocus();
+            showKeyboard();
+        });
         String userId = new UserSessionManager(requireContext()).getUid();
         clearOldFormatHistoryIfNeeded(requireContext(), userId);
         updateHistory(userId);
