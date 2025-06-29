@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -10,53 +11,82 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <TextView
             android:id="@+id/tvTrackingNumber"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Tracking: TRKxxxxxx"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#3F2305"  />
+            android:textColor="#3F2305" />
 
-        <TextView
-            android:id="@+id/tvCustomerName"
+        <!-- View Icon + Text -->
+        <LinearLayout
+            android:id="@+id/btnViewDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Customer: John Doe"
-            android:textColor="@color/color_333333"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp">
 
-        <TextView
-            android:id="@+id/tvOrderDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Date: 2025-06-05"
-            android:textColor="@color/color_333333"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@drawable/ic_view"
+                app:tint="#3F2305" />
 
-        <TextView
-            android:id="@+id/tvTotalPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total: 481"
-            android:textColor="@color/color_333333"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"/>
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Status: Review"
-            android:textColor="@color/color_333333"
-            android:textSize="14sp"
-            android:layout_marginTop="2dp"/>
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View"
+                android:textSize="14sp"
+                android:textColor="#3F2305"
+                android:layout_marginStart="4dp"
+                android:textStyle="italic"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <!-- Existing content -->
+    <TextView
+        android:id="@+id/tvCustomerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Customer: John Doe"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: 2025-06-05"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:id="@+id/tvTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total: 481"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Review"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
 
 </LinearLayout>
