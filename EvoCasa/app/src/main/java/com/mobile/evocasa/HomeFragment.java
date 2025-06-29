@@ -149,7 +149,7 @@ public class HomeFragment extends Fragment {
         List<FlashSaleProduct> flashSaleList = new ArrayList<>();
         FlashSaleAdapter flashSaleAdapter = new FlashSaleAdapter(flashSaleList, requireContext());
         flashSaleAdapter.setOnItemClickListener(product -> {
-            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
+            String uid = new UserSessionManager(requireContext()).getUid();
             String productId = product.getId();
             BehaviorLogger.record(
                     uid,

@@ -1,6 +1,7 @@
 package com.mobile.utils;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 
 import org.tensorflow.lite.Interpreter;
@@ -36,18 +37,28 @@ public class RecommendationModel {
 
     // Dự đoán cho một user-item pair
     public float predict(int userId, int productId) {
-        // Khởi tạo tensor inputs (user, product)
-        float[][] input = new float[1][2];
-        input[0][0] = userId;
-        input[0][1] = productId;
+        // Tạo input tensor tách biệt
+        int[][] userInput = new int[1][1];
+        int[][] productInput = new int[1][1];
+
+        userInput[0][0] = userId;
+        productInput[0][0] = productId;
 
         // Output tensor
         float[][] output = new float[1][1];
 
-        // Chạy mô hình TFLite
-        tflite.run(input, output);
+        // Chạy mô hình với inputs tách biệt
+        Object[] inputs = {userInput, productInput};
+        tflite.runForMultipleInputsOutputs(inputs, new java.util.HashMap<Integer, Object>() {{
+            put(0, output);
+        }});
 
-        // Trả về giá trị dự đoán (score)
         return output[0][0];
     }
+    public static void recordUserClick(Context context, String productId) {
+        SharedPreferences prefs = context.getSharedPreferences("user_clicks", Context.MODE_PRIVATE);
+        int count = prefs.getInt(productId, 0);
+        prefs.edit().putInt(productId, count + 1).apply();
+    }
+
 }

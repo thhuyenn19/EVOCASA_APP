@@ -1,6 +1,7 @@
 package com.mobile.evocasa.profile;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -8,9 +9,12 @@ import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.SettingFragment;
 import com.mobile.utils.BehaviorLogger;
+import com.mobile.utils.RecommendationModel;
 import com.mobile.utils.UserSessionManager;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -41,8 +45,10 @@ import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ProfileFragment extends Fragment {
     private TextView txtName, txtLogOut, txtLogin, txtRegister, txtCartBadge;
@@ -162,8 +168,8 @@ public class ProfileFragment extends Fragment {
         recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
 
         suggestedProductsAdapter.setOnItemClickListener(product -> {
-            String uid = new UserSessionManager(requireContext()).getUid(); // hoặc từ SharedPreferences nếu bạn không dùng FirebaseAuth
-            String productId = product.getId(); // hoặc product.get_id()
+            String uid = new UserSessionManager(requireContext()).getUid();
+            String productId = product.getId();
 
             // Ghi hành vi click
             BehaviorLogger.record(
@@ -173,46 +179,63 @@ public class ProfileFragment extends Fragment {
                     "profile_page",
                     null
             );
+
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
         });
+        String uid = new UserSessionManager(requireContext()).getUid();
 
-        db.collection("Product")
-                .limit(4)
+        db.collection("CustomerBehavior")
+                .whereEqualTo("customer_id.$oid", uid)
+                .whereEqualTo("action_type", "click")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    productList.clear();
+                    Map<String, Integer> clickCounts = new HashMap<>();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ProductItem product = new ProductItem();
-                        product.setId(doc.getId());
-                        product.setName(doc.getString("Name"));
-                        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
-                        product.setImage(doc.getString("Image"));
-                        product.setDescription(doc.getString("Description"));
-                        product.setDimensions(doc.getString("Dimensions"));
-                        ProductItem.Ratings ratings = new ProductItem.Ratings();
-                        Object ratingsObj = doc.get("Ratings");
-                        if (ratingsObj instanceof Map) {
-                            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                            Object averageObj = ratingsMap.get("Average");
-                            if (averageObj instanceof Number) {
-                                ratings.setAverage(((Number) averageObj).doubleValue());
+                        Map<String, Object> productMap = (Map<String, Object>) doc.get("product_id");
+                        if (productMap != null) {
+                            String productId = (String) productMap.get("$oid");
+                            if (productId != null) {
+                                clickCounts.put(productId, clickCounts.getOrDefault(productId, 0) + 1);
                             }
                         }
-                        product.setRatings(ratings);
-                        Object categoryIdObj = doc.get("category_id");
-                        if (categoryIdObj instanceof Map) {
-                            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
-                            product.setCategoryId(categoryIdMap);
-                        }
-                        productList.add(product);
                     }
-                    suggestedProductsAdapter.notifyDataSetChanged();
+
+                    List<String> topProductIds = clickCounts.entrySet().stream()
+                            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                            .limit(10)
+                            .map(Map.Entry::getKey)
+                            .collect(Collectors.toList());
+
+                    if (topProductIds.isEmpty()) {
+                        db.collection("Product")
+                                .limit(10)
+                                .get()
+                                .addOnSuccessListener(products -> {
+                                    productList.clear();
+                                    for (QueryDocumentSnapshot doc : products) {
+                                        productList.add(mapDocToProductItem(doc));
+                                    }
+                                    suggestedProductsAdapter.notifyDataSetChanged();
+                                });
+                    } else {
+                        db.collection("Product")
+                                .whereIn(FieldPath.documentId(), topProductIds)
+                                .get()
+                                .addOnSuccessListener(products -> {
+                                    productList.clear();
+                                    for (QueryDocumentSnapshot doc : products) {
+                                        productList.add(mapDocToProductItem(doc));
+                                    }
+                                    suggestedProductsAdapter.notifyDataSetChanged();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Log.e("ProfileFragment", "Failed to load suggested products by user click", e);
+                                });
+                    }
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("ProfileFragment", "Failed to load suggested products", e);
-                });
+                .addOnFailureListener(e -> Log.e("ProfileFragment", "Failed to load CustomerBehavior", e));
     }
 
     private void setupClickListeners() {
@@ -660,6 +683,49 @@ public class ProfileFragment extends Fragment {
                     safeUpdateCartBadge(0);
                 });
     }
+    private List<String> getTopUserClickedProducts(int topK) {
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_clicks", Context.MODE_PRIVATE);
+        Map<String, ?> allClicks = prefs.getAll();
+
+        List<Map.Entry<String, ?>> sortedList = new ArrayList<>(allClicks.entrySet());
+        sortedList.sort((e1, e2) -> ((Integer)e2.getValue()).compareTo((Integer)e1.getValue()));
+
+        List<String> topProducts = new ArrayList<>();
+        for (int i = 0; i < Math.min(topK, sortedList.size()); i++) {
+            topProducts.add(sortedList.get(i).getKey());
+        }
+        return topProducts;
+    }
+    private ProductItem mapDocToProductItem(QueryDocumentSnapshot doc) {
+        ProductItem product = new ProductItem();
+        product.setId(doc.getId());
+        product.setName(doc.getString("Name"));
+        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+        product.setImage(doc.getString("Image"));
+        product.setDescription(doc.getString("Description"));
+        product.setDimensions(doc.getString("Dimensions"));
+
+        ProductItem.Ratings ratings = new ProductItem.Ratings();
+        Object ratingsObj = doc.get("Ratings");
+        if (ratingsObj instanceof Map) {
+            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+            Object averageObj = ratingsMap.get("Average");
+            if (averageObj instanceof Number) {
+                ratings.setAverage(((Number) averageObj).doubleValue());
+            }
+        }
+        product.setRatings(ratings);
+
+        Object categoryIdObj = doc.get("category_id");
+        if (categoryIdObj instanceof Map) {
+            Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
+            product.setCategoryId(categoryIdMap);
+        }
+
+        return product;
+    }
+
+
 
     @Override
     public void onStart() {
