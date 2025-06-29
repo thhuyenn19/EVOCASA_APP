@@ -80,10 +80,17 @@ public class MightLikeAdapter extends RecyclerView.Adapter<MightLikeAdapter.Migh
         double newPrice = oldPrice * (1 - discount / 100.0);
 
         holder.txtProductName.setText(product.getName());
-        holder.txtOldPrice.setText("$" + String.format("%.2f", oldPrice));
+        double originalPrice = product.getPrice();
+        String formattedOldPrice = originalPrice % 1 == 0 ?
+                String.format("$%.0f", originalPrice) :
+                String.format("$%.1f", originalPrice);
+        holder.txtOldPrice.setText(formattedOldPrice);
         holder.txtOldPrice.setPaintFlags(holder.txtOldPrice.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.txtDiscount.setText("-" + discount + "%");
-        holder.txtPrice.setText("$" + String.format("%.2f", newPrice));
+        String formattedPrice = newPrice % 1 == 0 ?
+                String.format("$%.0f", newPrice) :
+                String.format("$%.1f", newPrice);
+        holder.txtPrice.setText(formattedPrice);
 
         List<String> images = product.getImageList();
         if (images != null && !images.isEmpty()) {

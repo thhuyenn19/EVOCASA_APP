@@ -66,7 +66,10 @@ public class WishProductAdapter extends RecyclerView.Adapter<WishProductAdapter.
 
         // Format và hiển thị
         holder.txtProductName.setText(product.getName());
-        holder.txtPrice.setText("$" + String.format("%.2f", Price));
+        String formattedPrice = Price % 1 == 0 ?
+                String.format("$%.0f", Price) :
+                String.format("$%.1f", Price);
+        holder.txtPrice.setText(formattedPrice);
         holder.txtRating.setText(String.valueOf(product.getRating()));
 
         // Load ảnh đầu tiên từ danh sách ảnh
