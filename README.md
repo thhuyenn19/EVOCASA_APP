@@ -35,12 +35,12 @@
   </tr>
   <tr>
     <td align="center">1</td>
-    <td align="center">Nguyễn Trần Thanh Huyền<br/<i>(Group Leader)</i>r</td>
+    <td align="center">Nguyễn Trần Thanh Huyền<br/<i>(Group Leader)</i></td>
     <td align="center"><a href="https://github.com/thhuyenn19">thhuyenn19</a></td>
     <td align="center">huyennntt22411c@st.uel.edu.vn</td>
   </tr>
   <tr>
-    <td align="center">1</td>
+    <td align="center">2</td>
     <td align="center">Phạm Tuyết Nhung></td>
     <td align="center"><a href="https://github.com/nhungnehehe">nhungnehehe</a></td>
     <td align="center">nhungpt22411c@st.uel.edu.vn</td>
