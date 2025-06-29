@@ -54,7 +54,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_total_customers"
-                        app:tint="#3F2305"
+                        app:tint="@color/white"
                         android:layout_marginEnd="8dp" />
 
                     <TextView
@@ -62,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_customers"
-                        android:textColor="#999999"
+                        android:textColor="@color/white"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/total_customers_value"
-                        android:textColor="#3F2305"
+                        android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -131,7 +131,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_new_customer"
-                        app:tint="#3F2305"
+                        app:tint="@color/white"
                         android:layout_marginEnd="8dp" />
 
                     <TextView
@@ -139,7 +139,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/new_customers"
-                        android:textColor="#999999"
+                        android:textColor="@color/white"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -156,7 +156,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/new_customers_value"
-                        android:textColor="#3F2305"
+                        android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -279,6 +279,7 @@
             android:nestedScrollingEnabled="false"
             android:background="@color/color_bg"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp" />
+            android:paddingRight="16dp"
+            android:paddingTop="20dp" />
     </LinearLayout>
 </ScrollView>

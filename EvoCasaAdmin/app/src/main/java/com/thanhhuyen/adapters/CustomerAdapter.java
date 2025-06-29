@@ -1,0 +1,56 @@
+package com.thanhhuyen.adapters;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.recyclerview.widget.RecyclerView;
+import com.thanhhuyen.evocasaadmin.R;
+import com.thanhhuyen.models.Customer;
+
+import java.util.List;
+
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewHolder> {
+
+    private List<Customer> customerList;
+
+    public CustomerAdapter(List<Customer> customerList) {
+        this.customerList = customerList;
+    }
+
+    @Override
+    public CustomerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_customer, parent, false);
+        return new CustomerViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(CustomerViewHolder holder, int position) {
+        Customer customer = customerList.get(position);
+        holder.txtCustomerId.setText("ID: " + customer.getId());
+        holder.txtCustomerName.setText("Name: " + customer.getName());
+        holder.txtCustomerGender.setText("Gender: " + customer.getGender());
+        holder.txtCustomerMail.setText("Mail: " + customer.getMail());
+        holder.txtCustomerPhone.setText("Phone: " + customer.getPhone());
+        holder.txtCustomerDob.setText("DOB: " + customer.getDob());
+    }
+
+    @Override
+    public int getItemCount() {
+        return customerList.size();
+    }
+
+    public static class CustomerViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCustomerId, txtCustomerName, txtCustomerGender, txtCustomerMail, txtCustomerPhone, txtCustomerDob;
+
+        public CustomerViewHolder(View itemView) {
+            super(itemView);
+            txtCustomerId = itemView.findViewById(R.id.txtCustomerId);
+            txtCustomerName = itemView.findViewById(R.id.txtCustomerName);
+            txtCustomerGender = itemView.findViewById(R.id.txtCustomerGender);
+            txtCustomerMail = itemView.findViewById(R.id.txtCustomerMail);
+            txtCustomerPhone = itemView.findViewById(R.id.txtCustomerPhone);
+            txtCustomerDob = itemView.findViewById(R.id.txtCustomerDob);
+        }
+    }
+}

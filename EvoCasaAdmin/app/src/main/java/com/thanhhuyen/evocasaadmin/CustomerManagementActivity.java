@@ -2,6 +2,7 @@ package com.thanhhuyen.evocasaadmin;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -12,13 +13,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.thanhhuyen.adapters.CustomerAdapter;
+import com.thanhhuyen.models.Customer;
 import com.thanhhuyen.untils.FontUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CustomerManagementActivity extends AppCompatActivity {
 
     private RecyclerView customerRecyclerView;
+    private CustomerAdapter adapter;
+    private List<Customer> customerList;
     private TextView txtTitle, txtTotalCustomersValue,
             txtTotalCustomersTitle, txtTotalCustomersPercent, txtNewCustomersValue,
             txtNewCustomersTitle, txtNewCustomersPercent, txtTotalOrdersValue,
@@ -103,5 +115,44 @@ public class CustomerManagementActivity extends AppCompatActivity {
 //            FontUtils.setBoldFont(this, txtTotalOrdersPercent);
 //        }
 
+        customerRecyclerView = findViewById(R.id.customerRecyclerView);
+        customerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        customerList = new ArrayList<>();
+        adapter = new CustomerAdapter(customerList);
+        customerRecyclerView.setAdapter(adapter);
+
+        loadCustomers();
+
     }
+
+    private void loadCustomers() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Customers")
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        customerList.clear();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            String id = document.getId();
+                            String name = document.getString("Name");
+                            String gender = document.getString("Gender");
+                            String mail = document.getString("Mail");
+                            String phone = document.getString("Phone");
+
+                            String dob = "";
+                            if (document.get("DOB") instanceof Map) {
+                                Map<String, Object> dobMap = (Map<String, Object>) document.get("DOB");
+                                dob = (String) dobMap.get("$date");
+                            }
+
+                            customerList.add(new Customer(id, name, gender, mail, phone, dob));
+                        }
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Log.e("Firestore", "Error getting customers", task.getException());
+                    }
+                });
+    }
+
 }

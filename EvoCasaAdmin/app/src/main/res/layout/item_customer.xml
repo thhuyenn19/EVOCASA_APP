@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_customer_management"
+    android:layout_marginBottom="8dp"
+    android:padding="15dp">
+
+    <!-- Name -->
+    <TextView
+        android:id="@+id/txtCustomerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_name"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#3F2305" />
+
+    <!-- ID (under Name) -->
+    <TextView
+        android:id="@+id/txtCustomerId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_id"
+        android:textSize="14sp"
+        android:textColor="@color/color_5E4C3E"
+        android:layout_marginTop="2dp" />
+
+    <!-- Gender -->
+    <TextView
+        android:id="@+id/txtCustomerGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/customer_gender"
+        android:textColor="@color/color_333333"
+        android:textSize="14sp" />
+
+    <!-- Email -->
+    <TextView
+        android:id="@+id/txtCustomerMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_mail"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333"
+        android:layout_marginTop="2dp" />
+
+    <!-- Phone -->
+    <TextView
+        android:id="@+id/txtCustomerPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_phone"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333"
+        android:layout_marginTop="2dp" />
+
+    <!-- DOB -->
+    <TextView
+        android:id="@+id/txtCustomerDob"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/customer_dob"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333"
+        android:layout_marginTop="2dp" />
+
+</LinearLayout>
