@@ -16,9 +16,260 @@
         android:background="@color/color_bg"
         android:paddingBottom="16dp">
 
-        <!-- Topbar cuộn được -->
+        <!-- Topbar -->
         <include layout="@layout/topbar_customer_management" />
         <include layout="@layout/search_bar" />
+
+        <!-- Row 1: Total Customers + New Customers -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:gravity="center">
+
+            <!-- Card: Total Customers -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_rounded_border"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginEnd="8dp">
+
+                <!-- Icon + Title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_total_customers"
+                        app:tint="#3F2305"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/txtTotalCustomersTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_customers"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Value + Percent -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/txtTotalCustomersValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total_customers_value"
+                        android:textColor="#3F2305"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:paddingStart="8dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_arrow_up"
+                            app:tint="#009900" />
+
+                        <TextView
+                            android:id="@+id/txtTotalCustomersPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_customers_percent"
+                            android:textColor="#009900"
+                            android:textSize="12sp"
+                            android:paddingStart="4dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Card: New Customers -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_card_rounded_border"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <!-- Icon + Title -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_new_customer"
+                        app:tint="#3F2305"
+                        android:layout_marginEnd="8dp" />
+
+                    <TextView
+                        android:id="@+id/txtNewCustomersTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_customers"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Value + Percent -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/txtNewCustomersValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_customers_value"
+                        android:textColor="#3F2305"
+                        android:textSize="28sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:paddingStart="8dp">
+
+                        <ImageView
+                            android:layout_width="12dp"
+                            android:layout_height="12dp"
+                            android:src="@drawable/ic_arrow_up"
+                            app:tint="#009900" />
+
+                        <TextView
+                            android:id="@+id/txtNewCustomersPercent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/new_customers_percent"
+                            android:textColor="#009900"
+                            android:textSize="12sp"
+                            android:paddingStart="4dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+<!--        &lt;!&ndash; Row 2: Total Orders &ndash;&gt;-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:paddingLeft="16dp"-->
+<!--            android:paddingRight="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:gravity="center"> -->
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="176dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="@drawable/bg_card_rounded_border"-->
+<!--                android:orientation="vertical"-->
+<!--                android:paddingLeft="12dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:paddingRight="12dp"-->
+<!--                android:paddingBottom="5dp">-->
+
+<!--                &lt;!&ndash; Icon + Title &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:orientation="horizontal">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="24dp"-->
+<!--                        android:layout_height="24dp"-->
+<!--                        android:layout_marginEnd="8dp"-->
+<!--                        android:src="@drawable/ic_total_orders"-->
+<!--                        app:tint="#3F2305" />-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtTotalOrdersTitle"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/total_orders"-->
+<!--                        android:textColor="#999999"-->
+<!--                        android:textSize="12sp" />-->
+<!--                </LinearLayout>-->
+
+<!--                &lt;!&ndash; Value + Percent &ndash;&gt;-->
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingTop="4dp">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txtTotalOrdersValue"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:text="@string/total_orders_value"-->
+<!--                        android:textColor="#3F2305"-->
+<!--                        android:textSize="28sp"-->
+<!--                        android:textStyle="bold" />-->
+
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:gravity="center"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:paddingStart="8dp">-->
+
+<!--                        <ImageView-->
+<!--                            android:layout_width="12dp"-->
+<!--                            android:layout_height="12dp"-->
+<!--                            android:src="@drawable/ic_arrow_up"-->
+<!--                            app:tint="#009900" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/txtTotalOrdersPercent"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:paddingStart="4dp"-->
+<!--                            android:text="@string/total_orders_percent"-->
+<!--                            android:textColor="#009900"-->
+<!--                            android:textSize="12sp" />-->
+<!--                    </LinearLayout>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+<!--        </LinearLayout>-->
 
         <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
@@ -28,7 +279,6 @@
             android:nestedScrollingEnabled="false"
             android:background="@color/color_bg"
             android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
-
+            android:paddingRight="16dp" />
     </LinearLayout>
 </ScrollView>

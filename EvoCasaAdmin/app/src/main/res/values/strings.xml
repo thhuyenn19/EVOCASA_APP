@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">EvoCasaAdmin</string>
+
     <string name="title_customer_management">Customer Management</string>
     <string name="title_hint_Search">Search</string>
+    <string name="total_customers_value">12</string>
+    <string name="total_customers">Total Customers</string>
+    <string name="total_customers_percent">+15%</string>
+    <string name="new_customers_value">2</string>
+    <string name="new_customers">New Customers</string>
+    <string name="new_customers_percent">+10%</string>
+    <string name="total_orders_value">10</string>
+    <string name="total_orders">Total Orders</string>
+    <string name="total_orders_percent">+5%</string>
 </resources>
