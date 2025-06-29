@@ -1,12 +1,21 @@
 package com.mobile.evocasa.category;
 
+import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.mobile.evocasa.NarBarActivity;
 import com.mobile.models.ProductItem;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +27,7 @@ import java.util.concurrent.Executors;
 
 public class ProductPreloadManager {
     private static final String TAG = "ProductPreloadManager";
+    private final ConcurrentHashMap<String, Boolean> imagePreloadCache = new ConcurrentHashMap<>();
     private static ProductPreloadManager instance;
     private List<String> cachedWishlist = new ArrayList<>();
 
@@ -35,7 +45,15 @@ public class ProductPreloadManager {
 
     // Trạng thái loading
     private final ConcurrentHashMap<String, Boolean> loadingStatus;
+    private Context appContext;
 
+    public void setApplicationContext(Context context) {
+        this.appContext = context.getApplicationContext(); // Lưu ApplicationContext
+    }
+
+    public Context getAppContext() {
+        return appContext;
+    }
 
     // Callbacks cho khi preload hoàn thành
     private final ConcurrentHashMap<String, List<PreloadCallback>> preloadCallbacks;
@@ -524,7 +542,13 @@ public class ProductPreloadManager {
     public boolean isLoadingCategory(String categoryName) {
         return loadingStatus.getOrDefault(categoryName.toLowerCase(), false);
     }
+    public boolean isImagePreloaded(String imageUrl) {
+        return imagePreloadCache.containsKey(imageUrl);
+    }
 
+    public void markImageAsPreloaded(String imageUrl) {
+        imagePreloadCache.put(imageUrl, true);
+    }
     // ===== UTILITY METHODS =====
 
     private String extractParentCategoryId(Object parentCategoryObj) {
@@ -569,7 +593,6 @@ public class ProductPreloadManager {
                 Map<String, Object> categoryIdMap = (Map<String, Object>) categoryIdObj;
                 product.setCategoryId(categoryIdMap);
             }
-
             return product;
         } catch (Exception e) {
             Log.e(TAG, "Error parsing product from document: " + doc.getId(), e);

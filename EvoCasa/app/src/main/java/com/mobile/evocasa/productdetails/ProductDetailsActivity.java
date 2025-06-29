@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -46,6 +47,7 @@ import com.mobile.adapters.ProductDetailPagerAdapter;
 import com.mobile.adapters.SuggestedProductAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.evocasa.payment.PaymentActivity;
 import com.mobile.models.CartProduct;
 import com.mobile.models.ProductItem;
@@ -64,6 +66,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -102,6 +105,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
+        ProductPreloadManager.getInstance().setApplicationContext(this.getApplicationContext());
 
         db = FirebaseFirestore.getInstance();
         sessionManager = new UserSessionManager(this);
@@ -335,16 +339,39 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         Gson gson = new Gson();
                                         Type listType = new TypeToken<List<String>>() {}.getType();
                                         imageUrls = gson.fromJson(imageJson, listType);
-                                        setupImageViewPager();
-                                        ExecutorService executor = Executors.newFixedThreadPool(4); // Tải tối đa 4 ảnh cùng lúc
-                                        for (String url : imageUrls) {
-                                            executor.execute(() -> {
-                                                Glide.with(ProductDetailsActivity.this)
-                                                        .load(url.trim())
-                                                        .preload(); // Preload ảnh vào cache
-                                            });
+
+                                        if (imageUrls != null && !imageUrls.isEmpty()) {
+                                            String firstImage = imageUrls.get(0).trim();
+
+                                            // Preload ảnh đầu tiên ngay lập tức
+                                            Glide.with(getApplicationContext())
+                                                    .load(firstImage)
+                                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                    .preload();
+
+                                            ProductPreloadManager.getInstance().markImageAsPreloaded(firstImage);
                                         }
-                                        executor.shutdown(); // Sau khi xong, đóng thread pool
+
+                                        // Hiển thị ảnh luôn
+                                        setupImageViewPager();
+
+                                        // Preload các ảnh còn lại bằng đa luồng (không chờ)
+                                        ExecutorService executor = Executors.newFixedThreadPool(4);
+                                        for (int i = 1; i < imageUrls.size(); i++) {
+                                            String url = imageUrls.get(i).trim();
+                                            if (!ProductPreloadManager.getInstance().isImagePreloaded(url)) {
+                                                final String finalUrl = url;
+                                                executor.execute(() -> {
+                                                    Glide.with(getApplicationContext())
+                                                            .load(finalUrl)
+                                                            .thumbnail(0.1f)
+                                                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                                            .preload();
+                                                    ProductPreloadManager.getInstance().markImageAsPreloaded(finalUrl);
+                                                });
+                                            }
+                                        }
+
                                     } catch (Exception e) {
                                         Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
                                         Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
@@ -437,23 +464,45 @@ public class ProductDetailsActivity extends AppCompatActivity {
     }
 
     private void setupImageViewPager() {
-        if (imageUrls != null && !imageUrls.isEmpty()) {
-            ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imageUrls);
-            imageViewPager.setAdapter(imageAdapter);
-            imageViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
-                    if (txtImageIndex != null) {
-                        txtImageIndex.setText((position + 1) + "/" + imageUrls.size());
-                    }
-                }
-            });
-            txtImageIndex.setText("1/" + imageUrls.size());
-        } else {
+        if (imageUrls == null || imageUrls.isEmpty()) {
             txtImageIndex.setText("0/0");
+            return;
         }
+
+        // 1. Set adapter NGAY (không cần đợi preload)
+        ImagePagerAdapter imageAdapter = new ImagePagerAdapter(imageUrls);
+        imageViewPager.setAdapter(imageAdapter);
+
+        // 2. Cập nhật chỉ số trang
+        txtImageIndex.setText("1/" + imageUrls.size());
+        imageViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                txtImageIndex.setText((position + 1) + "/" + imageUrls.size());
+            }
+        });
+
+        // 3. Preload ảnh song song (dùng ApplicationContext tránh leak)
+        ExecutorService executor = Executors.newFixedThreadPool(4);
+        for (String url : imageUrls) {
+            if (url != null && url.trim().startsWith("http")) {
+                executor.execute(() -> {
+                    try {
+                        Glide.with(getApplicationContext())
+                                .load(url.trim())
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .preload();
+                    } catch (Exception e) {
+                        Log.e("Preload", "Failed to preload: " + url, e);
+                    }
+                });
+            }
+        }
+
+        executor.shutdown(); // Không bắt buộc, nhưng tốt để cleanup thread
     }
+
 
     private void loadSuggestedProducts() {
         db.collection("Product")

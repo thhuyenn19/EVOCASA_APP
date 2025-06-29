@@ -7,9 +7,12 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mobile.adapters.CategoryShopAdapter;
 import com.mobile.evocasa.category.ProductPreloadManager;
 import com.mobile.evocasa.category.ShopFragment;
@@ -17,8 +20,10 @@ import com.mobile.evocasa.order.OrderDetailFragment;
 import com.mobile.evocasa.payment.FinishPaymentFragment;
 import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.Category;
+import com.mobile.models.ProductItem;
 import com.mobile.utils.UserSessionManager;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,6 +83,8 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
 
     private void preloadProductDataInBackground() {
         ExecutorService executor = Executors.newSingleThreadExecutor();
+        ProductPreloadManager.getInstance().setApplicationContext(this.getApplicationContext());
+
         executor.execute(() -> {
             ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
             preloadManager.preloadAllCategoryDataBlocking(); // ← preload toàn bộ categories
@@ -90,6 +97,37 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
                     Log.d("Wishlist", "Wishlist cache loaded: " + ProductPreloadManager.getInstance().getCachedWishlist().size());
                 });
             }
+        });
+        executor.execute(() -> {
+            ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
+            List<ProductItem> allProducts = preloadManager.getShopAllProducts();
+
+            for (ProductItem product : allProducts) {
+                String imageJson = product.getImage();
+                if (imageJson != null) {
+                    try {
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<List<String>>() {}.getType();
+                        List<String> imageUrls = gson.fromJson(imageJson, listType);
+
+                        if (imageUrls != null) {
+                            for (String url : imageUrls) {
+                                String trimmedUrl = url.trim();
+                                if (!preloadManager.isImagePreloaded(trimmedUrl)) {
+                                    Glide.with(getApplicationContext())
+                                            .load(trimmedUrl)
+                                            .preload();
+                                    preloadManager.markImageAsPreloaded(trimmedUrl);
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                        Log.e("NarBarActivity", "Error parsing/preloading image: " + e.getMessage());
+                    }
+                }
+            }
+
+            Log.d("NarBarActivity", "Preloaded product images into Glide cache");
         });
     }
     public static List<Category> getStaticCategoryList() {

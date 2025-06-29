@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mobile.evocasa.R;
 
 import java.util.List;
@@ -30,10 +31,13 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
 
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
-        String imageUrl = imageUrls.get(position);
+        String imageUrl = imageUrls.get(position).trim(); // Trim giống lúc preload
         Glide.with(holder.imageView.getContext())
                 .load(imageUrl)
-                .placeholder(R.mipmap.ic_lighting_brasslamp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)     // Cache full-size & resized
+                .thumbnail(0.1f)                               // Hiện ảnh mờ trước khi full
+                .placeholder(R.mipmap.ic_lighting_brasslamp)  // Giảm nháy trắng
+                .dontAnimate()                                // Không animation khi load (tăng tốc)
                 .into(holder.imageView);
     }
 
