@@ -42,6 +42,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         // Set product name
         holder.productName.setText(product.getName());
 
+        // Set product quantity
+        holder.productQuantity.setText(String.format("Quantity: %d", product.getQuantity()));
+
         // Load first image if available
         if (product.getImages() != null && !product.getImages().isEmpty()) {
             String imageUrl = product.getImages().get(0);
@@ -71,11 +74,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
         TextView productName;
+        TextView productQuantity;
 
         ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
+            productQuantity = itemView.findViewById(R.id.productQuantity);
         }
     }
 } 
