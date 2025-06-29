@@ -2,18 +2,17 @@ package com.thanhhuyen.evocasaadmin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.app.AlertDialog;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -22,6 +21,8 @@ import com.thanhhuyen.models.Order;
 import com.thanhhuyen.untils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,7 @@ public class OrderManagementActivity extends AppCompatActivity {
     private ImageView imgBack;
     private EditText edtSearch;
     private TextView txtTitle;
+    private View btnFilter; // filter button view
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +72,12 @@ public class OrderManagementActivity extends AppCompatActivity {
             FontUtils.setRegularFont(this, edtSearch);
         }
 
+        // Filter button setup
+        btnFilter = findViewById(R.id.btnFilter);
+        if (btnFilter != null) {
+            btnFilter.setOnClickListener(v -> showFilterDialog());
+        }
+
         ordersRecyclerView = findViewById(R.id.ordersRecyclerView);
         tvOrderSummary = findViewById(R.id.tvOrderSummary);
 
@@ -80,6 +88,54 @@ public class OrderManagementActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         loadCustomersAndOrders();
+    }
+
+    private void showFilterDialog() {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_filter_order, null);
+        bottomSheetDialog.setContentView(view);
+
+        // Setup buttons in BottomSheet
+        TextView txtSortDate = view.findViewById(R.id.txtSortDate);
+        TextView txtSortPriceAsc = view.findViewById(R.id.txtSortPriceAsc);
+        TextView txtSortPriceDesc = view.findViewById(R.id.txtSortPriceDesc);
+
+        txtSortDate.setOnClickListener(v -> {
+            sortByDateDescending();
+            bottomSheetDialog.dismiss();
+        });
+
+        txtSortPriceAsc.setOnClickListener(v -> {
+            sortByPriceAscending();
+            bottomSheetDialog.dismiss();
+        });
+
+        txtSortPriceDesc.setOnClickListener(v -> {
+            sortByPriceDescending();
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }
+
+
+    private void sortByDateDescending() {
+        Collections.sort(orderList, (o1, o2) -> {
+            String date1 = o1.getOrderDate() != null ? o1.getOrderDate().get("$date") : "";
+            String date2 = o2.getOrderDate() != null ? o2.getOrderDate().get("$date") : "";
+            return date2.compareTo(date1); // newest first
+        });
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortByPriceAscending() {
+        Collections.sort(orderList, Comparator.comparingInt(Order::getTotalPrice));
+        adapter.notifyDataSetChanged();
+    }
+
+    private void sortByPriceDescending() {
+        Collections.sort(orderList, (o1, o2) -> Integer.compare(o2.getTotalPrice(), o1.getTotalPrice()));
+        adapter.notifyDataSetChanged();
     }
 
     private void loadCustomersAndOrders() {

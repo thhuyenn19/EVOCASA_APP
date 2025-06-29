@@ -20,6 +20,7 @@
     <string name="title_view">View</string>
     <string name="title_order_management">Order Management</string>
     <string name="total_orders_management">Total Orders (%1$d)</string>
+    <string name="title_filter">Filter</string>
 
 
 

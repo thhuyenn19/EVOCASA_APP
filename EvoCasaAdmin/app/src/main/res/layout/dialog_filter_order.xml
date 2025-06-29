@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/color_bg"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/txtFilterTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Filter Orders"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_5E4C3E"
+        android:gravity="center"
+        android:paddingBottom="12dp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#CCCCCC" />
+
+    <TextView
+        android:id="@+id/txtSortDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by Date (Newest First)"
+        android:textSize="16sp"
+        android:textColor="@color/color_5E4C3E"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/txtSortPriceAsc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by Total Price (Low to High)"
+        android:textSize="16sp"
+        android:textColor="@color/color_5E4C3E"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/txtSortPriceDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort by Total Price (High to Low)"
+        android:textSize="16sp"
+        android:textColor="@color/color_5E4C3E"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"/>
+
+</LinearLayout>
