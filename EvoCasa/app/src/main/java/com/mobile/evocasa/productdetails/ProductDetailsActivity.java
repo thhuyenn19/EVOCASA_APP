@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -61,6 +62,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ProductDetailsActivity extends AppCompatActivity {
 
@@ -333,6 +336,15 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                         Type listType = new TypeToken<List<String>>() {}.getType();
                                         imageUrls = gson.fromJson(imageJson, listType);
                                         setupImageViewPager();
+                                        ExecutorService executor = Executors.newFixedThreadPool(4); // Tải tối đa 4 ảnh cùng lúc
+                                        for (String url : imageUrls) {
+                                            executor.execute(() -> {
+                                                Glide.with(ProductDetailsActivity.this)
+                                                        .load(url.trim())
+                                                        .preload(); // Preload ảnh vào cache
+                                            });
+                                        }
+                                        executor.shutdown(); // Sau khi xong, đóng thread pool
                                     } catch (Exception e) {
                                         Log.e("ProductDetails", "Failed to load images: " + e.getMessage());
                                         Toast.makeText(this, "Failed to load images", Toast.LENGTH_SHORT).show();
