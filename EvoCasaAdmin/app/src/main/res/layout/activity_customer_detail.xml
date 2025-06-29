@@ -137,7 +137,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="2"
                         android:textColor="#3F2305"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -149,16 +148,6 @@
                         android:text="Total Orders"
                         android:textColor="#666666"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:text="+10% this month"
-                        android:textColor="#28A745"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -186,7 +175,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:text="8850"
                         android:textColor="#8B4513"
                         android:textSize="28sp"
                         android:textStyle="bold" />
@@ -198,16 +186,6 @@
                         android:text="Total Amount"
                         android:textColor="#666666"
                         android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:text="+15% this month"
-                        android:textColor="#28A745"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
 
                 </LinearLayout>
 
