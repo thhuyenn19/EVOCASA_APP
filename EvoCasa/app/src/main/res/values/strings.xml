@@ -289,6 +289,10 @@
     <string name="faq_answer_4">Absolutely. We do not share any personal data with third parties without your consent.</string>
     <string name="faq_question_5">How long does delivery take?</string>
     <string name="faq_answer_5">In-stock: 2–5 business days. Made-to-order: 7–14 business days.</string>
+    <string name="title_account_info">Account Info</string>
+    <string name="title_change_language">Change Language</string>
+    <string name="title_change_password">Change Password</string>
+    <string name="title_delete_account">Delete Account</string>
 
 
 </resources>

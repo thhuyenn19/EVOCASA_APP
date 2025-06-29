@@ -291,6 +291,9 @@
     <string name="faq_answer_4">Chắc chắn. Chúng tôi không chia sẻ bất kỳ thông tin cá nhân nào với bên thứ ba nếu không có sự đồng ý của bạn.</string>
     <string name="faq_question_5">Thời gian giao hàng mất bao lâu?</string>
     <string name="faq_answer_5">Hàng có sẵn: 2–5 ngày làm việc. Hàng đặt sản xuất: 7–14 ngày làm việc.</string>
-
+    <string name="title_account_info">Thông tin cá nhân</string>
+    <string name="title_change_language">Ngôn ngữ</string>
+    <string name="title_change_password">Đổi mật khẩu</string>
+    <string name="title_delete_account">Xóa tài khoản</string>
 
 </resources>

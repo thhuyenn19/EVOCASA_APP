@@ -40,7 +40,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Account Info"
+                    android:text="@string/title_account_info"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Help Center"
+                    android:text="@string/txt_help_center"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Change Language"
+                    android:text="@string/title_change_language"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Change Password"
+                    android:text="@string/title_change_password"
                     android:textColor="@color/color_5E4C3E"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -145,7 +145,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Delete Account"
+                    android:text="@string/title_delete_account"
                     android:textColor="#D32F2F"
                     android:textSize="16sp" />
             </LinearLayout>
