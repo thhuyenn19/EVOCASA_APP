@@ -83,7 +83,7 @@ public class OrderManagementActivity extends AppCompatActivity {
 
         ordersRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         orderList = new ArrayList<>();
-        adapter = new OrderAdapter(orderList);
+        adapter = new OrderAdapter(OrderManagementActivity.this, orderList);
         ordersRecyclerView.setAdapter(adapter);
 
         db = FirebaseFirestore.getInstance();
@@ -121,8 +121,8 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     private void sortByDateDescending() {
         Collections.sort(orderList, (o1, o2) -> {
-            String date1 = o1.getOrderDate() != null ? o1.getOrderDate().get("$date") : "";
-            String date2 = o2.getOrderDate() != null ? o2.getOrderDate().get("$date") : "";
+            String date1 = o1.getOrderDate() != null ? o1.getOrderDate().get("$date").toString() : "";
+            String date2 = o2.getOrderDate() != null ? o2.getOrderDate().get("$date").toString() : "";
             return date2.compareTo(date1); // newest first
         });
         adapter.notifyDataSetChanged();

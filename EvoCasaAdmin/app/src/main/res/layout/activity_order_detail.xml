@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <include layout="@layout/topbar_order_detail" />
+
+        <!-- Order Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_order_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Order Details"
+                android:textColor="#3F2305"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_order_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Order ID: 1750931317113279"
+                android:textColor="#5E4C3E"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_order_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Order Date: 2025-05-31"
+                android:textColor="#525B4A"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_order_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Status: Review"
+                android:textColor="#3F2305"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4B5A6" />
+
+        <!-- Customer Information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_customer_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Customer Information"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_customer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Name: Tran Thi B"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_customer_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Phone: 0917847876"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_customer_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Customer ID: 563a48106d644650baf9a2f6"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4B5A6" />
+
+        <!-- Product Information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_product_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Product Information"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_product_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Product ID: 67c0b882c5fec55b70d0fcaa"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_product_quantity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Quantity: 1"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_product_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Price: 491"
+                android:textColor="#27AE60"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4B5A6" />
+
+        <!-- Voucher Information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_voucher_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Voucher Information"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_voucher_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Voucher: Flash Deal"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_discount_percent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Discount: 20%"
+                android:textColor="#E67E22"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_discount_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Discount Amount: 30"
+                android:textColor="#E67E22"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4B5A6" />
+
+        <!-- Shipping Information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_shipping_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Shipping Information"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_shipping_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Address: 45 Tran Hung Dao, Quan 5, TP HCM"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_shipping_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Method: Standard Delivery"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_shipping_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Ship Date: 2025-06-05"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_tracking_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Tracking Number: TRK151011"
+                android:textColor="#3498DB"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_delivery_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Delivery Fee: 20"
+                android:textColor="#E74C3C"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#C4B5A6" />
+
+        <!-- Payment Information -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingVertical="12dp"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tv_payment_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Payment Information"
+                android:textColor="#3F2305"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_payment_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Payment Method: COD"
+                android:textColor="#5E4C3E"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="12dp"
+                android:background="#BDC3C7" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total Price:"
+                    android:textColor="#3F2305"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="481"
+                    android:textColor="#27AE60"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

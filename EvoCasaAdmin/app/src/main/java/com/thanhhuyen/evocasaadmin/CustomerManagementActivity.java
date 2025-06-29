@@ -127,7 +127,7 @@ public class CustomerManagementActivity extends AppCompatActivity {
         customerRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         customerList = new ArrayList<>();
-        adapter = new CustomerAdapter(customerList);
+        adapter = new CustomerAdapter(CustomerManagementActivity.this, customerList);
         customerRecyclerView.setAdapter(adapter);
 
         loadCustomers();

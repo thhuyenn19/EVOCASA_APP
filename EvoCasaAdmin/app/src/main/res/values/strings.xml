@@ -22,8 +22,7 @@
     <string name="total_orders_management">Total Orders (%1$d)</string>
     <string name="title_filter">Filter</string>
     <string name="title_customer_detail">Customer Details</string>
-
-
+    <string name="title_order_detail">Order Details</string>
 
 
 </resources>

@@ -36,12 +36,14 @@
             android:padding="4dp">
 
             <ImageView
+                android:id="@+id/btnView"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:src="@drawable/ic_view"
                 app:tint="#3F2305" />
 
             <TextView
+                android:id="@+id/txtViewLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="View"

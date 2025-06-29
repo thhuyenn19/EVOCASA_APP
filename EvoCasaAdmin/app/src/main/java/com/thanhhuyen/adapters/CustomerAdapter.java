@@ -21,7 +21,8 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
     private List<Customer> customerList;
     private Context context;
 
-    public CustomerAdapter(List<Customer> customerList) {
+    public CustomerAdapter(Context context, List<Customer> customerList) {
+        this.context = context;
         this.customerList = customerList;
     }
 
