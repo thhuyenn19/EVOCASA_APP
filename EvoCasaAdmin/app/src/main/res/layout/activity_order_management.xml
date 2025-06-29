@@ -14,23 +14,24 @@
 
     <!-- Order Summary Highlight -->
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_margin="12dp"
+        android:backgroundTint="@color/green"
         app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        android:backgroundTint="#3F2305">
+        app:cardElevation="2dp">
 
         <TextView
             android:id="@+id/tvOrderSummary"
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:text="@string/total_orders_management"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:gravity="center"
             android:padding="12dp"
-            android:gravity="center"/>
+            android:text="@string/total_orders_management"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold" />
     </androidx.cardview.widget.CardView>
 
     <!-- RecyclerView Orders -->

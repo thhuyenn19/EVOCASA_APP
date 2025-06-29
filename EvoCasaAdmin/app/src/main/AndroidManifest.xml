@@ -21,6 +21,9 @@
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
+            android:name=".OrderManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".ProductActivity"
             android:exported="false"
             android:label="Products"

@@ -1,5 +1,6 @@
 package com.thanhhuyen.evocasaadmin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -48,9 +49,16 @@ public class OrderManagementActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        // Back button in topbar
+        // Back button in topbar -> navigate to MainActivity
         imgBack = findViewById(R.id.imgBack);
-        if (imgBack != null) imgBack.setOnClickListener(v -> finish());
+        if (imgBack != null) {
+            imgBack.setOnClickListener(v -> {
+                Intent intent = new Intent(OrderManagementActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+                finish();
+            });
+        }
 
         // Font setup
         txtTitle = findViewById(R.id.txtTitle);
