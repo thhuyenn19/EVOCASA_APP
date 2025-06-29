@@ -18,5 +18,9 @@
     <string name="customer_phone">Phone</string>
     <string name="customer_dob">DOB</string>
     <string name="title_view">View</string>
+    <string name="title_order_management">Order Management</string>
+    <string name="total_orders_management">Total Orders (%1$d)</string>
+
+
 
 </resources>
