@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="@drawable/bg_customer_management">
+
+    <TextView
+        android:id="@+id/tv_order_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OrderID: O001"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_3F2305" />
+
+    <TextView
+        android:id="@+id/tv_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amount: 1000"
+        android:textSize="14sp"
+        android:textColor="@color/color_5E4C3E" />
+
+    <TextView
+        android:id="@+id/tv_order_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: 2025-06-29"
+        android:textSize="14sp"
+        android:textColor="@color/color_5E4C3E"/>
+
+    <TextView
+        android:id="@+id/tv_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment: Momo"
+        android:textSize="14sp"
+        android:textColor="@color/color_5E4C3E"/>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Completed"
+        android:textSize="14sp"
+        android:textColor="@color/color_5E4C3E"/>
+</LinearLayout>

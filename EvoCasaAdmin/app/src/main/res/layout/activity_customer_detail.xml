@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
                             android:text="Huyen"
-                            android:textColor="#000000"
+                            android:textColor="@color/color_3F2305"
                             android:textSize="22sp"
                             android:textStyle="bold" />
 
@@ -79,7 +79,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
                             android:text="Email: huyenntt@gmail.com"
-                            android:textColor="#5E4C3E"
+                            android:textColor="#666666"
                             android:textSize="14sp"/>
 
                         <TextView
