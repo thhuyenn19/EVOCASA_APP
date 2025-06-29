@@ -1,5 +1,6 @@
 package com.thanhhuyen.evocasaadmin;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,7 +42,6 @@ public class CustomerManagementActivity extends AppCompatActivity {
             txtTotalOrdersTitle, txtTotalOrdersPercent;
     private ImageView imgBack;
     private EditText edtSearch;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

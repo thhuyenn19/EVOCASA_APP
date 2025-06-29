@@ -17,5 +17,6 @@
     <string name="customer_mail">Mail</string>
     <string name="customer_phone">Phone</string>
     <string name="customer_dob">DOB</string>
+    <string name="title_view">View</string>
 
 </resources>
