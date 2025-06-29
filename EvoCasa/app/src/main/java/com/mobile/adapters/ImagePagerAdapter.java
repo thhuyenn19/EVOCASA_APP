@@ -32,11 +32,12 @@ public class ImagePagerAdapter extends RecyclerView.Adapter<ImagePagerAdapter.Im
     @Override
     public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
         String imageUrl = imageUrls.get(position).trim(); // Trim giống lúc preload
+
         Glide.with(holder.imageView.getContext())
                 .load(imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)     // Cache full-size & resized
                 .thumbnail(0.1f)                               // Hiện ảnh mờ trước khi full
-                .placeholder(R.mipmap.ic_lighting_brasslamp)  // Giảm nháy trắng
+//                .placeholder(R.mipmap.ic_lighting_brasslamp)  // Giảm nháy trắng
                 .dontAnimate()                                // Không animation khi load (tăng tốc)
                 .into(holder.imageView);
     }
