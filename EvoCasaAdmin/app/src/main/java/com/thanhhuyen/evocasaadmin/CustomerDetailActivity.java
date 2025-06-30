@@ -19,6 +19,7 @@ import com.thanhhuyen.models.Order;
 import com.thanhhuyen.untils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CustomerDetailActivity extends AppCompatActivity {
     private static final String TAG = "CustomerDetailActivity";
@@ -26,6 +27,9 @@ public class CustomerDetailActivity extends AppCompatActivity {
     private TextView txtTitle;
     private ImageView imgBack;
     private TextView tv_customer_name, tv_customer_gender, tv_customer_email, tv_customer_phone, tv_customer_address;
+
+    // ✅ Added TextViews for total orders and total amount
+    private TextView tv_total_orders, tv_total_amount;
 
     private FirebaseFirestore db;
     private String customerId;
@@ -78,6 +82,10 @@ public class CustomerDetailActivity extends AppCompatActivity {
         tv_customer_email = findViewById(R.id.tv_customer_email);
         tv_customer_phone = findViewById(R.id.tv_customer_phone);
         tv_customer_address = findViewById(R.id.tv_customer_address);
+
+        // ✅ Initialize total orders and total amount TextViews
+        tv_total_orders = findViewById(R.id.tv_total_orders);
+        tv_total_amount = findViewById(R.id.tv_total_amount);
 
         // ✅ Init order RecyclerView
         recyclerViewOrderDetails = findViewById(R.id.recyclerViewOrderDetails);
@@ -148,6 +156,9 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
                     orderDetailAdapter.notifyDataSetChanged();
 
+                    // ✅ Update total orders and total amount after loading orders
+                    updateOrderSummary();
+
                     if (orderList.isEmpty()) {
                         Log.w(TAG, "No orders found for customer: " + customerId);
                         Toast.makeText(this, "No orders found for this customer", Toast.LENGTH_SHORT).show();
@@ -194,6 +205,9 @@ public class CustomerDetailActivity extends AppCompatActivity {
                             }
 
                             orderDetailAdapter.notifyDataSetChanged();
+
+                            // ✅ Update total orders and total amount after alternative query
+                            updateOrderSummary();
                             return; // Stop trying other paths
                         }
                     })
@@ -201,5 +215,29 @@ public class CustomerDetailActivity extends AppCompatActivity {
                         Log.e(TAG, "Alternative query failed for path: " + path, e);
                     });
         }
+    }
+
+    // ✅ New method to calculate and display total orders and total amount
+    private void updateOrderSummary() {
+        int totalOrders = orderList.size();
+        double totalAmount = 0.0;
+
+        // Calculate total amount from all orders
+        for (Order order : orderList) {
+            if (order != null) {
+                totalAmount += order.getTotalPrice();
+            }
+        }
+
+        // Update UI with calculated values (removed label prefixes)
+        if (tv_total_orders != null) {
+            tv_total_orders.setText(String.valueOf(totalOrders));
+        }
+
+        if (tv_total_amount != null) {
+            tv_total_amount.setText(String.format(Locale.getDefault(), "$%,.0f", totalAmount));
+        }
+
+        Log.d(TAG, "Order summary updated - Total Orders: " + totalOrders + ", Total Amount: $" + totalAmount);
     }
 }
