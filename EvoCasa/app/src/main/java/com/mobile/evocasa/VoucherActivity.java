@@ -34,11 +34,14 @@ public class VoucherActivity extends AppCompatActivity {
     private UserSessionManager sessionManager;
     private TextView txtCartBadge;
     ImageView imgCart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_voucher);
+        setupBottomNav();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -74,6 +77,13 @@ public class VoucherActivity extends AppCompatActivity {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
+    }
+
+    private void setupBottomNav() {
+        findViewById(R.id.tabHome).setOnClickListener(v -> goToTab(0));
+        startActivity(intent);
+        overridePendingTransition(0, 0); // không animation
+        finish(); // kết thúc VoucherActivity
     }
 
     /**
