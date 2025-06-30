@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.thanhhuyen.models.Category;
+import com.thanhhuyen.models.Product;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.thanhhuyen.evocasaadmin;
+package com.thanhhuyen.models;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;

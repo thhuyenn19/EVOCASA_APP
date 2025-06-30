@@ -1,4 +1,4 @@
-package com.thanhhuyen.evocasaadmin;
+package com.thanhhuyen.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.thanhhuyen.models.Product;
+import com.thanhhuyen.evocasaadmin.R;
+import com.thanhhuyen.models.Category;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

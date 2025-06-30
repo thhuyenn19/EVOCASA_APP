@@ -10,7 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.thanhhuyen.adapters.CategoryAdapter;
+import com.thanhhuyen.models.Category;
+
 import java.util.List;
 
 public class ProductActivity extends AppCompatActivity {

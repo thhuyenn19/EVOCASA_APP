@@ -1,4 +1,4 @@
-package com.thanhhuyen.evocasaadmin;
+package com.thanhhuyen.adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.thanhhuyen.evocasaadmin.R;
+import com.thanhhuyen.models.Product;
 
 import java.util.List;
 
