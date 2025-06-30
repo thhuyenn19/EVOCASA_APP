@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Đọc dữ liệu CustomerBehavior từ file JSON
-customer_behavior = pd.read_json('Model/Recommendation/Generated_CustomerBehavior.json')
+customer_behavior = pd.read_json('Model/Recommendation/EvoCasa.CustomerBehavior.json')
 
 # Kiểm tra nếu customer_id và product_id là dict (có dạng { "$oid": "..." }), chuyển thành string
 customer_behavior['customer_id'] = customer_behavior['customer_id'].apply(lambda x: x.get('$oid') if isinstance(x, dict) else x)

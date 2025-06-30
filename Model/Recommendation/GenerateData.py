@@ -83,7 +83,7 @@ for customer in customers:
         customer_behavior.append(behavior)
 
 # Save to file
-output_path = "Generated_CustomerBehavior.json"
+output_path = "Model/Recommendation/EvoCasa.CustomerBehavior.json"
 with open(output_path, "w", encoding="utf-8") as f:
     json.dump(customer_behavior, f, indent=2)
 
