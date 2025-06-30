@@ -52,6 +52,11 @@ public class FirebaseManager {
         void onError(String error);
     }
 
+    public interface OnProductChangeListener {
+        void onProductChanged(Product product);
+        void onError(String error);
+    }
+
     // Method to load only Category Parent
     public void loadCategories(OnCategoriesLoadedListener listener) {
         db.collection("Category")
@@ -159,8 +164,8 @@ public class FirebaseManager {
         db.collection("Product")
                 .document(product.getId())
                 .update(
-                        "price", product.getPrice(),
-                        "quantity", product.getQuantity()
+                        "Price", product.getPrice(),
+                        "Quantity", product.getQuantity()
                 )
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "Product updated successfully");
@@ -169,6 +174,26 @@ public class FirebaseManager {
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error updating product", e);
                     listener.onError(e.getMessage());
+                });
+    }
+
+    public void listenToProductChanges(String productId, OnProductChangeListener listener) {
+        db.collection("Product")
+                .document(productId)
+                .addSnapshotListener((snapshot, e) -> {
+                    if (e != null) {
+                        Log.e(TAG, "Listen failed.", e);
+                        listener.onError(e.getMessage());
+                        return;
+                    }
+
+                    if (snapshot != null && snapshot.exists()) {
+                        Product product = snapshot.toObject(Product.class);
+                        if (product != null) {
+                            product.setId(snapshot.getId());
+                            listener.onProductChanged(product);
+                        }
+                    }
                 });
     }
 }

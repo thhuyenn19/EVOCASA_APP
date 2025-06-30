@@ -20,6 +20,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final List<ChatMessage> messages;
     private final String userId; // Để xác định tin nhắn của user
 
+    // Chat mode constants
+    public static final int CHAT_MODE_CHATBOT = 0;
+    public static final int CHAT_MODE_EMPLOYEE = 1;
+
+    private int currentChatMode = CHAT_MODE_CHATBOT; // Default to chatbot mode
+
     private static final int VIEW_TYPE_USER = 1;
     private static final int VIEW_TYPE_BOT = 2;
     private static final int VIEW_TYPE_SYSTEM = 3; // Thêm type cho system message
@@ -54,7 +60,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof UserMessageViewHolder) {
             ((UserMessageViewHolder) holder).bind(message);
         } else if (holder instanceof BotMessageViewHolder) {
-            ((BotMessageViewHolder) holder).bind(message);
+            ((BotMessageViewHolder) holder).bind(message, currentChatMode);
         } else if (holder instanceof SystemMessageViewHolder) {
             ((SystemMessageViewHolder) holder).bind(message);
         }
@@ -77,6 +83,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             return VIEW_TYPE_BOT;
         }
+    }
+
+    // Method to set chat mode
+    public void setChatMode(int chatMode) {
+        this.currentChatMode = chatMode;
+        notifyDataSetChanged(); // Refresh all items to update icons
     }
 
     // ViewHolder cho tin nhắn của user
@@ -104,10 +116,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             botIcon = itemView.findViewById(R.id.bot_icon);
         }
 
-        void bind(ChatMessage message) {
+        void bind(ChatMessage message, int chatMode) {
             messageText.setText(message.getMessage());
             if (botIcon != null) {
                 botIcon.setVisibility(View.VISIBLE);
+
+                // Set appropriate icon based on chat mode
+                if (chatMode == CHAT_MODE_EMPLOYEE) {
+                    botIcon.setImageResource(R.drawable.ic_support);
+                } else {
+                    botIcon.setImageResource(R.drawable.ic_chatbot);
+                }
             }
         }
     }
@@ -130,5 +149,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void addMessage(ChatMessage message) {
         messages.add(message);
         notifyItemInserted(messages.size() - 1);
+    }
+
+    // For backward compatibility - deprecated method
+    @Deprecated
+    public void setChatActive(boolean isActive) {
+        setChatMode(isActive ? CHAT_MODE_EMPLOYEE : CHAT_MODE_CHATBOT);
     }
 }

@@ -47,6 +47,6 @@ def get_all_documents_as_texts(collections: list[str]) -> list[str]:
                 all_texts.append(text)
 
         except Exception as e:
-            print(f"❌ Lỗi khi đọc collection '{collection_name}': {e}")
+            print(f" Lỗi khi đọc collection '{collection_name}': {e}")
 
     return list(dict.fromkeys(all_texts))  # Loại bỏ trùng lặp

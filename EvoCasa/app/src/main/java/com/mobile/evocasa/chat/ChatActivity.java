@@ -27,9 +27,25 @@ import com.mobile.evocasa.R;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class ChatActivity extends AppCompatActivity {
     private static final String TAG = "ChatActivity";
+    private static final String CHAT_API_URL = "https://chat-service-408656799826.us-central1.run.app/chat";
+
     private FirebaseFirestore db;
     private String userId;
     private String adminId = null;
@@ -41,9 +57,11 @@ public class ChatActivity extends AppCompatActivity {
     private EditText edtTypeMessage;
     private ImageView imgSend;
     private boolean isFirstTimeChat = true;
-    private boolean isChatWithEmployeeActive = false; // Trạng thái chat với nhân viên
-    private ListenerRegistration messageListener; // Để quản lý listener
-    private long chatSessionId; // ID phiên chat để tạo chatId unique
+    private boolean isChatWithEmployeeActive = false;
+    private boolean isChatbotActive = false; // Track chatbot state
+    private ListenerRegistration messageListener;
+    private long chatSessionId;
+    private OkHttpClient httpClient;
 
     // UI elements
     private TextView txtChatEmployee;
@@ -60,6 +78,13 @@ public class ChatActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Initialize HTTP client
+        httpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build();
 
         // Khởi tạo Firestore
         db = FirebaseFirestore.getInstance();
@@ -83,8 +108,11 @@ public class ChatActivity extends AppCompatActivity {
         // Setup click listeners
         setupClickListeners();
 
-        // Hiển thị giao diện ban đầu
-        showInitialInterface();
+        // Setup reply options click listeners
+        setupReplyOptionsClickListeners();
+
+        // Start with chatbot interface and send hello message
+        startChatbotInterface();
     }
 
     private void initializeViews() {
@@ -126,10 +154,10 @@ public class ChatActivity extends AppCompatActivity {
         if (txtChatEmployee != null) {
             txtChatEmployee.setOnClickListener(v -> {
                 if (isChatWithEmployeeActive) {
-                    // Kết thúc chat và quay về giao diện ban đầu
+                    // End employee chat and go back to chatbot
                     endChatWithEmployee();
                 } else {
-                    // Bắt đầu chat với nhân viên
+                    // Start chat with employee
                     startChatWithEmployee();
                 }
             });
@@ -139,20 +167,42 @@ public class ChatActivity extends AppCompatActivity {
         if (imgSend != null) {
             imgSend.setOnClickListener(v -> {
                 String messageText = edtTypeMessage.getText().toString().trim();
-                if (!messageText.isEmpty() && userId != null && chatId != null && isChatWithEmployeeActive) {
-                    sendMessage(messageText, userId);
+                if (!messageText.isEmpty() && userId != null) {
+                    sendUserMessage(messageText);
                     edtTypeMessage.setText("");
                 }
             });
         }
     }
 
-    private void showInitialInterface() {
-        // Hiển thị giao diện ban đầu với các tùy chọn
+    private void setupReplyOptionsClickListeners() {
+        if (replyOptionsContainer != null) {
+            // Get all TextViews in reply options container
+            for (int i = 0; i < replyOptionsContainer.getChildCount(); i++) {
+                View child = replyOptionsContainer.getChildAt(i);
+                if (child instanceof TextView) {
+                    TextView textView = (TextView) child;
+                    textView.setOnClickListener(v -> {
+                        String messageText = textView.getText().toString();
+                        if (!messageText.isEmpty()) {
+                            // Send the clicked message
+                            sendUserMessage(messageText);
+                            // Hide reply options after clicking
+                            replyOptionsContainer.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void startChatbotInterface() {
+        Log.d(TAG, "Starting chatbot interface");
+
+        // Show initial interface
         if (replyOptionsContainer != null) {
             replyOptionsContainer.setVisibility(View.VISIBLE);
         }
-        // Input container vẫn hiển thị nhưng không hoạt động
         if (inputContainer != null) {
             inputContainer.setVisibility(View.VISIBLE);
         }
@@ -160,29 +210,17 @@ public class ChatActivity extends AppCompatActivity {
             txtChatEmployee.setText(R.string.title_chat_with_employee);
         }
 
-        // Clear messages
-        messages.clear();
-        if (chatAdapter != null) {
-            chatAdapter.notifyDataSetChanged();
-        }
-
+        // Set chatbot active and employee inactive
+        isChatbotActive = true;
         isChatWithEmployeeActive = false;
-    }
 
-    private void showChatInterface() {
-        // Hiển thị giao diện chat - ẩn reply options
-        if (replyOptionsContainer != null) {
-            replyOptionsContainer.setVisibility(View.GONE);
-        }
-        // Input container vẫn hiển thị và hoạt động
-        if (inputContainer != null) {
-            inputContainer.setVisibility(View.VISIBLE);
-        }
-        if (txtChatEmployee != null) {
-            txtChatEmployee.setText("End Chat");
+        // Update adapter to use chatbot icon
+        if (chatAdapter != null) {
+            chatAdapter.setChatMode(ChatAdapter.CHAT_MODE_CHATBOT);
         }
 
-        isChatWithEmployeeActive = true;
+        // Send hello message to chatbot
+        sendChatbotHelloMessage();
     }
 
     private void startChatWithEmployee() {
@@ -190,40 +228,68 @@ public class ChatActivity extends AppCompatActivity {
 
         Log.d(TAG, "Starting chat with employee");
 
-        // Tạo session ID unique cho mỗi lần chat
+        // Create session ID unique for each chat
         chatSessionId = System.currentTimeMillis();
         chatId = "chat_" + userId + "_admin_" + chatSessionId;
 
-        // Chuyển sang giao diện chat
-        showChatInterface();
+        // Switch to employee chat interface
+        showEmployeeChatInterface();
 
-        // Tạo chat document trong Firestore
+        // Create chat document in Firestore
         createChatDocument();
 
-        // Hiển thị thông báo support agent joined
+        // Show support agent joined message
         showSupportAgentJoinedMessage();
 
-        // Bắt đầu lắng nghe tin nhắn
+        // Start listening for messages
         listenForMessages();
 
+        // Set states
+        isChatWithEmployeeActive = true;
+        isChatbotActive = false;
         isFirstTimeChat = false;
+    }
+
+    private void showEmployeeChatInterface() {
+        // Hide reply options
+        if (replyOptionsContainer != null) {
+            replyOptionsContainer.setVisibility(View.GONE);
+        }
+        // Keep input container visible and active
+        if (inputContainer != null) {
+            inputContainer.setVisibility(View.VISIBLE);
+        }
+        if (txtChatEmployee != null) {
+            txtChatEmployee.setText("End Chat");
+        }
+
+        // Update adapter to use support icon
+        if (chatAdapter != null) {
+            chatAdapter.setChatMode(ChatAdapter.CHAT_MODE_EMPLOYEE);
+        }
     }
 
     private void endChatWithEmployee() {
         Log.d(TAG, "Ending chat with employee");
 
-        // Dừng lắng nghe tin nhắn
+        // Stop listening for messages
         if (messageListener != null) {
             messageListener.remove();
             messageListener = null;
         }
 
-        // Quay về giao diện ban đầu
-        showInitialInterface();
+        // Clear messages and go back to chatbot interface
+        messages.clear();
+        if (chatAdapter != null) {
+            chatAdapter.notifyDataSetChanged();
+        }
 
         // Reset chat variables
         chatId = null;
         chatSessionId = 0;
+
+        // Go back to chatbot interface
+        startChatbotInterface();
     }
 
     private void createChatDocument() {
@@ -242,18 +308,125 @@ public class ChatActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> Log.e(TAG, "Error creating chat document", e));
     }
 
-    private void sendMessage(String messageText, String senderId) {
+    private void sendUserMessage(String messageText) {
+        if (messageText.isEmpty() || userId == null) return;
+
+        // Add user message to UI immediately
+        ChatMessage userMessage = new ChatMessage(messageText, userId, new Date(), true);
+        chatAdapter.addMessage(userMessage);
+        recyclerViewChat.scrollToPosition(messages.size() - 1);
+
+        if (isChatWithEmployeeActive) {
+            // Send to Firestore for employee chat
+            if (chatId != null) {
+                sendMessageToFirestore(messageText, userId);
+            }
+        } else if (isChatbotActive) {
+            // Send to chatbot API
+            sendMessageToChatbot(messageText);
+        }
+    }
+
+    private void sendMessageToFirestore(String messageText, String senderId) {
         if (messageText.isEmpty() || userId == null || chatId == null) return;
 
-        com.google.firebase.firestore.CollectionReference messagesRef = db.collection("chats").document(chatId).collection("messages");
+        com.google.firebase.firestore.CollectionReference messagesRef = db.collection("Chats").document(chatId).collection("messages");
         messagesRef.add(new java.util.HashMap<String, Object>() {{
             put("senderId", senderId);
             put("message", messageText);
             put("timestamp", com.google.firebase.firestore.FieldValue.serverTimestamp());
             put("isRead", false);
         }}).addOnSuccessListener(documentReference -> {
-            Log.d(TAG, "Message sent");
-        }).addOnFailureListener(e -> Log.e(TAG, "Error sending message", e));
+            Log.d(TAG, "Message sent to Firestore");
+        }).addOnFailureListener(e -> Log.e(TAG, "Error sending message to Firestore", e));
+    }
+
+    private void sendMessageToChatbot(String message) {
+        try {
+            JSONObject jsonBody = new JSONObject();
+            jsonBody.put("query", message); // Đây là trường gửi tin nhắn
+
+            // Tạo RequestBody để gửi nội dung JSON
+            RequestBody body = RequestBody.create(
+                    MediaType.parse("application/json; charset=utf-8"),
+                    jsonBody.toString()  // Chuyển đổi JSON thành String
+            );
+
+            // Tạo một request HTTP POST với URL API
+            Request request = new Request.Builder()
+                    .url(CHAT_API_URL)   // URL của API chatbot
+                    .post(body)          // Đảm bảo phương thức POST được sử dụng
+                    .addHeader("Content-Type", "application/json")
+                    .build();
+
+            // Gửi yêu cầu POST
+            httpClient.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e(TAG, "Failed to send message to chatbot", e);
+                    runOnUiThread(() -> {
+                        // Hiển thị lỗi khi kết nối không thành công
+                        ChatMessage errorMessage = new ChatMessage(
+                                "Sorry, I'm having trouble connecting. Please try again later.",
+                                "bot",
+                                new Date(),
+                                true
+                        );
+                        chatAdapter.addMessage(errorMessage);
+                        recyclerViewChat.scrollToPosition(messages.size() - 1);
+                    });
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (response.isSuccessful()) {
+                        String responseBody = response.body().string();
+                        try {
+                            JSONObject jsonResponse = new JSONObject(responseBody);
+                            String botReply = jsonResponse.optString("answer", "I'm sorry, I didn't understand that.");
+
+                            runOnUiThread(() -> {
+                                ChatMessage botMessage = new ChatMessage(botReply, "bot", new Date(), true);
+                                chatAdapter.addMessage(botMessage);
+                                recyclerViewChat.scrollToPosition(messages.size() - 1);
+                            });
+                        } catch (JSONException e) {
+                            Log.e(TAG, "Error parsing chatbot response", e);
+                            runOnUiThread(() -> {
+                                ChatMessage errorMessage = new ChatMessage(
+                                        "Sorry, I'm experiencing some technical difficulties. Please try again.",
+                                        "bot",
+                                        new Date(),
+                                        true
+                                );
+                                chatAdapter.addMessage(errorMessage);
+                                recyclerViewChat.scrollToPosition(messages.size() - 1);
+                            });
+                        }
+                    } else {
+                        Log.e(TAG, "Chatbot API error: " + response.code());
+                        runOnUiThread(() -> {
+                            ChatMessage errorMessage = new ChatMessage(
+                                    "Sorry, I'm experiencing some technical difficulties. Please try again.",
+                                    "bot",
+                                    new Date(),
+                                    true
+                            );
+                            chatAdapter.addMessage(errorMessage);
+                            recyclerViewChat.scrollToPosition(messages.size() - 1);
+                        });
+                    }
+                }
+            });
+        } catch (JSONException e) {
+            Log.e(TAG, "Error creating JSON for chatbot request", e);
+        }
+    }
+
+
+    private void sendChatbotHelloMessage() {
+        // Send initial hello message to chatbot
+        sendMessageToChatbot("Hello");
     }
 
     private void listenForMessages() {
@@ -264,7 +437,7 @@ public class ChatActivity extends AppCompatActivity {
             messageListener.remove();
         }
 
-        messageListener = db.collection("chats").document(chatId).collection("messages")
+        messageListener = db.collection("Chats").document(chatId).collection("messages")
                 .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.ASCENDING)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
@@ -279,9 +452,13 @@ public class ChatActivity extends AppCompatActivity {
                             Boolean isReadObj = dc.getDocument().getBoolean("isRead");
                             boolean isRead = isReadObj != null ? isReadObj : false;
 
-                            ChatMessage chatMessage = new ChatMessage(message, senderId, timestamp, isRead);
-                            chatAdapter.addMessage(chatMessage);
-                            recyclerViewChat.scrollToPosition(messages.size() - 1);
+                            // Only add messages from Firestore that aren't from current user or bot
+                            // (to avoid duplicates since we add user and bot messages directly to UI)
+                            if (!senderId.equals(userId) && !senderId.equals("bot")) {
+                                ChatMessage chatMessage = new ChatMessage(message, senderId, timestamp, isRead);
+                                chatAdapter.addMessage(chatMessage);
+                                recyclerViewChat.scrollToPosition(messages.size() - 1);
+                            }
                         }
                     }
                 });
@@ -304,7 +481,7 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "Admin ID updated to: " + adminId);
             if (chatId != null && isChatWithEmployeeActive) {
                 // Update the current chat session with new admin ID
-                com.google.firebase.firestore.DocumentReference chatRef = db.collection("chats").document(chatId);
+                com.google.firebase.firestore.DocumentReference chatRef = db.collection("Chats").document(chatId);
                 ArrayList<String> updatedParticipants = new ArrayList<>();
                 updatedParticipants.add(userId);
                 updatedParticipants.add(adminId);
