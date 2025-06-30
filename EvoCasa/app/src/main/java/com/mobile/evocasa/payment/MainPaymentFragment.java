@@ -2,6 +2,8 @@ package com.mobile.evocasa.payment;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -258,205 +260,17 @@ public class MainPaymentFragment extends Fragment {
                 Toast.makeText(requireContext(), "Please select payment method", Toast.LENGTH_SHORT).show();
                 return;
             }
-            // Tạo ID cho order
-            String orderId = String.valueOf(System.currentTimeMillis());
-
-            // Lấy uid từ session
-            String uid = new UserSessionManager(requireContext()).getUid();
-
-            // Chuẩn bị dữ liệu đơn hàng
-            Map<String, Object> order = new HashMap<>();
-
-            // Gán ID người dùng
-            Map<String, Object> customerIdObj = new HashMap<>();
-            customerIdObj.put("$oid", uid);
-            order.put("Customer_id", customerIdObj);
-
-            Map<String, Object> orderIdObj = new HashMap<>();
-            orderIdObj.put("$oid", orderId);
-            order.put("_id", orderIdObj);
-
-            // Format ngày theo ISO 8601
-            String isoDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                    .format(new Date());
-
-// Đóng gói kiểu $date
-            Map<String, Object> orderDateObj = new HashMap<>();
-            orderDateObj.put("$date", isoDate);
-
-            order.put("OrderDate", orderDateObj);
-            order.put("ShipDate", orderDateObj);  // hoặc tạo 1 bản riêng nếu khác thời gian
-
-// Shipping info
-            order.put("ShippingMethod", txtName.getText().toString());
-            order.put("DeliveryFee", currentShippingFee);
-
-            // Ghi chú từ người dùng (cho phép rỗng)
-            String note = ((TextView) requireView().findViewById(R.id.edtMessageForShop)).getText().toString();
-            order.put("Note", note);
-
-            // Trạng thái đơn
-            order.put("Status", "Pending");
-
-            // Tạo mã tracking random
-            String tracking = "TRK" + String.format("%06d", new Random().nextInt(999999));
-            order.put("TrackingNumber", tracking);
-
-            // Phương thức thanh toán
-            order.put("PaymentMethod", getPaymentText(selectedPaymentMethod));
-
-            // Giá tiền
-            double subtotal = calculateSubtotal();
-            order.put("TotalPrice", subtotal + currentShippingFee - calculatedSaving);
-            order.put("PrePrice", subtotal);
-
-            // Danh sách sản phẩm
-            List<Map<String, Object>> orderProducts = new ArrayList<>();
-            for (CartProduct p : selectedProducts) {
-                Map<String, Object> product = new HashMap<>();
-                product.put("Quantity", p.getQuantity());
-                product.put("Customize", null); // nếu có tuỳ chỉnh thì thay thế ở đây
-
-                // Product ID kiểu $oid
-                Map<String, Object> idObj = new HashMap<>();
-                idObj.put("$oid", p.getId());
-                product.put("id", idObj);
-
-                orderProducts.add(product);
-            }
-            order.put("OrderProduct", orderProducts);
-
-            // Thông tin Voucher (nếu có)
-            if (selectedVoucher != null) {
-                Map<String, Object> voucher = new HashMap<>();
-                voucher.put("VoucherName", selectedVoucher.getName());
-                voucher.put("DiscountAmount", calculatedSaving);
-                voucher.put("DiscountPercent", selectedVoucher.getDiscountPercent());
-
-                // Nếu có ID của voucher → thêm vào
-                if (selectedVoucher.getId() != null) {
-                    Map<String, Object> voucherIdObj = new HashMap<>();
-                    voucherIdObj.put("$oid", selectedVoucher.getId());
+            // 👉 Thêm phần kiểm tra permission trước khi gọi createOrderAndSendNotification()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
+                    return;
                 }
-
-                order.put("Voucher", voucher);
-            }
-            if (selectedShipping != null) {
-                Map<String, Object> shippingAddress = new HashMap<>();
-                shippingAddress.put("Name", selectedShipping.getName());
-                shippingAddress.put("Phone", selectedShipping.getPhone());
-                shippingAddress.put("Address", selectedShipping.getAddress());
-
-                order.put("ShippingAddresses", shippingAddress);
             }
 
-
-            // Gửi lên Firestore
-            FirebaseFirestore.getInstance()
-                    .collection("Order")
-                    .document(orderId)
-                    .set(order)
-                    .addOnSuccessListener(aVoid -> {
-                        // Push thông báo sau khi tạo đơn thành công
-                        Map<String, Object> notification = new HashMap<>();
-                        String notiId = "NOTI" + System.currentTimeMillis();
-                        String createdAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(new Date());
-
-                        notification.put("NotificationId", notiId);
-                        notification.put("CreatedAt", createdAt);
-                        notification.put("Title", "Order Pending Confirmation");
-                        notification.put("Content", "Order #" + orderId + " placed successfully and is now pending confirmation.");
-                        notification.put("Image", "/images/Notification/OrderPlaced.jpg");  // bạn có thể đổi lại đường dẫn phù hợp
-                        notification.put("Status", "Unread");
-                        notification.put("Type", "Pending");
-
-// Đẩy vào danh sách Notifications của người dùng
-                        FirebaseFirestore.getInstance()
-                                .collection("Customers")
-                                .document(uid)
-                                .update("Notifications", FieldValue.arrayUnion(notification));
-
-                        Toast.makeText(v.getContext(), "Order placed successfully!", Toast.LENGTH_LONG).show();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
-                                    != PackageManager.PERMISSION_GRANTED) {
-                                requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
-                                return;
-                            }
-                        }
-                        sendOrderPlacedNotification();
-                        SuggestionCacheManager.clearSuggestions(requireContext(), uid);
-
-                        // After the order has been successfully placed
-                        for (CartProduct p : selectedProducts) {
-                            // Get the current product's quantity in the database
-                            FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DocumentReference productRef = db.collection("Product").document(p.getId());
-
-                            // Update the product's quantity in Firestore
-                            productRef.update("Quantity", FieldValue.increment(-p.getQuantity()))
-                                    .addOnSuccessListener(success -> {
-                                        // Log success if needed
-                                        Log.d("MainPaymentFragment", "Product quantity updated successfully for " + p.getName());
-                                    })
-                                    .addOnFailureListener(error -> {
-                                        // Handle any errors that occur during the update
-                                        Log.e("MainPaymentFragment", "Error updating product quantity for " + p.getName(), error);
-                                    });
-                        }
-
-
-
-
-                        // Chuyển sang trang finish khi thành công
-                        FinishPaymentFragment finishPaymentFragment = new FinishPaymentFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("orderId", orderId); // Truyền orderId
-                        finishPaymentFragment.setArguments(bundle);
-
-                        getParentFragmentManager()
-                                .beginTransaction()
-                                .replace(R.id.fragment_container, finishPaymentFragment)
-                                .addToBackStack(null)
-                                .commit();
-
-
-                        FirebaseFirestore db = FirebaseFirestore.getInstance();
-                        DocumentReference customerRef = db.collection("Customers").document(uid);
-
-// 1. Lấy Cart hiện tại
-                        customerRef.get().addOnSuccessListener(document -> {
-                            if (document.exists()) {
-                                List<Map<String, Object>> cartList = (List<Map<String, Object>>) document.get("Cart");
-                                if (cartList == null) return;
-
-                                // 2. Lấy ID các sản phẩm đã mua
-                                List<String> purchasedIds = new ArrayList<>();
-                                for (CartProduct p : selectedProducts) {
-                                    purchasedIds.add(p.getId());
-                                }
-
-                                // 3. Giữ lại các sản phẩm chưa mua
-                                List<Map<String, Object>> updatedCart = new ArrayList<>();
-                                for (Map<String, Object> item : cartList) {
-                                    String pid = (String) item.get("productId");
-                                    if (!purchasedIds.contains(pid)) {
-                                        updatedCart.add(item);  // giữ lại sản phẩm chưa được mua
-                                    }
-                                }
-
-                                // 4. Cập nhật mảng Cart mới
-                                customerRef.update("Cart", updatedCart);
-                            }
-                        });
-
-
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(requireContext(), "Failed to place order", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    });
-
+            // Có quyền rồi thì tạo order và gửi noti
+            createOrderAndSendNotification();
 
         });
 
@@ -506,13 +320,194 @@ public class MainPaymentFragment extends Fragment {
 
         return view;
     }
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "order_channel_id";
+            CharSequence name = "Order Notifications";
+            String description = "Notifications for order updates";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = requireContext().getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
+    }
+
+    private void createOrderAndSendNotification() {
+        if (selectedPaymentMethod == null) {
+        Toast.makeText(requireContext(), "Please select payment method", Toast.LENGTH_SHORT).show();
+        return;
+    }
+
+        String orderId = String.valueOf(System.currentTimeMillis());
+        String uid = new UserSessionManager(requireContext()).getUid();
+
+        Map<String, Object> order = new HashMap<>();
+        Map<String, Object> customerIdObj = new HashMap<>();
+        customerIdObj.put("$oid", uid);
+        order.put("Customer_id", customerIdObj);
+
+        Map<String, Object> orderIdObj = new HashMap<>();
+        orderIdObj.put("$oid", orderId);
+        order.put("_id", orderIdObj);
+
+        String isoDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                .format(new Date());
+        Map<String, Object> orderDateObj = new HashMap<>();
+        orderDateObj.put("$date", isoDate);
+        order.put("OrderDate", orderDateObj);
+        order.put("ShipDate", orderDateObj);
+
+        order.put("ShippingMethod", txtName.getText().toString());
+        order.put("DeliveryFee", currentShippingFee);
+        String note = ((TextView) requireView().findViewById(R.id.edtMessageForShop)).getText().toString();
+        order.put("Note", note);
+        order.put("Status", "Pending");
+
+        String tracking = "TRK" + String.format("%06d", new Random().nextInt(999999));
+        order.put("TrackingNumber", tracking);
+        order.put("PaymentMethod", getPaymentText(selectedPaymentMethod));
+
+        double subtotal = calculateSubtotal();
+        order.put("TotalPrice", subtotal + currentShippingFee - calculatedSaving);
+        order.put("PrePrice", subtotal);
+
+        List<Map<String, Object>> orderProducts = new ArrayList<>();
+        for (CartProduct p : selectedProducts) {
+            Map<String, Object> product = new HashMap<>();
+            product.put("Quantity", p.getQuantity());
+            product.put("Customize", null);
+
+            Map<String, Object> idObj = new HashMap<>();
+            idObj.put("$oid", p.getId());
+            product.put("id", idObj);
+
+            orderProducts.add(product);
+        }
+        order.put("OrderProduct", orderProducts);
+
+        if (selectedVoucher != null) {
+            Map<String, Object> voucher = new HashMap<>();
+            voucher.put("VoucherName", selectedVoucher.getName());
+            voucher.put("DiscountAmount", calculatedSaving);
+            voucher.put("DiscountPercent", selectedVoucher.getDiscountPercent());
+            order.put("Voucher", voucher);
+        }
+
+        if (selectedShipping != null) {
+            Map<String, Object> shippingAddress = new HashMap<>();
+            shippingAddress.put("Name", selectedShipping.getName());
+            shippingAddress.put("Phone", selectedShipping.getPhone());
+            shippingAddress.put("Address", selectedShipping.getAddress());
+            order.put("ShippingAddresses", shippingAddress);
+        }
+
+        FirebaseFirestore.getInstance()
+                .collection("Order")
+                .document(orderId)
+                .set(order)
+                .addOnSuccessListener(aVoid -> {
+                    // Push notification data vào Firestore
+                    Map<String, Object> notification = new HashMap<>();
+                    String notiId = "NOTI" + System.currentTimeMillis();
+                    String createdAt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).format(new Date());
+                    notification.put("NotificationId", notiId);
+                    notification.put("CreatedAt", createdAt);
+                    notification.put("Title", "Order Pending Confirmation");
+                    notification.put("Content", "Order #" + orderId + " placed successfully and is now pending confirmation.");
+                    notification.put("Image", "/images/Notification/OrderPlaced.jpg");
+                    notification.put("Status", "Unread");
+                    notification.put("Type", "Pending");
+
+                    FirebaseFirestore.getInstance()
+                            .collection("Customers")
+                            .document(uid)
+                            .update("Notifications", FieldValue.arrayUnion(notification));
+
+                    Toast.makeText(requireContext(), "Order placed successfully!", Toast.LENGTH_LONG).show();
+
+                    // 👉 Chỉ gửi noti nếu có quyền
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                                    == PackageManager.PERMISSION_GRANTED) {
+                        createNotificationChannel();
+                        sendOrderPlacedNotification();
+                    }
+
+                    SuggestionCacheManager.clearSuggestions(requireContext(), uid);
+
+                    // Update quantity sản phẩm
+                    for (CartProduct p : selectedProducts) {
+                        FirebaseFirestore.getInstance()
+                                .collection("Product")
+                                .document(p.getId())
+                                .update("Quantity", FieldValue.increment(-p.getQuantity()));
+                    }
+
+                    // Update cart: xóa sản phẩm đã mua
+                    FirebaseFirestore.getInstance()
+                            .collection("Customers")
+                            .document(uid)
+                            .get()
+                            .addOnSuccessListener(document -> {
+                                if (document.exists()) {
+                                    List<Map<String, Object>> cartList = (List<Map<String, Object>>) document.get("Cart");
+                                    if (cartList == null) return;
+
+                                    List<String> purchasedIds = new ArrayList<>();
+                                    for (CartProduct p : selectedProducts) {
+                                        purchasedIds.add(p.getId());
+                                    }
+
+                                    List<Map<String, Object>> updatedCart = new ArrayList<>();
+                                    for (Map<String, Object> item : cartList) {
+                                        String pid = (String) item.get("productId");
+                                        if (!purchasedIds.contains(pid)) {
+                                            updatedCart.add(item);
+                                        }
+                                    }
+
+                                    FirebaseFirestore.getInstance()
+                                            .collection("Customers")
+                                            .document(uid)
+                                            .update("Cart", updatedCart);
+                                }
+                            });
+
+                    // Chuyển sang FinishPaymentFragment
+                    FinishPaymentFragment frag = new FinishPaymentFragment();
+                    Bundle b = new Bundle();
+                    b.putString("orderId", orderId);
+                    frag.setArguments(b);
+                    getParentFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, frag)
+                            .addToBackStack(null)
+                            .commit();
+
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "Failed to place order", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                });
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1001 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            // ✅ Gửi notification ở đây sau khi được cấp phép
-            sendOrderPlacedNotification();
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Được cấp quyền -> giờ mới tạo order + push noti
+                createOrderAndSendNotification();
+            } else {
+                // Bị từ chối quyền -> vẫn tạo order nhưng không push noti native
+                Toast.makeText(requireContext(), "Notification permission denied. Order will still be created.", Toast.LENGTH_SHORT).show();
+                createOrderAndSendNotification();
+            }
         }
     }
     private void sendOrderPlacedNotification() {

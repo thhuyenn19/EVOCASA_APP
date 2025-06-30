@@ -2,7 +2,11 @@ package com.mobile.evocasa;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,12 +20,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
@@ -37,10 +46,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
+import android.Manifest;
+
 
 public class NotificationFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -52,6 +65,7 @@ public class NotificationFragment extends Fragment {
     private ListenerRegistration cartListener;
     private UserSessionManager session;
     private List<Map<String, Object>> originalNotificationData = new ArrayList<>();
+    private ListenerRegistration orderStatusListener;
 
 
     @Nullable
@@ -236,18 +250,21 @@ public class NotificationFragment extends Fragment {
         }
     }
 
+
+
+
     private String formatDateGroup(Timestamp ts) {
         Date date = ts.toDate();
 
         // Lấy thời điểm hiện tại và reset giờ
-        Calendar todayCal = Calendar.getInstance();
+        Calendar todayCal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         todayCal.set(Calendar.HOUR_OF_DAY, 0);
         todayCal.set(Calendar.MINUTE, 0);
         todayCal.set(Calendar.SECOND, 0);
         todayCal.set(Calendar.MILLISECOND, 0);
 
         // Lấy ngày của notification
-        Calendar notiCal = Calendar.getInstance();
+        Calendar notiCal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         notiCal.setTime(date);
         notiCal.set(Calendar.HOUR_OF_DAY, 0);
         notiCal.set(Calendar.MINUTE, 0);
@@ -262,7 +279,8 @@ public class NotificationFragment extends Fragment {
         } else if (diff == oneDay) {
             return "Yesterday";
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             return sdf.format(date);
         }
     }
@@ -472,6 +490,7 @@ public class NotificationFragment extends Fragment {
         if (session != null && txtCartBadge != null && isAdded()) {
             startCartBadgeListener();
         }
+
     }
 
     @Override
