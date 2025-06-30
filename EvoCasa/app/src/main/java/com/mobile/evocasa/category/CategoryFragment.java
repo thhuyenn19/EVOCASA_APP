@@ -52,6 +52,7 @@ import java.util.Map;
 
 public class CategoryFragment extends Fragment {
     private static final String TAG = "CategoryFragment";
+    private String currentSelectedSubCategory = "All products";
 
     private boolean isFetchingProducts = false;
     private RecyclerView recyclerViewSubCategory;
@@ -78,8 +79,6 @@ public class CategoryFragment extends Fragment {
     private ValueAnimator titleAnimator;
     private boolean isAnimating = false;
     private float lastPercentage = -1f;
-    private long lastUpdateTime = 0;
-    private static final long UPDATE_INTERVAL = 8;
     private Runnable pendingUpdate;
     private android.os.Handler mainHandler;
     private int backgroundColor;
@@ -197,9 +196,9 @@ public class CategoryFragment extends Fragment {
             }
         }
 
-        // ✅ Nếu có productCache chứa sẵn dữ liệu thì load ngay thay vì Firestore
+        // Nếu có productCache chứa sẵn dữ liệu thì load ngay thay vì Firestore
         if (productCache != null && categoryId != null && productCache.containsKey(categoryId)) {
-            Log.d(TAG, "✅ Loaded from productCache for categoryId: " + categoryId);
+            Log.d(TAG, "Loaded from productCache for categoryId: " + categoryId);
             currentProductList = new ArrayList<>(productCache.get(categoryId));
             productAdapter = new SubCategoryProductAdapter(currentProductList, requireContext());
             recyclerViewProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -252,11 +251,10 @@ public class CategoryFragment extends Fragment {
         if (requestCode == 1001 && resultCode == getActivity().RESULT_OK && data != null) {
             boolean wishlistChanged = data.getBooleanExtra("wishlistChanged", false);
             if (wishlistChanged) {
-                // Gọi lại API để cập nhật danh sách sản phẩm
                 if (selectedCategory.equals("Shop All")) {
                     fetchAllProductsForShopAll();
                 } else {
-                    filterProductsBySubCategory("All products");
+                    filterProductsBySubCategory(currentSelectedSubCategory);
                 }
             }
         }
@@ -344,14 +342,14 @@ public class CategoryFragment extends Fragment {
 
         ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
 
-        // ✅ Trường hợp: All products của 1 category (không phải là subcategory)
+        // Trường hợp: All products của 1 category (không phải là subcategory)
         if (selectedSubCategory.equals("All products")) {
             List<ProductItem> cachedProducts = preloadManager.getCategoryProducts(selectedCategory);
             if (cachedProducts != null && !cachedProducts.isEmpty()) {
                 currentProductList.addAll(cachedProducts);
                 productAdapter.notifyDataSetChanged();
                 isFetchingProducts = false;
-                Log.d(TAG, "✅ Loaded category products from cache: " + cachedProducts.size());
+                Log.d(TAG, "Loaded category products from cache: " + cachedProducts.size());
                 return;
             }
 
@@ -372,29 +370,28 @@ public class CategoryFragment extends Fragment {
                         }
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
-                        Log.d(TAG, "✅ Loaded from Firestore: " + currentProductList.size());
+                        Log.d(TAG, "Loaded from Firestore: " + currentProductList.size());
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "❌ Firestore error fetching category products", e);
+                        Log.e(TAG, "Firestore error fetching category products", e);
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     });
 
-            return; // ⚠️ THÊM return tại đây để không rơi xuống else
+            return;
         }
 
-        // ✅ Trường hợp: Subcategory cụ thể
+        // Trường hợp: Subcategory cụ thể
         if (subCategoryIds.containsKey(selectedSubCategory)) {
             List<ProductItem> cachedSubProducts = preloadManager.getSubCategoryProducts(selectedSubCategory);
             if (cachedSubProducts != null && !cachedSubProducts.isEmpty()) {
                 currentProductList.addAll(cachedSubProducts);
                 productAdapter.notifyDataSetChanged();
                 isFetchingProducts = false;
-                Log.d(TAG, "✅ Loaded subcategory products from cache: " + cachedSubProducts.size());
+                Log.d(TAG, "Loaded subcategory products from cache: " + cachedSubProducts.size());
                 return;
             }
 
-            Log.d(TAG, "Fallback: Fetching products for subcategory: " + selectedSubCategory);
             String subCategoryId = subCategoryIds.get(selectedSubCategory);
             db.collection("Product")
                     .get()
@@ -413,12 +410,10 @@ public class CategoryFragment extends Fragment {
                         isFetchingProducts = false;
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "❌ Firestore error fetching subcategory products", e);
                         productAdapter.notifyDataSetChanged();
                         isFetchingProducts = false;
                     });
         } else {
-            Log.w(TAG, "⚠️ Unknown subcategory: " + selectedSubCategory);
             productAdapter.notifyDataSetChanged();
             isFetchingProducts = false;
         }
@@ -455,7 +450,6 @@ public class CategoryFragment extends Fragment {
             return product;
 
         } catch (Exception e) {
-            Log.e(TAG, "❌ Error parsing product: " + doc.getId(), e);
             return null;
         }
     }
@@ -463,8 +457,7 @@ public class CategoryFragment extends Fragment {
     private void setupSubCategories() {
         subCategoryList = new ArrayList<>();
         subCategoryList.add(new SubCategory("All products", true));
-        subCategoryIds.put("All products", categoryId);  // ✅ fix chính tại đây
-
+        subCategoryIds.put("All products", categoryId);  //
         subCategoryAdapter = new SubCategoryAdapter(subCategoryList, this::onSubCategorySelected);
         recyclerViewSubCategory.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerViewSubCategory.setAdapter(subCategoryAdapter);
@@ -476,15 +469,16 @@ public class CategoryFragment extends Fragment {
             return;
         }
 
-        // ✅ Nếu có preload từ ShopFragment
+        // Nếu có preload từ ShopFragment
         if (preloadedSubCategoryIds != null && preloadedCategoryProducts != null) {
-            Log.d(TAG, "✅ Using preloaded subcategories & products");
+            Log.d(TAG, "Using preloaded subcategories & products");
 
             subCategoryIds.clear();
             subCategoryIds.putAll(preloadedSubCategoryIds);
 
             for (String name : preloadedSubCategoryIds.keySet()) {
-                subCategoryList.add(new SubCategory(name, false));
+                boolean isSelected = name.equals(currentSelectedSubCategory);
+                subCategoryList.add(new SubCategory(name, isSelected));
             }
 
             subCategoryAdapter.notifyDataSetChanged();
@@ -495,7 +489,7 @@ public class CategoryFragment extends Fragment {
             return;
         }
 
-        // ⛔ Nếu không có preload → truy vấn Firestore như bình thường
+        // Nếu không có preload → truy vấn Firestore như bình thường
         if (categoryId != null) {
             Log.d(TAG, "Fetching subcategories for category ID: " + categoryId);
             db.collection("Category")
@@ -518,52 +512,55 @@ public class CategoryFragment extends Fragment {
                                 String name = doc.getString("Name");
                                 String id = doc.getId();
                                 if (name != null) {
-                                    subCategoryList.add(new SubCategory(name, false));
+                                    boolean isSelected = name.equals(currentSelectedSubCategory);
+                                    subCategoryList.add(new SubCategory(name, isSelected));
                                     subCategoryIds.put(name, id);
-                                    Log.d(TAG, "➕ Added subcategory: " + name + " with ID: " + id);
+                                    Log.d(TAG, " Added subcategory: " + name + " with ID: " + id);
                                 }
                             }
                         }
 
                         subCategoryAdapter.notifyDataSetChanged();
 
-                        // ✅ Dùng cache nếu có
+                        // Dùng cache nếu có
                         ProductPreloadManager preloadManager = ProductPreloadManager.getInstance();
                         List<ProductItem> cached = preloadManager.getCategoryProducts(selectedCategory);
                         if (cached != null && !cached.isEmpty()) {
-                            Log.d(TAG, "✅ Using cached products after loading subcategories");
+                            Log.d(TAG, "Using cached products after loading subcategories");
                             currentProductList.clear();
                             currentProductList.addAll(cached);
                             productAdapter.notifyDataSetChanged();
                             return;
                         }
 
-                        // ⏳ Nếu chưa có cache → gọi Firestore
-                        Log.d(TAG, "⏳ No cache found, triggering filterProductsBySubCategory");
+                        // Nếu chưa có cache → gọi Firestore
+                        Log.d(TAG, "No cache found, triggering filterProductsBySubCategory");
                         filterProductsBySubCategory("All products");
 
                     })
                     .addOnFailureListener(e -> {
-                        Log.e(TAG, "❌ Failed to fetch subcategories for ID: " + categoryId, e);
+                        Log.e(TAG, "Failed to fetch subcategories for ID: " + categoryId, e);
                         subCategoryAdapter.notifyDataSetChanged();
                     });
         }
+
     }
 
-    // ✅ THÊM METHOD MỚI ĐỂ XỬ LÝ CẢ FILTER VÀ SCROLL
+    // THÊM METHOD MỚI ĐỂ XỬ LÝ CẢ FILTER VÀ SCROLL
     private void onSubCategorySelected(String selectedSubCategory) {
         if (isFetchingProducts) {
             Log.d(TAG, "Fetch in progress, ignoring subcategory click");
             return;
         }
+        currentSelectedSubCategory = selectedSubCategory;
 
-        // ✅ Cập nhật trạng thái selected cho UI
+        // Cập nhật trạng thái selected cho UI
         for (SubCategory sub : subCategoryList) {
             sub.setSelected(sub.getName().equals(selectedSubCategory));
         }
         subCategoryAdapter.notifyDataSetChanged();
 
-        // ✅ Scroll đến vị trí được chọn
+        // Scroll đến vị trí được chọn
         int selectedPosition = -1;
         for (int i = 0; i < subCategoryList.size(); i++) {
             if (subCategoryList.get(i).getName().equals(selectedSubCategory)) {
@@ -576,7 +573,7 @@ public class CategoryFragment extends Fragment {
             recyclerViewSubCategory.postDelayed(() -> smoothScrollToSubCategoryPosition(position), 100);
         }
 
-        // ✅ Xử lý lọc sản phẩm
+        // Xử lý lọc sản phẩm
         if (selectedSubCategory.equals("All products")) {
             if (selectedCategory.equals("Shop All")) {
                 fetchAllProductsForShopAll();
