@@ -93,6 +93,7 @@ public class MetadataHelper {
         return idx != null ? idx : -1;
     }
     // In MetadataHelper.java, just after init(…)
+    
     public static int getUserCount() {
         return custToIdx == null ? 0 : custToIdx.size();
     }
