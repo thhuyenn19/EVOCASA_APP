@@ -33,6 +33,8 @@ public class ProductDetailActivity extends AppCompatActivity implements EditProd
     private View btnBack;
 
     private FirebaseManager firebaseManager;
+    private String productId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +197,14 @@ public class ProductDetailActivity extends AppCompatActivity implements EditProd
         } else {
             Log.d(TAG, "No image available for product");
             productImage.setImageResource(android.R.color.darker_gray);
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload lại dữ liệu từ Firestore
+        if (productId != null) {
+            loadProductDetails(productId); // Đảm bảo có hàm này
         }
     }
 } 
