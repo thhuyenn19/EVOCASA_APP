@@ -285,14 +285,14 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvOrderStatus.setText("Status: " + currentOrder.getStatus());
 
         // Customer Information
-        tvCustomerId.setText("Customer ID: " + getCustomerIdSafe());
-        tvCustomerName.setText("Name: " + currentOrder.getShippingName());
-        tvCustomerPhone.setText("Phone: " + currentOrder.getShippingPhone());
+        tvCustomerId.setText(getCustomerIdSafe());
+        tvCustomerName.setText(currentOrder.getShippingName());
+        tvCustomerPhone.setText(currentOrder.getShippingPhone());
 
         // Product Information - hiển thị tên sản phẩm thay vì ID
-        tvProductId.setText("Product Name: " + getProductDisplayName());
-        tvProductQuantity.setText("Quantity: " + getQuantitySafe());
-        tvProductPrice.setText("Price: " + currentOrder.getFormattedPrePrice());
+        tvProductId.setText(getProductDisplayName());
+        tvProductQuantity.setText(getQuantitySafe());
+        tvProductPrice.setText("PrePrice: " + currentOrder.getFormattedPrePrice());
 
         // Shipping Information
         tvShippingAddress.setText(currentOrder.getShippingAddress());
@@ -301,7 +301,7 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvDeliveryFee.setText(currentOrder.getFormattedDeliveryFee());
 
         // Voucher Information
-        tvVoucherName.setText("Voucher: " + currentOrder.getVoucherName());
+        tvVoucherName.setText(currentOrder.getVoucherName());
         tvDiscountPercent.setText("Discount Percent: " + currentOrder.getDiscountPercent() + "%");
         tvDiscountAmount.setText("Discount Amount: " + currentOrder.getFormattedDiscountAmount());
 

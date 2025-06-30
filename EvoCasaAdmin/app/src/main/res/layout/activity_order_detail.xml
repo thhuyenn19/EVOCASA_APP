@@ -29,13 +29,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="8dp">
+                android:gravity="center_vertical">
 
                 <View
                     android:layout_width="6dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_height="32dp"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -64,7 +62,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="#27AE60"
-                        android:textSize="14sp"
+                        android:textSize="16dp"
                         android:textStyle="bold"/>
 
                 </LinearLayout>
@@ -98,7 +96,7 @@
                         android:id="@+id/tv_order_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="#333333"
+                        android:textColor="@color/color_3F2305"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 
@@ -158,7 +156,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@color/color_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -184,29 +183,71 @@
                         android:background="@color/color_bg"
                         android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_customer_name"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#333333"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="4dp" />
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_customer_phone"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="#666666"
-                            android:textSize="14sp"
-                            android:layout_marginBottom="4dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Name: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
 
-                        <TextView
-                            android:id="@+id/tv_customer_id"
+                            <TextView
+                                android:id="@+id/tv_customer_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_3F2305"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Phone: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_customer_phone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#666666"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ID: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_customer_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#666666"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -224,7 +265,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@color/color_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -250,34 +292,68 @@
                         android:background="@color/color_bg"
                         android:padding="8dp">
 
-                        <TextView
-                            android:id="@+id/tv_product_id"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="#666666"
-                            android:textSize="14sp"
-                            android:layout_marginBottom="4dp" />
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Product Name: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_product_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="#666666"
+                                android:textSize="14sp" />
+
+                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical">
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Quantity: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
 
                             <TextView
                                 android:id="@+id/tv_product_quantity"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:textColor="#333333"
                                 android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Price: "-->
+<!--                                android:textColor="#999999"-->
+<!--                                android:textSize="14sp" />-->
 
                             <TextView
                                 android:id="@+id/tv_product_price"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="#27AE60"
-                                android:textSize="16sp"
+                                android:textSize="18sp"
                                 android:textStyle="bold" />
 
                         </LinearLayout>
@@ -298,12 +374,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="16dp"
+                    android:background="@color/color_bg">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:gravity="center_vertical"
                         android:layout_marginBottom="8dp">
 
@@ -321,29 +398,65 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:background="@color/color_bg"
                         android:padding="8dp">
-
-                        <TextView
-                            android:id="@+id/tv_voucher_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="#333333"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginBottom="4dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Voucher name: "
+                                android:textColor="#999999"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/tv_voucher_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/color_3F2305"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="8dp">
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Discount percent: "-->
+<!--                                android:textColor="#999999"-->
+<!--                                android:textSize="14sp" />-->
 
                             <TextView
                                 android:id="@+id/tv_discount_percent"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:textColor="#E67E22"
                                 android:textSize="14sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+<!--                            <TextView-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:text="Discount amount: "-->
+<!--                                android:textColor="#999999"-->
+<!--                                android:textSize="14sp" />-->
 
                             <TextView
                                 android:id="@+id/tv_discount_amount"
