@@ -60,6 +60,7 @@ import com.mobile.models.ShippingAddress;
 import com.mobile.models.ShippingMethod;
 import com.mobile.models.Voucher;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.SuggestionCacheManager;
 import com.mobile.utils.UserSessionManager;
 
 public class MainPaymentFragment extends Fragment {
@@ -384,7 +385,8 @@ public class MainPaymentFragment extends Fragment {
                             }
                         }
                         sendOrderPlacedNotification();
-                        // After the order has been successfully placed
+                        SuggestionCacheManager.clearSuggestions(requireContext(), uid);
+
                         // After the order has been successfully placed
                         for (CartProduct p : selectedProducts) {
                             // Get the current product's quantity in the database

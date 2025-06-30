@@ -36,6 +36,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -52,6 +53,8 @@ import com.mobile.evocasa.payment.PaymentActivity;
 import com.mobile.models.CartProduct;
 import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
+import com.mobile.utils.MetadataHelper;
+import com.mobile.utils.RecommendationModel;
 import com.mobile.utils.UserSessionManager;
 
 import java.io.UnsupportedEncodingException;
@@ -60,6 +63,7 @@ import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -99,6 +103,8 @@ public class ProductDetailsActivity extends AppCompatActivity {
     private ListenerRegistration cartListener;
     private TextView txtCartBadge;
     ImageView imgCart;
+    private RecommendationModel recommendationModel;
+    private String currentProductId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +112,24 @@ public class ProductDetailsActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_details);
         ProductPreloadManager.getInstance().setApplicationContext(this.getApplicationContext());
+        // 0. Load mapping trước tiên
+        MetadataHelper.init(this);
+
+        db = FirebaseFirestore.getInstance();
+        recommendationModel = new RecommendationModel(this);
+
+        recyclerViewRecommend = findViewById(R.id.recyclerViewRecommend);
+        recyclerViewRecommend.setLayoutManager(new GridLayoutManager(this, 2));
+        productList = new ArrayList<>();
+        suggestedProductAdapter = new SuggestedProductAdapter(productList, this);
+        recyclerViewRecommend.setAdapter(suggestedProductAdapter);
+        recyclerViewRecommend.setHasFixedSize(false);
+
+        suggestedProductAdapter.setOnItemClickListener(product -> {
+            Intent intent = new Intent(this, ProductDetailsActivity.class);
+            intent.putExtra("productId", product.getId());
+            startActivity(intent);
+        });
 
         db = FirebaseFirestore.getInstance();
         sessionManager = new UserSessionManager(this);
@@ -272,6 +296,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
         });
 
         productId = getIntent().getStringExtra("productId");
+        currentProductId = productId;
         if (productId != null) {
             db.collection("Product").document(productId)
                     .get()
@@ -386,6 +411,7 @@ public class ProductDetailsActivity extends AppCompatActivity {
                                     txtRating.setText("0.0");
                                 }
                                 checkWishlistStatus();
+                                loadRecommendedProducts();
                             } else {
                                 Log.w("ProductDetails", "Failed to parse ProductItem");
                                 Toast.makeText(this, "Failed to load product data", Toast.LENGTH_SHORT).show();
@@ -404,20 +430,11 @@ public class ProductDetailsActivity extends AppCompatActivity {
             finish();
         }
 
-        recyclerViewRecommend = findViewById(R.id.recyclerViewRecommend);
-        recyclerViewRecommend.setLayoutManager(new GridLayoutManager(this, 2));
-        productList = new ArrayList<>();
-        suggestedProductAdapter = new SuggestedProductAdapter(productList, this);
-        recyclerViewRecommend.setAdapter(suggestedProductAdapter);
-        recyclerViewRecommend.setHasFixedSize(false);
 
-        suggestedProductAdapter.setOnItemClickListener(product -> {
-            Intent intent = new Intent(this, ProductDetailsActivity.class);
-            intent.putExtra("productId", product.getId());
-            startActivity(intent);
-        });
 
-        loadSuggestedProducts();
+
+
+
     }
 
     private void shareProductWithNameLink() {
@@ -503,6 +520,81 @@ public class ProductDetailsActivity extends AppCompatActivity {
         executor.shutdown(); // Không bắt buộc, nhưng tốt để cleanup thread
     }
 
+    private void loadRecommendedProducts() {
+        int prodIdx = MetadataHelper.getProductIndex(currentProductId);
+        Log.d("RCM", "Product index for current ID " + currentProductId + ": " + prodIdx);
+
+        if (prodIdx == -1) {
+            Log.e("RCM", "Product index not found for ID: " + currentProductId);
+            return;
+        }
+
+        int[] similarIndices = recommendationModel.getSimilarProductIndices(prodIdx, 5);
+        Log.d("RCM", "Similar indices returned: " + Arrays.toString(similarIndices));
+
+        List<String> similarProductIds = new ArrayList<>();
+        for (int idx : similarIndices) {
+            String simId = MetadataHelper.getProductId(idx);
+            Log.d("RCM", "Mapped index " + idx + " to product ID: " + simId);
+            if (simId != null && !simId.equals(currentProductId)) {
+                similarProductIds.add(simId);
+            }
+        }
+
+        Log.d("RCM", "Final similar product IDs for Firestore query: " + similarProductIds);
+
+        if (similarProductIds.isEmpty()) {
+            Log.w("RCM", "No valid similar product IDs, fallback to default suggestions");
+            fallbackSuggestedProducts();
+            return;
+        }
+
+        db.collection("Product")
+                .whereIn(FieldPath.documentId(), similarProductIds)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<ProductItem> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        ProductItem item = mapDocToSafeProductItem(doc);
+                        list.add(item);
+                        Log.d("RCM", "Loaded product: " + item.getName() + " (ID: " + item.getId() + ")");
+                    }
+
+                    if (list.isEmpty()) {
+                        Log.w("RCM", "Firestore query returned no matching products, fallback to default suggestions");
+                        fallbackSuggestedProducts();
+                    } else {
+                        suggestedProductAdapter.setProducts(list);
+                        suggestedProductAdapter.notifyDataSetChanged();
+                        Log.d("RCM", "Updated adapter with " + list.size() + " recommended products.");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("RCM", "Failed Firestore query for recommended products: ", e);
+                    fallbackSuggestedProducts();
+                });
+    }
+
+    private void fallbackSuggestedProducts() {
+        db.collection("Product")
+                .limit(4)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<ProductItem> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : querySnapshot) {
+                        ProductItem item = mapDocToSafeProductItem(doc);
+                        list.add(item);
+                    }
+                    suggestedProductAdapter.setProducts(list);
+                    suggestedProductAdapter.notifyDataSetChanged();
+                    Log.d("RCM", "Loaded fallback suggested products: " + list.size());
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("RCM", "Failed fallback Firestore query: ", e);
+                });
+    }
+
+
 
     private void loadSuggestedProducts() {
         db.collection("Product")
@@ -511,57 +603,51 @@ public class ProductDetailsActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     productList.clear();
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        ProductItem product = doc.toObject(ProductItem.class);
-                        if (product != null) {
-                            product.setId(doc.getId());
-                            if (product.getRatings() == null) {
-                                product.setRatings(new ProductItem.Ratings());
-                            }
-                            Object ratingsObj = doc.get("Ratings");
-                            if (ratingsObj instanceof Map) {
-                                Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
-                                Object averageObj = ratingsMap.get("Average");
-                                if (averageObj instanceof Number) {
-                                    product.getRatings().setAverage(((Number) averageObj).doubleValue());
-                                }
-                            }
-
-                            // Parse Image field
-                            String imageJson = doc.getString("Image");
-                            if (imageJson != null) {
-                                try {
-                                    Gson gson = new Gson();
-                                    Type listType = new TypeToken<List<String>>() {}.getType();
-                                    List<String> images = gson.fromJson(imageJson, listType);
-                                    if (images != null && !images.isEmpty()) {
-                                        product.setImage(String.join(",", images)); // Store as comma-separated string
-                                    }
-                                } catch (Exception e) {
-                                    Log.e("ProductDetails", "Failed to parse images for suggested product: " + e.getMessage());
-                                }
-                            }
-
-                            // Explicitly set Name and Price
-                            String name = doc.getString("Name");
-                            Double price = doc.getDouble("Price");
-                            if (name != null) {
-                                product.setName(name); // Ensure Name is set
-                            }
-                            if (price != null) {
-                                product.setPrice(price); // Ensure Price is set
-                            }
-
-                            // Log to debug
-                            Log.d("ProductDetails", "Loaded Suggested Product: Name=" + product.getName() + ", Price=" + product.getPrice() + ", Image=" + product.getImage());
-
-                            productList.add(product);
-                        }
+                        productList.add(mapDocToSafeProductItem(doc));
                     }
                     suggestedProductAdapter.notifyDataSetChanged();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Failed to load suggested products", Toast.LENGTH_SHORT).show();
+                    Log.e("ProductDetails", "Failed to load suggested products: " + e.getMessage());
                 });
+    }
+    private ProductItem mapDocToSafeProductItem(QueryDocumentSnapshot doc) {
+        ProductItem product = new ProductItem();
+        product.setId(doc.getId());
+        product.setName(doc.getString("Name"));
+        product.setPrice(doc.getDouble("Price") != null ? doc.getDouble("Price") : 0.0);
+        product.setDescription(doc.getString("Description"));
+        product.setDimensions(doc.getString("Dimensions"));
+
+        // Xử lý Ratings
+        ProductItem.Ratings ratings = new ProductItem.Ratings();
+        Object ratingsObj = doc.get("Ratings");
+        if (ratingsObj instanceof Map) {
+            Map<String, Object> ratingsMap = (Map<String, Object>) ratingsObj;
+            Object avg = ratingsMap.get("Average");
+            if (avg instanceof Number) {
+                ratings.setAverage(((Number) avg).doubleValue());
+            }
+        }
+        product.setRatings(ratings);
+
+        // Xử lý Image
+        String imageJson = doc.getString("Image");
+        if (imageJson != null) {
+            try {
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<String>>() {}.getType();
+                List<String> images = gson.fromJson(imageJson, listType);
+                if (images != null && !images.isEmpty()) {
+                    product.setImage(String.join(",", images));
+                }
+            } catch (Exception e) {
+                Log.e("ProductDetails", "Failed to parse images: " + e.getMessage());
+            }
+        }
+
+        return product;
     }
 
     private void showBuyNowBottomSheet() {

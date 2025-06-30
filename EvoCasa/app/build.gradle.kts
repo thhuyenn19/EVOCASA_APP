@@ -71,7 +71,7 @@ dependencies {
     implementation ("androidx.activity:activity:1.7.2")
     implementation ("com.google.firebase:firebase-dynamic-links:21.1.0")
 
-    implementation ("org.tensorflow:tensorflow-lite:2.10.0")
+    implementation ("org.tensorflow:tensorflow-lite:2.12.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.2")
     implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.2")
     implementation ("com.squareup.okhttp3:okhttp:4.12.0")

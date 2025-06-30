@@ -308,4 +308,15 @@ public class SuggestedProductAdapter extends RecyclerView.Adapter<SuggestedProdu
             ratingLayout = itemView.findViewById(R.id.ratingLayout);
         }
     }
+    public void updateData(List<ProductItem> newList) {
+        this.productList.clear();
+        this.productList.addAll(newList);
+        notifyDataSetChanged();
+    }
+    public void setProducts(List<ProductItem> products) {
+        this.productList.clear();
+        this.productList.addAll(products);
+    }
+
+
 }
