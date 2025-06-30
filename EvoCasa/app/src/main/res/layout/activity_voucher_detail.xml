@@ -253,6 +253,5 @@ EVOCASA reserves the right to decline any invalid or fraudulent code usage or to
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-    <include
-        layout="@layout/fragment_bottom_nav" />
+
 </LinearLayout>

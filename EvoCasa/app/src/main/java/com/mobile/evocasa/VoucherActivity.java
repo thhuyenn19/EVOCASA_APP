@@ -40,7 +40,6 @@ public class VoucherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_voucher);
-        setupBottomNav();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -77,21 +76,6 @@ public class VoucherActivity extends AppCompatActivity {
         if (btnBack != null) {
             btnBack.setOnClickListener(v -> finish());
         }
-    }
-
-    private void setupBottomNav() {
-        findViewById(R.id.tabHome).setOnClickListener(v -> goToTab(0));
-        findViewById(R.id.tabShop).setOnClickListener(v -> goToTab(1));
-        findViewById(R.id.tabNotification).setOnClickListener(v -> goToTab(2));
-        findViewById(R.id.tabProfile).setOnClickListener(v -> goToTab(3));
-    }
-
-    private void goToTab(int tabPos) {
-        Intent intent = new Intent(VoucherActivity.this, NarBarActivity.class);
-        intent.putExtra("tab_pos", tabPos);
-        startActivity(intent);
-        overridePendingTransition(0, 0); // không animation
-        finish(); // kết thúc VoucherActivity
     }
 
     /**
