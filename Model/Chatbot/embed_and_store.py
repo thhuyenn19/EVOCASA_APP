@@ -18,7 +18,7 @@ if not firestore_texts:
     exit()
 
 print(f"\n Đã lấy {len(firestore_texts)} văn bản từ Firestore.")
-print(f"Firestore sample: {firestore_texts[:2]}")  # Debug
+print(f"Firestore sample: {firestore_texts[:2]}")  
 
 # Đọc dữ liệu từ file CSV (FAQ)
 csv_texts = []
