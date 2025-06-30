@@ -293,6 +293,7 @@
     <string name="title_change_language">Change Language</string>
     <string name="title_change_password">Change Password</string>
     <string name="title_delete_account">Delete Account</string>
+    <string name="title_default_name">John Anthony</string>
 
 
 </resources>
