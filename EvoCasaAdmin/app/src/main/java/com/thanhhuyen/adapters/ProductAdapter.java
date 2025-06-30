@@ -14,21 +14,68 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.thanhhuyen.evocasaadmin.FirebaseManager;
 import com.thanhhuyen.evocasaadmin.ProductDetailActivity;
 import com.thanhhuyen.evocasaadmin.R;
 import com.thanhhuyen.models.Product;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private static final String TAG = "ProductAdapter";
     private final Context context;
     private List<Product> products;
+    private final FirebaseManager firebaseManager;
+    private final Map<String, FirebaseManager.OnProductChangeListener> productListeners;
 
     public ProductAdapter(Context context, List<Product> products) {
         this.context = context;
-        this.products = products;
-        Log.d(TAG, "ProductAdapter created with " + (products != null ? products.size() : 0) + " products");
+        this.products = products != null ? products : new ArrayList<>();
+        this.firebaseManager = FirebaseManager.getInstance();
+        this.productListeners = new HashMap<>();
+        setupProductListeners();
+    }
+
+    private void setupProductListeners() {
+        // Remove old listeners
+        productListeners.clear();
+
+        // Set up new listeners for each product
+        for (Product product : products) {
+            if (product.getId() != null && !productListeners.containsKey(product.getId())) {
+                FirebaseManager.OnProductChangeListener listener = new FirebaseManager.OnProductChangeListener() {
+                    @Override
+                    public void onProductChanged(Product updatedProduct) {
+                        // Update the product in the list
+                        int position = findProductPosition(updatedProduct.getId());
+                        if (position != -1) {
+                            products.set(position, updatedProduct);
+                            notifyItemChanged(position);
+                        }
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Log.e(TAG, "Error listening to product changes: " + error);
+                    }
+                };
+
+                productListeners.put(product.getId(), listener);
+                firebaseManager.listenToProductChanges(product.getId(), listener);
+            }
+        }
+    }
+
+    private int findProductPosition(String productId) {
+        for (int i = 0; i < products.size(); i++) {
+            if (products.get(i).getId().equals(productId)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @NonNull
@@ -37,7 +84,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         View view = LayoutInflater.from(context).inflate(R.layout.item_product_list, parent, false);
         return new ProductViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
@@ -64,21 +110,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             holder.productImage.setImageResource(android.R.color.darker_gray);
         }
 
-        // Set click listener for the product image
-        holder.productImage.setOnClickListener(v -> {
-            Log.d(TAG, "Product image clicked: " + product.getName());
-            Intent intent = new Intent(context, ProductDetailActivity.class);
-            intent.putExtra("product_id", product.getId());
-            context.startActivity(intent);
-        });
-
-        // Set click listener for the entire item view
-        holder.itemView.setOnClickListener(v -> {
+        // Set click listeners
+        View.OnClickListener clickListener = v -> {
             Log.d(TAG, "Product clicked: " + product.getName() + " (ID: " + product.getId() + ")");
             Intent intent = new Intent(context, ProductDetailActivity.class);
             intent.putExtra("product_id", product.getId());
             context.startActivity(intent);
-        });
+        };
+
+        holder.itemView.setOnClickListener(clickListener);
+        holder.productImage.setOnClickListener(clickListener);
     }
 
     @Override
@@ -88,7 +129,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     public void updateProducts(List<Product> newProducts) {
         Log.d(TAG, "Updating products list with " + (newProducts != null ? newProducts.size() : 0) + " products");
-        this.products = newProducts;
+        this.products = newProducts != null ? newProducts : new ArrayList<>();
+        setupProductListeners(); // Set up listeners for new products
         notifyDataSetChanged();
     }
 
