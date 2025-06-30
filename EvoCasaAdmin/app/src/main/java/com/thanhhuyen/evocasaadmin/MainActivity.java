@@ -40,5 +40,19 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ProductActivity.class);
             startActivity(intent);
         });
+
+        //Find linearLayoutCustomer and set click listener
+        View linearLayoutCustomer = findViewById(R.id.linearLayoutCustomer);
+        linearLayoutCustomer.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CustomerManagementActivity.class);
+            startActivity(intent);
+        });
+
+        //Find linearLayoutOrder and set click listener
+        View linearLayoutOrder = findViewById(R.id.linearLayoutOrder);
+        linearLayoutOrder.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, OrderManagementActivity.class);
+            startActivity(intent);
+        });
     }
 }

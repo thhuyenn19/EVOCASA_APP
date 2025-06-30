@@ -84,6 +84,7 @@
                 app:cardBackgroundColor="#3F2305">
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -144,6 +145,7 @@
                 app:cardBackgroundColor="#525B4A">
 
                 <LinearLayout
+                    android:id="@+id/linearLayoutOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
