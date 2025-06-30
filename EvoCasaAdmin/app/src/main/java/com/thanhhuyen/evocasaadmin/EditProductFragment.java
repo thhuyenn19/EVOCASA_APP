@@ -116,9 +116,11 @@ public class EditProductFragment extends DialogFragment {
                 if (!s.toString().equals(current)) {
                     priceInput.removeTextChangedListener(this);
 
-                    String cleanString = s.toString().replaceAll("[$,.]", "");
+                    String cleanString = s.toString().replaceAll("[$,]", "");
                     double parsed = Double.parseDouble(cleanString.isEmpty() ? "0" : cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance(Locale.US).format(parsed / 100);
+                    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+                    currencyFormat.setMaximumFractionDigits(0);
+                    String formatted = currencyFormat.format(parsed);
 
                     current = formatted;
                     priceInput.setText(formatted);

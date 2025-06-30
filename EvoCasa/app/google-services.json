@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "408656799826-nisnvdoftp91g73o3tison3nigg1p5uu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.evocasa",
+            "certificate_hash": "c4d8f5bb2118a75e574d668c80c101e9815120a5"
+          }
+        },
+        {
           "client_id": "408656799826-sv1hf4u8e5fgd4e6o5i062qbnk79015f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
