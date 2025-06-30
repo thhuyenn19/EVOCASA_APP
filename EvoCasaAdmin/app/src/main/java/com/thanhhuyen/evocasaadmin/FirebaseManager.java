@@ -47,6 +47,11 @@ public class FirebaseManager {
         void onError(String error);
     }
 
+    public interface OnProductUpdateListener {
+        void onSuccess();
+        void onError(String error);
+    }
+
     // Method to load only Category Parent
     public void loadCategories(OnCategoriesLoadedListener listener) {
         db.collection("Category")
@@ -142,6 +147,28 @@ public class FirebaseManager {
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "getProductById: Failed to fetch product", e);
                     listener.onError("Failed to load product: " + e.getMessage());
+                });
+    }
+
+    public void updateProduct(Product product, OnProductUpdateListener listener) {
+        if (product == null || product.getId() == null) {
+            listener.onError("Invalid product data");
+            return;
+        }
+
+        db.collection("Product")
+                .document(product.getId())
+                .update(
+                        "price", product.getPrice(),
+                        "quantity", product.getQuantity()
+                )
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Product updated successfully");
+                    listener.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error updating product", e);
+                    listener.onError(e.getMessage());
                 });
     }
 }

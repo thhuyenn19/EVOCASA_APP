@@ -45,20 +45,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"/>
-
-                    <TextView
-                        android:id="@+id/productQuantityBadge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|top"
-                        android:layout_margin="8dp"
-                        android:background="@drawable/bg_rounded_button"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="In Stock: 0"
-                        android:textStyle="bold"
-                        android:textColor="#5E4C3E"
-                        android:textSize="12sp"/>
                 </FrameLayout>
 
                 <!-- Product Info -->
@@ -174,38 +160,56 @@
                         android:lineSpacingExtra="4dp"
                         android:layout_marginBottom="12dp"/>
 
-                    <!-- Price and Actions -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:gravity="center_vertical">
+                        android:layout_marginBottom="4dp">
+
 
                         <TextView
-                            android:id="@+id/productPrice"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="$0.00"
-                            android:textColor="#5E4C3E"
-                            android:textSize="20sp"
-                            android:textStyle="bold"/>
-
-                        <LinearLayout
+                            android:id="@+id/productQuantityBadge"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:textColor="#333333"
+                            android:textStyle="bold"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                </LinearLayout>
 
-                            <ImageButton
-                                android:id="@+id/editButton"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:src="@drawable/ic_edit"/>
-                        </LinearLayout>
+                <!-- Price and Actions -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="16dp"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/productPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="$0.00"
+                        android:textColor="#5E4C3E"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/editButton"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_edit"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-    </ScrollView>
-</LinearLayout>
+
+        </androidx.cardview.widget.CardView> <!-- Đóng CardView -->
+    </ScrollView> <!-- Đóng ScrollView -->
+</LinearLayout> <!-- Đóng LinearLayout -->

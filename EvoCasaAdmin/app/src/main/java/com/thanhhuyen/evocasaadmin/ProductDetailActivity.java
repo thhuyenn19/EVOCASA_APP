@@ -17,7 +17,7 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class ProductDetailActivity extends AppCompatActivity {
+public class ProductDetailActivity extends AppCompatActivity implements EditProductFragment.OnProductUpdateListener {
     private static final String TAG = "ProductDetailActivity";
 
     private ImageView productImage;
@@ -60,6 +60,15 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onProductUpdated(double newPrice, int newQuantity) {
+        // Update UI with new values
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        currencyFormat.setMaximumFractionDigits(0);
+        productPrice.setText(currencyFormat.format(newPrice));
+        productQuantity.setText("In Stock: " + newQuantity);
+    }
+
     private void initializeViews() {
         Log.d(TAG, "initializeViews: Finding views by ID");
 
@@ -89,7 +98,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         editButton.setOnClickListener(v -> {
             Log.d(TAG, "Edit button clicked");
-            Toast.makeText(this, "Edit functionality coming soon", Toast.LENGTH_SHORT).show();
+            String productId = getIntent().getStringExtra("product_id");
+            if (productId != null) {
+                EditProductFragment editFragment = EditProductFragment.newInstance(productId);
+                editFragment.show(getSupportFragmentManager(), "edit_product");
+            }
         });
 
         if (viewButton != null) {
@@ -164,8 +177,9 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Set quantity
         productQuantity.setText("In Stock: " + product.getQuantity());
 
-        // Format and set price in USD
+        // Format and set price in USD with no decimal places
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+        currencyFormat.setMaximumFractionDigits(0);
         productPrice.setText(currencyFormat.format(product.getPrice()));
 
         // Load first image if available
