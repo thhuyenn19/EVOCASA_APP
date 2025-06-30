@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         txtAdminName = findViewById(R.id.txtAdminName);
         btnLogOut = findViewById(R.id.btnLogOut);
         AdminSessionManager session = new AdminSessionManager(this);
-        txtAdminName.setTypeface(FontUtils.getSemiBold(this));
+        txtAdminName.setTypeface(FontUtils.getItalic(this));
         txtAdminName.setText("Hi, " + capitalizeFirstLetter(session.getShortName()));
 
         btnLogOut.setOnClickListener(v -> {

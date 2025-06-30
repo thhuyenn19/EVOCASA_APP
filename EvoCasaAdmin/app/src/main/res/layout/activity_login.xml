@@ -12,16 +12,16 @@
   <!-- Image Header (Full Width, No Padding) -->
   <ImageView
       android:layout_width="match_parent"
-      android:layout_height="225dp"
+      android:layout_height="240dp"
       android:adjustViewBounds="true"
       android:scaleType="fitXY"
-      android:src="@mipmap/ic_background" />
+      android:src="@mipmap/ic_banner" />
 
   <!-- Container for Sign In and below with Padding -->
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginTop="-40dp"
+      android:layout_marginTop="-20dp"
       android:layout_marginEnd="0dp"
       android:background="@drawable/rounded_background"
       android:elevation="8dp"
