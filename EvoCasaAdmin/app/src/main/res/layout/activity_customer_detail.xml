@@ -125,14 +125,14 @@
                     android:orientation="vertical"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:background="@drawable/bg_customer_management">
+                    android:background="@drawable/bg_card_rounded_border">
 
                     <TextView
                         android:id="@+id/tv_total_orders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:textColor="#3F2305"
+                        android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -141,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:text="Total Orders"
-                        android:textColor="#666666"
+                        android:textColor="@color/color_F2EAD3"
                         android:textSize="14sp" />
 
                 </LinearLayout>
@@ -163,14 +163,14 @@
                     android:orientation="vertical"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp"
-                    android:background="@drawable/bg_customer_management">
+                    android:background="@color/color_5E4C3E">
 
                     <TextView
                         android:id="@+id/tv_total_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
-                        android:textColor="#8B4513"
+                        android:textColor="@color/white"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:text="Total Amount"
-                        android:textColor="#666666"
+                        android:textColor="@color/color_F2EAD3"
                         android:textSize="14sp" />
 
                 </LinearLayout>
