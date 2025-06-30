@@ -16,6 +16,7 @@ import com.thanhhuyen.untils.FontUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -39,7 +40,8 @@ public class OrderDetailActivity extends AppCompatActivity {
     // Data
     private String trackingNumber;
     private Order currentOrder;
-    private DocumentSnapshot rawDocument; // Để debug
+    private DocumentSnapshot rawDocument;
+    private String productName = ""; // Để lưu tên sản phẩm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +89,6 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvProductPrice = findViewById(R.id.tv_product_price);
         tvShippingAddress = findViewById(R.id.tv_shipping_address);
         tvShippingMethod = findViewById(R.id.tv_shipping_method);
-//        tvShippingDate = findViewById(R.id.tv_shipping_date);
         tvTrackingNumber = findViewById(R.id.tv_tracking_number);
         tvDeliveryFee = findViewById(R.id.tv_delivery_fee);
         tvVoucherName = findViewById(R.id.tv_voucher_name);
@@ -104,7 +105,7 @@ public class OrderDetailActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot document = task.getResult().getDocuments().get(0);
-                        rawDocument = document; // Lưu raw document để debug
+                        rawDocument = document;
 
                         // DEBUG: Log raw document data
                         debugRawDocument(document);
@@ -113,7 +114,8 @@ public class OrderDetailActivity extends AppCompatActivity {
                             currentOrder = document.toObject(Order.class);
                             if (currentOrder != null) {
                                 currentOrder.setOrderId(document.getId());
-                                displayOrderData();
+                                // Load product name từ OrderProduct array
+                                loadProductNameFromOrderProduct();
                             }
                         } catch (Exception e) {
                             Log.e(TAG, "Error parsing order data", e);
@@ -125,6 +127,133 @@ public class OrderDetailActivity extends AppCompatActivity {
                         finish();
                     }
                 });
+    }
+
+    private void loadProductNameFromOrderProduct() {
+        String productId = getProductIdFromOrderProduct();
+
+        if (productId == null || productId.equals("N/A") || productId.isEmpty()) {
+            Log.w(TAG, "No valid product ID found in OrderProduct");
+            displayOrderData(); // Hiển thị data mà không có tên sản phẩm
+            return;
+        }
+
+        Log.d(TAG, "Loading product name for ID: " + productId);
+
+        // Tham chiếu đến collection Product để lấy tên sản phẩm
+        db.collection("Product")
+                .document(productId)
+                .get()
+                .addOnCompleteListener(productTask -> {
+                    if (productTask.isSuccessful() && productTask.getResult().exists()) {
+                        DocumentSnapshot productDoc = productTask.getResult();
+
+                        // Thử các field name có thể có cho tên sản phẩm
+                        String[] possibleNameFields = {"Name", "name", "ProductName", "product_name", "title", "Title"};
+
+                        for (String field : possibleNameFields) {
+                            if (productDoc.contains(field)) {
+                                String name = productDoc.getString(field);
+                                if (name != null && !name.trim().isEmpty()) {
+                                    productName = name.trim();
+                                    Log.d(TAG, "Found product name: " + productName + " in field: " + field);
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (productName.isEmpty()) {
+                            Log.w(TAG, "Product name not found in any field for ID: " + productId);
+                            productName = "Product ID: " + productId; // Fallback
+                        }
+                    } else {
+                        Log.w(TAG, "Product document not found for ID: " + productId);
+                        productName = "Product ID: " + productId; // Fallback
+                    }
+
+                    // Hiển thị data với tên sản phẩm đã load
+                    displayOrderData();
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading product data for ID: " + productId, e);
+                    productName = "Product ID: " + productId; // Fallback
+                    displayOrderData();
+                });
+    }
+
+    private String getProductIdFromOrderProduct() {
+        if (rawDocument == null || rawDocument.getData() == null) {
+            return "N/A";
+        }
+
+        Map<String, Object> data = rawDocument.getData();
+
+        // Kiểm tra OrderProduct array
+        if (data.containsKey("OrderProduct")) {
+            Object orderProductObj = data.get("OrderProduct");
+
+            if (orderProductObj instanceof List) {
+                List<?> orderProductList = (List<?>) orderProductObj;
+
+                if (!orderProductList.isEmpty() && orderProductList.get(0) instanceof Map) {
+                    Map<?, ?> firstProduct = (Map<?, ?>) orderProductList.get(0);
+
+                    // Thử tìm ID trong các cấu trúc khác nhau
+                    if (firstProduct.containsKey("id")) {
+                        Object idObj = firstProduct.get("id");
+
+                        if (idObj instanceof Map) {
+                            Map<?, ?> idMap = (Map<?, ?>) idObj;
+                            if (idMap.containsKey("$oid")) {
+                                String productId = idMap.get("$oid").toString();
+                                Log.d(TAG, "Found ProductId in OrderProduct->id->$oid: " + productId);
+                                return productId;
+                            }
+                        } else if (idObj instanceof String) {
+                            String productId = (String) idObj;
+                            Log.d(TAG, "Found ProductId in OrderProduct->id: " + productId);
+                            return productId;
+                        }
+                    }
+
+                    // Thử các field name khác
+                    String[] possibleIdFields = {"productId", "ProductId", "product_id", "_id"};
+                    for (String field : possibleIdFields) {
+                        if (firstProduct.containsKey(field)) {
+                            Object value = firstProduct.get(field);
+                            if (value != null) {
+                                if (value instanceof Map) {
+                                    Map<?, ?> idMap = (Map<?, ?>) value;
+                                    if (idMap.containsKey("$oid")) {
+                                        String productId = idMap.get("$oid").toString();
+                                        Log.d(TAG, "Found ProductId in OrderProduct->" + field + "->$oid: " + productId);
+                                        return productId;
+                                    }
+                                } else {
+                                    String productId = value.toString();
+                                    Log.d(TAG, "Found ProductId in OrderProduct->" + field + ": " + productId);
+                                    return productId;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Fallback: thử tìm ProductId ở root level
+        String[] rootFields = {"ProductId", "productId", "product_id", "ProductID", "Product_ID"};
+        for (String field : rootFields) {
+            if (data.containsKey(field)) {
+                Object value = data.get(field);
+                if (value != null) {
+                    Log.d(TAG, "Found ProductId in root field: " + field);
+                    return value.toString();
+                }
+            }
+        }
+
+        return "N/A";
     }
 
     // DEBUG: Method để log raw document data
@@ -150,9 +279,9 @@ public class OrderDetailActivity extends AppCompatActivity {
         // DEBUG: Log parsed order data
         debugParsedOrder();
 
-        // Order Header - với fallback từ raw document
+        // Order Header
         tvOrderId.setText("Order ID: " + currentOrder.getOrderId());
-        tvOrderDate.setText("Order Date: " + currentOrder.getFormattedOrderDate());  // Hiển thị Order Date
+        tvOrderDate.setText("Order Date: " + currentOrder.getFormattedOrderDate());
         tvOrderStatus.setText("Status: " + currentOrder.getStatus());
 
         // Customer Information
@@ -160,15 +289,14 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvCustomerName.setText("Name: " + currentOrder.getShippingName());
         tvCustomerPhone.setText("Phone: " + currentOrder.getShippingPhone());
 
-        // Product Information - với fallback từ raw document
-        tvProductId.setText("Product ID: " + getProductIdSafe());
+        // Product Information - hiển thị tên sản phẩm thay vì ID
+        tvProductId.setText("Product: " + getProductDisplayName());
         tvProductQuantity.setText("Quantity: " + getQuantitySafe());
         tvProductPrice.setText("Price: " + currentOrder.getFormattedPrePrice());
 
         // Shipping Information
         tvShippingAddress.setText("Address: " + currentOrder.getShippingAddress());
         tvShippingMethod.setText("Shipping Method: " + currentOrder.getShippingMethod());
-//        tvShippingDate.setText("Ship Date: " + currentOrder.getFormattedShipDate());  // Hiển thị Ship Date
         tvTrackingNumber.setText("Tracking Number: " + currentOrder.getTrackingNumber());
         tvDeliveryFee.setText("Delivery Fee: " + currentOrder.getFormattedDeliveryFee());
 
@@ -182,72 +310,70 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvTotalPrice.setText("Total Price: " + currentOrder.getFormattedTotalPrice());
     }
 
+    private String getProductDisplayName() {
+        // Ưu tiên hiển thị tên sản phẩm nếu có
+        if (productName != null && !productName.trim().isEmpty() && !productName.equals("N/A")) {
+            return productName;
+        }
+
+        // Fallback về Product ID
+        String productId = getProductIdFromOrderProduct();
+        return "ID: " + productId;
+    }
+
     // DEBUG: Method để log parsed order data
     private void debugParsedOrder() {
         Log.d(TAG, "=== PARSED ORDER DEBUG ===");
         Log.d(TAG, "OrderDate from getOrderDate(): " + currentOrder.getOrderDate());
-        Log.d(TAG, "ProductId from getProductId(): " + currentOrder.getProductId());
-        Log.d(TAG, "Quantity from getQuantity(): " + currentOrder.getQuantity());
+        Log.d(TAG, "ProductId from OrderProduct: " + getProductIdFromOrderProduct());
+        Log.d(TAG, "ProductName loaded: " + productName);
+        Log.d(TAG, "Quantity from OrderProduct: " + getQuantitySafe());
         Log.d(TAG, "ShipDate from getFormattedShipDate(): " + currentOrder.getFormattedShipDate());
         Log.d(TAG, "=========================");
     }
 
-    private String getProductIdSafe() {
-        // Thử từ parsed order trước
-        String productId = currentOrder.getProductId();
-        if (productId != null && !productId.equals("N/A") && !productId.isEmpty()) {
-            return productId;
+    private String getQuantitySafe() {
+        if (rawDocument == null || rawDocument.getData() == null) {
+            return "0";
         }
 
-        // Fallback: đọc trực tiếp từ raw document
-        if (rawDocument != null && rawDocument.getData() != null) {
-            Map<String, Object> data = rawDocument.getData();
+        Map<String, Object> data = rawDocument.getData();
 
-            // Thử các field name khác nhau
-            String[] possibleFields = {"ProductId", "productId", "product_id", "ProductID", "Product_ID"};
+        // Kiểm tra OrderProduct array
+        if (data.containsKey("OrderProduct")) {
+            Object orderProductObj = data.get("OrderProduct");
 
-            for (String field : possibleFields) {
-                if (data.containsKey(field)) {
-                    Object value = data.get(field);
-                    if (value != null) {
-                        Log.d(TAG, "Found ProductId in field: " + field);
-                        return value.toString();
+            if (orderProductObj instanceof List) {
+                List<?> orderProductList = (List<?>) orderProductObj;
+
+                if (!orderProductList.isEmpty() && orderProductList.get(0) instanceof Map) {
+                    Map<?, ?> firstProduct = (Map<?, ?>) orderProductList.get(0);
+
+                    if (firstProduct.containsKey("Quantity")) {
+                        Object quantityObj = firstProduct.get("Quantity");
+                        if (quantityObj instanceof Number) {
+                            Log.d(TAG, "Found Quantity in OrderProduct array: " + quantityObj);
+                            return String.valueOf(((Number) quantityObj).intValue());
+                        }
                     }
                 }
             }
         }
 
-        return "N/A";
-    }
-
-    private String getQuantitySafe() {
-        // Thử từ parsed order trước
-        int quantity = currentOrder.getQuantity();
-        if (quantity > 0) {
-            return String.valueOf(quantity);
-        }
-
-        // Fallback: đọc trực tiếp từ raw document
-        if (rawDocument != null && rawDocument.getData() != null) {
-            Map<String, Object> data = rawDocument.getData();
-
-            // Thử các field name khác nhau
-            String[] possibleFields = {"Quantity", "quantity", "qty", "Qty", "amount", "Amount"};
-
-            for (String field : possibleFields) {
-                if (data.containsKey(field)) {
-                    Object value = data.get(field);
-                    if (value instanceof Number) {
-                        Log.d(TAG, "Found Quantity in field: " + field);
-                        return String.valueOf(((Number) value).intValue());
-                    }
+        // Fallback: thử tìm ở root level
+        String[] possibleFields = {"Quantity", "quantity", "qty", "Qty", "amount", "Amount"};
+        for (String field : possibleFields) {
+            if (data.containsKey(field)) {
+                Object value = data.get(field);
+                if (value instanceof Number) {
+                    Log.d(TAG, "Found Quantity in field: " + field);
+                    return String.valueOf(((Number) value).intValue());
                 }
             }
         }
 
         return "0";
     }
-
 
     private String getCustomerIdSafe() {
         // Thử từ parsed order trước
@@ -290,74 +416,5 @@ public class OrderDetailActivity extends AppCompatActivity {
         }
 
         return "N/A";
-    }
-
-    private String formatDateFromRaw(Object dateObj) {
-        if (dateObj == null) return "N/A";
-
-        try {
-            if (dateObj instanceof Date) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return sdf.format((Date) dateObj);
-            } else if (dateObj instanceof com.google.firebase.Timestamp) {
-                com.google.firebase.Timestamp timestamp = (com.google.firebase.Timestamp) dateObj;
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return sdf.format(timestamp.toDate());
-            } else if (dateObj instanceof Map) {
-                Map<?, ?> dateMap = (Map<?, ?>) dateObj;
-
-                // Handle Firestore Timestamp format
-                if (dateMap.containsKey("_seconds")) {
-                    long seconds = Long.parseLong(dateMap.get("_seconds").toString());
-                    Date date = new Date(seconds * 1000);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                    return sdf.format(date);
-                }
-
-                // Handle other timestamp formats
-                if (dateMap.containsKey("$date")) {
-                    Object dateValue = dateMap.get("$date");
-                    if (dateValue instanceof Number) {
-                        Date date = new Date(((Number) dateValue).longValue());
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        return sdf.format(date);
-                    }
-                }
-            } else if (dateObj instanceof Number) {
-                // Timestamp as number
-                Date date = new Date(((Number) dateObj).longValue());
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                return sdf.format(date);
-            } else if (dateObj instanceof String) {
-                // Try to parse string date
-                String dateStr = (String) dateObj;
-                if (!dateStr.isEmpty()) {
-                    try {
-                        // Try different date formats
-                        String[] formats = {"yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "yyyy-MM-dd HH:mm:ss"};
-                        for (String format : formats) {
-                            try {
-                                SimpleDateFormat parser = new SimpleDateFormat(format, Locale.getDefault());
-                                Date date = parser.parse(dateStr);
-                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                                return formatter.format(date);
-                            } catch (Exception ignored) {
-                                // Try next format
-                            }
-                        }
-                    } catch (Exception e) {
-                        Log.e(TAG, "Error parsing date string: " + dateStr, e);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error formatting date: " + dateObj, e);
-        }
-
-        return "N/A";
-    }
-
-    private String formatDate(Object dateObj) {
-        return formatDateFromRaw(dateObj);
     }
 }
