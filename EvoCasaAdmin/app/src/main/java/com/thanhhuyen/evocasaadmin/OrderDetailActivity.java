@@ -281,7 +281,7 @@ public class OrderDetailActivity extends AppCompatActivity {
 
         // Order Header
         tvOrderId.setText("Order ID: " + currentOrder.getOrderId());
-        tvOrderDate.setText("Order Date: " + currentOrder.getFormattedOrderDate());
+        tvOrderDate.setText(currentOrder.getFormattedOrderDate());
         tvOrderStatus.setText("Status: " + currentOrder.getStatus());
 
         // Customer Information
@@ -290,24 +290,24 @@ public class OrderDetailActivity extends AppCompatActivity {
         tvCustomerPhone.setText("Phone: " + currentOrder.getShippingPhone());
 
         // Product Information - hiển thị tên sản phẩm thay vì ID
-        tvProductId.setText("Product: " + getProductDisplayName());
+        tvProductId.setText("Product Name: " + getProductDisplayName());
         tvProductQuantity.setText("Quantity: " + getQuantitySafe());
         tvProductPrice.setText("Price: " + currentOrder.getFormattedPrePrice());
 
         // Shipping Information
-        tvShippingAddress.setText("Address: " + currentOrder.getShippingAddress());
-        tvShippingMethod.setText("Shipping Method: " + currentOrder.getShippingMethod());
-        tvTrackingNumber.setText("Tracking Number: " + currentOrder.getTrackingNumber());
-        tvDeliveryFee.setText("Delivery Fee: " + currentOrder.getFormattedDeliveryFee());
+        tvShippingAddress.setText(currentOrder.getShippingAddress());
+        tvShippingMethod.setText(currentOrder.getShippingMethod());
+        tvTrackingNumber.setText(currentOrder.getTrackingNumber());
+        tvDeliveryFee.setText(currentOrder.getFormattedDeliveryFee());
 
         // Voucher Information
         tvVoucherName.setText("Voucher: " + currentOrder.getVoucherName());
-        tvDiscountPercent.setText("Discount: " + currentOrder.getDiscountPercent() + "%");
+        tvDiscountPercent.setText("Discount Percent: " + currentOrder.getDiscountPercent() + "%");
         tvDiscountAmount.setText("Discount Amount: " + currentOrder.getFormattedDiscountAmount());
 
         // Payment Information
-        tvPaymentMethod.setText("Payment Method: " + currentOrder.getPaymentMethod());
-        tvTotalPrice.setText("Total Price: " + currentOrder.getFormattedTotalPrice());
+        tvPaymentMethod.setText(currentOrder.getPaymentMethod());
+        tvTotalPrice.setText(currentOrder.getFormattedTotalPrice());
     }
 
     private String getProductDisplayName() {
