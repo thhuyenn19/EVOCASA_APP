@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 import android.util.Pair;
 
 import org.json.JSONException;
@@ -57,46 +58,55 @@ public class CollaborativeRecommender {
     }
 
     public List<String> recommend(String uid, int topK) {
-        if (uid == null || !customerIdMapping.containsKey(uid)) {
-            return new ArrayList<>();  // fallback handled outside
-        }
+        List<String> topProducts = new ArrayList<>();
 
+        if (uid == null || !customerIdMapping.containsKey(uid)) {
+            Log.e("RCM_DEBUG", "❌ UID not found in mapping: " + uid);
+            return topProducts;
+        }
 
         int userIdx = customerIdMapping.get(uid);
         int numProducts = reverseProductMapping.size();
 
+        Log.d("RCM_DEBUG", "✅ Recommend called for userIdx=" + userIdx + ", numProducts=" + numProducts);
+
         List<Pair<String, Float>> productScores = new ArrayList<>();
+        int numItems = Collections.max(reverseProductMapping.keySet()) + 1;
+        for (int prodIdx = 0; prodIdx <  numItems; prodIdx++) {
+            if (!reverseProductMapping.containsKey(prodIdx)) {
+                Log.w("RCM_DEBUG", "⚠ Skipping product index not in mapping: " + prodIdx);
+                continue;
+            }
 
-        // Predict for each product
-        for (int prodIdx = 0; prodIdx < numProducts; prodIdx++) {
-            int[][] userInput = new int[][]{{userIdx}};
-            int[][] itemInput = new int[][]{{prodIdx}};
-            float[][] output = new float[1][1];
+            try {
+                int[][] userInput = new int[][]{{userIdx}};
+                int[][] itemInput = new int[][]{{prodIdx}};
+                float[][] output = new float[1][1];
 
-            Object[] inputs = {userInput, itemInput};
-            HashMap<Integer, Object> outputs = new HashMap<>();
-            outputs.put(0, output);
+                Object[] inputs = {userInput, itemInput};
+                HashMap<Integer, Object> outputs = new HashMap<>();
+                outputs.put(0, output);
 
-            tflite.runForMultipleInputsOutputs(inputs, outputs);
+                Log.d("RCM_DEBUG", "➡ Predicting for userIdx=" + userIdx + ", prodIdx=" + prodIdx);
+                tflite.runForMultipleInputsOutputs(inputs, outputs);
 
-            float score = output[0][0];
-            String productId = reverseProductMapping.get(prodIdx);
-            productScores.add(new Pair<>(productId, score));
+                float score = output[0][0];
+                String productId = reverseProductMapping.get(prodIdx);
+                productScores.add(new Pair<>(productId, score));
+
+            } catch (Exception e) {
+                Log.e("RCM_DEBUG", "❌ Error predicting for userIdx=" + userIdx + ", prodIdx=" + prodIdx, e);
+                // Optionally: skip this product, or stop
+            }
         }
 
-        // Sort by score descending
-        Collections.sort(productScores, new Comparator<Pair<String, Float>>() {
-            @Override
-            public int compare(Pair<String, Float> o1, Pair<String, Float> o2) {
-                return Float.compare(o2.second, o1.second);
-            }
-        });
+        Collections.sort(productScores, (a, b) -> Float.compare(b.second, a.second));
 
-        // Get topK
-        List<String> topProducts = new ArrayList<>();
         for (int i = 0; i < Math.min(topK, productScores.size()); i++) {
             topProducts.add(productScores.get(i).first);
         }
+
+        Log.d("RCM_DEBUG", "✅ Top recommended products: " + topProducts);
 
         return topProducts;
     }
