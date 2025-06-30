@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Order Details"
-                        android:textColor="#1A1A1A"
+                        android:textColor="@color/color_5E4C3E"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="4dp" />
@@ -171,7 +171,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Customer Information"
-                            android:textColor="#1A1A1A"
+                            android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -237,7 +237,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Product Information"
-                            android:textColor="#1A1A1A"
+                            android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -311,7 +311,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Voucher Information"
-                            android:textColor="#1A1A1A"
+                            android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -396,7 +396,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Shipping Information"
-                            android:textColor="#1A1A1A"
+                            android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
@@ -521,7 +521,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Payment Information"
-                            android:textColor="#1A1A1A"
+                            android:textColor="@color/color_5E4C3E"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
