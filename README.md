@@ -65,6 +65,6 @@
 
 
 <div align="center">
-  <p>© 2025 Group 3 - Web Business Development</p>
+  <p>© 2025 Group 4 - M-Ecommerce</p>
   <p>University of Economics and Law - VNU HCMC</p>
 </div>
