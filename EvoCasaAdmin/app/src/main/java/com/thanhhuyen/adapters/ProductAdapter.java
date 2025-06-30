@@ -38,6 +38,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         return new ProductViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = products.get(position);
@@ -62,6 +63,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Log.d(TAG, "No image available for product: " + product.getName());
             holder.productImage.setImageResource(android.R.color.darker_gray);
         }
+
+        // Set click listener for the product image
+        holder.productImage.setOnClickListener(v -> {
+            Log.d(TAG, "Product image clicked: " + product.getName());
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("product_id", product.getId());
+            context.startActivity(intent);
+        });
 
         // Set click listener for the entire item view
         holder.itemView.setOnClickListener(v -> {

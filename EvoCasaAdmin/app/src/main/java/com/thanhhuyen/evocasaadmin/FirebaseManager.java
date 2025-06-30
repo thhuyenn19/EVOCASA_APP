@@ -9,18 +9,12 @@ import com.thanhhuyen.models.Category;
 import com.thanhhuyen.models.Product;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class FirebaseManager {
     private static final String TAG = "FirebaseManager";
     private static FirebaseManager instance;
     private final FirebaseFirestore db;
-
-    private final List<String> SAMPLE_CATEGORY_NAMES = Arrays.asList("Nhà phố", "Chung cư", "Biệt thự");
 
     private FirebaseManager() {
         db = FirebaseFirestore.getInstance();
@@ -34,7 +28,7 @@ public class FirebaseManager {
     }
 
     public interface OnProductsLoadedListener {
-        void onProductsLoaded(Map<String, List<Product>> productsByCategory);
+        void onProductsLoaded(List<Product> products);
         void onError(String error);
     }
 
@@ -43,11 +37,91 @@ public class FirebaseManager {
         void onError(String error);
     }
 
+    public interface OnSubcategoriesLoadedListener {
+        void onSubcategoriesLoaded(List<Category> subcategories);
+        void onError(String error);
+    }
+
     public interface OnProductLoadedListener {
         void onProductLoaded(Product product);
         void onError(String error);
     }
 
+    // Method to load only Category Parent
+    public void loadCategories(OnCategoriesLoadedListener listener) {
+        db.collection("Category")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Category> categories = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Category category = doc.toObject(Category.class);
+                        if (category != null) {
+                            category.setId(doc.getId());
+                            // Check if this is a parent category (no ParentCategory field)
+                            if (category.getParentCategory() == null || category.getParentId() == null) {
+                                categories.add(category);
+                                Log.d(TAG, "Loaded parent category: " + category.getName());
+                            }
+                        }
+                    }
+                    listener.onCategoriesLoaded(categories);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "Error loading categories", e);
+                    listener.onError(e.getMessage());
+                });
+    }
+
+    // Method to load Subcategories by Parent Category ID
+    public void loadSubcategoriesByCategory(String categoryId, OnSubcategoriesLoadedListener listener) {
+        db.collection("Category")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Category> subcategories = new ArrayList<>();
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        Category subcategory = doc.toObject(Category.class);
+                        if (subcategory != null) {
+                            subcategory.setId(doc.getId());
+                            // Check if this category has the specified parent
+                            String parentId = subcategory.getParentId();
+                            if (parentId != null && parentId.equals(categoryId)) {
+                                subcategories.add(subcategory);
+                                Log.d(TAG, "Loaded subcategory: " + subcategory.getName() + " for parent: " + categoryId);
+                            }
+                        }
+                    }
+                    listener.onSubcategoriesLoaded(subcategories);
+                })
+                .addOnFailureListener(e -> {
+                    listener.onError("Failed to load subcategories: " + e.getMessage());
+                });
+    }
+
+    // Method to load Products for a given Category
+    public void loadProductsBySubcategory(String subcategoryId, OnProductsLoadedListener listener) {
+        db.collection("Product")
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    List<Product> products = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : querySnapshot) {
+                        Product product = document.toObject(Product.class);
+                        if (product != null) {
+                            product.setId(document.getId());
+                            String productCategoryId = product.getCategoryId();
+                            if (productCategoryId != null && productCategoryId.equals(subcategoryId)) {
+                                products.add(product);
+                                Log.d(TAG, "Loaded product: " + product.getName() + " for category: " + subcategoryId);
+                            }
+                        }
+                    }
+                    listener.onProductsLoaded(products);
+                })
+                .addOnFailureListener(e -> {
+                    listener.onError("Failed to load products: " + e.getMessage());
+                });
+    }
+
+    // Method to get a product by ID
     public void getProductById(String productId, OnProductLoadedListener listener) {
         db.collection("Product")
                 .document(productId)
@@ -69,127 +143,5 @@ public class FirebaseManager {
                     Log.e(TAG, "getProductById: Failed to fetch product", e);
                     listener.onError("Failed to load product: " + e.getMessage());
                 });
-    }
-
-    private void deleteSampleCategories(Runnable onComplete) {
-        db.collection("Category")
-                .whereIn("name", SAMPLE_CATEGORY_NAMES)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    if (!querySnapshot.isEmpty()) {
-                        int[] deletedCount = {0};
-                        int totalToDelete = querySnapshot.size();
-
-                        for (QueryDocumentSnapshot document : querySnapshot) {
-                            db.collection("Category")
-                                    .document(document.getId())
-                                    .delete()
-                                    .addOnSuccessListener(aVoid -> {
-                                        deletedCount[0]++;
-                                        Log.d(TAG, "deleteSampleCategories: Deleted sample category: " + document.get("name"));
-                                        if (deletedCount[0] == totalToDelete) {
-                                            Log.d(TAG, "deleteSampleCategories: All sample categories deleted");
-                                            onComplete.run();
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> Log.e(TAG, "deleteSampleCategories: Error deleting category", e));
-                        }
-                    } else {
-                        onComplete.run();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "deleteSampleCategories: Error querying sample categories", e);
-                    onComplete.run();
-                });
-    }
-
-    public void loadProducts(OnProductsLoadedListener listener) {
-        Log.d(TAG, "loadProducts: Starting to load products");
-        loadProductsWithCategories(listener);
-    }
-
-    private void loadProductsWithCategories(OnProductsLoadedListener listener) {
-        db.collection("Category")
-                .orderBy("order")
-                .get()
-                .addOnSuccessListener(categoryQuerySnapshot -> {
-                    Log.d(TAG, "loadProductsWithCategories: Categories loaded, count: " + categoryQuerySnapshot.size());
-
-                    Map<String, List<Product>> productsByCategory = new HashMap<>();
-                    List<Category> categories = new ArrayList<>();
-
-                    for (QueryDocumentSnapshot document : categoryQuerySnapshot) {
-                        Category category = document.toObject(Category.class);
-                        category.setId(document.getId());
-                        categories.add(category);
-                        productsByCategory.put(category.getId(), new ArrayList<>());
-                        Log.d(TAG, "loadProductsWithCategories: Added category: " + category.getName() +
-                                " (ID: " + category.getId() + ")");
-                    }
-
-                    db.collection("Product")
-                            .whereEqualTo("isActive", true)
-                            .get()
-                            .addOnSuccessListener(productQuerySnapshot -> {
-                                Log.d(TAG, "loadProductsWithCategories: Products loaded, count: " +
-                                        productQuerySnapshot.size());
-
-                                for (QueryDocumentSnapshot document : productQuerySnapshot) {
-                                    try {
-                                        Product product = document.toObject(Product.class);
-                                        product.setId(document.getId());
-
-                                        String categoryId = product.getCategoryId();
-                                        if (categoryId != null && productsByCategory.containsKey(categoryId)) {
-                                            productsByCategory.get(categoryId).add(product);
-                                            Log.d(TAG, "loadProductsWithCategories: Added product " +
-                                                    product.getName() + " to category " + categoryId);
-                                        }
-                                    } catch (Exception e) {
-                                        Log.e(TAG, "loadProductsWithCategories: Error processing product", e);
-                                    }
-                                }
-
-                                listener.onProductsLoaded(productsByCategory);
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e(TAG, "loadProductsWithCategories: Error loading products", e);
-                                listener.onError("Failed to load products: " + e.getMessage());
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "loadProductsWithCategories: Error loading categories", e);
-                    listener.onError("Failed to load categories: " + e.getMessage());
-                });
-    }
-
-    public void loadCategories(OnCategoriesLoadedListener listener) {
-        deleteSampleCategories(() -> {
-            db.collection("Category")
-                    .get()
-                    .addOnSuccessListener(querySnapshot -> {
-                        List<Category> categories = new ArrayList<>();
-
-                        Log.d(TAG, "Checking raw data from Firestore:");
-                        for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            Log.d(TAG, "Raw data: " + doc.getData());
-
-                            Category category = doc.toObject(Category.class);
-                            if (category != null) {
-                                category.setId(doc.getId());
-                                categories.add(category);
-                                Log.d(TAG, "loadCategories: Loaded category: " + category.getName());
-                            }
-                        }
-
-                        Log.d(TAG, "loadCategories: Total categories loaded: " + categories.size());
-                        listener.onCategoriesLoaded(categories);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e(TAG, "loadCategories: Error loading categories", e);
-                        listener.onError(e.getMessage());
-                    });
-        });
     }
 }
