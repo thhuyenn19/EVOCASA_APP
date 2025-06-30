@@ -17,7 +17,7 @@ if not firestore_texts:
     print(" Không có văn bản hợp lệ từ Firestore.")
     exit()
 
-print(f"\n✅ Đã lấy {len(firestore_texts)} văn bản từ Firestore.")
+print(f"\n Đã lấy {len(firestore_texts)} văn bản từ Firestore.")
 print(f"Firestore sample: {firestore_texts[:2]}")  # Debug
 
 # Đọc dữ liệu từ file CSV (FAQ)

@@ -86,7 +86,7 @@ export class ChatService {
 
   // Lấy tin nhắn từ sub-collection của một chat cụ thể
   getChatMessages(chatId: string): Observable<ChatMessage[]> {
-    const messagesCollection = collection(db, `chats/${chatId}/messages`);
+    const messagesCollection = collection(db, `Chats/${chatId}/messages`);
     const q = query(messagesCollection, orderBy('timestamp', 'asc'));
 
     return new Observable<ChatMessage[]>(observer => {
@@ -157,7 +157,7 @@ export class ChatService {
 
   // Đánh dấu tin nhắn là đã đọc
   markMessageAsRead(chatId: string, messageId: string): Promise<void> {
-    const messageRef = doc(db, `chats/${chatId}/messages/${messageId}`);
+    const messageRef = doc(db, `Chats/${chatId}/messages/${messageId}`);
     return updateDoc(messageRef, { isRead: true }).then(() => {
       console.log('Message marked as read');
     }).catch(error => {
