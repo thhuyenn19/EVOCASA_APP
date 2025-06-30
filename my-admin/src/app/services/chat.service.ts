@@ -117,43 +117,43 @@ export class ChatService {
     });
   }
 
-  // Gửi tin nhắn từ admin
   sendMessage(chatId: string, message: string): Promise<void> {
-    const { admin: currentAdmin } = this.adminService.getCurrentAdmin();
-    if (!currentAdmin) {
-      return Promise.reject(new Error('No admin logged in'));
-    }
+  const { admin: currentAdmin } = this.adminService.getCurrentAdmin();
+  if (!currentAdmin) {
+    return Promise.reject(new Error('No admin logged in'));
+  }
 
-    const messagesCollection = collection(db, `chats/${chatId}/messages`);
-    const newMessage: ChatMessage = {
+  const messagesCollection = collection(db, `Chats/${chatId}/messages`); // ✅ sửa "chats" → "Chats"
+  const newMessage: ChatMessage = {
+    senderId: currentAdmin.employeeid,
+    message: message,
+    timestamp: new Date(),
+    isRead: false
+  };
+
+  return addDoc(messagesCollection, newMessage).then((docRef) => {
+    console.log('Message sent successfully');
+
+    // ✅ sửa "chats" → "Chats"
+    const chatRef = doc(db, 'Chats', chatId);
+    const lastMessageForChat: ChatMessage = {
+      _id: docRef.id,
       senderId: currentAdmin.employeeid,
       message: message,
       timestamp: new Date(),
       isRead: false
     };
 
-    return addDoc(messagesCollection, newMessage).then((docRef) => {
-      console.log('Message sent successfully');
-      
-      // Cập nhật lastMessage trong chat document - store as ChatMessage object
-      const chatRef = doc(db, 'chats', chatId);
-      const lastMessageForChat: ChatMessage = {
-        _id: docRef.id,
-        senderId: currentAdmin.employeeid,
-        message: message,
-        timestamp: new Date(),
-        isRead: false
-      };
-      
-      return updateDoc(chatRef, { 
-        lastMessage: lastMessageForChat, 
-        timestamp: new Date() 
-      });
-    }).catch(error => {
-      console.error('Error sending message:', error);
-      throw error;
+    return updateDoc(chatRef, {
+      lastMessage: lastMessageForChat,
+      timestamp: new Date()
     });
-  }
+  }).catch(error => {
+    console.error('Error sending message:', error);
+    throw error;
+  });
+}
+
 
   // Đánh dấu tin nhắn là đã đọc
   markMessageAsRead(chatId: string, messageId: string): Promise<void> {
