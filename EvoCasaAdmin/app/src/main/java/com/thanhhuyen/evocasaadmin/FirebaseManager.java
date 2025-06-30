@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class FirebaseManager {
@@ -19,7 +20,6 @@ public class FirebaseManager {
     private static FirebaseManager instance;
     private final FirebaseFirestore db;
 
-    // List of sample category names to be removed
     private final List<String> SAMPLE_CATEGORY_NAMES = Arrays.asList("Nhà phố", "Chung cư", "Biệt thự");
 
     private FirebaseManager() {
@@ -41,6 +41,34 @@ public class FirebaseManager {
     public interface OnCategoriesLoadedListener {
         void onCategoriesLoaded(List<Category> categories);
         void onError(String error);
+    }
+
+    public interface OnProductLoadedListener {
+        void onProductLoaded(Product product);
+        void onError(String error);
+    }
+
+    public void getProductById(String productId, OnProductLoadedListener listener) {
+        db.collection("Product")
+                .document(productId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Product product = documentSnapshot.toObject(Product.class);
+                        if (product != null) {
+                            product.setId(documentSnapshot.getId());
+                            listener.onProductLoaded(product);
+                        } else {
+                            listener.onError("Product object is null");
+                        }
+                    } else {
+                        listener.onError("Product not found");
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e(TAG, "getProductById: Failed to fetch product", e);
+                    listener.onError("Failed to load product: " + e.getMessage());
+                });
     }
 
     private void deleteSampleCategories(Runnable onComplete) {
@@ -139,14 +167,13 @@ public class FirebaseManager {
     public void loadCategories(OnCategoriesLoadedListener listener) {
         deleteSampleCategories(() -> {
             db.collection("Category")
-//                    .orderBy("order")  // Sort by order field
                     .get()
                     .addOnSuccessListener(querySnapshot -> {
                         List<Category> categories = new ArrayList<>();
 
                         Log.d(TAG, "Checking raw data from Firestore:");
                         for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                            Log.d(TAG, "Raw data: " + doc.getData());  // ✅ Kiểm tra dữ liệu gốc
+                            Log.d(TAG, "Raw data: " + doc.getData());
 
                             Category category = doc.toObject(Category.class);
                             if (category != null) {

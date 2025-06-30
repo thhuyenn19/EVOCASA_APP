@@ -1,6 +1,7 @@
 package com.thanhhuyen.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.thanhhuyen.evocasaadmin.ProductDetailActivity;
 import com.thanhhuyen.evocasaadmin.R;
 import com.thanhhuyen.models.Product;
 
@@ -60,6 +62,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             Log.d(TAG, "No image available for product: " + product.getName());
             holder.productImage.setImageResource(android.R.color.darker_gray);
         }
+
+        // Set click listener for the entire item view
+        holder.itemView.setOnClickListener(v -> {
+            Log.d(TAG, "Product clicked: " + product.getName() + " (ID: " + product.getId() + ")");
+            Intent intent = new Intent(context, ProductDetailActivity.class);
+            intent.putExtra("product_id", product.getId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
