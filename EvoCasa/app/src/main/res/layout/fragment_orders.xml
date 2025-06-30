@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".order.OrdersFragment">
-    <include layout="@layout/topbar_orders" />
+    <include
+        layout="@layout/topbar_orders" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrdersStatus"
         android:layout_width="match_parent"

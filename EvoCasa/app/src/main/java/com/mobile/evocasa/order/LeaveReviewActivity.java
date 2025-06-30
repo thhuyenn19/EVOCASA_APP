@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.VoucherActivity;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
@@ -82,6 +85,11 @@ public class LeaveReviewActivity extends AppCompatActivity {
                 startActivity(intent);
             });
         }
+        ImageButton imgChat = findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatActivity.class);
+            startActivity(intent);
+        });
 
         // Lấy các view con từ layout include
         View orderGroupView = findViewById(R.id.orderGroupReview);

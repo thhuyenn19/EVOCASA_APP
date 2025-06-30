@@ -26,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.mobile.adapters.NotificationAdapter;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.NotificationItem;
 import com.mobile.utils.FontUtils;
 import com.mobile.evocasa.R;
@@ -74,7 +75,11 @@ public class NotificationFragment extends Fragment {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         session = new UserSessionManager(requireContext());
-
+        ImageView imgChat= view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
         // Bắt sự kiện nút "Mark all as read"
         TextView txtMarkAllRead = view.findViewById(R.id.txtMarkAllRead);
         if (txtMarkAllRead != null) {

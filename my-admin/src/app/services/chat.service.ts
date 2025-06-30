@@ -20,7 +20,7 @@ import { Admin } from '../interfaces/admin';
   providedIn: 'root'
 })
 export class ChatService {
-  private chatsCollection = collection(db, 'chats');
+  private chatsCollection = collection(db, 'Chats');
 
   constructor(private adminService: AdminService) {}
 

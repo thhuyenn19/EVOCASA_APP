@@ -12,6 +12,7 @@
 
     <!-- Topbar đã thiết kế sẵn -->
     <include
+        android:id="@+id/topbar"
         layout="@layout/topbar_voucher" />
 
     <!-- Danh sách voucher -->

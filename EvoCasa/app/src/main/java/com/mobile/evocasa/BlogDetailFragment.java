@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.BlogAdapter;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.Blog;
 import com.mobile.utils.ImageUtils;
 import com.mobile.utils.UserSessionManager;
@@ -46,7 +47,11 @@ public class BlogDetailFragment extends Fragment {
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
         sessionManager = new UserSessionManager(requireContext());
-
+        ImageView imgChat= view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
         recyclerView = view.findViewById(R.id.recycler_blog);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

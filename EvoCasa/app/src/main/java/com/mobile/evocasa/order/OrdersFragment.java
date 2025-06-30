@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +30,8 @@ import com.mobile.adapters.OrderGroupAdapter;
 import com.mobile.adapters.OrderStatusAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.VoucherActivity;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.models.OrderStatus;
@@ -68,7 +71,11 @@ public class OrdersFragment extends Fragment {
         sessionManager = new UserSessionManager(requireContext());
         txtCartBadge = view.findViewById(R.id.txtCartBadge);
         imgCart = view.findViewById(R.id.imgCart);
-
+        ImageButton imgChat = view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
         // Gán trạng thái đơn hàng
         RecyclerView rvStatus = view.findViewById(R.id.rvOrdersStatus);
         rvStatus.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

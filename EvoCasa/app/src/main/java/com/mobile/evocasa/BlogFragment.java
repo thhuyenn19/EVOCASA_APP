@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.BlogAdapter;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.evocasa.profile.ProfileFragment;
 import com.mobile.models.Blog;
 import com.mobile.utils.ImageUtils;
@@ -54,7 +55,11 @@ public class BlogFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_blog);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        ImageView imgChat= view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
         blogList = new ArrayList<>();
         blogList.add(new Blog("5 Interior Design Trends Of 2024 | Sofa Trend", "16/05/2025", R.mipmap.ic_blog1));
         blogList.add(new Blog("How Can You Mix And Match Wood Tones In Your Home – With Confidence", "14/05/2025", R.mipmap.ic_blog2));

@@ -1,6 +1,9 @@
 package com.mobile.evocasa;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -11,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.mobile.adapters.VoucherProfileAdapter;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.Voucher;
 import com.mobile.utils.UserSessionManager;
 
@@ -30,7 +34,14 @@ public class VoucherActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        ImageView imgChat = findViewById(R.id.imgChat);
 
+        if (imgChat != null) {
+            imgChat.setOnClickListener(v -> {
+                Intent intent = new Intent(VoucherActivity.this, ChatActivity.class);
+                startActivity(intent);
+            });
+        }
         // Setup RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerVoucher);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

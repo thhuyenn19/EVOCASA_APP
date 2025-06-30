@@ -44,6 +44,7 @@ import com.mobile.adapters.FlashSaleAdapter;
 import com.mobile.adapters.HotProductsAdapter;
 import com.mobile.evocasa.category.CategoryFragment;
 import com.mobile.evocasa.category.ShopFragment;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.evocasa.search.SearchActivity;
 import com.mobile.models.Category;
 import com.mobile.models.Collection;
@@ -118,6 +119,12 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), SearchActivity.class);
             intent.putExtra("openProgress", true);
             intent.putExtra("voiceKeyword", edtSearch.getText().toString());
+            startActivity(intent);
+        });
+
+        ImageView imgChat= view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
             startActivity(intent);
         });
 

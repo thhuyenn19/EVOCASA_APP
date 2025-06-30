@@ -45,7 +45,7 @@
                     <div class="message-item" *ngFor="let chat of filteredChats" [class.active]="selectedChat?._id === chat._id"
                         (click)="selectChat(chat)">
                         <div class="message-avatar">
-                            <img [src]="selectedCustomer?.Image || 'default-avatar.png'" alt="img">
+                            <img src="images/admin/nhung_avatar.jpg" alt="img">
                         </div>
                         <div class="message-content">
                             <div class="message-header">
@@ -64,7 +64,7 @@
                 <div class="chat-header">
                     <div class="chat-user-info">
                         <div class="chat-avatar">
-                            <img [src]="selectedCustomer?.Image || 'default-avatar.png'" alt="img">
+                            <img src="images/admin/nhung_avatar.jpg" alt="img">
                         </div>
                         <div class="chat-user-details">
                             <h3>{{ selectedChat.customerName || 'Unknown Customer' }}</h3>
@@ -114,7 +114,7 @@
             <div class="sidebar-right" *ngIf="showInfo && selectedCustomer">
                 <div class="customer-profile">
                     <div class="profile-avatar">
-                        <img [src]="selectedCustomer.Image || 'default-avatar.png'" alt="img">
+                        <img src="images/admin/nhung_avatar.jpg" alt="img">
                     </div>
                     <h3>{{ selectedCustomer.Name || 'Unknown' }}</h3>
                     <button class="view-profile-btn" (click)="viewProfile()">View profile</button>

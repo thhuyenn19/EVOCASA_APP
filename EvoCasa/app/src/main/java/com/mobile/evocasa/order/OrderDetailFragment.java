@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.OrderGroup;
 import com.mobile.models.OrderItem;
 import com.mobile.utils.CustomTypefaceSpan;
@@ -90,6 +92,17 @@ public class OrderDetailFragment extends Fragment {
                 }
             });
         }
+        ImageButton imgChat = view.findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
+
+        LinearLayout btnChat= view.findViewById(R.id.btnChat);
+        btnChat.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
         // 1. Bind các view liên quan đến Order Details
         View orderGroupView = view.findViewById(R.id.orderGroupRoot);
         // Trong fragment_order_detail.xml, phần Order Details group chính là một LinearLayout,

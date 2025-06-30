@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.mobile.adapters.TimelineAdapter;
 import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.R;
+import com.mobile.evocasa.VoucherActivity;
+import com.mobile.evocasa.chat.ChatActivity;
 import com.mobile.models.EventItem;
 import com.mobile.models.HeaderItem;
 import com.mobile.models.TimelineItem;
@@ -64,6 +67,12 @@ public class TrackOrderActivity extends AppCompatActivity {
         txtEstimatedDelivery = findViewById(R.id.txtEstimatedDelivery);
         txtCartBadge = findViewById(R.id.txtCartBadge);
         imgCart = findViewById(R.id.imgCart);
+
+        ImageButton imgChat = findViewById(R.id.imgChat);
+        imgChat.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ChatActivity.class);
+            startActivity(intent);
+        });
 
         // Cart
         if (imgCart != null) {
