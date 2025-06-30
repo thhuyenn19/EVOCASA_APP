@@ -34,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Order ID: 1750931317113279"
                 android:textColor="#5E4C3E"
                 android:textSize="16sp" />
 
@@ -43,7 +42,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Order Date: 2025-05-31"
                 android:textColor="#525B4A"
                 android:textSize="14sp" />
 
@@ -52,7 +50,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Status: Review"
                 android:textColor="#3F2305"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -85,7 +82,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Name: Tran Thi B"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -94,7 +90,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Phone: 0917847876"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -103,7 +98,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Customer ID: 563a48106d644650baf9a2f6"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -135,7 +129,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Product ID: 67c0b882c5fec55b70d0fcaa"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -144,7 +137,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Quantity: 1"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -153,7 +145,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Price: 491"
                 android:textColor="#27AE60"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -186,7 +177,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Voucher: Flash Deal"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -195,7 +185,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Discount: 20%"
                 android:textColor="#E67E22"
                 android:textSize="14sp" />
 
@@ -204,7 +193,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Discount Amount: 30"
                 android:textColor="#E67E22"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -236,7 +224,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Address: 45 Tran Hung Dao, Quan 5, TP HCM"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -245,7 +232,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Method: Standard Delivery"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -263,7 +249,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Tracking Number: TRK151011"
                 android:textColor="#3498DB"
                 android:textSize="14sp"
                 android:textStyle="bold" />
@@ -273,7 +258,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="Delivery Fee: 20"
                 android:textColor="#E74C3C"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -305,7 +289,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Payment Method: COD"
                 android:textColor="#5E4C3E"
                 android:textSize="14sp" />
 
@@ -332,7 +315,6 @@
                     android:id="@+id/tv_total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="481"
                     android:textColor="#27AE60"
                     android:textSize="20sp"
                     android:textStyle="bold" />
