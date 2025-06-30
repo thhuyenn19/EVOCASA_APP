@@ -7,23 +7,24 @@
     android:background="@android:color/white"
     android:layout_marginBottom="8dp">
 
-    <!-- Category Header -->
+    <!-- SubCategory Header -->
     <LinearLayout
-        android:id="@+id/categoryHeader"
+        android:id="@+id/subcategoryHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C5B6A7"
+        android:background="#F9E9CE"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
 
         <TextView
-            android:id="@+id/categoryName"
+            android:id="@+id/subcategoryName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <ImageView
@@ -36,7 +37,7 @@
 
     <!-- Products RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subcategoriesRecyclerView"
+        android:id="@+id/productsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -45,4 +46,4 @@
         android:clipToPadding="false"
         android:background="#FFFFFF"/>
 
-</LinearLayout> 
+</LinearLayout>

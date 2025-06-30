@@ -2,20 +2,40 @@ package com.thanhhuyen.models;
 
 import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
+import java.util.Map;
 
 public class Category {
-    @Exclude
-    private String id;
+    private Map<String, Object> _id;
     private String name;
     private String description;
     private String image;
-    private int order;
-    private boolean isActive;
-    private long createdAt;
-    private long updatedAt;
+    private String slug;
+    private Map<String, String> parentCategory;
 
     public Category() {
         // Required empty constructor for Firestore
+    }
+
+    @PropertyName("_id")
+    public Map<String, Object> get_id() {
+        return _id;
+    }
+
+    @PropertyName("_id")
+    public void set_id(Map<String, Object> _id) {
+        this._id = _id;
+    }
+
+    public String getId() {
+        if (_id != null && _id.containsKey("$oid")) {
+            return _id.get("$oid").toString();
+        }
+        return null;
+    }
+
+    public void setId(String id) {
+        // This method is used when setting the Firestore document ID
+        // We don't need to modify the _id map here as it's for MongoDB compatibility
     }
 
     @PropertyName("Name")
@@ -28,61 +48,50 @@ public class Category {
         this.name = name;
     }
 
-    @Exclude
-    public String getId() {
-        return id;
-    }
-
-    @Exclude
-    public void setId(String id) {
-        this.id = id;
-    }
-
+    @PropertyName("Description")
     public String getDescription() {
         return description;
     }
 
+    @PropertyName("Description") 
     public void setDescription(String description) {
         this.description = description;
     }
 
+    @PropertyName("Image")
     public String getImage() {
         return image;
     }
 
+    @PropertyName("Image")
     public void setImage(String image) {
         this.image = image;
     }
 
-    public int getOrder() {
-        return order;
+    @PropertyName("Slug")
+    public String getSlug() {
+        return slug;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    @PropertyName("Slug")
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
-    public boolean isActive() {
-        return isActive;
+    @PropertyName("ParentCategory")
+    public Map<String, String> getParentCategory() {
+        return parentCategory;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    @PropertyName("ParentCategory")
+    public void setParentCategory(Map<String, String> parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public long getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(long updatedAt) {
-        this.updatedAt = updatedAt;
+    public String getParentId() {
+        if (parentCategory != null && parentCategory.containsKey("$oid")) {
+            return parentCategory.get("$oid");
+        }
+        return null;
     }
 } 
