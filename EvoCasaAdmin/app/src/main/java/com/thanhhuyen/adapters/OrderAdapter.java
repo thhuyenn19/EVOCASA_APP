@@ -62,6 +62,9 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
         holder.btnView.setOnClickListener(viewDetailClick);
         holder.txtViewLabel.setOnClickListener(viewDetailClick);
+
+        // ✅ Bổ sung: click toàn bộ itemView mở OrderDetailActivity
+        holder.itemView.setOnClickListener(viewDetailClick);
     }
 
     @Override

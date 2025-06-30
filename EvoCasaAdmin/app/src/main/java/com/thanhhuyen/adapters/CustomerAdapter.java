@@ -53,6 +53,9 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.Custom
 
         holder.btnView.setOnClickListener(viewDetailClick);
         holder.txtViewLabel.setOnClickListener(viewDetailClick);
+
+        // Bổ sung: click toàn bộ itemView mở CustomerDetailActivity
+        holder.itemView.setOnClickListener(viewDetailClick);
     }
 
     @Override
