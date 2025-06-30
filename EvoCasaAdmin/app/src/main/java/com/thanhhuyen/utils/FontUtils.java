@@ -1,4 +1,4 @@
-package com.thanhhuyen.untils;
+package com.thanhhuyen.utils;
 
 import android.content.Context;
 import android.graphics.Typeface;

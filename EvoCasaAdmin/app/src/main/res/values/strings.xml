@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">EvoCasaAdmin</string>
+    <string name="title_welcome">Welcome back</string>
+    <string name="title_sign_in">Sign In</string>
+    <string name="title_password">Password</string>
+    <string name="title_username">Username</string>
+    <string name="title_enter_user">Enter your username</string>
+    <string name="tilte_enter_pw">Enter your password</string>
+    <string name="title_remember">Remember me next time</string>
 
     <string name="title_customer_management">Customer Management</string>
     <string name="title_hint_Search">Search</string>

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.thanhhuyen.models.Order;
-import com.thanhhuyen.untils.FontUtils;
+import com.thanhhuyen.utils.FontUtils;
 
 import java.util.List;
 import java.util.Map;

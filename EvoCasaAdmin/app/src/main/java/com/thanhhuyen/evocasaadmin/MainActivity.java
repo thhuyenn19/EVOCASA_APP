@@ -3,7 +3,10 @@ package com.thanhhuyen.evocasaadmin;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,9 +15,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.cardview.widget.CardView;
+import com.thanhhuyen.utils.AdminSessionManager;
+import com.thanhhuyen.utils.FontUtils;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView txtAdminName;
+    private ImageView btnLogOut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +36,18 @@ public class MainActivity extends AppCompatActivity {
         TextView titleText = findViewById(R.id.titleText);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/ZenOldMincho-Black.ttf");
         titleText.setTypeface(customFont);
+        txtAdminName = findViewById(R.id.txtAdminName);
+        btnLogOut = findViewById(R.id.btnLogOut);
+        AdminSessionManager session = new AdminSessionManager(this);
+        txtAdminName.setTypeface(FontUtils.getSemiBold(this));
+        txtAdminName.setText("Hi, " + capitalizeFirstLetter(session.getShortName()));
 
+        btnLogOut.setOnClickListener(v -> {
+            session.clearSession();
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
         // Find the Products card view
         CardView productCard = findViewById(R.id.productCard);
 
@@ -54,5 +71,9 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, OrderManagementActivity.class);
             startActivity(intent);
         });
+    }
+    private String capitalizeFirstLetter(String input) {
+        if (input == null || input.isEmpty()) return "";
+        return input.substring(0,1).toUpperCase() + input.substring(1).toLowerCase();
     }
 }

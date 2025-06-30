@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.app.AlertDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.thanhhuyen.adapters.OrderAdapter;
 import com.thanhhuyen.models.Order;
-import com.thanhhuyen.untils.FontUtils;
+import com.thanhhuyen.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

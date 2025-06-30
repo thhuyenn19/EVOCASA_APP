@@ -20,7 +20,7 @@ import com.thanhhuyen.adapters.OrderDetailAdapter;
 import com.thanhhuyen.adapters.ShippingAddressAdapter;
 import com.thanhhuyen.models.Order;
 import com.thanhhuyen.models.ShippingAddress;
-import com.thanhhuyen.untils.FontUtils;
+import com.thanhhuyen.utils.FontUtils;
 
 import java.util.ArrayList;
 import java.util.List;
