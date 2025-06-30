@@ -81,6 +81,14 @@ public class VoucherActivity extends AppCompatActivity {
 
     private void setupBottomNav() {
         findViewById(R.id.tabHome).setOnClickListener(v -> goToTab(0));
+        findViewById(R.id.tabShop).setOnClickListener(v -> goToTab(1));
+        findViewById(R.id.tabNotification).setOnClickListener(v -> goToTab(2));
+        findViewById(R.id.tabProfile).setOnClickListener(v -> goToTab(3));
+    }
+
+    private void goToTab(int tabPos) {
+        Intent intent = new Intent(VoucherActivity.this, NarBarActivity.class);
+        intent.putExtra("tab_pos", tabPos);
         startActivity(intent);
         overridePendingTransition(0, 0); // không animation
         finish(); // kết thúc VoucherActivity
