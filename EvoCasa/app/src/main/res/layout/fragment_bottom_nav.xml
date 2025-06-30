@@ -19,13 +19,14 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_home"/>
+
         <TextView
             android:id="@+id/txtHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home"
+            android:text="@string/title_home"
             android:textColor="@color/color_5E4C3E"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -46,7 +47,7 @@
             android:id="@+id/txtShop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shop"
+            android:text="@string/title_shop"
             android:textColor="@color/color_5E4C3E"
             android:textSize="12sp"/>
     </LinearLayout>
@@ -69,7 +70,7 @@
             android:id="@+id/txtNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notification"
+            android:text="@string/title_notification"
             android:textColor="@color/color_5E4C3E"
             android:textSize="12sp"/>
     </LinearLayout>
@@ -92,7 +93,7 @@
             android:id="@+id/txtProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="@string/title_profile"
             android:textColor="@color/color_5E4C3E"
             android:textSize="12sp"/>
     </LinearLayout>
