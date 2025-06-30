@@ -825,10 +825,10 @@ public class MainPaymentFragment extends Fragment {
 
                         selectedShipping = new ShippingAddress(name, phone, address, false);
                         updateShippingUI(view, selectedShipping);
-                        txtEditInfor.setText("Edit");
+                        txtEditInfor.setText(R.string.title_edit);
                     } else {
                         // Không có địa chỉ nào
-                        txtName.setText("No shipping found");
+                        txtName.setText(R.string.title_no_shipping_address);
                         txtPhone.setText("");
                         txtAddress.setText("");
 
@@ -836,7 +836,7 @@ public class MainPaymentFragment extends Fragment {
                         txtPhone.setGravity(Gravity.CENTER_HORIZONTAL);
                         txtAddress.setGravity(Gravity.CENTER_HORIZONTAL);
 
-                        txtEditInfor.setText("Add");
+                        txtEditInfor.setText(R.string.title_add);
                     }
                 })
                 .addOnFailureListener(e -> Log.e("MainPaymentFragment", "Error loading shipping address", e));
