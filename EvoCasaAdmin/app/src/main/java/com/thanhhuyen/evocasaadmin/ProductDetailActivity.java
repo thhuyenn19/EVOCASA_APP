@@ -164,8 +164,8 @@ public class ProductDetailActivity extends AppCompatActivity {
         // Set quantity
         productQuantity.setText("In Stock: " + product.getQuantity());
 
-        // Format and set price
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        // Format and set price in USD
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
         productPrice.setText(currencyFormat.format(product.getPrice()));
 
         // Load first image if available
