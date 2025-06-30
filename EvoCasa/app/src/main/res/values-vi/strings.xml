@@ -27,12 +27,12 @@
     <string name="title_term">Điều khoản</string>
     <string name="title_and">và</string>
     <string name="title_privacy">Chính sách bảo mật</string>
-    <string name="title_verify_email">Xác minh email của bạn</string>
+    <string name="title_verify_email">Xác minh sđt của bạn</string>
     <string name="title_code_signup">Chúng tôi vừa gửi mã 5 chữ số đến SMS của bạn, hãy nhập mã bên dưới:</string>
     <string name="title_code">Mã</string>
     <string name="title_didnt">Không nhận được mã?</string>
     <string name="title_send_again">Gửi lại</string>
-    <string name="title_verify">XÁC MINH EMAIL</string>
+    <string name="title_verify">XÁC MINH SĐT</string>
     <string name="title_create_account">TẠO TÀI KHOẢN</string>
     <string name="title_type_pw">Nhập lại mật khẩu</string>
     <string name="title_password">Mật khẩu</string>
