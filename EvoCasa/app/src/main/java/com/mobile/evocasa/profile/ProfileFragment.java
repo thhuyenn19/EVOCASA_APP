@@ -9,6 +9,8 @@ import com.mobile.evocasa.CartActivity;
 import com.mobile.evocasa.MainActivity;
 import com.mobile.evocasa.SettingFragment;
 import com.mobile.utils.BehaviorLogger;
+import com.mobile.utils.CollaborativeRecommender;
+import com.mobile.utils.MetadataHelper;
 import com.mobile.utils.RecommendationModel;
 import com.mobile.utils.UserSessionManager;
 
@@ -45,10 +47,10 @@ import com.mobile.models.ProductItem;
 import com.mobile.utils.FontUtils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
 
 public class ProfileFragment extends Fragment {
     private TextView txtName, txtLogOut, txtLogin, txtRegister, txtCartBadge;
@@ -61,6 +63,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseFirestore db;
     private LinearLayout containerLoginRegister,containerLogOut;
     private TextView badgePending, badgePickUp, badgeTransit, badgeReview;
+    private CollaborativeRecommender recommender = null;
 
     @Nullable
     @Override
@@ -68,6 +71,8 @@ public class ProfileFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         applyCustomFonts(view);
+
+        MetadataHelper.init(requireContext());
 
         db = FirebaseFirestore.getInstance();
 
@@ -159,6 +164,9 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private List<ProductItem> cachedSuggestedProducts = null;
+
+
     private void setupSuggestedProducts() {
         RecyclerView recyclerViewSuggestedProducts = view.findViewById(R.id.recyclerViewSuggestedProducts);
         recyclerViewSuggestedProducts.setLayoutManager(new GridLayoutManager(getContext(), 2));
@@ -168,74 +176,81 @@ public class ProfileFragment extends Fragment {
         recyclerViewSuggestedProducts.setAdapter(suggestedProductsAdapter);
 
         suggestedProductsAdapter.setOnItemClickListener(product -> {
-            String uid = new UserSessionManager(requireContext()).getUid();
+            String uidClick = new UserSessionManager(requireContext()).getUid();
             String productId = product.getId();
 
-            // Ghi hành vi click
-            BehaviorLogger.record(
-                    uid,
-                    productId,
-                    "click",
-                    "profile_page",
-                    null
-            );
+            BehaviorLogger.record(uidClick, productId, "click", "profile_page", null);
+            RecommendationModel.recordUserClick(requireContext(), productId);
 
             Intent intent = new Intent(requireContext(), com.mobile.evocasa.productdetails.ProductDetailsActivity.class);
             intent.putExtra("productId", product.getId());
             startActivity(intent);
         });
+
         String uid = new UserSessionManager(requireContext()).getUid();
 
-        db.collection("CustomerBehavior")
-                .whereEqualTo("customer_id.$oid", uid)
-                .whereEqualTo("action_type", "click")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    Map<String, Integer> clickCounts = new HashMap<>();
-                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                        Map<String, Object> productMap = (Map<String, Object>) doc.get("product_id");
-                        if (productMap != null) {
-                            String productId = (String) productMap.get("$oid");
-                            if (productId != null) {
-                                clickCounts.put(productId, clickCounts.getOrDefault(productId, 0) + 1);
-                            }
+        if (uid == null || uid.isEmpty()) {
+            // Fallback: load 10 sản phẩm từ Firestore
+            db.collection("Product")
+                    .limit(10)
+                    .get()
+                    .addOnSuccessListener(query -> {
+                        productList.clear();
+                        for (QueryDocumentSnapshot doc : query) {
+                            productList.add(mapDocToProductItem(doc));
                         }
-                    }
+                        suggestedProductsAdapter.notifyDataSetChanged();
+                    })
+                    .addOnFailureListener(e -> Log.e("ProfileFragment", "Failed to load fallback products", e));
+        } else {
+            try {
+                CollaborativeRecommender recommender = new CollaborativeRecommender(requireContext());
+                List<String> recommendedIds = recommender.recommend(uid, 10);
 
-                    List<String> topProductIds = clickCounts.entrySet().stream()
-                            .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                if (recommendedIds.isEmpty()) {
+                    // Fallback nếu model không gợi ý được
+                    db.collection("Product")
                             .limit(10)
-                            .map(Map.Entry::getKey)
-                            .collect(Collectors.toList());
+                            .get()
+                            .addOnSuccessListener(query -> {
+                                productList.clear();
+                                for (QueryDocumentSnapshot doc : query) {
+                                    productList.add(mapDocToProductItem(doc));
+                                }
+                                suggestedProductsAdapter.notifyDataSetChanged();
+                            })
+                            .addOnFailureListener(e -> Log.e("ProfileFragment", "Failed to load fallback products", e));
+                    return;
+                }
 
-                    if (topProductIds.isEmpty()) {
-                        db.collection("Product")
-                                .limit(10)
-                                .get()
-                                .addOnSuccessListener(products -> {
-                                    productList.clear();
-                                    for (QueryDocumentSnapshot doc : products) {
-                                        productList.add(mapDocToProductItem(doc));
-                                    }
-                                    suggestedProductsAdapter.notifyDataSetChanged();
-                                });
-                    } else {
-                        db.collection("Product")
-                                .whereIn(FieldPath.documentId(), topProductIds)
-                                .get()
-                                .addOnSuccessListener(products -> {
-                                    productList.clear();
-                                    for (QueryDocumentSnapshot doc : products) {
-                                        productList.add(mapDocToProductItem(doc));
-                                    }
-                                    suggestedProductsAdapter.notifyDataSetChanged();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Log.e("ProfileFragment", "Failed to load suggested products by user click", e);
-                                });
-                    }
-                })
-                .addOnFailureListener(e -> Log.e("ProfileFragment", "Failed to load CustomerBehavior", e));
+                db.collection("Product")
+                        .whereIn(FieldPath.documentId(), recommendedIds)
+                        .get()
+                        .addOnSuccessListener(query -> {
+                            productList.clear();
+                            for (QueryDocumentSnapshot doc : query) {
+                                productList.add(mapDocToProductItem(doc));
+                            }
+                            suggestedProductsAdapter.notifyDataSetChanged();
+                        })
+                        .addOnFailureListener(e -> Log.e("ProfileFragment", "Failed to load recommended products", e));
+
+            } catch (Exception e) {
+                Log.e("ProfileFragment", "Error initializing recommender", e);
+                // fallback nếu lỗi model
+                db.collection("Product")
+                        .limit(10)
+                        .get()
+                        .addOnSuccessListener(query -> {
+                            productList.clear();
+                            for (QueryDocumentSnapshot doc : query) {
+                                productList.add(mapDocToProductItem(doc));
+                            }
+                            suggestedProductsAdapter.notifyDataSetChanged();
+                        })
+                        .addOnFailureListener(ex -> Log.e("ProfileFragment", "Failed to load fallback products", ex));
+            }
+        }
     }
 
     private void setupClickListeners() {
