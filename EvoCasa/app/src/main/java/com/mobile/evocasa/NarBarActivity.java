@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -100,6 +101,18 @@ public class NarBarActivity extends AppCompatActivity implements BottomNavFragme
                 .commit();
 
 
+    }
+    public void switchToFragment(Fragment fragment) {
+        try {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment) // Thay bằng ID container thực tế của bạn
+                    .addToBackStack(null)
+                    .commit();
+        } catch (Exception e) {
+            Log.e("NarBarActivity", "Error switching fragment", e);
+            Toast.makeText(this, "Cannot switch fragment", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startOrderStatusListener() {

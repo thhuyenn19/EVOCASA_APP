@@ -53,8 +53,8 @@ public class SettingFragment extends Fragment {
         LinearLayout btnChangePassword = view.findViewById(R.id.btnChangePassword);
         LinearLayout btnDeleteAccount = view.findViewById(R.id.btnDeleteAccount);
 
-        btnAccountInfo.setOnClickListener(v -> ((MainActivity) requireActivity()).switchToFragment(new ProfileDetailFragment()));
-        btnHelpCenter.setOnClickListener(v -> ((MainActivity) requireActivity()).switchToFragment(new HelpCenterFragment()));
+        btnAccountInfo.setOnClickListener(v -> ((NarBarActivity) requireActivity()).switchToFragment(new ProfileDetailFragment()));
+        btnHelpCenter.setOnClickListener(v -> ((NarBarActivity) requireActivity()).switchToFragment(new HelpCenterFragment()));
         btnChangeLanguage.setOnClickListener(v -> showLanguageDialog());
         btnChangePassword.setOnClickListener(v ->
                 Toast.makeText(getContext(), getString(R.string.coming_soon, getString(R.string.password_change)), Toast.LENGTH_SHORT).show());
