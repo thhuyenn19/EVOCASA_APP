@@ -94,6 +94,16 @@
                             android:textColor="#666666"
                             android:textSize="14sp" />
 
+                        <TextView
+                            android:id="@+id/txtShippingAddress"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:text="Shipping Addresses"
+                            android:textStyle="italic|bold"
+                            android:paddingTop="8dp"
+                            android:textColor="@color/color_5E4C3E"/>
+
                     </LinearLayout>
 
                 </LinearLayout>

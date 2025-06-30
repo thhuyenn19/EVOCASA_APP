@@ -3,6 +3,8 @@ package com.thanhhuyen.evocasaadmin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,26 +17,28 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.thanhhuyen.adapters.OrderDetailAdapter;
+import com.thanhhuyen.adapters.ShippingAddressAdapter;
 import com.thanhhuyen.models.Order;
+import com.thanhhuyen.models.ShippingAddress;
 import com.thanhhuyen.untils.FontUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CustomerDetailActivity extends AppCompatActivity {
     private static final String TAG = "CustomerDetailActivity";
 
     private TextView txtTitle;
     private ImageView imgBack;
-    private TextView tv_customer_name, tv_customer_gender, tv_customer_email, tv_customer_phone, tv_customer_address;
+    private TextView tv_customer_name, tv_customer_gender, tv_customer_email, tv_customer_phone, tv_customer_address, txtShippingAddress;
 
-    // ✅ Added TextViews for total orders and total amount
     private TextView tv_total_orders, tv_total_amount;
 
     private FirebaseFirestore db;
     private String customerId;
 
-    // ✅ Order RecyclerView components
     private RecyclerView recyclerViewOrderDetails;
     private OrderDetailAdapter orderDetailAdapter;
     private ArrayList<Order> orderList;
@@ -44,10 +48,8 @@ public class CustomerDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_detail);
 
-        // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
-        // Get customerId from Intent
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("customerId")) {
             customerId = intent.getStringExtra("customerId");
@@ -71,7 +73,6 @@ public class CustomerDetailActivity extends AppCompatActivity {
             });
         }
 
-        // Font setup
         txtTitle = findViewById(R.id.txtTitle);
         if (txtTitle != null) {
             FontUtils.setZboldFont(this, txtTitle);
@@ -83,11 +84,17 @@ public class CustomerDetailActivity extends AppCompatActivity {
         tv_customer_phone = findViewById(R.id.tv_customer_phone);
         tv_customer_address = findViewById(R.id.tv_customer_address);
 
-        // ✅ Initialize total orders and total amount TextViews
+        txtShippingAddress = findViewById(R.id.txtShippingAddress);
+        if (txtShippingAddress != null) {
+            txtShippingAddress.setPaintFlags(txtShippingAddress.getPaintFlags() | android.graphics.Paint.UNDERLINE_TEXT_FLAG);
+            txtShippingAddress.setOnClickListener(v -> {
+                showShippingAddressesPopup();
+            });
+        }
+
         tv_total_orders = findViewById(R.id.tv_total_orders);
         tv_total_amount = findViewById(R.id.tv_total_amount);
 
-        // ✅ Init order RecyclerView
         recyclerViewOrderDetails = findViewById(R.id.recyclerViewOrderDetails);
         recyclerViewOrderDetails.setLayoutManager(new LinearLayoutManager(this));
 
@@ -126,7 +133,6 @@ public class CustomerDetailActivity extends AppCompatActivity {
         });
     }
 
-    // ✅ Load orders by customerId - Updated to use correct collection name
     private void loadCustomerOrders() {
         if (customerId == null) {
             Log.e(TAG, "CustomerId is null, cannot load orders");
@@ -135,9 +141,8 @@ public class CustomerDetailActivity extends AppCompatActivity {
 
         Log.d(TAG, "Loading orders for customerId: " + customerId);
 
-        // ✅ Try both collection names since your OrderDetailActivity uses "Order" collection
-        db.collection("Order") // Changed from "Orders" to "Order" to match OrderDetailActivity
-                .whereEqualTo("Customer_id.$oid", customerId) // Updated field path
+        db.collection("Order")
+                .whereEqualTo("Customer_id.$oid", customerId)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     Log.d(TAG, "Orders query successful, found " + queryDocumentSnapshots.size() + " orders");
@@ -146,7 +151,7 @@ public class CustomerDetailActivity extends AppCompatActivity {
                     for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
                         try {
                             Order order = doc.toObject(Order.class);
-                            order.setOrderId(doc.getId()); // Set the document ID as order ID
+                            order.setOrderId(doc.getId());
                             orderList.add(order);
                             Log.d(TAG, "Added order: " + order.getOrderId() + " with tracking: " + order.getTrackingNumber());
                         } catch (Exception e) {
@@ -155,8 +160,6 @@ public class CustomerDetailActivity extends AppCompatActivity {
                     }
 
                     orderDetailAdapter.notifyDataSetChanged();
-
-                    // ✅ Update total orders and total amount after loading orders
                     updateOrderSummary();
 
                     if (orderList.isEmpty()) {
@@ -168,16 +171,13 @@ public class CustomerDetailActivity extends AppCompatActivity {
                     Log.e(TAG, "Failed to load orders", e);
                     Toast.makeText(this, "Failed to load orders: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 
-                    // ✅ Fallback: try with different field structure
                     tryAlternativeOrderQuery();
                 });
     }
 
-    // ✅ Alternative query method if the first one fails
     private void tryAlternativeOrderQuery() {
         Log.d(TAG, "Trying alternative order query methods...");
 
-        // Try different field paths
         String[] possiblePaths = {
                 "customer_id",
                 "Customer_id",
@@ -205,10 +205,8 @@ public class CustomerDetailActivity extends AppCompatActivity {
                             }
 
                             orderDetailAdapter.notifyDataSetChanged();
-
-                            // ✅ Update total orders and total amount after alternative query
                             updateOrderSummary();
-                            return; // Stop trying other paths
+                            return;
                         }
                     })
                     .addOnFailureListener(e -> {
@@ -217,19 +215,16 @@ public class CustomerDetailActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ New method to calculate and display total orders and total amount
     private void updateOrderSummary() {
         int totalOrders = orderList.size();
         double totalAmount = 0.0;
 
-        // Calculate total amount from all orders
         for (Order order : orderList) {
             if (order != null) {
                 totalAmount += order.getTotalPrice();
             }
         }
 
-        // Update UI with calculated values (removed label prefixes)
         if (tv_total_orders != null) {
             tv_total_orders.setText(String.valueOf(totalOrders));
         }
@@ -239,5 +234,44 @@ public class CustomerDetailActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "Order summary updated - Total Orders: " + totalOrders + ", Total Amount: $" + totalAmount);
+    }
+
+    private void showShippingAddressesPopup() {
+        View popupView = LayoutInflater.from(this).inflate(R.layout.popup_shipping_addresses, null);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setView(popupView);
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+        dialog.show();
+
+        RecyclerView recyclerView = popupView.findViewById(R.id.recyclerShippingAddresses);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        db.collection("Customers").document(customerId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        List<Map<String, Object>> addressListMap = (List<Map<String, Object>>) documentSnapshot.get("ShippingAddresses");
+
+                        List<ShippingAddress> addressList = new ArrayList<>();
+                        if (addressListMap != null) {
+                            for (Map<String, Object> map : addressListMap) {
+                                ShippingAddress address = new ShippingAddress();
+                                address.setName((String) map.get("Name"));
+                                address.setPhone((String) map.get("Phone"));
+                                address.setAddress((String) map.get("Address"));
+                                address.setDefault(Boolean.TRUE.equals(map.get("IsDefault")));
+                                addressList.add(address);
+                            }
+                        }
+
+                        ShippingAddressAdapter adapter = new ShippingAddressAdapter(addressList);
+                        recyclerView.setAdapter(adapter);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to load shipping addresses", Toast.LENGTH_SHORT).show();
+                    Log.e("ShippingPopup", "Error: ", e);
+                });
     }
 }
